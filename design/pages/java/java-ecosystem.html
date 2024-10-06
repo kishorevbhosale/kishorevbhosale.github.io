@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalability in Systems</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../common/styles.css" rel="stylesheet">
+    
+    <script>
+        // Function to include an external HTML file
+        function loadHTML(file, elementId) {
+            fetch(file)
+                .then(response => response.text())
+                .then(data => document.getElementById(elementId).innerHTML = data)
+                .catch(error => console.error('Error loading HTML:', error));
+        }
+    </script>
+</head>
+
+<body onload="loadHTML('../../common/navbar.html', 'navbar-placeholder')">
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="content">
+            <h3 class="section-title">What is meant by Java is platform independent?</h3>
+            <p>The statement "Java is platform-independent" refers to Java's ability to run the same compiled code on any operating system or platform without needing to be rewritten or recompiled. 
+                This characteristic is a core feature of Java, achieved through the use of the Java Virtual Machine (JVM).
+            </p>
+            <h5>How Java Achieves Platform Independence</h5>
+            <ol>
+                <li><b>Java Source Code Compilation:</b></li>
+                <p>When you write a Java program, you write it in a human-readable form, known as source code. This source code is saved with a .java file extension.
+                    The Java compiler (javac) then compiles this source code into an intermediate form called bytecode. This bytecode is saved in a file with a .class extension.</p>
+                <li><b>Bytecode:</b></li>
+                <p>Java bytecode is a low-level, platform-independent set of instructions designed to be executed by the JVM.
+                    Unlike machine code, which is specific to a particular processor and operating system, bytecode is not tied to any one machine or architecture.
+                    </p>
+                <li><b>Java Virtual Machine (JVM):</b></li>
+                <p>The JVM is a software-based engine that reads and executes the Java bytecode.
+                    Each operating system or platform has its own JVM implementation (e.g., Windows, macOS, Linux), but they all understand and execute the same bytecode in the same way.
+                    This means that as long as a device or platform has a compatible JVM, it can run Java bytecode, making the program effectively platform-independent.
+                    </p>
+            </ol>
+            <h5>Write Once, Run Anywhere:</h5>
+            <p>This is a common phrase used to describe Java's platform independence. 
+                You can write your Java program once, compile it to bytecode, and then run it on any platform that has a JVM—whether it's Windows, Linux, macOS, or even mobile devices like Android.</p> 
+            <br>
+            
+            
+            <h3 class="section-title">Explain what is JVM?</h3>
+            <p>The JVM interprets and executes Java bytecode, making it possible to run Java programs on any device or operating system that has a compatible JVM implementation.
+            <h5>Overview of JVM</h5>
+            <ol>
+                    <p>The JVM is an abstract computing machine that provides a runtime environment to execute Java bytecode. 
+                        It is part of the Java Runtime Environment (JRE) and is responsible for converting bytecode into machine code that the host operating system's processor can execute.
+                        The JVM abstracts the underlying hardware and operating system, allowing Java programs to run on any platform without modification, as long as a compatible JVM is available.
+                    </p>
+            </ol>
+            <h5>JVM Architecture</h5>
+            The Java Virtual Machine consists of three components:
+            <ol>
+                    <li>Class Loader Subsystem</li>
+                    <li>Runtime Data Area</li>
+                    <li>Execution Engine</li>
+                    <li>Native Method Interface (JNI)</li>
+            </ol>
+            <img src="../../images/jvm.PNG" alt="Vertical Scaling Diagram">
+            <br>
+            <h3 class="section-title">What is Java Hotspot?</h3>
+            The JVM is named HotSpot because it continuously monitors the program's performance to identify hot spots—code paths that are frequently executed. 
+            These frequently executed code paths are then compiled into highly optimized native machine code to enhance execution speed.
+            <br><br>
+            <img src="../../images/java-version.PNG" alt="Vertical Scaling Diagram">
+            
+            <ul>
+                <li><strong>Java HotSpot Client VM:</strong>
+                    <ul>
+                        <li>Optimized for quick startup and low memory usage.</li>
+                        <li>Ideal for client environments where fast application launch is critical.</li>
+                        <li>Tuned to reduce application startup time and minimize memory footprint.</li>
+                    </ul>
+                </li>
+                <li><strong>Java HotSpot Server VM:</strong>
+                    <ul>
+                        <li>Focused on maximizing peak performance for long-running server applications.</li>
+                        <li>Prioritizes operating speed over startup time, making it suitable for server environments.</li>
+                        <li>Utilizes a different compiler optimized for high-performance execution.</li>
+                    </ul>
+                </li>
+                <li><strong>Commonality:</strong>
+                    <ul>
+                        <li>Both VMs share the same Java HotSpot runtime environment but differ in their compilers.</li>
+                        <li>On 64-bit JDKs, only the Java HotSpot Server VM is supported.</li>
+                    </ul>
+                </li>
+            </ul>
+            <br>
+            <h3 class="section-title">Explain what is JIT?</h3>
+                <ul>
+                    <li><strong>Just-In-Time (JIT) Compiler Overview:</strong>
+                        <ul>
+                            <li>The JIT compiler is a component of the Java Virtual Machine (JVM) that improves the performance of Java applications.</li>
+                            <li>It translates Java bytecode into native machine code at runtime, enabling faster execution by eliminating the need for interpretation.</li>
+                        </ul>
+                    </li><br>
+                    <li><strong>How JIT Compiler Works:</strong>
+                        <ul>
+                            <li>Initially, the JVM interprets the bytecode line by line.</li>
+                            <li>As the application runs, the JIT compiler identifies frequently executed code sections (hot spots).</li>
+                            <li>These hot spots are compiled into native machine code, which the CPU can execute directly.</li>
+                            <li>Once compiled, the native code is stored in memory for subsequent executions, speeding up performance.</li>
+                        </ul>
+                    </li><br>
+                    <li><strong>Types of JIT Compilation:</strong>
+                        <ul>
+                            <li><strong>Method-Level Compilation:</strong> The entire method is compiled into native code when it becomes hot.</li>
+                            <li><strong>On-Stack Replacement (OSR):</strong> Allows the JVM to switch from interpreted code to compiled code within a loop, improving performance in long-running loops.</li>
+                        </ul>
+                    </li><br>
+                    <li><strong>Benefits of JIT Compilation:</strong>
+                        <ul>
+                            <li>Significantly improves the execution speed of Java applications by reducing the overhead of interpretation.</li>
+                            <li>Applies runtime optimizations, such as inlining methods and eliminating dead code, to enhance performance.</li>
+                            <li>Adapts to the actual workload of the application, optimizing code paths that are most frequently used.</li>
+                        </ul>
+                    </li><br>
+                    <li><strong>JIT Compiler Optimization Techniques:</strong>
+                        <ul>
+                            <li><strong>Inlining:</strong> Frequently called methods are inserted directly into the calling code, reducing the overhead of method calls.</li>
+                            <li><strong>Loop Unrolling:</strong> Reduces the overhead of loop control code by repeating the loop body multiple times.</li>
+                            <li><strong>Dead Code Elimination:</strong> Removes code that will never be executed, streamlining the execution process.</li>
+                        </ul>
+                    </li><br>
+                    <li><strong>JIT Compilation vs. Interpretation:</strong>
+                        <ul>
+                            <li>JIT compilation produces faster execution times than interpretation because native code runs directly on the CPU.</li>
+                            <li>Interpretation is useful for quick startup, while JIT compilation enhances performance during sustained execution.</li>
+                        </ul>
+                    </li><br>
+                    <li><strong>JIT Compiler in the Java HotSpot VM:</strong>
+                        <ul>
+                            <li>The Java HotSpot VM includes both a client and a server JIT compiler, each optimized for different use cases.</li>
+                            <li>The client compiler focuses on reducing startup time, while the server compiler emphasizes peak performance.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 | Kishor Bhosale | Revise, prepare, and excel in tech interviews.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

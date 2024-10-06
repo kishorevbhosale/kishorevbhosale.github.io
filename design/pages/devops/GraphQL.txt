@@ -1,0 +1,13 @@
+What is GraphQL?
+What are advantages of graphql?
+how it better than rest api
+why to use graphql
+Key terms in GraphQL
+- Schema
+- Type
+- Query
+- Field
+- Mutation
+- Scalar
+
+explain everything with proper use case

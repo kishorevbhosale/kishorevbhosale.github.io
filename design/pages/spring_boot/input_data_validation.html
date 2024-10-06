@@ -1,0 +1,206 @@
+<body onload="loadHTML('../../common/navbar.html', 'navbar-placeholder')">
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+
+        <div class="content">
+    <h1>Spring Boot Input Data Validation</h1>
+
+    <br>
+    <h3 class="section-title">1. Introduction to Input Data Validation in Spring Boot</h3>
+    <p>
+        Input data validation is crucial in ensuring that incoming data to a Spring Boot application is valid, consistent, and safe. Spring Boot provides strong support for handling validation using annotations from the <strong>javax.validation</strong> and <strong>hibernate-validator</strong> packages.
+    </p>
+    <p>Spring Boot allows you to validate data at both the request level (incoming JSON or form data) and at the field level within Java objects (DTOs or Entities).</p>
+
+    <br>
+    <h3 class="section-title">2. Enabling Validation</h3>
+    <p>
+        To enable validation, you must include the <strong>spring-boot-starter-validation</strong> dependency in your <b>pom.xml</b> (for Maven users) or <b>build.gradle</b> (for Gradle users).
+    </p>
+    <pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">3. Using Validation Annotations</h3>
+    <p>Spring Boot uses standard validation annotations to validate incoming data. These annotations are placed on fields in a class that represents the request body or form data.</p>
+    <p>Common validation annotations:</p>
+    <ul>
+        <li><b>@NotNull</b>: Ensures the field is not null.</li>
+        <li><b>@NotEmpty</b>: Ensures the field is not empty.</li>
+        <li><b>@Size(min, max)</b>: Ensures the field has a size within specified bounds.</li>
+        <li><b>@Min</b>, <b>@Max</b>: Restricts numerical fields to a minimum or maximum value.</li>
+        <li><b>@Email</b>: Ensures the field contains a valid email format.</li>
+        <li><b>@Pattern</b>: Ensures the field matches a regular expression pattern.</li>
+    </ul>
+
+    <br>
+    <h3 class="section-title">4. Sample DTO Class with Validation Annotations</h3>
+    <p>Let's create a simple DTO (Data Transfer Object) class that will hold input data with validation rules:</p>
+    <pre><code>
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+public class UserDTO {
+
+    <b>@NotNull(message = "Name cannot be null")</b>
+    <b>@Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")</b>
+    private String name;
+
+    <b>@NotEmpty(message = "Email cannot be empty")</b>
+    <b>@Email(message = "Email should be valid")</b>
+    private String email;
+
+    <b>@NotNull(message = "Age is required")</b>
+    <b>@Min(value = 18, message = "Age should be at least 18")</b>
+    <b>@Max(value = 100, message = "Age should be less than or equal to 100")</b>
+    private Integer age;
+
+    // Getters and setters
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">5. Using @Valid or @Validated in Controller</h3>
+    <p>To trigger validation in the controller, the <strong>@Valid</strong> or <strong>@Validated</strong> annotation is used on the request body parameter. If validation fails, Spring Boot automatically returns a 400 Bad Request response with validation errors.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
+import org.springframework.http.ResponseEntity;
+
+@RestController
+public class UserController {
+
+    @PostMapping("/users")
+    public ResponseEntity&lt;String&gt; createUser(@Valid @RequestBody UserDTO userDTO) {
+        // Business logic to validate and create the user
+        return ResponseEntity.ok("User is valid and created successfully!");
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">6. Default Error Response for Validation</h3>
+    <p>If validation fails, Spring Boot returns a default error response in JSON format containing details of the validation errors. Here's an example:</p>
+    <pre><code>
+{
+    "timestamp": "2024-09-30T15:30:00.123+00:00",
+    "status": 400,
+    "errors": [
+        "Email should be valid",
+        "Name must be between 2 and 50 characters",
+        "Age should be at least 18"
+    ]
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">7. Customizing Validation Error Responses</h3>
+    <p>We can create custom validation error responses by handling the <b>MethodArgumentNotValidException</b> in a global exception handler. This gives more control over the structure of the error response.</p>
+    <p><strong>Step 1:</strong> Define a custom error response class.</p>
+    <pre><code>
+import java.util.List;
+
+@Getter
+@Setter
+public class ValidationErrorResponse {
+    private String message;
+    private List<String> errors;
+
+    public ValidationErrorResponse(String message, List&lt;String&gt; errors) {
+        this.message = message;
+        this.errors = errors;
+    }
+}
+    </code></pre>
+
+    <p><strong>Step 2:</strong> Define a global exception handler to customize validation error responses.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ValidationErrorResponse&gt; handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List&lt;String&gt; errors = ex.getBindingResult()
+            .getAllErrors()
+            .stream()
+            .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+            .collect(Collectors.toList());
+
+        ValidationErrorResponse response = new ValidationErrorResponse("Validation failed", errors);
+        return new ResponseEntity&lt;&gt;(response, HttpStatus.BAD_REQUEST);
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">8. Custom Error Response Example</h3>
+    <p>When validation fails, the custom error response might look like this:</p>
+    <pre><code>
+{
+    "message": "Validation failed",
+    "errors": [
+        "email: Email should be valid",
+        "name: Name must be between 2 and 50 characters",
+        "age: Age should be at least 18"
+    ]
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">9. Validating Path Variables and Request Parameters</h3>
+    <p>Spring Boot also supports validation of path variables and request parameters using the same validation annotations. The <b>@Validated</b> annotation is used at the controller method level for such cases.</p>
+    <pre><code>
+import javax.validation.constraints.Min;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+
+@RestController
+@Validated
+public class UserController {
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity&lt;String&gt; getUserById(@PathVariable("id") @Min(1) Long id) {
+        // If validation passes, return the user
+        return ResponseEntity.ok("User with ID: " + id);
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">10. Summary</h3>
+    <ul>
+        <li>Validation in Spring Boot is achieved through annotations such as <b>@NotNull</b>, <b>@Size</b>, <b>@Email</b>, etc.</li>
+        <li>Use <b>@Valid</b> in controllers to trigger validation on request bodies or forms.</li>
+        <li>Handle validation errors globally using <b>@ControllerAdvice</b> and <b>MethodArgumentNotValidException</b>.</li>
+        <li>Custom validation error responses can be created for better client interaction.</li>
+        <li>Path variables and request parameters can also be validated using <b>@Validated</b>.</li>
+    </ul>
+
+</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>

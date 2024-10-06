@@ -1,0 +1,203 @@
+<div class="container">
+
+        <div class="content">
+            <h1>Beans & Autowiring</h1>
+            <h3 class="section-title">What is a Spring Bean?</h3>
+            <p>In the Spring Framework, a Spring Bean is a core concept that refers to an object managed by the Spring IoC (Inversion of Control) container. 
+                Essentially, a Spring Bean is a Java object that is instantiated, configured, and managed by the Spring container.
+            </p>
+            <img src="../../images/bean1.PNG" style="display: block; margin: auto; width: 70%;" class="img-fluid">
+            <br>
+
+            <h3 class="section-title">Defining a Spring Bean</h3>
+            Spring beans can be defined in several ways:
+            <ul>
+                <li>Via XML Configuration (legacy approach)</li>
+                <li>Using Annotations (@Component, @Service, @Repository, @Controller)</li>
+                <li>Java-based Configuration (@Configuration and @Bean)</li>
+            </ul>
+
+                <h5>Example 1: XML-Based Bean Configuration</h5>
+                Traditionally, beans were defined in an XML file. A typical bean configuration in XML looks like this:<br><br>
+                
+                    <pre><code>
+    &lt;bean id="myBean" class="com.example.MyClass"&gt;
+        &lt;property name="property1" value="value1"/&gt;
+    &lt;/bean&gt;
+                    </code></pre>
+                
+            <br>
+            
+                <h5>Example 2: Annotation-Based Configuration</h5>
+                In modern Spring applications, beans are more commonly defined using annotations. 
+                By using the @Component annotation on a class, you can let Spring know that this class is a bean:<br>
+                
+            <pre><code>
+    @Component
+    public class MyBean {
+        // Your code here
+    }
+            </code></pre>
+            <br>
+                <h5>Example 3: Java-based Configuration</h5>
+                You can also define beans using Java-based configuration with the @Configuration and @Bean annotations:<br><br>
+                <pre><code>
+    @Configuration
+    public class MyConfig {
+    
+        @Bean
+        public MyBean myBean() {
+            return new MyBean();
+        }
+    }    
+                </code></pre>
+            <br>
+            <br>
+            <h3 class="section-title"> Bean Scope</h3>
+            <p>
+                Beans in Spring have different scopes, which define how and when the Spring container creates and manages bean instances.
+                <ul>
+                    <li>Singleton: Only one instance of the bean is created per Spring IoC container (default scope).</li>
+                    <li>Prototype: A new bean instance is created every time it is requested.</li>
+                    <li>Request: A bean is created for each HTTP request (only in web applications).</li>
+                    <li>Session: A bean is created for each HTTP session (only in web applications).</li>
+                    <li>Global Session: A bean is created for each global HTTP session (used in Portlet-based web applications).</li>
+                </ul>
+            </p>
+            <br>
+            <h3 class="section-title"> Bean Lifecycle</h3>
+            <p>
+                The Spring IoC container is responsible for managing the full lifecycle of a Spring Bean. The lifecycle of a bean includes:
+                <ol>
+                    <li>Instantiation: The bean is created.</li>
+                    <li>Dependency Injection: Dependencies (other beans) are injected into the bean.</li>
+                    <li>Initialization: Any custom initialization logic (if needed) is executed.</li>
+                    <li>Usage: The bean is used in the application.</li>
+                    <li>Destruction: If applicable, the bean is destroyed, and any custom cleanup logic is executed.</li>
+                </ol>
+            </p>
+            <br>
+            <h3 class="section-title"> How to Access Spring Beans Using ApplicationContext</h3>
+            <p>
+                <b>ApplicationContext</b> is the central interface for accessing Spring beans and managing the lifecycle of beans in a Spring application. It is an advanced container that provides:
+            </p>
+            <ul>
+                <li>Bean factory functionality (retrieving and managing beans).</li>
+                <li>Support for AOP (Aspect-Oriented Programming).</li>
+                <li>Message resource handling for internationalization.</li>
+                <li>Event propagation and other advanced features.</li>
+            </ul>
+            <p>
+                There are several implementations of <b>ApplicationContext</b>, such as:
+            </p>
+            <ul>
+                <li><b>ClassPathXmlApplicationContext</b> (XML-based configuration).</li>
+                <li><b>AnnotationConfigApplicationContext</b> (Java-based configuration).</li>
+                <li><b>FileSystemXmlApplicationContext</b> (loading from file system).</li>
+            </ul>
+            <br>
+            <h5>Example Using AnnotationConfigApplicationContext</h5>
+            <pre><code>
+    import org.springframework.context.ApplicationContext;
+    import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+    public class MainApp {
+        public static void main(String[] args) {
+            // Create application context using Java configuration
+            ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+            // Accessing bean by type
+            MyService myService = <b>context.getBean(MyService.class);</b>
+            myService.performTask();
+
+            // Accessing bean by name
+            MyBean myBean = (MyBean) context.getBean("myBean");
+            myBean.doSomething();
+        }
+    }
+            </code></pre>
+            <br>
+            <hr>
+            <h5>Example of Registering Beans Dynamically</h5>
+            <pre><code>
+        import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+        public class DynamicBeanApp {
+            public static void main(String[] args) {
+                // Create a new application context
+                AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+                
+                // Register configuration class (optional)
+                <b>context.register(AppConfig.class);</b>
+                
+                // Register additional beans dynamically
+                <b>context.register(MyBean.class);</b>
+                
+                // Refresh the context to apply the registrations
+                context.refresh();
+                
+                // Retrieve the dynamically registered bean
+                MyBean myBean = context.getBean(MyBean.class);
+                myBean.doSomething();
+                
+                context.close();
+            }
+        }
+            </code></pre>
+            <br>
+            <h3 class="section-title">What is NoUniqueBeanDefinitionException in Spring</h3>
+            <p>
+                <b>NoUniqueBeanDefinitionException</b> is a runtime exception in Spring that occurs when the application context contains multiple beans of the same type, and you try to retrieve a bean by type without specifying the bean's name or any further qualifier.
+                In this case, Spring gets confused because there are multiple matching beans and it does not know which one to inject or retrieve. This can happen, for example, when multiple beans of the same class or interface are defined in the Spring container.</p>
+        
+            <h5>When Does This Exception Occur?</h5>
+            <p>This exception occurs in the following scenarios:</p>
+            <ul>
+                <li>When multiple beans of the same type exist in the application context, and</li>
+                <li>When Spring is asked to inject or retrieve a bean based solely on its type (without any qualifiers or explicit bean names).</li>
+            </ul>
+            <hr>
+            <h5>Exception Message</h5>
+            <p>The exception message typically looks like this:</p>
+            <div class = "example">
+            <code>
+                org.springframework.beans.factory.NoUniqueBeanDefinitionException: <br>
+                No qualifying bean of type 'com.example.MyService' available: <br>
+                expected single matching bean but found 2: myService1,myService2
+            </code>
+            </div>
+            <p>
+                This message tells you that Spring expected one matching bean of type <b>MyService</b>, but it found two beans: <b>myService1</b> and <b>myService2</b>.
+            </p>
+            <img src="../../images/bean5.PNG" style="display: block; margin: auto; width: 100%;" class="img-fluid">
+            <br>
+            <hr>
+            <h5>How to Resolve This Exception?</h5>
+            <p>To resolve this exception, you can take the following steps:</p>
+            <ul>
+                <li>
+                    <b>Specify a Qualifier:</b> Use the <b>@Qualifier</b> annotation to specify the name of the bean you want to inject or retrieve. This helps Spring distinguish between multiple beans of the same type.
+                    For example:
+                <div class = "example">
+                    <pre><code>
+    @Autowired
+    @Qualifier("myService1")
+    private MyService myService;
+                    </code></pre>
+                </div>
+                </li>
+                
+                <li><b>@Primary annotation</b>: You can also use the <b>@Primary</b> annotation to indicate that a particular bean should be considered the primary candidate when multiple beans of the same type are present.
+                    <br><br>
+                    <img src="../../images/bean6.PNG" style="display: block; margin: auto; width: 100%;" class="img-fluid">
+                </li>
+                <br>
+                <br>
+                <h3 class="section-title">What is Circular Dependency in Spring</h3>
+                <p>A <b>circular dependency</b> in Spring occurs when two or more beans depend on each other, creating a loop. For example, if Bean A depends on Bean B, and Bean B depends on Bean A, 
+                    neither bean can be fully created because each requires the other to be initialized first.</p>
+                    <img src="../../images/wiring12.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+
+
+        </div>
+</div>

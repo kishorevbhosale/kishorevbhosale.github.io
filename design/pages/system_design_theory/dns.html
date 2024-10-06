@@ -1,0 +1,166 @@
+<div class="container">
+
+        <div class="content">
+            <h3 class="section-title">What is DNS?</h3>
+            <p>The domain name system (DNS) is the Internet’s naming service that maps human-friendly domain names to machine-readable IP addresses.
+                When a user enters a domain name in the browser, the browser has to translate the domain name to IP address by asking the DNS infrastructure. 
+                Once the desired IP address is obtained, the user’s request is forwarded to the destination web server.
+            </p>
+            <img src="../../images/dns.PNG" alt="DNS" style="display: block; margin: auto;">
+            <p>
+                DNS translates domain names (like www.example.com) into IP addresses (like 192.0.2.1), which computers use to identify each other on the network.
+                DNS acts like the phonebook of the internet, mapping domain names to IP addresses. The entire process happens very quickly, so the user experiences minimal delay
+            </p>
+            <br>
+            <h3 class="section-title">DNS Hierarchy</h3>
+            <p>DNS operates on a hierarchical structure, with the root at the top, followed by top-level domains (TLDs) (like .com, .org), second-level domains (like example in example.com), and so on.
+            </p>
+            <p>
+                DNS translates domain names (like www.example.com) into IP addresses (like 192.0.2.1), which computers use to identify each other on the network.
+                DNS acts like the phonebook of the internet, mapping domain names to IP addresses. The entire process happens very quickly, so the user experiences minimal delay
+            </p>
+            <p>
+                <h5>DNS Components:</h5>
+                <ul>
+                    <li><strong>DNS Resolver: </strong>A client-side service that initiates and sequences DNS queries that ultimately lead to a domain name being translated to an IP address.</li>
+                    <li><strong>DNS Root Server: </strong>The top-level DNS server that contains information about TLDs and directs queries to appropriate TLD servers.</li>
+                    <li><strong>TLD Name Server: </strong>These servers store information about second-level domains and direct queries to authoritative name servers.</li>
+                    <li><strong>Authoritative Name Server: </strong>These servers contain the actual DNS records for a domain and return the corresponding IP address.</li>
+                </ul>
+            </p>
+            <img src="../../images/dns-1.PNG" alt="dns-hierarchy" style="display: block; margin: auto;">
+            
+            <br>
+            <h3 class="section-title">DNS Resolution Process?</h3>
+            <ul>
+                <li>When a user enters a domain name in the browser, the DNS resolution process begins.</li>
+                <li>The user's device sends a DNS query to the local DNS resolver (often provided by the ISP).</li>
+                <li>The DNS resolver first checks its cache to see if it has a recently stored response for the domain. If found, the cached result is returned to the user.</li>
+                <li>If the result is not cached, the DNS resolver queries one of the root DNS servers to find the TLD server responsible for the domain.</li>
+                <li>The root server responds with the address of the TLD server (e.g., .com TLD server) that handles the domain.</li>
+                <li>The DNS resolver then queries the authoritative name server for the domain name to get the corresponding IP address.</li>
+                <li>The authoritative name server responds with the IP address of the requested domain.</li>
+                <li>The DNS resolver caches the response for future queries and returns the IP address to the user's device.</li>
+                <li>The user's browser uses the IP address to connect to the web server and load the website.</li>
+            </ul>
+            <img src="../../images/dns-2.PNG" alt="dns-hierarchy" style="display: block; margin: auto;">
+            
+            <br>
+            <h3 class="section-title">DNS in AWS (Amazon Web Services)</h3>
+                <p><b>Amazon Route 53: </b>AWS offers a managed DNS service called Amazon Route 53. It provides highly available and scalable Domain Name System (DNS) services, 
+                    which can be used to route end-user requests to various AWS services, on-premises resources, or any web application.</p>
+            <br>
+            
+            <h3 class="section-title">Interview Questions and Answers</h3>
+            <div class="interview-question">
+                <strong>Q1: How does DNS caching work, and how can it impact the resolution process in both positive and negative ways?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>DNS caching involves storing DNS query results temporarily on various levels (browser, OS, ISP, etc.) to speed up subsequent requests for the same domain. 
+                    Caching reduces latency, decreases the load on DNS servers, and improves the overall user experience.
+                </p>
+                <ul>
+                    <li>Reduced Latency: Queries for cached domains resolve faster because they don’t need to go through the entire DNS lookup process.</li>
+                    <li>Lower Server Load: Reduces the number of queries sent to authoritative DNS servers, decreasing their load.</li>
+                    <li>Outdated Records: If the DNS records change before the cache expires (based on TTL), users might be directed to old, incorrect IP addresses.</li>
+                    <li>Prolonged Downtime: In case of an IP change, users might still reach the old, possibly down, server until the cache expires.</li>
+                </ul>
+            </div>
+
+            <div class="interview-question">
+                <strong>Q2: What is the difference between an A record and a CNAME record, and when should you use one over the other?</strong>
+            </div>
+            <div class="interview-answer">
+                <p><b>A </b>Record : 
+                    <ul>
+                        <li>Maps a domain name directly to an IP address. </li>
+                    </ul>
+                    <b>CNAME </b>Record : 
+                    <ul>
+                        <li>When you want to map one domain to another, such as mapping <em>www.example.com</em> to <em>example.com</em></li>
+                        <li>It’s useful when you want to alias one domain to another without creating separate DNS records for each subdomain.</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>Q3: How would you troubleshoot a situation where a user can access a website via IP address but not through its domain name?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>Use tools like <b>nslookup, dig, whois</b> to verify if the domain’s DNS records are correctly configured and propagated.</li>
+                        <li>Ensure that the <b>A record</b> for the domain points to the correct IP address.</li>
+                        <li>The user’s system might be serving a stale DNS record. Clear the DNS cache (ipconfig /flushdns on Windows, sudo killall -HUP mDNSResponder on macOS).</li>
+                        <li>Ensure the user's device is using the correct DNS server and that it’s operational. They can try switching to a public DNS server like Google’s (8.8.8.8).</li>
+                        <li>Check if the domain might be blocked by a firewall or ISP DNS filtering.</li>
+                    </ul>
+                </p>    
+            </div>
+
+            <div class="interview-question">
+                <strong>Q4: Explain how DNS load balancing works and describe a scenario where it might fail to distribute traffic evenly.</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>DNS load balancing distributes traffic across multiple servers by associating a single domain with multiple IP addresses (using multiple A records). 
+                            The DNS server can return different IP addresses in response to DNS queries, distributing the load across the available servers.</li>
+                        <li>If a DNS resolver or client caches an IP address for too long, subsequent traffic might not be distributed evenly. 
+                                This can lead to one server being overloaded while others remain underutilized.</li>
+                        <li>Sticky Sessions: Some clients may repeatedly connect to the same IP address due to cached results, leading to uneven load distribution.</li>
+                    </ul>
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>Q5: List global DNS providers</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>Amazon Route 53 (AWS)</li>
+                        <li>Google Cloud DNS</li>
+                        <li>Cloudflare DNS</li>
+                        <li>Microsoft Azure DNS</li>
+                        <li>Dyn (now part of Oracle)</li>
+                        <li>Verisign</li>
+                        <li>Akamai</li>
+                    </ul>
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>Q6: Tools and commands are commonly used while troubleshooting DNS problems</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li><b>nslookup example.com</b><br>
+                            purpose: Query DNS records from a specific DNS server. (nslookup example.com 8.8.8.8)
+                        </li>
+                        <li><b>dig example.com</b><br>
+                            purpose: A powerful DNS query tool to retrieve information about DNS records.
+                        </li>
+                        <li><b>host example.com</b><br>
+                            purpose: A simple command-line utility to perform DNS lookups. (Find nameservers for a domain: host -t ns example.com)
+                        </li>
+                        <li><b>ping example.com</b><br>
+                            purpose: Check the network connection to a specific IP or domain name
+                        </li>
+                        <li><b>On Linux/macOS: traceroute example.com</b><br>
+                            purpose: Trace the path packets take from your system to a domain name.
+                        </li>
+                        <li><b>On Windows: ipconfig /flushdns</b><br>
+                            purpose: Clear the DNS resolver cache to ensure that the latest DNS information is fetched.
+                        </li>
+
+                        <li><b>netstat -nr</b> <br>
+                            Purpose: Display the current network routing table.
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+
+        </div>
+</div>

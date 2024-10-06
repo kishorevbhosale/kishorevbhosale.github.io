@@ -1,0 +1,196 @@
+/* styles.css */
+
+body {
+    background-color: #f8f9fa; /* Light background color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+    color: #333; /* Dark text color for contrast */
+    line-height: 1.6; /* Improved readability */
+}
+
+.header {
+    background-color: #343a40; /* Dark header background */
+    padding: 20px; /* Padding for header */
+    text-align: center; /* Centered text */
+}
+
+.footer {
+    background-color: #343a40; /* Dark footer background */
+    padding: 10px 0; /* Padding for footer */
+    text-align: center; /* Centered text */
+    position: relative; /* Footer positioning */
+}
+
+.left-panel {
+    background: linear-gradient(135deg, #ffffff 0%, #e9ecef 100%);
+    padding: 20px;
+    border-right: 1px solid #dee2e6;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.right-panel {
+    padding: 20px; /* Inner padding */
+    background-color: #ffffff; /* White background */
+}
+
+.collapsible-header {
+    background-color: #426181; /* Header background */
+    color: white; /* White text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    padding: 10px; /* Padding for header */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 5px; /* Space below header */
+    transition: background 0.3s ease; /* Smooth background change */
+}
+
+.collapsible-header:hover {
+    background-color: #0056b3; /* Change color on hover */
+}
+
+.collapsible-content {
+    display: none; /* Hidden by default */
+    padding: 10px; /* Padding for content */
+    background-color: #e9f7fe; /* Light background for content */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for content */
+    margin-bottom: 10px; /* Space below content */
+}
+
+.nav-link {
+    color: #007bff; /* Blue link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+.content-title {
+    font-size: 1.5em; /* Title size */
+    color: #333; /* Title color */
+}
+
+.text-white {
+    color: white; /* White text for header and footer */
+}
+.section-title {
+    background: linear-gradient(135deg, #a2d9ff, #d4f0ff, #e9f7fe); /* Softer, layered gradient */
+    padding: 10px 20px; /* Increased padding for a balanced appearance */
+    border-radius: 10px; /* Smoother rounded corners */
+    margin-bottom: 20px; /* Spacious margin below the title */
+    font-size: 1.5em; /* Slightly larger, elegant font size */
+    color: #044a75; /* Deep complementary text color */
+    text-align: center; /* Centers the text */
+    letter-spacing: 1.5px; /* Added space between letters */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer, larger shadow for more depth */
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* Smoother hover effects */
+    border: 2px solid rgba(4, 74, 117, 0.2); /* Border for added elegance */
+}
+
+.section-title:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Bolder shadow on hover */
+    background: linear-gradient(135deg, #a2d9ff, #c8e6f7, #d8f1ff); /* Dynamic gradient change on hover */
+}
+.example {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-left: 5px solid #007BFF;
+    margin-bottom: 20px;
+}
+
+hr {
+    border: none;
+    height: 5px; /* Thickness of the line */
+    background-color: rgb(70, 65, 65); /* Color of the line */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.interview-question {
+    background-color: #e9f7fe;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.interview-answer {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.step {
+    margin-bottom: 15px;
+}
+
+.step span {
+    font-weight: bold;
+    color: #44505c;
+}
+
+.calculation {
+    margin-top: 20px;
+}
+
+.calculation span {
+    font-weight: bold;
+    color: #2b2c2d;
+}
+pre {
+    margin: 0;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-left: 4px solid #ccc;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+code {
+    color: #c7254e;
+    background-color: #eee;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 1.1em;
+    display: block;
+}
+
+.about-me {
+    color: #fff; /* Change the text color to white */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the text bold */
+    padding: 10px; /* Add vertical padding */
+    border-radius: 5px; /* Add rounded corners */
+    transition: background-color 0.3s; /* Smooth background change */
+    font-size: 1.5rem; /* Set font size to match h2 */
+    line-height: 1.5; /* Ensure the line height matches the h2 */
+}
+
+.about-me:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Add hover effect */
+}
+
+
+
+

@@ -1,0 +1,251 @@
+<div class="container">
+
+        <div class="content">
+            <h1>Spring Bean Scope</h1>
+            <h3 class="section-title">What is Bean Scope in Spring?</h3>
+            <p>In the Spring Framework, a bean scope defines the lifecycle of a bean (i.e., how many instances of a bean should be created and how Spring manages them). 
+                The scope dictates whether a new instance of a bean should be created with each request, or if the same instance should be shared across multiple requests.
+            </p>
+            <br>
+
+            <h3 class="section-title">Types of Bean Scopes</h3>
+            <ul>
+                <li><strong>Singleton (Default):</strong> Only one instance of the bean is created and shared across the application context.</li>
+                <li><strong>Prototype:</strong> A new instance of the bean is created every time it is requested.</li>
+                <li><strong>Request (Web applications only):</strong> A new bean instance is created for each HTTP request.</li>
+                <li><strong>Session (Web applications only):</strong> A new bean instance is created for each HTTP session.</li>
+                <li><strong>Global Session (Portlet environments):</strong> A new bean instance is created for each global session.</li>
+            </ul>
+            <br>
+
+            <h3 class="section-title">1. Singleton Bean Scope</h3>
+            <p>The <strong>singleton scope</strong> is the default bean scope in Spring. It ensures that only one instance of the bean is created and is shared across all requests.</p>
+            <ul>
+                <li><strong>Instance sharing:</strong> All components that need the bean will receive the same instance.</li>
+                <li><strong>Thread safety:</strong> Singleton beans are not inherently thread-safe, meaning you have to handle concurrency issues like race conditions if the bean is accessed by multiple threads.</li>
+                <li><strong>Application-wide state:</strong> Singleton beans can hold state that is shared across the entire application.</li>
+            </ul>
+            <img src="../../images/bean10.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+
+            <hr>
+            <h5>Race Condition in Singleton Beans</h5>
+            <p>A <strong>race condition</strong> occurs when two or more threads access shared data and try to change it simultaneously. 
+                In the case of a singleton bean, multiple threads could access the same bean instance, leading to inconsistent data if not properly synchronized.</p>
+            <p>To prevent race conditions, you can use techniques such as:</p>
+            <ul>
+                <li>Using the <b><em>synchronized</em></b> keyword on critical sections.</li>
+                <li>Utilizing thread-safe classes (e.g., <b><em>ConcurrentHashMap</em></b>).</li>
+            </ul>
+            <hr>
+            <h5>Use Case of Singleton Scope</h5>
+            <p>Singleton beans are useful when you want to share data or configuration across multiple components in your application. 
+            <div class="example">
+                For example, a logging service can be implemented as a singleton bean, since it doesn't require multiple instances for different parts of the application.</p>
+            </div>
+            <h5>Example Code: Singleton Bean in Spring</h5>
+            <pre><code>
+        import org.springframework.context.annotation.Scope;
+        import org.springframework.stereotype.Service;
+        
+        @Service
+        <b>@Scope("singleton")</b>  // By default, it's singleton, but we explicitly define it here
+        public class LoggingService {
+            public void log(String message) {
+                System.out.println("Logging message: " + message);
+            }
+        }
+            </code></pre>
+            <br>
+
+            <h3 class="section-title">Eager vs Lazy Instantiation of Singleton Scope</h3>
+            <h5>Eager Instantiation (Default Behavior)</h5>
+            <ul>
+                <li><strong>Definition:</strong> In Spring, by default, singleton beans are eagerly instantiated, meaning they are created as soon as the application context is loaded, regardless of whether they are used or not.</li>
+                <li><strong>Benefit:</strong> Faster access to the bean when needed, as the instance is already created.</li>
+                <li><strong>Drawback:</strong> Unused beans still consume memory, which may impact the startup time of the application.</li>
+            </ul>
+        
+            <h6>Use Case of Eager Instantiation</h6>
+            <p>Eager instantiation is ideal for beans that are crucial to the application’s startup process, such as configuration services or connection pools, which need to be ready as soon as the application starts.</p>
+        
+            <h6>Example Code: Eager Instantiation</h6>
+            <pre><code>
+        import org.springframework.context.annotation.Scope;
+        import org.springframework.stereotype.Service;
+        
+        @Service
+        @Scope("singleton")  // Eager instantiation, created at application startup
+        public class ConfigurationService {
+            public ConfigurationService() {
+                System.out.println("ConfigurationService bean created at startup");
+            }
+        }
+            </code></pre>
+            <hr>
+            <h5>Lazy Instantiation</h5>
+            <ul>
+                <li><strong>Definition:</strong> In lazy instantiation, the bean is not created until it is actually requested by the application.</li>
+                <li><strong>Benefit:</strong> Saves resources and speeds up application startup by only instantiating the bean when needed.</li>
+                <li><strong>Drawback:</strong> The first request to the bean may experience a slight delay, as the instance is created at that point.</li>
+            </ul>
+        
+            <h6>Use Case of Lazy Instantiation</h6>
+            <p>Lazy instantiation is useful for beans that are not always needed during the lifecycle of the application, such as optional services or background tasks.</p>
+        
+            <h6>Example Code: Lazy Instantiation</h6>
+            <pre><code>
+        import org.springframework.context.annotation.Lazy;
+        import org.springframework.stereotype.Service;
+        
+        @Service
+        <b>@Lazy</b>  // Bean will be instantiated only when needed
+        public class ReportService {
+            public ReportService() {
+                System.out.println("ReportService bean created on-demand");
+            }
+        }
+            </code></pre>
+            <img src="../../images/spring6.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
+            <br>
+
+            <h3 class="section-title">2. Prototype</h3>
+                <img src="../../images/bean11.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
+            <br>
+            <h3 class="section-title">3. Request/Session/Application Scopes</h3>
+                <img src="../../images/bean12.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
+            <br>
+            
+
+            <h3 class="section-title">Interview Questions and Answers</h2>
+            <div class="interview-question">
+                <strong>What is the Singleton Scope in Spring, and how does it work?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>In Spring, the singleton scope is the default bean scope, meaning that the Spring IoC (Inversion of Control) container creates a single instance of the bean per Spring context. 
+                            This instance is shared across all other components that require this bean, providing the same object each time it’s requested.
+                        </li>
+                        <li>
+                            <b>Follow-up: How is this different from the Singleton Design Pattern?</b>
+                            <ul>
+                                <li>
+                                    While both create a single instance, in the Singleton Design Pattern, the control of the instance creation is within the class itself, while in Spring, the container (IoC) manages the bean lifecycle.
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+            <div class="interview-question">
+                <strong>How does Spring ensure that the Singleton beans are thread-safe?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>
+                            Spring does not make Singleton beans thread-safe by default. 
+                            The developer needs to handle thread safety manually by using techniques such as synchronization, using immutable objects, or relying on thread-safe classes like <b>ConcurrentHashMap</b>.
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>What happens if a Singleton bean holds state in a multi-threaded environment?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>
+                            Since a Singleton bean is shared across the entire application, if it holds mutable state, and multiple threads access it simultaneously, it could lead to race conditions or inconsistent data. 
+                            It is important to either avoid holding mutable state or implement synchronization mechanisms to prevent concurrency issues. 
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>Can Singleton beans be garbage collected?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>
+                            Yes, Singleton beans can be garbage collected, but only when the Spring container itself is garbage collected or shut down. 
+                            Until then, the singleton bean will persist for the entire lifecycle of the application context.    
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>Scenario: You have a Singleton bean that handles configuration settings in your application. 
+                    However, some threads are seeing stale data after an update to the configuration. What could be the issue?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    <ul>
+                        <li>
+                            This could be happening due to the absence of proper synchronization in a multi-threaded environment. Since the Singleton bean is shared across threads, updates to the configuration might not be visible to all threads due to caching or lack of synchronization. The solution could be:
+                            <br>Ensuring proper synchronization (e.g., using the volatile keyword or synchronized methods).
+                            <br>Using atomic variables or thread-safe collections for configuration management.    
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>You have a Singleton service bean that requires a resource-heavy initialization process. The application has a slow startup due to this. 
+                    What approach would you take to solve this?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>In this scenario, lazy initialization is a good solution. By annotating the Singleton bean with <b>@Lazy</b>, 
+                    I can delay its initialization until it is actually required by the application, reducing the initial startup time.</p>
+                <pre><code>
+                @Service
+                @Lazy
+                public class HeavyResourceService {
+                    public HeavyResourceService() {
+                        // Heavy initialization logic
+                    }
+                }
+                </code></pre>
+            
+            </div>
+
+            <div class="interview-question">
+                <strong>How would you manage Singleton beans in a microservices architecture where each microservice may require its own instance?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    In a microservices architecture, each microservice typically has its own isolated application context, so each microservice will have its own Singleton bean instance, independent of other services. 
+                    If a microservice needs multiple instances of the same bean, 
+                    I would use prototype scope or a different context strategy, but typically the Singleton scope per microservice context works well.
+                    </p>
+            </div>
+
+            <div class="interview-question">
+                <strong>You have a Singleton bean in a high-traffic application, and it is becoming a performance bottleneck. How would you approach solving this?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>In this scenario, the Singleton bean could be becoming a bottleneck due to resource contention. To resolve this, I would:</p>
+                <ul>
+                    <li>Check if the Singleton bean is stateless. If so, it should perform well in high-traffic environments.</li>
+                    <li>If the bean is stateful, I could refactor it to be stateless or switch it to prototype scope to avoid shared state issues.</li>
+                    <li>Use caching or asynchronous processing to reduce the load on the Singleton bean.</li>
+                </ul>
+            </div>
+
+            <div class="interview-question">
+                <strong>How does Spring handle Singleton beans in a distributed environment?</strong>
+            </div>
+            <div class="interview-answer">
+                <p>
+                    In a distributed environment (e.g., multiple instances of an application running on different nodes), each Spring container will maintain its own Singleton bean instance. 
+                    Therefore, Singleton beans are scoped to the application context, not the entire distributed system. 
+                    If you need a shared instance across nodes, you would need to implement a centralized cache or use a distributed service.
+                </p>
+            </div>
+
+</div>

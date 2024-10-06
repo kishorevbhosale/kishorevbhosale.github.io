@@ -1,0 +1,183 @@
+<div class="container">
+
+        <div class="content">
+            <h1>Quicly Build a Microservice using Spring Boot</h1>
+
+            <br>
+            <h3 class="section-title">1. Build Empty Spring Boot Application</h3>
+            <p>Create a new Spring Boot project using Spring Initializr or your preferred IDE.</p>
+            <p>
+                Include the following dependencies:
+                <ul>
+                    <li>Spring Web</li>
+                    <li>Spring Data JPA</li>
+                    <li>Spring Boot DevTools (Optional for development)</li>
+                    <li>H2 Database (for simplicity in this example)</li>
+                    <li>Spring Boot Actuator</li>
+                </ul>
+            </p>
+
+            <b>Generated main class:</b>
+            <pre><code>
+                <b>@SpringBootApplication</b>
+                public class MyMicroserviceApplication {
+                    public static void main(String[] args) {
+                        SpringApplication.run(MyMicroserviceApplication.class, args);
+                    }
+                }
+            </code></pre>
+            
+            <br>
+            <h3 class="section-title">2. Build Database-Related Logic (Entities, Repositories, and DTOs)</h3>
+            <p>
+                Define a database entity using the <b>@Entity</b> annotation, a primary key using <b>@Id</b>, and a repository interface.
+            </p>
+            <pre><code>
+                <b>@Entity</b>
+                public class Account {
+                    <b>@Id</b>
+                    <b>@GeneratedValue(strategy = GenerationType.IDENTITY)</b>
+                    private Long id;
+                    private String accountNumber;
+                    private Double balance;
+                }
+            </code></pre>
+            <br>
+            <p>Create a repository interface:</p>
+            <pre><code>
+                <b>@Repository</b>
+                public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+                }
+            </code></pre>
+            <br>
+            <p>DTO for transferring data:</p>
+            <pre><code>
+                public class AccountDTO {
+                    private String accountNumber;
+                    private Double balance;
+                }
+            </code></pre>
+
+            <br>
+            <h3 class="section-title">3. Build Business Logic (Service Layer)</h3>
+            <p>
+                Create a service class with business logic using <b>@Service</b> and <b>@Transactional</b>.
+            </p>
+            <pre><code>
+                <b>@Service</b>
+                public class AccountService {
+                    private final AccountRepository accountRepository;
+                    <b>@Autowired</b>
+                    public AccountService(AccountRepository accountRepository) {
+                        this.accountRepository = accountRepository;
+                    }
+                    <b>@Transactional</b>
+                    public Account createAccount(AccountDTO accountDTO) {
+                        Account account = new Account();
+                        account.setAccountNumber(accountDTO.getAccountNumber());
+                        account.setBalance(accountDTO.getBalance());
+                        return accountRepository.save(account);
+                    }
+                }
+            </code></pre>
+
+            <br>
+            <h3 class="section-title">4. Build Global Exception Handling Logic</h3>
+            <p>
+                Use <b>@ControllerAdvice</b> and <b>@ExceptionHandler</b> to handle exceptions globally.
+            </p>
+            <pre><code>
+                <b>@ControllerAdvice</b>
+                public class GlobalExceptionHandler {
+                    <b>@ExceptionHandler</b>(ResourceNotFoundException.class)
+                    public ResponseEntity&lt;ErrorResponse&gt; handleNotFoundException(ResourceNotFoundException ex) {
+                        ErrorResponse errorResponse = new ErrorResponse("NOT_FOUND", ex.getMessage());
+                        return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);
+                    }
+                }
+            </code></pre>
+
+            <br>
+            <h3 class="section-title">5. Perform Data Validation on the Input</h3>
+            <p>
+                Use <b>@Valid</b>, <b>@NotNull</b>, <b>@Size</b>, and other validation annotations in DTOs.
+            </p>
+            <pre><code>
+                public class AccountDTO {
+                    <b>@NotNull</b>
+                    <b>@Size(min = 10, max = 10)</b>
+                    private String accountNumber;
+                    <b>@NotNull</b>
+                    <b>@Min(0)</b>
+                    private Double balance;
+                }
+            </code></pre>
+
+            <p>In the controller, validate the DTO:</p>
+            <pre><code>
+                <b>@RestController</b>
+                public class AccountController {
+                    private final AccountService accountService;
+                    <b>@Autowired</b>
+                    public AccountController(AccountService accountService) {
+                        this.accountService = accountService;
+                    }
+                    <b>@PostMapping</b>("/accounts")
+                    public ResponseEntity&lt;Account&gt; createAccount(<b>@Valid</b> @RequestBody AccountDTO accountDTO) {
+                        return new ResponseEntity&lt;&gt;(accountService.createAccount(accountDTO), HttpStatus.CREATED);
+                    }
+                }
+            </code></pre>
+
+            <br>
+            <h3 class="section-title">6. Perform Auditing Using Spring Data JPA</h3>
+            <p>
+                Enable auditing using <b>@EnableJpaAuditing</b> and mark the entity fields with auditing annotations like <b>@CreatedDate</b> and <b>@LastModifiedDate</b>.
+            </p>
+            <pre><code>
+                <b>@Entity</b>
+                <b>@EntityListeners(AuditingEntityListener.class)</b>
+                public class Account {
+                    <b>@Id</b>
+                    <b>@GeneratedValue(strategy = GenerationType.IDENTITY)</b>
+                    private Long id;
+                    <b>@CreatedDate</b>
+                    private LocalDateTime createdDate;
+                    <b>@LastModifiedDate</b>
+                    private LocalDateTime lastModifiedDate;
+                }
+            </code></pre>
+
+            <p>Enable auditing in the Spring Boot application class:</p>
+            <pre><code>
+                <b>@SpringBootApplication</b>
+                <b>@EnableJpaAuditing</b>
+                public class MyMicroserviceApplication {
+                    public static void main(String[] args) {
+                        SpringApplication.run(MyMicroserviceApplication.class, args);
+                    }
+                }
+            </code></pre>
+
+            <br>
+            <h3 class="section-title">7. Documenting REST API Using Springdoc OpenAPI</h3>
+            <p>
+                Add annotations such as <b>@Operation</b>, <b>@ApiResponse</b>, and <b>@Schema</b> to document your API.
+            </p>
+            <pre><code>
+                <b>@RestController</b>
+                <b>@Tag(name = "Account Controller", description = "REST APIs for managing accounts")</b>
+                public class AccountController {
+                    <b>@Operation(summary = "Create an account")</b>
+                    <b>@ApiResponse(responseCode = "201", description = "Account created successfully")</b>
+                    <b>@ApiResponse(responseCode = "400", description = "Invalid input")</b>
+                    <b>@PostMapping</b>("/accounts")
+                    public ResponseEntity&lt;Account&gt; createAccount(<b>@Valid</b> @RequestBody AccountDTO accountDTO) {
+                        return new ResponseEntity&lt;&gt;(accountService.createAccount(accountDTO), HttpStatus.CREATED);
+                    }
+                }
+            </code></pre>
+
+            <p>With these steps, you have built a robust, well-documented microservice in Spring Boot!</p>
+        </div>
+    </div>

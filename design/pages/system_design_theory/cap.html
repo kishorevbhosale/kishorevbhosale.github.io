@@ -1,0 +1,137 @@
+<div class="container">
+
+        <div class="content">
+            <h3 class="section-title">Introduction to CAP Theorem</h3>
+            <p>The CAP Theorem is a fundamental principle in distributed systems that helps in understanding the trade-offs that are necessary when designing a distributed database. 
+                It was proposed by Eric Brewer in the year 2000. 
+                The theorem states that in a distributed system, you can only achieve two out of the following three properties simultaneously:
+            </p>
+            <ol>
+                <li><strong>Consistency (C)</strong></li>
+                <li><strong>Availability (A)</strong></li>
+                <li><strong>Partition Tolerance (P)</strong></li>
+            </ol>
+            <p>
+                These three properties are vital in the context of distributed data storage systems, but according to the CAP theorem, achieving all three is impossible. 
+                Hence, when designing distributed systems, you must prioritize two of these properties based on your system requirements.
+            </p>
+            <img src="../../images/cap.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">
+            <br>
+            <h3 class="section-title">Key Concepts of the CAP Theorem</h3>
+                <h5></h5>
+                <ol>
+                    <li>
+                        <h5>Consistency (C):</h5>
+                        <ul><br>
+                            <p><strong>Consistency</strong> means that every read operation returns the most recent write, i.e., all nodes in a distributed system see the same data at the same time. 
+                                In simple terms, when data is written to the system, it must immediately be propagated to all nodes, ensuring that all users see the same information.</p>
+                            <p><strong>Example:</strong> In a bank transaction system, if one account is debited, all nodes must reflect that change immediately to avoid showing inconsistent balances.</p>
+                            <p><strong>Impact:</strong> To maintain consistency, a system may have to delay responses to ensure all replicas are updated.</p>
+                            <img src="../../images/cap-1.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">                  
+                        </ul>
+                    </li>
+                    <hr>
+                    <li>
+                        <h5>Availability (A):</h5>
+                        <ul><br>
+                            <p><strong>Availability</strong> means that the system is always able to serve requests. 
+                                Every request (read or write) gets a response, even if the system doesn't guarantee the most up-to-date data.</p>
+                            <p><strong>Example:</strong> In a social media system, you might still be able to post updates or view older posts, even if the latest data from other users hasn’t yet been propagated to all nodes.</p>
+                            <p><strong>Impact:</strong> Prioritizing availability may lead to stale or outdated data being served during failures or delays in updates.</p>
+                            <img src="../../images/cap-2.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">
+                        </ul>
+                    </li>
+                    <hr>
+                    <li>
+                        <h5>Partition Tolerance (P):</h5>
+                        <ul><br>
+                            <p><strong>Partition Tolerance</strong> means that the system continues to operate even when there is a network partition, i.e., when communication between nodes in a distributed system is disrupted. 
+                                The system can still function despite certain nodes being isolated from each other.</p>
+                            <p><strong>Example:</strong> In a cloud service, if data centers in different regions lose connectivity, a partition-tolerant system will continue serving users with data from the available nodes, even if they can't communicate with others.</p>
+                            <p><strong>Impact:</strong> Partition tolerance is crucial in distributed systems, especially in wide-area networks, but it often forces the system to compromise on consistency or availability.</p>
+                            <img src="../../images/cap-3.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">
+                        </ul>
+                    </li>
+                </ol>
+            <br>
+            <h3 class="section-title">Trade-offs in CAP Theorem</h3>
+                <p>Based on the CAP Theorem, distributed systems can only guarantee two of the three properties. Let’s break down the different combinations:</p>
+        
+                <h5>1. Consistency + Availability (CA)</h5>
+                <ul>
+                    <p>If you prioritize both <strong>Consistency</strong> and <strong>Availability</strong>, the system will not be able to tolerate network partitions. 
+                        Systems that ensure consistency and availability work well as long as there are no network partitions. 
+                        If a partition occurs, the system will likely stop responding, as the system can no longer guarantee both consistency and availability.</p>
+                    <p><b>Use Case: </b>This combination is suitable for systems within a single data center where the likelihood of network partitions is minimal.</p>
+                    <b>Example:</b>
+                    <div class = "example">
+                        Traditional relational databases (e.g., SQL databases) usually follow this model, but they do not perform well when partition tolerance is required.
+                    </div>
+                </ul>
+                <hr>
+                <h5>2. Consistency + Partition Tolerance (CP)</h5>
+                <ul>    
+                    <p>With <strong>Consistency</strong> and <strong>Partition Tolerance</strong>, the system may sacrifice availability. When a partition occurs, the system may become unavailable to maintain consistency.</p>
+                    <p><b>Use Case: </b>Suitable for systems where consistency is critical, such as financial systems or banking applications where every transaction must be accurate and up-to-date.</p>
+                    <b>Example:</b>
+                    <div class = "example">
+                        Systems like HBase or MongoDB can sacrifice availability in certain configurations to ensure consistency even when partitions occur.
+                    </div>
+                </ul>
+                <hr>
+                <h5>3. Availability + Partition Tolerance (AP)</h5>
+                <ul>
+                    <p>If you prioritize <strong>Availability</strong> and <strong>Partition Tolerance</strong>, you may sacrifice consistency. 
+                        These systems remain available and partition-tolerant, but may return outdated or inconsistent data when there are network issues. This is often referred to as eventual consistency, where the system will eventually become consistent but not necessarily immediately.
+                    </p>
+                    <p><b>Use Case: </b>Ideal for systems where availability is more important than consistency, such as social media feeds, caching systems, or shopping cart systems in e-commerce platforms.</p>
+                    <b>Example:</b>
+                    <div class = "example">
+                        NoSQL databases like Cassandra and DynamoDB prioritize availability and partition tolerance, allowing for eventual consistency in exchange for handling partitions and maintaining availability.
+                    </div>  
+                </ul>
+            <br>
+            <h3 class="section-title">CAP Theorem in System Design Interviews</h3>
+
+                <p>In system design interviews, CAP theorem is an important concept because it helps you understand trade-offs in designing distributed systems. When discussing a system, you should be able to explain:</p>
+        
+                 <ul>
+                     <li>What kind of data consistency is required for the system (e.g., strong or eventual consistency)?</li>
+                     <li>How important availability is — does the system need to serve requests under all conditions, or is temporary unavailability acceptable?</li>
+                     <li>How the system can handle network partitions, and whether the system should continue to function during partition events.</li>
+                 </ul>
+        
+                <p>When asked about CAP in a system design interview, follow this approach:</p>
+        
+                <h5>1. Clarify Requirements</h5>
+                    <ul>
+                        <p>Ask clarifying questions to understand the business or technical requirements. Does the system need high availability (e.g., financial transactions)? Or is consistency more critical (e.g., in a booking system where double bookings must be avoided)?</p>
+                    </ul>
+                <h5>2. Identify Trade-offs</h5>
+                    <ul>
+                        <p>Explain how the system you propose will handle trade-offs between consistency, availability, and partition tolerance. For example, if you’re designing a social media platform, you might prioritize availability and partition tolerance, with eventual consistency being acceptable.</p>
+                    </ul>
+                <h5>3. Use Real-World Examples</h5>
+                    <ul>
+                         <p>Reference real-world systems and databases like Cassandra, DynamoDB, or traditional SQL systems to highlight how different distributed systems make trade-offs based on CAP theorem.</p>
+                    </ul>
+                <h5>4. Discuss Failures and Recovery</h5>
+                    <ul>
+                        <p>Address what happens in the event of network partitions and how your system would recover. Mention concepts like eventual consistency, leader election, and replication strategies to strengthen your explanation.</p>
+                    </ul>
+        <h3 class="section-title">Cloud Database following CAP Theorem</h3>
+        <div class="example">
+            <ol>
+                <li>Amazon DynamoDB (AP)</li>
+                <li>Google Cloud Spanner (CP)</li>
+                <li>Amazon Aurora (CA)</li>
+                <li>Cassandra (AP)</li>
+                <li>Firebase Realtime Database (AP)</li>
+                <li>Amazon RDS (CA)</li>
+            </ol>
+        </div>
+
+        <br>
+    </div>
+    Images sourced from Algomaster's blog: https://blog.algomaster.io/
+</div>

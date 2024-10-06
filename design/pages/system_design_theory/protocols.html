@@ -1,0 +1,348 @@
+<div class="container">
+
+        <div class="content">
+            <h3 class="section-title">TCP Protocol Overview</h3>
+                <p>TCP, or Transmission Control Protocol, is indeed a fundamental protocol for many networked applications, including distributed systems and HTTP. 
+                    It operates at the transport layer of the Internet Protocol Suite and is known for its reliability and robustness. 
+                </p>
+
+                <p>TCP is a connection-oriented protocol that establishes a connection between the sender and receiver before data transmission begins. 
+                    This connection ensures that data is sent and received reliably, in the correct order, and without errors. 
+                </p>
+                    <h6>Reliable:</h6>
+                    <ul>
+                        <li>TCP ensures that data sent from the sender is reliably received by the receiver. It uses a mechanism known as acknowledgments and retransmissions to achieve this.</li>
+                        <div class="example"> 
+                            Suppose you’re sending a large file over a TCP connection. TCP will break this file into smaller packets. As each packet is received, the receiver sends an acknowledgment (<b>ACK</b>) back to the sender. 
+                            If the sender does not receive an acknowledgment within a certain time frame, it will assume the packet was lost or corrupted and will resend it. This process continues until all packets are successfully acknowledged.
+                            </div>
+                    </ul>
+                    
+                    <h6>Ordered:</h6>
+                    <ul>
+                        <li>TCP guarantees that packets arrive in the same order they were sent. This is crucial for applications where the sequence of data is important.</li>
+                        <div class="example">
+                            Consider a scenario where you are streaming a video. The video data is divided into packets and sent over the network. TCP ensures that these packets are reassembled in the correct order on the receiver’s end. 
+                            If some packets are lost or arrive out of order, TCP will reorder them and request retransmission of any missing packets, ensuring the video plays correctly and smoothly.
+                        </div>
+                    </ul>
+                                       
+                    <h6>Error-Checked:</h6>
+                    <ul>
+                        <li>Each TCP packet includes a checksum that is used to verify the integrity of the data. When a packet arrives at its destination, the receiver calculates the checksum and compares it to the one sent with the packet. If there is a mismatch, it indicates that the packet was corrupted, and the receiver will request a retransmission.</li>
+                        <div class="example">
+                            When sending a text message over TCP, the message is divided into packets, and each packet includes a checksum. If the receiver detects that the checksum doesn’t match the data (indicating potential corruption), it will ask the sender to resend that packet, ensuring the message is received correctly.
+                        </div>
+                    </ul>
+   
+            <br>
+
+
+            <h3 class="section-title">UDP Protocol Overview</h3>
+            <p>UDP, or User Datagram Protocol, is a lightweight and faster alternative to TCP. Unlike TCP, UDP is connectionless, which means it doesn’t establish a formal connection between sender and receiver before transmitting data. Let’s explore some of the characteristics of UDP based on the points you've provided:</p>
+        
+            <h6></h6>
+            <ul>
+                <li><b>No Acknowledgment (No ACK): </b>Unlike TCP, UDP does not use acknowledgments. Once the data is sent, there’s no confirmation from the receiver that the packet has arrived. The sender simply continues transmitting without waiting for feedback.</li>
+                <li><b>No Ordering or Corruption Checking: </b>UDP does not guarantee that packets will arrive in order or even intact. If packets are dropped, arrive out of sequence, or get corrupted during transit, UDP does not attempt to correct these issues. It’s up to the application to handle this if necessary.</li>
+                <li><b>Fast: </b>UDP’s lack of features like acknowledgment and retransmission makes it much faster than TCP. Since there’s no overhead for ensuring reliable delivery or ordering, data can be sent more quickly.</li>
+                <li><b>Unreliable: </b>UDP is considered unreliable because it doesn’t check whether the data has arrived or whether it’s arrived in the correct order. Data loss is possible, and there are no guarantees of delivery.</li>
+                <li><b>Faster Than TCP: </b>UDP is generally faster than TCP because it allows the sender to transmit large amounts of data quickly without waiting for acknowledgments or ensuring reliability. This is especially useful in applications where some data loss is acceptable for the sake of speed.</li>
+            </ul>
+            <div class="example">
+                <p>
+                    In a stock exchange application, data needs to be sent quickly, even if some data packets are lost in transit. Similarly, for video streaming or online gaming, minor data losses may not significantly impact the user experience, so speed is prioritized over reliability.
+                </p>
+            </div>
+            <h6>Common Use Cases</h6>
+            <p>UDP is commonly used in scenarios where speed is critical, and a small amount of data loss is tolerable:</p>
+            <ul>
+                <li><strong>Stock Exchanges:</strong> High-frequency trading requires real-time data delivery where speed is more important than reliability.</li>
+                <li><strong>Video Streaming:</strong> UDP allows for fast delivery of video packets, and minor losses or out-of-order packets can be handled by the application.</li>
+                <li><strong>Online Gaming:</strong> In fast-paced multiplayer games, slight delays or packet loss can be tolerated for the sake of maintaining game speed and responsiveness.</li>
+            </ul>
+        <br>
+        
+        
+
+            <h3 class="section-title">What is HTTP/HTTPS?</h3>
+            <p>
+                <ul>
+                    <li><strong>HTTP (Hypertext Transfer Protocol):</strong>
+                        <ul>
+                            <li>An application-layer protocol used for transmitting hypermedia documents, such as HTML.</li>
+                            <li>HTTP is the foundation of data communication on the World Wide Web.</li>
+                            <li>It is a stateless protocol, meaning each request from a client to server is independent, and the server does not retain user state between requests.</li>
+                        </ul>
+                    </li>
+                    <li><strong>HTTPS (Hypertext Transfer Protocol Secure):</strong>
+                        <ul>
+                            <li>An extension of HTTP, where communication between the client and server is encrypted using TLS (Transport Layer Security) or SSL (Secure Sockets Layer).</li>
+                            <li>HTTPS ensures the confidentiality, integrity, and authenticity of data exchanged between the client and server.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <img src="../../images/http.PNG" alt="proxy1" style="display: block; margin: auto; width: 30%;">
+            </p>
+            <br>
+            <h3 class="section-title">How HTTP/HTTPS Works?</h3>
+            <p>
+                <ul>
+                    <li><strong>HTTP:</strong>
+                        <ul>
+                            <li>The client (usually a web browser) sends an HTTP request to the server, typically requesting a resource like a web page.</li>
+                            <li>The server processes the request and sends back an HTTP response, which usually contains the requested resource (e.g., an HTML file, image, etc.).</li>
+                            <li>HTTP operates over TCP (Transmission Control Protocol), usually on port 80.</li>
+                        </ul>
+                    </li>
+                    <li><strong>HTTPS:</strong>
+                        <ul>
+                            <li>HTTPS follows the same process as HTTP, but before data is sent, the client and server establish a secure connection using SSL/TLS.</li>
+                            <li>This secure connection ensures that the data exchanged is encrypted, preventing eavesdropping and tampering.</li>
+                            <li>HTTPS typically operates over port 443.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </p>
+            <br>
+            <h3 class="section-title">Why HTTP/HTTPS is Used?</h3>
+            <p>
+                <ul>
+                    <li><strong>HTTP:</strong>
+                        <ul>
+                            <li>To request and receive web resources such as HTML pages, images, and other multimedia content.</li>
+                            <li>Facilitates communication between web browsers and servers on the internet.</li>
+                            <li>Supports various methods like GET, POST, PUT, DELETE, etc., to interact with resources on the server.</li>
+                        </ul>
+                    </li>
+                    <li><strong>HTTPS:</strong>
+                        <ul>
+                            <li>To secure data transmission between clients and servers, protecting sensitive information (e.g., login credentials, payment details).</li>
+                            <li>Ensures that the data exchanged is not intercepted, tampered with, or forged by attackers.</li>
+                            <li>Provides authentication to confirm the identity of the communicating parties.</li>
+                        </ul>
+                    </li>
+                </ul>
+            
+            </p>
+            <br>
+            <h3 class="section-title">Where HTTP/HTTPS is Used?</h3>
+            <p>
+                <ul>
+                    <li><strong>HTTP:</strong>
+                        <ul>
+                            <li>Standard websites where security is not a major concern (e.g., public information sites, blogs).</li>
+                            <li>APIs and services that do not handle sensitive data.</li>
+                        </ul>
+                    </li>
+                    <li><strong>HTTPS:</strong>
+                        <ul>
+                            <li>Websites that handle sensitive data (e.g., banking sites, e-commerce platforms, login pages).</li>
+                            <li>APIs and services that require data integrity and confidentiality.</li>
+                            <li>Websites that need to comply with security standards and regulations (e.g., PCI-DSS for payment processing).</li>
+                        </ul>
+                    </li>
+                </ul>
+            </p>
+            <br>
+
+
+
+            <h3 class="section-title">HTTP Methods and Status Codes</h3>
+            <p>
+            <h6>HTTP Methods</h6>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GET</strong></td>
+                        <td>Used to request data from a specified resource. It’s a read-only operation and does not modify the resource.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>POST</strong></td>
+                        <td>Used to send data to the server, usually to create or update a resource. Commonly used in form submissions.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PUT</strong></td>
+                        <td>Used to update an existing resource or create a new resource if it doesn’t exist.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DELETE</strong></td>
+                        <td>Used to delete a specified resource.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PATCH</strong></td>
+                        <td>Used for partial updates to a resource.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HEAD</strong></td>
+                        <td>Same as GET, but the server only returns headers without the body content.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OPTIONS</strong></td>
+                        <td>Used to describe the communication options for the target resource. It returns allowed HTTP methods for that resource.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <h6>HTTP Status Codes</h6>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status Code</th>
+                        <th>Class</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 1xx Informational -->
+                    <tr>
+                        <td><strong>100</strong></td>
+                        <td>1xx Informational</td>
+                        <td>Continue - The server has received the request headers and the client can proceed to send the body.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>101</strong></td>
+                        <td>1xx Informational</td>
+                        <td>Switching Protocols - The server agrees to switch protocols as requested by the client.</td>
+                    </tr>
+                    <!-- 2xx Success -->
+                    <tr>
+                        <td><strong>200</strong></td>
+                        <td>2xx Success</td>
+                        <td>OK - The request was successful, and the server returned the requested data.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>201</strong></td>
+                        <td>2xx Success</td>
+                        <td>Created - The request was successful, and a new resource was created.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>204</strong></td>
+                        <td>2xx Success</td>
+                        <td>No Content - The request was successful, but there is no content to send in the response.</td>
+                    </tr>
+                    <!-- 3xx Redirection -->
+                    <tr>
+                        <td><strong>301</strong></td>
+                        <td>3xx Redirection</td>
+                        <td>Moved Permanently - The requested resource has been permanently moved to a new URL.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>302</strong></td>
+                        <td>3xx Redirection</td>
+                        <td>Found - The requested resource has been temporarily moved to a new URL.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>304</strong></td>
+                        <td>3xx Redirection</td>
+                        <td>Not Modified - The requested resource has not been modified since the last request.</td>
+                    </tr>
+                    <!-- 4xx Client Errors -->
+                    <tr>
+                        <td><strong>400</strong></td>
+                        <td>4xx Client Error</td>
+                        <td>Bad Request - The server could not understand the request due to invalid syntax.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>401</strong></td>
+                        <td>4xx Client Error</td>
+                        <td>Unauthorized - The request requires user authentication.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>403</strong></td>
+                        <td>4xx Client Error</td>
+                        <td>Forbidden - The server understood the request, but it refuses to authorize it.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>404</strong></td>
+                        <td>4xx Client Error</td>
+                        <td>Not Found - The requested resource could not be found on the server.</td>
+                    </tr>
+                    <!-- 5xx Server Errors -->
+                    <tr>
+                        <td><strong>500</strong></td>
+                        <td>5xx Server Error</td>
+                        <td>Internal Server Error - The server encountered an error while processing the request.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>502</strong></td>
+                        <td>5xx Server Error</td>
+                        <td>Bad Gateway - The server, while acting as a gateway, received an invalid response from the upstream server.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>503</strong></td>
+                        <td>5xx Server Error</td>
+                        <td>Service Unavailable - The server is currently unable to handle the request due to temporary overload or maintenance.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </p>
+            
+            <h3 class="section-title">SSL/TLS</h3>
+            <p>
+                <ul>
+                    <li><strong>SSL (Secure Sockets Layer):</strong>
+                        <ul>
+                            <li>SSL is a standard security technology for establishing an encrypted link between a server and a client—typically 
+                                a web server (website) and a browser or a mail server and a mail client (e.g., Outlook).</li>
+                        </ul>
+                    </li>
+                    <li><strong>TLS (Transport Layer Security):</strong>
+                        <ul>
+                            <li>TLS is the successor to SSL and is more secure and efficient.</li>
+                            <li>It is a cryptographic protocol designed to provide secure communication over a computer network.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </p>
+            <br>
+            <h3 class="section-title">SSL/TLS Handshake Process (In-Depth)</h3>
+            <p>
+                <ul>
+                    <li><strong>Step 1: Client Hello</strong>
+                        <ul>
+                            <li>The client initiates the handshake by sending a "Client Hello" message, which includes the SSL/TLS version it supports, 
+                                the list of encryption algorithms, and a randomly generated number.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 2: Server Hello</strong>
+                        <ul>
+                            <li>The server responds with a "Server Hello" message, selecting the encryption algorithm from the list provided by the client 
+                                and sending its SSL/TLS certificate. This certificate contains the server's public key.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 3: Server Certificate and Key Exchange</strong>
+                        <ul>
+                            <li>The server sends its SSL/TLS certificate, and if required, a "Server Key Exchange" message. 
+                                The client verifies the certificate to ensure the server's authenticity.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 4: Client Key Exchange</strong>
+                        <ul>
+                            <li>The client generates a "pre-master secret," encrypts it with the server's public key, and sends it to the server. 
+                                Both client and server use this pre-master secret to generate the session keys used to encrypt the data.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 5: Finished Messages</strong>
+                        <ul>
+                            <li>Both the client and server send a "Finished" message, encrypted with the session key, indicating that 
+                                the handshake is complete and a secure session is established.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 6: Secure Communication</strong>
+                        <ul>
+                            <li>All subsequent communication between the client and server is encrypted using the session keys established during the handshake.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <img src="../../images/ssl.PNG" alt="proxy1" style="display: block; margin: auto; width: 50%;">
+            </p>
+            <br>
+        </div>
+    </div>

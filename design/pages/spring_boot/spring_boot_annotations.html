@@ -1,0 +1,307 @@
+<div class="container">
+<div class="content">
+    <h1>Spring Boot Annotations</h1>
+    <h3 class="section-title">1. @SpringBootApplication</h3>
+    <p>
+        - This is the most commonly used annotation in Spring Boot. It is a combination of the following annotations:
+    </p>
+    <ul>
+        <li>@Configuration</li>
+        <li>@EnableAutoConfiguration</li>
+        <li>@ComponentScan</li>
+    </ul>
+    <p>It marks the main class of a Spring Boot application.</p>
+    <pre><code>
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">2. @RestController</h3>
+    <p>- A convenience annotation that combines @Controller and @ResponseBody. It is typically used in RESTful web services.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">3. @RequestMapping</h3>
+    <p>- This annotation is used to map web requests to specific handler methods or classes. It can map HTTP requests like GET, POST, PUT, DELETE, etc.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @RequestMapping("/home")
+    public String home() {
+        return "Welcome to Home Page";
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">4. @GetMapping, @PostMapping, @PutMapping, @DeleteMapping</h3>
+    <p>- These are specialized variants of @RequestMapping for common HTTP methods such as GET, POST, PUT, and DELETE.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class CRUDController {
+
+    @GetMapping("/get")
+    public String getMethod() {
+        return "GET Method";
+    }
+
+    @PostMapping("/post")
+    public String postMethod() {
+        return "POST Method";
+    }
+
+    @PutMapping("/put")
+    public String putMethod() {
+        return "PUT Method";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteMethod() {
+        return "DELETE Method";
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">5. @Autowired</h3>
+    <p>- This annotation is used for automatic dependency injection. It can be applied on constructors, methods, and fields.</p>
+    <pre><code>
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">6. @Component, @Service, @Repository</h3>
+    <p>- These annotations are used to define Spring beans. They are automatically detected during classpath scanning and instantiated by Spring's container.</p>
+    <ul>
+        <li>@Component: Generic stereotype for any Spring-managed component.</li>
+        <li>@Service: Specialization of @Component for service layer classes.</li>
+        <li>@Repository: Specialization of @Component for DAO (Data Access Object) classes. It adds persistence exception translation.</li>
+    </ul>
+    <pre><code>
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
+
+@Component
+public class GenericComponent {
+    // Generic component logic
+}
+
+@Service
+public class UserService {
+    // Service layer logic
+}
+
+@Repository
+public class UserRepository {
+    // Data Access logic
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">7. @Configuration</h3>
+    <p>- Used to define configuration classes in Spring. It allows for the declaration of beans using the @Bean annotation.</p>
+    <pre><code>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyService myService() {
+        return new MyService();
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">8. @Bean</h3>
+    <p>- Marks a method as a bean provider method, meaning that it will return an object that Spring will register as a bean in the application context.</p>
+    <pre><code>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class BeanConfig {
+
+    @Bean
+    public MyBean myBean() {
+        return new MyBean();
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">9. @EnableAutoConfiguration</h3>
+    <p>- This annotation enables Spring Boot's auto-configuration mechanism, which automatically configures the application based on the dependencies present in the classpath.</p>
+    <pre><code>
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
+@EnableAutoConfiguration
+@SpringBootApplication
+public class MyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">10. @ConditionalOnProperty</h3>
+    <p>- Used to conditionally enable a bean based on a configuration property.</p>
+    <pre><code>
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ConditionalConfig {
+
+    @Bean
+    @ConditionalOnProperty(name = "feature.enabled", havingValue = "true")
+    public MyFeature myFeature() {
+        return new MyFeature();
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">11. @Transactional</h3>
+    <p>- This annotation is used to define the scope of a database transaction. It can be applied to classes or methods.</p>
+    <pre><code>
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+
+@Service
+public class TransactionalService {
+
+    @Transactional
+    public void performTransaction() {
+        // Transactional logic
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">12. @Value</h3>
+    <p>- This annotation is used to inject property values from the application.properties or application.yml file.</p>
+    <pre><code>
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+
+    @Value("${app.name}")
+    private String appName;
+
+    public void printAppName() {
+        System.out.println(appName);
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">13. @PathVariable</h3>
+    <p>- Used to extract values from URI templates.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class PathVariableController {
+
+    @GetMapping("/user/{id}")
+    public String getUserById(@PathVariable("id") String id) {
+        return "User ID: " + id;
+    }
+}
+    </code></pre>
+
+    <br>
+    <h3 class="section-title">14. @RequestParam</h3>
+    <p>- Used to extract query parameters from the URL.</p>
+    <pre><code>
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class RequestParamController {
+
+    @GetMapping("/search")
+    public String search(@RequestParam("q") String query) {
+        return "Search query: " + query;
+    }
+}
+    </code></pre>
+    <br>
+
+    <h3 class="section-title">List of other useful Annotations</h3>
+    <p>
+        <pre><code>
+- @Entity
+- @Table
+- @Id
+- @GeneratedValue
+- @Column
+- @Transient
+- @EntityListeners
+- @PrePersist 
+- @PostPersist 
+- @PreUpdate 
+- @PostUpdate 
+- @PreRemove 
+- @PostRemove
+
+- @OneToOne
+- @OneToMany
+- @ManyToMany
+- @Query
+- @Param
+- @Transactional
+</code></pre>
+    </p>
+</div>
+</div>

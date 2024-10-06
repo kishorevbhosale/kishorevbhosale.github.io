@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalability in Systems</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../common/styles.css" rel="stylesheet">
+    <script>
+        // Function to include an external HTML file
+        function loadHTML(file, elementId) {
+            fetch(file)
+                .then(response => response.text())
+                .then(data => document.getElementById(elementId).innerHTML = data)
+                .catch(error => console.error('Error loading HTML:', error));
+        }
+    </script>
+</head>
+
+<body onload="loadHTML('../common/navbar.html', 'navbar-placeholder')">
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+
+        <div class="content">
+            <h1>Regions and Zones in Google Cloud Platform</h1>
+
+              
+            <h3 class="section-title">1. What is a Region?</h3>
+                <ul>
+                <li>A region is a specific geographical location where GCP resources are hosted.</li>
+                <li>Regions are composed of multiple zones, which provide isolated locations within the region.</li>
+                <li>Each region is independent of others, making it suitable for disaster recovery and high availability.</li>
+                </ul>
+
+                <br>
+                <h5>Examples of Regions</h5>
+                <div class="example">
+                    <ul>
+                        <li>us-central1 (Iowa, USA)</li>
+                        <li>europe-west1 (Belgium)</li>
+                        <li>asia-southeast1 (Mumbai)</li>
+                    </ul>
+                </div>
+                <br>
+                <h5>Why Do We Need Regions?</h5>
+                <ul>
+                <li><strong>High Availability:</strong> Distributing resources across different regions ensures service availability even during regional failures.</li>
+                <li><strong>Compliance:</strong> Certain regions allow organizations to comply with data residency and regulatory requirements.</li>
+                <li><strong>Low Latency:</strong> Hosting resources in regions closer to users helps reduce latency and improve performance.</li>
+                </ul>
+
+                <br>
+                <h5>Use of Regions by a Cloud Admin in GCP</h5>
+                <ul>
+                <li>As a cloud admin, regions are selected when deploying resources like virtual machines, storage, or databases.</li>
+                <li>Regions are critical in ensuring low latency for users and high availability for services.</li>
+                <li>Regions are also used to meet compliance requirements for data locality (e.g., GDPR for European regions).</li>
+                </ul>
+
+                <br>
+                <h5>Number of Regions in GCP</h5>
+                <ul>
+                <li>GCP currently has <strong>40 regions</strong> worldwide (as of 2024), with new regions being added periodically.</li>
+                </ul>
+
+                <br>
+            <h3 class="section-title">What is a Zone?</h3>
+                <ul>
+                <li>A zone is an isolated data center within a region, and each region consists of at least 3 zones.</li>
+                <li>Zonal resources in GCP (e.g., virtual machines) are restricted to a specific zone within a region.</li>
+                </ul>
+
+                <br>
+                <h5>Why Do We Need Multiple Zones in a Region?</h5>
+                <ul>
+                <li><strong>Fault Tolerance:</strong> Multiple zones allow for redundancy, ensuring services continue to operate even if one zone experiences failure.</li>
+                <li><strong>High Availability:</strong> Resources can be distributed across zones to ensure services are resilient to zonal outages.</li>
+                <li><strong>Data Replication:</strong> Data can be replicated across zones for disaster recovery within the same region.</li>
+                </ul>
+
+                <br>
+                <h5>How Are Zones Connected in a Region?</h5>
+                <ul>
+                <li>Zones within a region are connected through high-bandwidth, low-latency network links.</li>
+                <li>This allows for efficient communication and data transfer between zones within the same region.</li>
+                </ul>
+
+                <br>
+                <h5>What Are Clusters in a Zone?</h5>
+                <ul>
+                <li>A cluster is a group of GCP resources (e.g., Kubernetes clusters or managed instance groups) running within a specific zone.</li>
+                <li>Clusters allow for efficient resource management, scaling, and deployment within a zone.</li>
+                <li>GKE (Google Kubernetes Engine) clusters are created within specific zones or across multiple zones for high availability.</li>
+                </ul>
+
+                <br>
+                <h5>Understanding Zone to Cluster Mapping</h5>
+                <ul>
+                <li>A GKE cluster can be zonal (restricted to one zone) or regional (distributed across multiple zones within a region).</li>
+                <li>Zonal clusters are easier to manage but less resilient, while regional clusters provide higher availability by distributing resources across multiple zones.</li>
+                </ul>
+
+                <h6>Global, Regional and Zonal GCP Product Mapping: <b>https://cloud.google.com/about/locations</b></h6> 
+            </div>
+        </div>
+    
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2024 | Kishor Bhosale | Revise, prepare, and excel in tech interviews.</p>
+        </div>
+    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    
+    </html>
+    
+                
+
+                

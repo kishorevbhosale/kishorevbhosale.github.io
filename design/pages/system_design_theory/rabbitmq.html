@@ -1,0 +1,189 @@
+<div class="container">
+
+        <div class="content">
+            <h3 class="section-title">What is RabbitMQ?</h3>
+                <p>
+                    <b>RabbitMQ</b> is a widely used open-source message broker that facilitates the exchange of messages between different systems and services. 
+                    It implements the <b>Advanced Message Queuing Protocol (AMQP)</b>, which provides robust, reliable, and scalable communication between distributed applications. 
+                    RabbitMQ is commonly employed in microservices architectures, where it allows systems to communicate asynchronously, enabling scalability, decoupling, and fault tolerance.
+                </p>
+                <img src="../../images/rmq-1.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
+            <br>
+
+            <h3 class="section-title">When to Use RabbitMQ?</h3>
+                <p>
+                    <ul>
+                        <li>Distributed Systems: When you have multiple independent services that need to communicate asynchronously.</li>
+                        <li>Message Delivery Guarantees: If your system requires reliable delivery of messages, including guaranteed "at least once" or "exactly once" delivery.</li>
+                        <li>Workload Balancing: When you need to distribute heavy workloads across multiple workers or instances.<br> 
+                            RabbitMQ allows multiple consumers to process messages from a queue, helping to spread the load and increase throughput.</li>
+                        <li>Event-Driven Architectures: In event-driven systems, where services emit events (e.g., user sign-up) and other services act upon them (e.g., send a welcome email).</li>
+                    </ul>
+                </p>
+            <br>
+
+            <h3 class="section-title">Example of RabbitMQ</h3>
+                <img src="../../images/rmq-2.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
+                <ol>
+                    <li>The user sends a PDF creation request to the web application.</li>
+                    <li>The web application (the producer) sends a message to RabbitMQ that includes data from the request such as name and email.</li>
+                    <li>An exchange accepts the messages from the producer and routes them to correct message queues for PDF creation.</li>
+                    <li>The PDF processing worker (the consumer) receives the task message and starts processing the PDF.</li>   
+                </ol>
+                <h5>Online shopping example</h5>
+                <div class="example">
+                    Order Service:
+                    <ul> 
+                        <li>When a user places an order, the order service sends a message to the "order queue".</li>
+                        <li>The order is acknowledged immediately, ensuring a fast response time for the user.</li>
+                    </ul>
+                    Payment Service:
+                    <ul>
+                        <li>A consumer in the payment service listens to the "order queue" and processes the payment.</li>
+                        <li>If payment fails, the message can be re-queued or moved to a dead-letter queue for further investigation.</li>
+                    </ul>
+                    Inventory Service:
+                    <ul>
+                        <li>Another consumer listens to the same "order queue" and updates the inventory once the order is processed.</li>
+                        <li>The inventory service doesn’t need to wait for the payment to complete but can operate independently.</li>
+                    </ul>
+                    Email Notification Service:
+                    <ul>
+                        <li>The email service listens to a separate "notification queue" and sends an email to the user confirming the order.</li>
+                        <li>Even if the email service is down, RabbitMQ will hold the message until it is ready to process it.</li>
+                    </ul>
+                </div>
+            <br>
+            <h3 class="section-title">Exchange in RabbitMQ</h3>
+                <p>Messages are not sent directly to a queue by the producer. Instead, they are first sent to an exchange, which is responsible for directing the messages to the appropriate queues. 
+                    This routing process is guided by bindings and routing keys. 
+                    A binding establishes the connection between a queue and an exchange, helping determine how messages are routed.
+                </p>
+                <img src="../../images/rmq-3.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">
+                <h5>Message Flow in RabbitMQ</h5>
+                <ol>
+                    <li>
+                        The producer sends a message to an exchange.
+                    </li>
+                    <li>
+                        When creating an exchange, its type must be specified. 
+                        There are four types of exchanges: direct, topic, headers, and fanout.
+                    </li>
+                    <li>
+                        The exchange receives the message and becomes responsible for routing it. Depending on the type of exchange, various message attributes such as the routing key are taken into consideration.
+                    </li>
+                    <li>
+                        Bindings must be established between the exchange and queues. In this scenario, there are two bindings linking the exchange to two different queues.
+                    </li>
+                    <li>
+                        The exchange routes the message to the appropriate queues based on message attributes.
+                    </li>
+                    <li>
+                        Messages remain in the queue until they are processed by a consumer.
+                    </li>
+                    <li>
+                        The consumer retrieves and processes the message.
+                    </li>
+                </ol>                
+            <br>
+            <h3 class="section-title">Exchange Type in RabbitMQ</h3>
+                <img src="../../images/rmq-4.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
+                <table cellpadding="10" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Exchange Type</th>
+                            <th>Routing Logic</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Direct</td>
+                            <td>Exact match between routing key and queue’s binding key.</td>
+                            <td>Point-to-point communication, task distribution.</td>
+                        </tr>
+                        <tr>
+                            <td>Fanout</td>
+                            <td>Broadcasts messages to all bound queues.</td>
+                            <td>Pub-sub patterns, sending the same message to multiple queues.</td>
+                        </tr>
+                        <tr>
+                            <td>Topic</td>
+                            <td>Pattern matching with routing key and binding key (wildcards).</td>
+                            <td>Routing messages based on complex topic hierarchies.</td>
+                        </tr>
+                        <tr>
+                            <td>Headers</td>
+                            <td>Message headers are used for routing, instead of routing keys.</td>
+                            <td>Content-based routing based on message metadata.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            <br>
+            <h3 class="section-title">Key concepts in RabbitMQ</h3>
+            <ul>
+                <li><strong>Producer</strong>: The entity that sends messages to an exchange.</li>
+                <li><strong>Consumer</strong>: The entity that retrieves and processes messages from a queue.</li>
+                <li><strong>Exchange</strong>: A component responsible for routing messages to queues based on routing rules.</li>
+                <li><strong>Connection</strong>: A TCP connection between your application and the RabbitMQ broker.</li>
+                <li><strong>Queue</strong>: A buffer where messages are stored until consumed by consumers.</li>
+                <li><strong>Binding</strong>: A link between an exchange and a queue, defining routing rules for messages.</li>
+                <li><strong>Routing Key</strong>: A key used to determine how messages are routed to queues from an exchange.</li>
+                <li><strong>Message</strong>: The data sent from the producer to the consumer via exchanges and queues.</li>
+                <li><strong>AMQP</strong>: Advanced Message Queuing Protocol, the protocol used by RabbitMQ for messaging.</li>
+                <li><strong>Acknowledgment</strong>: A signal from the consumer indicating that a message was received and processed successfully.</li>
+                <li><strong>Dead-Letter Exchange</strong>: An exchange where messages are routed if they cannot be delivered or are rejected by a queue.</li>
+            </ul>
+            <br>
+            <h3 class="section-title">How to handle message expiration and dead-lettering in RabbitMQ?</h3>
+                <p><b>Message Expiration: </b>Set a <b><em>expiration</em></b> property on messages or queues to automatically remove messages after a certain time period. This is useful for handling time-sensitive messages.</p>
+                <pre><code>
+    channel.basic_publish(
+        exchange='',
+        routing_key='my_queue',
+        body='message',
+        properties=pika.BasicProperties(<b>expiration='60000'</b>)  # Message expires in 60 seconds
+    )
+            </code></pre>
+                <p><b>Dead-Letter Exchanges (DLX): </b>Configure a dead-letter exchange to route messages that cannot be delivered or are rejected by consumers. 
+                    Set the <b><em>x-dead-letter-exchange</em></b> argument on the original queue to specify the DLX.</p>
+                <pre><code>
+    channel.queue_declare(
+        queue='original_queue',
+        arguments={
+            <b>'x-dead-letter-exchange': 'dlx_exchange'</b>
+        }
+    )
+    
+                </code></pre>
+            <br>
+            <h3 class="section-title">Install RabbitMQ using Docker Desktop</h3>
+                <ol>
+                    <li>Download Docker Desktop : <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">https://docs.docker.com/desktop/install/windows-install/</a></li>
+                    <li>Open Docker Desktop and ensure it's running.</li> 
+                    <li>Open a terminal or command prompt.</li>
+                    <li>Pull the RabbitMQ Docker image:
+                        <pre><code><b>docker pull rabbitmq:management</b></code></pre>
+                    </li>
+                    <li>Run the RabbitMQ container:
+                        <pre><code><b>docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management</b></code></pre>
+                        <ul>
+                            <li><strong>-d</strong> runs the container in detached mode.</li>
+                            <li><strong>--name rabbitmq</strong> assigns a name to the container.</li>
+                            <li><strong>-p 5672:5672</strong> maps port 5672 from the container to port 5672 on your host machine.</li>
+                            <li><strong>-p 15672:15672</strong> maps port 15672 from the container to port 15672 on your host machine.</li>
+                        </ul>
+                    </li>
+                    <li>Access RabbitMQ Management Interface at <a href="http://localhost:15672" target="_blank">http://localhost:15672</a> using default credentials:
+                        <ul>
+                            <li>Username: <b><em>guest</em></b></li>
+                            <li>Password: <b><em>guest</em></b></li>
+                        </ul>
+                    </li>
+                </ol>
+                <hr>
+
+            Reference : <a href="https://cloudamqp.com/blog/part1-rabbitmq-for-beginners-what-is-rabbitmq.html">https://cloudamqp.com/blog/part1-rabbitmq-for-beginners-what-is-rabbitmq.html</a>
+        </div>
+    </div>
+

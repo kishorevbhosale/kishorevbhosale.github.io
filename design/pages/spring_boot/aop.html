@@ -1,0 +1,286 @@
+<div class="container">
+
+        <div class="content">
+            <h1>Aspect Oriented Programming</h1>
+            <h3 class="section-title">Aspec Oriented Programming</h3>
+            <p>
+                In enterprise applications, certain tasks like logging, transaction management, and data validation are needed across various objects and modules. 
+                These tasks, known as crosscutting concerns, affect many parts of the application. In Object-Oriented Programming (OOP), we organize code using classes. 
+                In Aspect-Oriented Programming (AOP), we use aspects to handle these crosscutting tasks, and they apply to multiple classes.
+                Spring AOP helps remove the need for classes to directly handle crosscutting tasks, something that regular OOP can’t do.
+                Spring and Spring Boot offer strong AOP support, enabling you to manage concerns like logging, security, and transactions separately from your main application logic.      
+            </p>
+            <h5>What is AOP?</h5>
+            <p>
+
+                <ol>
+                    <li><b>AOP allows you to dynamically integrate cross-cutting concerns</b> like logging, security, or transactions into your code before, after, or around your core logic using simple, pluggable configurations. 
+                        This means you can add or change functionality without touching the main business logic.</li>
+                    <li><b>AOP helps separate non-business logic concerns</b> such as logging, auditing, security, and transaction management from the core code. 
+                        This keeps your business logic clean and easier to maintain by centralizing these repetitive tasks into reusable components.</li>
+                    <li><b>AOP is a programming approach designed to improve modularity</b> by separating cross-cutting concerns. 
+                        It works by adding extra behaviors (e.g., logging or security checks) to your code without actually modifying the core code itself, making the system more modular and maintainable.</li>
+                </ol>
+            </p>
+            <br>
+            <h3 class="section-title">Key Terminology in AOP (AOP Jargons)</h2>
+            <p>
+                When defining an aspect or setting up configurations, we need to follow the "WWW" approach.
+                <ul>
+                    <li><b>WHAT -> Aspect</b></li>
+                    <li><b>WHEN -> Advice</b></li>
+                    <li><b>WHICH -> Pointcut</b></li>
+                </ul>
+                <hr>
+                <ol>
+                    <li><b>WHAT</b> code or logic we want the spring to execute when you call a specific metho. This is called as <b>Aspect.</b></li>
+                    <li><b>WHEN</b> the spring need to execute the given Aspect. For example is it before or after method call. This is called as <b>Advice.</b></li>
+                    <li><b>WHICH</b> method inside app that framework needs to intercept and execute the given Aspect. This is called as a <b>Pointcut.</b></li>
+                    <li><b>Join Point</b> is a specific point in the execution of a program, such as a method call, constructor invocation, or field access.</li>
+                </ol>
+
+                <hr>
+                <h5>Advice</h5>
+                    <p>
+                        This is the action taken by an aspect at a particular join point. There are five types of advice:
+                        <ul>
+                            <li><b>Before : </b>Executed before the method call.</li>
+                            <li><b>After : </b>Executed after the method call, regardless of its outcome.</li>
+                            <li><b>AfterReturning : </b>Executed after the method returns a result, but not if an exception occurs.</li>
+                            <li><b>Around : </b>Surrounds the method execution, allowing you to control the method execution and its result.</li>
+                            <li><b>AfterThrowing : </b>Executed if the method throws an exception.</li>
+                        </ul>    
+                    </p>
+                    <hr>
+                    <img src="../../images/aop.PNG" alt="Spring" class="img-fluid">
+            </p>
+            <br>
+            <h3 class="section-title">Writing Expressions in AOP</h3>
+                <p>In Spring AOP, expressions are used to define pointcuts, which specify where advice should be applied. 
+                    These expressions are typically written using AspectJ expression language. </p>
+                <h5>1. Basic Structure of Pointcut Expressions</h5>
+                <ul>
+                    <li>Execution: This specifies a method execution join point.</li>
+                    <li>Modifiers: You can specify the access level (e.g., public, protected).</li>
+                    <li>Return Type: Define what the method returns.</li>
+                    <li>Method Name: Specify the method to match.</li>
+                    <li>Parameters: Define what parameters the method can accept.</li>
+                    <li>Package Name: Specify the package where the method resides.</li>
+                </ul>
+                <hr>
+                <h5>2. Common Expression Patterns</h5>
+                <ol>
+                    <li><strong>Match All Methods in a Package</strong>
+                        <pre><code>@Pointcut("execution(* com.example.service.*.*(..))")</code></pre>
+                        <p>This expression matches all methods in any class within the <b>com.example.service</b> package.</p>
+                    </li>
+                    
+                    <li><strong>Match Specific Method</strong>
+                        <pre><code>@Pointcut("execution(void com.example.service.MyService.performTask())")</code></pre>
+                        <p>This matches the <b>performTask</b> method in the <b>MyService</b> class.</p>
+                    </li>
+                    
+                    <li><strong>Match All Methods with Specific Return Type</strong>
+                        <pre><code>@Pointcut("execution(String com.example.service.*.get*(..))")</code></pre>
+                        <p>This matches all methods in any class in the package that start with "get" and return a <b>String</b>.</p>
+                    </li>
+                    
+                    <li><strong>Match Methods with Specific Parameters</strong>
+                        <pre><code>@Pointcut("execution(* com.example.service.*.addUser(String, ..))")</code></pre>
+                        <p>This matches the <b>addUser</b> method that takes a <b>String</b> as the first parameter, regardless of the second parameter type.</p>
+                    </li>
+                    
+                    <li><strong>Match Methods with Annotations</strong>
+                        <pre><code>@Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")</code></pre>
+                        <p>This matches any method annotated with <b>@GetMapping</b>.</p>
+                    </li>
+                    
+                    <li><strong>Combining Pointcuts</strong>
+                        <pre><code>@Pointcut("execution(* com.example.service.*.*(..)) || execution(* com.example.repository.*.*(..))")</code></pre>
+                        <p>This expression matches all methods in both the <b>service</b> and <b>repository</b> packages.</p>
+                    </li>
+                </ol>
+                <hr>
+                <h5>3. Using Annotatio Example</h5>
+                <img src="../../images/aop2.PNG" alt="Spring" class="img-fluid">
+
+                <br>
+                <h3 class="section-title">Example: Using Pointcut Expressions in Advice</h3>
+                <pre><code>
+                    import org.aspectj.lang.annotation.Aspect;
+                    import org.aspectj.lang.annotation.Before;
+                    import org.springframework.stereotype.Component;
+                    
+                    @Aspect
+                    @Component
+                    public class LoggingAspect {
+                        
+                        // Pointcut expression to match all methods in the service package
+                        @Pointcut("execution(* com.example.service.*.*(..))")
+                        public void serviceMethods() {}
+                    
+                        // Advice that runs before the matched methods
+                        @Before("serviceMethods()")
+                        public void logBefore() {
+                            System.out.println("Log: A service method is about to be executed.");
+                        }
+                    }
+                    </code></pre>
+                    <br>
+                    <h3 class="section-title">AOP Proxies in Spring</h3>
+                    <h5>What is Proxy?</h5>
+                    A proxy is an object that represents another object. In Spring AOP, proxies are used to apply aspects to target objects 
+                    without modifying the actual code of those objects. Proxies act as intermediaries that handle method calls to the target 
+                    objects and enable the application of cross-cutting concerns like logging, security, or transactions..
+                    <br>
+                    <hr>
+                    <h5>Types of Proxies</h5>
+                    Spring AOP can create two types of proxies:
+                    <ul>
+                        <li><b>JDK Dynamic Proxy:</b> This proxy is created when the target object implements at least one interface. 
+                            The proxy will implement the same interfaces and delegate calls to the actual object.</li>
+                        <li><b>CGLIB Proxy:</b> This proxy is used when the target object does not implement any interfaces. 
+                            It creates a subclass of the target class and overrides its methods to add the AOP functionality.</li>
+                    </ul>
+                    <hr>
+                    <img src="../../images/aop1.PNG" alt="Spring" class="img-fluid">
+                    <hr>
+                    <h5>When to Use Which Proxy</h5>
+                    <ul>
+                        <li><b>JDK Dynamic Proxy:</b> Use this when the target object implements one or more interfaces.</li>
+                        <li><b>CGLIB Proxy:</b> Your target class does not implement any interfaces.
+                            You specifically need to proxy the class methods directly (e.g., when using final classes or methods).</li>
+                    </ul>
+                    <br>
+
+                    <h3 class="section-title">Combining It All with Example</h3>
+                    <h5>1. Logging</h5>
+                    <div class="example">
+                        <pre><code>
+    @Aspect
+    @Component
+    public class LoggingAspect {
+    
+        @Before("execution(* com.example.service.*.*(..))")
+        public void logBeforeMethodExecution(JoinPoint joinPoint) {
+            System.out.println("Entering method: " + joinPoint.getSignature().getName());
+        }
+    
+        @AfterReturning("execution(* com.example.service.*.*(..))")
+        public void logAfterMethodExecution(JoinPoint joinPoint) {
+            System.out.println("Exiting method: " + joinPoint.getSignature().getName());
+        }
+    
+        @AfterThrowing(pointcut = "execution(* com.example.service.*.*(..))", throwing = "error")
+        public void logAfterException(JoinPoint joinPoint, Throwable error) {
+            System.out.println("Exception in method: " + joinPoint.getSignature().getName() + " with error: " + error.getMessage());
+        }
+    }
+                        </code></pre>
+                    </div>
+
+                    <h5>2. Transaction Management</h5>
+                    <div class="example">
+                        <pre><code>
+    @Aspect
+    @Component
+    public class TransactionAspect {
+    
+        @Autowired
+        private PlatformTransactionManager transactionManager;
+    
+        @Around("execution(* com.example.service.*.*(..))")
+        public Object manageTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
+            TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+            Object result;
+            try {
+                result = joinPoint.proceed();
+                transactionManager.commit(status);
+            } catch (Throwable ex) {
+                transactionManager.rollback(status);
+                throw ex;
+            }
+            return result;
+        }
+    }
+                        </code></pre>
+                    </div>
+
+                    <h5>3. Security</h5>
+                    <div class="example">
+                        <pre><code>
+    @Aspect
+    @Component
+    public class SecurityAspect {
+    
+        @Before("execution(* com.example.service.*.*(..)) && @annotation(Secured)")
+        public void checkSecurity(JoinPoint joinPoint) {
+            // Security logic here
+            if (!isUserAuthorized()) {
+                throw new SecurityException("User is not authorized to perform this operation.");
+            }
+        }
+    
+        private boolean isUserAuthorized() {
+            // Implement your security check logic
+            return true; // Dummy implementation
+        }
+    }
+                        </code></pre>
+                    </div>
+
+                    <h5>4. Performance Monitoring</h5>
+                    <div class="example">
+                        <pre><code>
+    @Aspect
+    @Component
+    public class PerformanceMonitoringAspect {
+
+        @Around("execution(* com.example.service.*.*(..))")
+        public Object monitorPerformance(ProceedingJoinPoint joinPoint) throws Throwable {
+            long startTime = System.currentTimeMillis();
+            Object result = joinPoint.proceed();
+            long endTime = System.currentTimeMillis();
+            System.out.println("Execution time of " + joinPoint.getSignature().getName() + " : " + (endTime - startTime) + " ms");
+            return result;
+        }
+    }
+                        </code></pre>
+                    </div>
+
+                    <h5>5. Exception handling</h5>
+                    <div class="example">
+                        <pre><code>
+    @Aspect
+    @Component
+    public class ExceptionHandlingAspect {
+    
+        @AfterThrowing(pointcut = "execution(* com.example.service.*.*(..))", throwing = "ex")
+        public void handleException(JoinPoint joinPoint, Throwable ex) {
+            // Centralized exception handling logic
+            System.out.println("Exception in method: " + joinPoint.getSignature().getName() + " with message: " + ex.getMessage());
+        }
+    }
+                        </code></pre>
+                    </div>
+
+                    <h5>6. Audit Logging</h5>
+                    <div class="example">
+                        <pre><code>
+    @Aspect
+    @Component
+    public class AuditLoggingAspect {
+    
+        @After("execution(* com.example.service.*.*(..)) && @annotation(Auditable)")
+        public void logAudit(JoinPoint joinPoint) {
+            // Audit logging logic
+            System.out.println("Audit log for method: " + joinPoint.getSignature().getName());
+        }
+    }
+                            </code></pre>
+                            </div>
+                    
+                    
+            <br>
+        </div>
+</div>

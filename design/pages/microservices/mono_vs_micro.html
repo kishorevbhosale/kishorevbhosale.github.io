@@ -1,0 +1,155 @@
+<div class="container">
+
+        <div class="content">
+            <h1>Monolithic vs Microservices</h1>
+            <h3 class="section-title">What is Monolithic?</h3>
+                <img src="../../images/mono1.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+                <br>
+                <img src="../../images/mono2.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+
+            <h3 class="section-title">What is SOA?</h3>
+                <img src="../../images/soa1.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+                <br>
+                <img src="../../images/soa2.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+
+            <h3 class="section-title">What is Microservices?</h3>
+                <img src="../../images/micro1.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+                <br>
+                <img src="../../images/micro2.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            <h3 class="section-title">Advantages of Microservices</h3>
+            <p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Monolithic Architecture</th>
+                                <th>SOA (Service-Oriented Architecture)</th>
+                                <th>Microservices Architecture</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Architecture Style</strong></td>
+                                <td>Single, unified codebase for the entire application.</td>
+                                <td>Decoupled services, typically using an Enterprise Service Bus (ESB) for communication.</td>
+                                <td>Independent, small services that communicate via lightweight protocols like HTTP/REST.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Size and Complexity</strong></td>
+                                <td>Large, tightly coupled application.</td>
+                                <td>Modular but often larger services compared to microservices.</td>
+                                <td>Fine-grained, small, loosely coupled services.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Communication</strong></td>
+                                <td>Internal method calls within the same process.</td>
+                                <td>Typically uses ESB for messaging and service coordination.</td>
+                                <td>Communicates via lightweight mechanisms such as REST or messaging queues.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Deployment</strong></td>
+                                <td>Entire application must be redeployed for changes.</td>
+                                <td>Individual services can be deployed independently, but ESB may require coordination.</td>
+                                <td>Independent services can be deployed and scaled independently.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scalability</strong></td>
+                                <td>Limited scalability; scaling involves duplicating the whole application.</td>
+                                <td>Scalable, but can be bottlenecked by ESB.</td>
+                                <td>Highly scalable; individual services can be scaled based on demand.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Maintenance</strong></td>
+                                <td>Harder to maintain; any change may affect the entire application.</td>
+                                <td>Easier to maintain due to modularity but complexity in ESB management.</td>
+                                <td>Easier to maintain as services are smaller and focused on specific tasks.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fault Isolation</strong></td>
+                                <td>Failure in one part can bring down the entire system.</td>
+                                <td>Better fault isolation but complex ESB can affect recovery.</td>
+                                <td>Failures are isolated to specific services; the rest of the system remains unaffected.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Management</strong></td>
+                                <td>Centralized database shared by the entire application.</td>
+                                <td>Shared databases but with some service-specific schemas.</td>
+                                <td>Each service manages its own database, promoting data isolation.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Faster within a single process, but can become slow as the application grows.</td>
+                                <td>Slower due to ESB overhead and service orchestration.</td>
+                                <td>Can be slower due to network communication, but scales well under load.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pros</strong></td>
+                                <td>Simple to develop and deploy in small applications.</td>
+                                <td>Modular services, better reusability, flexibility with ESB integration.</td>
+                                <td>Highly scalable, fault-tolerant, technology agnostic, and easy to maintain.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cons</strong></td>
+                                <td>Difficult to scale, maintain, and deploy in large systems; tightly coupled components.</td>
+                                <td>ESB can become a bottleneck; increased complexity in managing service dependencies.</td>
+                                <td>More complex to develop due to distributed nature; requires good management of service communication and data consistency.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </p>
+            <br>
+            <h3 class="section-title">Frameworks to Develop Microservices</h3>
+            <p>
+                <ol>
+                    <li>Spring Boot (Java)</li>
+                    <li>Micronaut (Java)</li>
+                    <li>Quarkus (Java)</li>
+                    <li>DropWizard (Java)</li>
+                    <li>Flask (Python)</li>
+                    <li>Django (Python)</li>
+                    <li>Go Micro (Golang)</li>
+                    <li>Node.js with Express.js</li>
+                    <li>Lagom (Scala)</li>
+                </ol>
+                <br>
+                <h3 class="section-title">Why spring boot for microservices?</h3>
+                <p>
+                    <ul>
+                        <li>
+                            <b>Rapid Development:</b> Spring Boot simplifies the development process by providing a set of conventions and auto-configuration,
+                        </li>
+                        <li>
+                            <b>Spring Ecosystem Integration: </b> Spring Boot is part of the larger Spring Framework, which means it seamlessly integrates with other Spring modules like Spring Data, Spring Security, Spring Cloud, and Spring Batch. 
+                        </li>
+                        <li>
+                            <b>Spring Cloud for Microservices: </b>Spring Cloud adds a rich set of tools specifically for microservice development, including:
+                            <br>- Service discovery (Eureka)
+                            <br>- Load balancing (Ribbon)
+                            <br>- Configuration management (Spring Cloud Config)
+                            <br>- API Gateway (Zuul)
+                            <br>- Distributed tracing (Zipkin)
+                            <br>- Circuit breakers (Hystrix)
+                        </li>
+                        <li>
+                            <b>Mature Ecosystem and Community Support: </b>Spring Boot has a mature, well-documented ecosystem with a large and active community. 
+                            This results in extensive learning resources, tutorials, and third-party libraries to support development.
+                        </li>
+                        <li>
+                            <b>Production-Ready Features: </b>Inbuilt support for production-ready features like health checks, metrics, and distributed tracing. 
+                            These features make it easy to monitor and manage microservices.
+                        </li>
+                        <li>
+                            <b>Scalability and Cloud-Native Capabilities: </b>Well suited for cloud-native development with support for containerization and orchestration tools like Docker and Kubernetes.
+                        </li>
+                    </ul>
+                </p>
+            </p>
+
+            
+        </div>
+    </div>

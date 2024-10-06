@@ -1,0 +1,156 @@
+<div class="container">
+
+        <div class="content">
+            <h3 class="section-title">What is a Proxy?</h3>
+            <p>A proxy server acts as an intermediary between a client and the internet. When a client, such as a web browser, sends a request 
+                to access a website, the request first goes to the proxy server. The proxy then forwards the request to the target server 
+                on behalf of the client. Once the target server responds, the proxy server sends the response back to the client.
+            </p>
+            <img src="../../images/proxy1.PNG" alt="proxy1" style="display: block; margin: auto; width: 40%;">
+            <br>
+            <h5>Types of Proxy Servers</h5>
+            <ul>
+                <li>Forward Proxy</li>
+                <li>Transparent Proxy</li>
+            </ul>
+            <br>
+            <h3 class="section-title">What is Forward Proxy?</h3>
+            <p>
+                A forward proxy is a server that sits between a client (such as a web browser) and the internet. 
+                It acts as an intermediary, forwarding client requests to the target server on the internet and then relaying the server’s response back to the client.
+                It is the most common type of proxy server.
+            </p>
+            <img src="../../images/proxy2.PNG" alt="proxy2" style="display: block; margin: auto; width: 50%;">
+            <br>
+            <h6>Example</h6>
+            <div class="example">
+                <p>A company uses a forward proxy server to manage and monitor employee internet usage. 
+                    The proxy filters requests, blocks access to certain websites, and logs user activity for security and compliance purposes.</p>
+            </div>
+            <h5>Why Do We Need a Forward Proxy?</h5>
+            <p>
+                <ol>
+                    <li><b>Anonymity: </b>Hides the client's IP address from the internet, providing privacy.</li>
+                    <li><b>Access Control: </b>Controls and restricts access to certain websites or online resources.</li>
+                    <li><b>Caching: </b>Caches frequently accessed web content to reduce bandwidth usage and speed up access.</li>
+                    <li><b>Security: </b>Protects internal networks by filtering and monitoring outgoing traffic.</li>
+                </ol>
+            </p>
+            <br>
+            <h5>Examples of Forward Proxy</h5>
+            <div class="example">
+                <ul>
+                    <li><b>Squid Proxy: </b>A popular forward proxy for caching and filtering web content.</li>
+                    <li><b>Charles Proxy: </b>A cross-platform web debugging proxy used by developers.</li>
+                    <li><b>Apache Traffic Server: </b>A high-performance forward proxy used for caching and load balancing.</li>
+                </ul>
+            </div>
+            <br>
+            <h5>Technologies Used in Forward Proxies</h5>
+            <p>
+                <ul>
+                    <li><b>HTTP/HTTPS Protocols: </b>Used for handling web traffic between the client and internet.</li>
+                    <li><b>SSL/TLS: </b>Provides encryption for secure communications.</li>
+                    <li><b>Filtering and Logging Tools: </b>Control access and monitor usage.</li>
+                    
+                </ul>
+            </p>
+            <br>
+            <h3 class="section-title">What is a Reverse Proxy?</h3>
+            <p>
+                A reverse proxy is the mirror image of a forward proxy. Instead of sitting between the client and the internet, 
+                a reverse proxy sits between the client and one or more backend servers. Clients make requests to the reverse proxy, 
+                which then forwards those requests to the appropriate backend server. The server's response is then sent back 
+                to the client by the reverse proxy.
+            </p>
+            <img src="../../images/proxy3.PNG" alt="proxy3" style="display: block; margin: auto; width: 30%;">
+            <br>
+            <h6>Example: Nginx as a Reverse Proxy</h6>
+            <div class="example">
+                <p>A popular e-commerce website is hosted on multiple backend servers to handle high traffic volumes. 
+                    To manage incoming client requests efficiently, the website uses Nginx as a reverse proxy.</p>
+            </div>
+            <h5>Why Do We Need a Reverse Proxy?</h5>
+            <p>
+                <ol>
+                    <li><b>Load Balancing: </b>Distributing incoming client requests across multiple backend servers to ensure no single server becomes overloaded, thus improving performance and reliability.</li>
+                    <li><b>Security: </b>Acting as a gateway, a reverse proxy can hide the IP addresses of backend servers, making it more difficult for attackers to target them directly. It can also enforce security policies, such as SSL termination, where the proxy handles SSL encryption/decryption instead of each backend server.</li>
+                    <li><b>Caching: </b>Reverse proxies can cache content from backend servers to serve repeated requests faster, reducing the load on backend systems.</li>
+                    <li><b>Compression: </b>Compressing responses before sending them to clients, reducing bandwidth usage and improving response times.</li>
+                    <li><b>Global Server Load Balancing (GSLB): </b>In cloud environments, reverse proxies can route traffic to different data centers based on the client’s geographic location or the current load on the servers.</li>
+                    <li><b>SSL Termination: </b>Handling SSL encryption/decryption to offload this resource-intensive task from the backend servers.</li>
+                    <li><b>Content Delivery: </b>Serving static content directly, which reduces the load on the backend servers and speeds up content delivery to the client.</li>
+                </ol>
+            </p>
+            <br>
+            <h5>Examples of Reverse Proxy</h5>
+            <div class="example">
+                <ul>
+                    <li><b>Nginx: </b>A high-performance reverse proxy and web server commonly used for load balancing and caching.</li>
+                    <li><b>HAProxy: </b>A popular open-source reverse proxy and load balancer known for its reliability and performance.</li>
+                    <li><b>Apache HTTP Server: </b>Can be configured as a reverse proxy to manage traffic for backend servers.</li>
+                </ul>
+            </div>
+            <br>
+            <h5>Technologies Used in Forward Proxies</h5>
+            <p>
+                <ul>
+                    <li><b>HTTP/HTTPS Protocols: </b>Used for handling web traffic between the client and internet.</li>
+                    <li><b>Load Balancing Algorithms: </b>Such as round-robin, least connections, and IP hash for distributing traffic.</li>
+                    <li><b>SSL/TLS: </b>For secure communications and SSL termination.</li>
+                    <li><b>Health Checks: </b>To monitor the status of backend servers and reroute traffic as needed.</li>
+                    <li><b>Caching Mechanisms: </b>To improve response times and reduce load on backend servers.</li>
+                </ul>
+            </p>
+            <br>
+            <h3 class="section-title">Reverse Proxy vs. API Gateway vs. Load Balancer</h3>
+                <h5>Reverse Proxy</h5>
+                    <ul>
+                        <li><strong>Function:</strong> Acts as an intermediary between clients and backend servers, forwarding requests and responses.</li>
+                        <li><strong>Primary Use Cases:</strong> Load balancing, SSL termination, security, and caching.</li>
+                        <li><strong>Example:</strong> Nginx or HAProxy used to manage traffic for a web application.</li>
+                    </ul>
+                    <img src="../../images/proxy5.PNG" alt="proxy5" style="display: block; margin: auto; width: 40%;">
+                <br>
+                <h5>API Gateway</h5>
+                    <ul>
+                        <li><strong>Function:</strong> Manages and routes API requests to appropriate microservices, often providing additional features like authentication, rate limiting, and monitoring.</li>
+                        <li><strong>Primary Use Cases:</strong> Microservices architectures, API management, enforcing security and policies.</li>
+                        <li><strong>Example:</strong> Amazon API Gateway or Kong used to manage API calls for microservices in a cloud environment.</li>
+                    </ul>
+                    <img src="../../images/proxy6.PNG" alt="proxy6" style="display: block; margin: auto; width: 40%;">
+                <br>
+                <h5>Load Balancer</h5>
+                    <ul>
+                        <li><strong>Function:</strong> Distributes incoming traffic across multiple servers to ensure no single server becomes overloaded.</li>
+                        <li><strong>Primary Use Cases:</strong> Ensuring high availability and reliability of services by distributing load evenly.</li>
+                        <li><strong>Example:</strong> AWS Elastic Load Balancing or F5 Networks used to balance traffic among several web servers.</li>
+                    </ul>
+                    <img src="../../images/proxy7.PNG" alt="proxy7" style="display: block; margin: auto; width: 40%;">
+                <br>
+            <h3 class="section-title">Interview Questions</h2>
+            <div class="interview-question">
+                <strong>Q1: What is a proxy server? How does it work?</strong>
+            </div>
+            <div class="interview-question">
+                <strong>Q2: Can you explain the difference between a forward proxy and a reverse proxy?</strong>
+            </div>
+            <div class="interview-question">
+                <strong>Q3: In what scenarios would you recommend using a forward proxy?</strong>
+            </div>
+            <div class="interview-question">
+                <strong>Q4: How does caching work in a proxy server, and what are its benefits?</strong>
+            </div>
+            <div class="interview-question">
+                <strong>Q5: What is a reverse proxy, and how is it different from a forward proxy?</strong>
+            </div>
+            <div class="interview-question">
+                <strong>Q6: What is the role of a reverse proxy in microservices architecture?</strong>
+            </div>
+            <div class="interview-question">
+                <strong>Q7: Can you compare a reverse proxy with an API Gateway? When would you choose one over the other?</strong>
+            </div>
+            
+        </div>
+    </div>
+

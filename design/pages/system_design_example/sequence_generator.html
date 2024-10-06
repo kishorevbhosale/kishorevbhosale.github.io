@@ -1,0 +1,137 @@
+<body onload="loadHTML('../../common/navbar.html', 'navbar-placeholder')">
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+
+        <div class="content">
+            <h3 class="section-title">Sequencer</h3>
+            <p>A sequencer is a system that generates unique, ordered identifiers for events or transactions in a distributed system. These unique IDs ensure consistency and order when multiple services interact or process events in parallel. </p>
+            <p>In a large distributed system, there can be millions of events happening every second, like liking a video on TikTok, leaving a comment on a blog, or uploading a photo to Snapchat. To keep track of these events, we need to give each one a unique ID.</p>
+            <p>Another common use of unique IDs is in databases, where they act as primary keys for each entry. Many databases use an auto-increment feature to generate these IDs, but in distributed systems with multiple nodes working independently, that doesn’t work. Instead, we need a way to create unique IDs across all the nodes, especially in systems like a sharded database.</p> 
+            <p>These unique IDs are also helpful for tracking events in logs, making it easier to debug issues. For example, Uber’s Jaeger tracing system uses unique IDs to follow requests as they move through different services, helping engineers understand how events flow through the system.</p>
+            </p>
+            <br>
+            <h3 class="section-title">Requirements for our unique ID system:</h3>
+            <ol>
+                <li>Uniqueness: Each event must get its own unique ID so we can easily identify and track it.</li>
+                <li>Scalability: The system should be able to create at least a billion unique IDs every day to handle a large number of events.</li>
+                <li>Availability: Since events can happen even within nanoseconds, the system needs to be able to generate IDs for all these events without delay.</li>
+                <li>Low Latency: The ID generation must be fast with minimal delay.</li>
+                <li>64-bit numeric ID: We’ll use 64-bit IDs because they provide more than enough space for many years to come.</li>
+            </ol>
+            <ul>
+                <div class="example">
+                    <div class="calculation">
+                        <p>Total possible IDs: <span>2<sup>64</sup></p>
+                        <p>Events per day: <span>1 billion (or 10<sup>9</sup>)</span></p>
+                        <p>Events per year: <span>365 billion (or 365 × 10<sup>9</sup>)</span></p>
+                        <p>Years before IDs run out: <span>2<sup>64</sup> ÷ (365 × 10<sup>9</sup>) ≈ 50.5 million years</span></p>
+                    </div>
+                </div>
+            </ul>
+            <br>
+
+            <h3 class="section-title">Sequencer Architecture</h3>
+                <h5>a. Centralized Sequencer:</h5>
+                    <ul>
+                        <p><b>How It Works: </b>A single centralized node or service is responsible for generating and distributing sequential IDs. Every event or system component needing an ID contacts this service.
+                        <br><b>Pros: </b>Easy to implement, ensures strict ordering.
+                        <br><b>Cons: </b>Single point of failure, potential bottleneck under high load.</p>
+                    </ul>
+                <h5>b. Distributed Sequencer (Preferred for Scalability):</h5>
+                    <ul>
+                        <p>In a distributed system, the sequencer can be designed using multiple independent nodes, each responsible for generating unique sequences.
+                        </p>    
+                        <li><b>How It Works:</b></li>
+                            <ul>
+                                <li>Each node or shard is assigned a range of IDs. These ranges are disjoint, meaning no overlap.</li>
+                                <li>Nodes independently generate IDs within their range, ensuring both uniqueness and ordering within that range.</li>
+                                <li>A coordinator service assigns new ranges to nodes when they exhaust their current range.</li>
+                                <li>Optionally, nodes can prepend a node identifier to each ID to guarantee global uniqueness (i.e., Node ID + Local Sequence Number).</li>
+                            </ul>
+                        <li><b>Pros: </b>Scales well, no single point of failure.</li>
+                        <li><b>Cons: </b>Ordering is only guaranteed within a node, not across the entire system.</li>
+
+                    </ul>
+            <br>
+
+            <h3 class="section-title">Solution 1: UUID</h3>
+            <p>
+                A UUID (Universally Unique Identifier) is a 128-bit value used to uniquely identify information in computer systems. It ensures uniqueness across systems and time, making it ideal for distributed environments where multiple entities need to generate unique IDs without central coordination.
+            </p>
+            <p>
+                <h5>Types of UUIDs</h5>
+                    <ul>
+                        <li><span>UUIDv1:</span> Combines the current timestamp with the machine’s unique identifiers (like MAC address). However, it can reveal system info and doesn’t guarantee randomness.</li>
+                        <li><span>UUIDv4:</span> Generates IDs using random or pseudo-random numbers, ensuring better privacy and uniqueness.</li>
+                        <li><span>UUIDv3/UUIDv5:</span> Generates IDs based on hashing a namespace and a name, ensuring uniqueness within a specific domain.</li>
+                    </ul>
+            </p>
+            Example of a UUID (UUIDv4):
+            <div class="example">
+                550e8400-e29b-41d4-a716-446655440000
+            </div>
+            <h5>Downsides of UUIDs</h5>
+                <ul>
+                    <li><span>Storage and Performance:</span> UUIDs are 128 bits, making them more storage-intensive than 64-bit IDs like those used in some systems (e.g., Snowflake IDs).</li>
+                    <li><span>Sorting:</span> UUIDs generated randomly (like UUIDv4) don’t have a natural order, making sorting in databases harder.</li>
+                </ul>
+            
+                <h5><a href="https://github.com/kishorevbhosale/learn-spring-boot/tree/master/uuid">Complete implementation of the UUID generation API using Spring Boot</a></h5>
+            
+            <br>
+            
+            <h3 class="section-title">Solution 2: Database-based Sequencer</h3>
+            <p> Creating a database-based sequencer using Spring Boot involves using a relational database (e.g., MySQL, PostgreSQL, or H2) to generate sequential IDs. 
+                This can be useful when you want to generate unique, ordered IDs for records (e.g., order numbers, transaction IDs) that might need to be consistent across multiple instances of the application.
+                <ul>
+                    <li>Design: Use a relational database with an auto-increment column or an atomic counter (e.g., in Redis or DynamoDB) to generate the sequence numbers.</li>
+                    <li>Pros: Simple to implement using existing database features.</li>
+                    <li>Cons: Scalability issues, high contention, single point of failure if using a single instance.</li>
+                </ul>
+            </p>
+            
+            <h5><a href="https://github.com/kishorevbhosale/learn-spring-boot/tree/master/db-sequencer">Complete implementation of the database sequencer using Spring Boot</a></h5>
+            <br>
+            <h3 class="section-title">Solution 3: Snowflake ID Generator</h3>
+            <p>
+                Snowflake is a popular solution for generating unique, ordered, 64-bit IDs.</p>
+                <img src="../../images/snowflake-id-gen.PNG" alt="dns-hierarchy" style="display: block; margin: auto; width: 50%;"><br>
+            <ul>
+                <li>Design: Snowflake is a popular solution for generating unique, ordered, 64-bit IDs.</li>
+                    Each ID is composed of:
+                    <ul>
+                        <li>Timestamp bits (to ensure time-based ordering).</li>
+                        <li>Node ID bits (to ensure uniqueness across distributed nodes).</li>
+                        <li>Sequence number bits (to generate multiple unique IDs within a millisecond).</li>
+                        <li>Example: 41 bits for timestamp, 10 bits for node ID, and 12 bits for sequence number (this allows generating 4096 IDs per millisecond per node).</li>
+                    </ul>
+                `<li>Pros: Highly scalable, low-latency, distributed, IDs are time-ordered.</li>
+                `<li>Cons: Requires coordination for node IDs, ordering across nodes is not guaranteed.</li>
+            </ul>
+            <h5><a href="https://github.com/kishorevbhosale/learn-spring-boot/tree/master/snowflake-id-gen">Complete implementation of the Snowflake ID generator using Spring Boot</a></h5>
+            <br>
+            <h3 class="section-title">Unique ID generation systems used by prominent companies </h3>
+            <ul>
+                <h5>Instagram's Sharded ID Generator:</h5> 
+                <div class="example">
+                    Instagram uses a sharded ID generation system, similar to Snowflake but customized for their architecture.<br>
+                    uid = Timestamp + Datacenter ID + Shard ID + Sequence Number 
+                </div>
+                <h5>YouTube's YTID:</h5> 
+                <div class="example">
+                    YouTube uses YTID, a custom ID generation system designed for video identifiers.
+                    <br>It’s a 64-bit unique identifier system that generates globally unique IDs, ensuring no two videos ever share the same ID.
+                </div>
+                <h5>Uber's Unique ID Generation (uID):</h5> 
+                <div class="example">
+                    Uber uses a custom ID generation system called uID for ride, transaction, and event identifiers.<br>
+                    Similar to Snowflake, Uber’s system generates 64-bit IDs using a combination of:<br>
+                    uid = Timestamp + Datacenter ID + Shard ID + Sequence Number 
+                </div>
+            </ul>
+            
+        </div>
+    </div>
+</body>

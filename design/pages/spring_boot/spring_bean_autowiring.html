@@ -1,0 +1,67 @@
+<div class="container">
+
+        <div class="content">
+            <h1>Spring Bean Autowiring</h1>
+            <h3 class="section-title">Spring bean autowiring</h3>
+            <p><b>Autowiring</b> in Spring is a feature that enables the framework to automatically find and inject dependent beans into a target bean's properties, 
+                without needing manual configuration. This simplifies development, especially in large applications with many dependencies between objects. 
+                When autowiring is used, Spring searches the container for beans of the required type and injects them into the dependent object automatically.
+            </p>
+            <img src="../../images/wiring1.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+            
+            <p>
+                We use the <b>`@Autowired`</b> annotation to tell the Spring container to automatically inject dependent beans into a target bean's properties. 
+                It enables autowiring for specific properties, allowing Spring to resolve dependencies and create the required objects without manual configuration.
+            </p>
+            <h5>Where can we use @Autowired Annotation?</h5>
+            <p>
+                We can use the <b>@Autowired</b> annotation at constructor level, field level, setter method level, and normal method level.
+            </p>
+            <br>
+            <h3 class="section-title">No wiring inside spring</h3>
+            <img src="../../images/wiring2.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            
+            <h3 class="section-title">Various Ways of wiring beans in Spring</h3>
+            <h5>1. Using Method Call</h5>
+                <img src="../../images/wiring3.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            <hr>
+            <h5>2. Using Method Parameters</h5>
+                <img src="../../images/wiring4.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            <hr>
+            <h5>3. Using @Autowired on class fields</h5>
+                <img src="../../images/wiring5.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            <hr>
+            <h5>4. Using @Autowired on setter method</h5>
+                <img src="../../images/wiring6.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            <hr>
+            <h5>5. Using @Autowired with constructor</h5>
+                <img src="../../images/wiring7.PNG" style="display: block; margin: auto; width: 90%;" class="img-fluid">
+            <br>
+            <h3 class="section-title">What is the Ambiguity Problem with @Autowired?</h3>
+            <p>
+                When using <b>@Autowired</b>, ambiguity can arise if multiple beans of the same type are present in the Spring container. 
+                Spring won’t know which bean to inject, leading to errors such as <b>NoUniqueBeanDefinitionException</b>. 
+                This happens because <b>@Autowired</b> by default tries to inject by type, and having multiple beans of the same type creates confusion for the framework.
+                <img src="../../images/wiring8.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+            </p>
+            <br>
+            <hr>
+            <h5>Solution 1 : matching method name (Its no longer supported)</h5>
+                <img src="../../images/wiring9.PNG" style="display: block; margin: auto; width: 70%;" class="img-fluid">
+             <br>
+             <hr>
+             <h5>Solution 2 : @Primary</h5>
+                <img src="../../images/wiring10.PNG" style="display: block; margin: auto; width: 70%;" class="img-fluid">
+             <br>
+             <hr>
+             <h5>Solution 3 : @Qualifier</h5>
+                <img src="../../images/wiring11.PNG" style="display: block; margin: auto; width: 70%;" class="img-fluid">
+            <br>
+            <br>
+        </div>
+</div>

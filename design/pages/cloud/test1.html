@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VM Startup Script in GCP for Certification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        .question {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-left: 5px solid #2196F3;
+            margin-bottom: 20px;
+        }
+        .answer {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 4px solid #ccc;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>VM Startup Script in GCP</h1>
+        <p>This guide covers the essential concepts for using VM startup scripts in Google Cloud Platform (GCP), emphasizing topics often tested in GCP certification exams. We'll cover VM-level and project-level startup scripts, how to pass scripts directly, from local files, or via Cloud Storage, and other related details such as the order of execution and size limits.</p>
+
+        <h2>Key Points for GCP Certification</h2>
+        <ul>
+            <li><strong>VM-Level vs. Project-Level Startup Scripts</strong>:
+                <ul>
+                    <li><strong>VM-Level Startup Script:</strong> A startup script specified for a particular VM instance. This script only runs when that VM instance starts up.</li>
+                    <li><strong>Project-Level Startup Script:</strong> You can define a default startup script for all instances in a project. This script applies to all VMs unless a VM-specific startup script is defined, in which case the VM-level script takes precedence.</li>
+                </ul>
+            </li>
+
+            <li><strong>Ways to Pass Startup Scripts</strong>:
+                <ul>
+                    <li><strong>Directly passing the startup script:</strong> You can embed the script directly in the metadata of the VM instance or project. This is done using the <code>startup-script</code> metadata key.
+                        <pre><code>gcloud compute instances create my-vm --metadata startup-script='#!/bin/bash
+# Update and install nginx
+apt-get update && apt-get install -y nginx
+systemctl start nginx'</code></pre>
+                    </li>
+                    <li><strong>Pass a startup script from a local file:</strong> You can reference a local file and pass it during VM creation using the <code>--metadata-from-file</code> option.
+                        <pre><code>gcloud compute instances create my-vm --metadata-from-file startup-script=/path/to/script.sh</code></pre>
+                    </li>
+                    <li><strong>Pass a startup script from Google Cloud Storage:</strong> Store your script in a Google Cloud Storage bucket and use the <code>startup-script-url</code> metadata key to reference it.
+                        <pre><code>gcloud compute instances create my-vm --metadata startup-script-url=gs://my-bucket/startup-script.sh</code></pre>
+                    </li>
+                </ul>
+            </li>
+
+            <li><strong>Order of Execution for Startup Scripts</strong>:
+                <ul>
+                    <li>GCP processes scripts in a specific order:</li>
+                    <li><strong>First</strong>, GCP checks for a script passed directly (via the <code>startup-script</code> metadata key).</li>
+                    <li><strong>Next</strong>, GCP checks for a local file if passed using the <code>--metadata-from-file</code> option.</li>
+                    <li><strong>Finally</strong>, if no local script is provided, it will look for a startup script URL in Cloud Storage specified via the <code>startup-script-url</code> metadata key.</li>
+                </ul>
+            </li>
+
+            <li><strong>Startup Script Size Limit</strong>: The maximum size of a startup script that can be passed directly via metadata is 256KB. If your script exceeds this limit, consider storing the script in a Cloud Storage bucket and referencing it using <code>startup-script-url</code>.</li>
+
+            <li><strong>Startup Script Logging and Debugging</strong>: Logs from the startup script are typically stored in <code>/var/log/syslog</code> (on Debian-based distributions) or <code>/var/log/messages</code> (on RHEL/CentOS-based distributions). These logs are crucial for debugging script execution issues.</li>
+
+            <li><strong>API Access Scopes and Permissions</strong>: Ensure the VM has the necessary API access scopes and IAM permissions, particularly if your startup script interacts with other Google Cloud services (e.g., Cloud Storage, BigQuery).</li>
+        </ul>
+
+        <h2>Common Certification Questions & Answers</h2>
+
+        <div class="question">
+            <strong>Question 1:</strong> How can you set a startup script for all VM instances in a project in GCP?
+        </div>
+        <div class="answer">
+            <strong>Answer:</strong> You can set a project-level startup script by adding it to the project metadata. This script will be applied to all VM instances in the project unless an instance-specific startup script is defined. Use the following command:
+            <pre><code>gcloud compute project-info add-metadata --metadata startup-script='#!/bin/bash ...'</code></pre>
+        </div>
+
+        <div class="question">
+            <strong>Question 2:</strong> What is the execution order if both a VM-specific and a project-wide startup script are defined?
+        </div>
+        <div class="answer">
+            <strong>Answer:</strong> The VM-specific startup script takes precedence over the project-wide startup script. If a VM-specific script is defined, the project-wide script will not be executed for that instance.
+        </div>
+
+        <div class="question">
+            <strong>Question 3:</strong> How can you pass a startup script stored in Google Cloud Storage to a VM?
+        </div>
+        <div class="answer">
+            <strong>Answer:</strong> You can store the script in a Cloud Storage bucket and reference it using the <code>startup-script-url</code> metadata key during instance creation. Example:
+            <pre><code>gcloud compute instances create my-vm --metadata startup-script-url=gs://my-bucket/startup-script.sh</code></pre>
+        </div>
+
+        <div class="question">
+            <strong>Question 4:</strong> What is the maximum size for a startup script passed via metadata?
+        </div>
+        <div class="answer">
+            <strong>Answer:</strong> The maximum size of a startup script passed via metadata is 256KB. For larger scripts, consider storing the script in Cloud Storage and referencing it with <code>startup-script-url</code>.
+        </div>
+
+        <div class="question">
+            <strong>Question 5:</strong> Where are the logs for startup script execution stored on a Google Compute Engine instance?
+        </div>
+        <div class="answer">
+            <strong>Answer:</strong> The logs for startup script execution can be found in <code>/var/log/syslog</code> (for Debian-based distributions) or <code>/var/log/messages</code> (for RHEL/CentOS-based distributions). These logs are useful for debugging any issues with script execution.
+        </div>
+
+    </div>
+
+</body>
+</html>
