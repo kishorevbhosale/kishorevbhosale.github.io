@@ -191,6 +191,8 @@ code {
     background-color: rgba(255, 255, 255, 0.2); /* Add hover effect */
 }
 
-
+html {
+    scroll-behavior: smooth;
+}
 
 

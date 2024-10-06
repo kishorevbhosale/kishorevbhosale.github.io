@@ -1,38 +1,32 @@
 // script.js
 
-function toggleCollapsible(event) {
-    const header = event.target; // Get the header that was clicked
-    const content = header.nextElementSibling; // Get the next sibling, which is the content
 
-    // Toggle the display of the collapsible content
-    if (content.style.display === "block") {
-        content.style.display = "none"; // Hide the content if currently visible
-    } else {
-        // First, hide all other collapsible contents
-        const allContents = document.querySelectorAll('.collapsible-content');
-        allContents.forEach(function (c) {
-            c.style.display = 'none'; // Hide all contents
-        });
+        function toggleCollapsible(event) {
+            const header = event.currentTarget;
+            const content = header.nextElementSibling;
+            content.style.display = (content.style.display === "block") ? "none" : "block";
+        }
 
-        content.style.display = "block"; // Show the clicked content
-    }
-}
+        function loadPage(event) {
+            event.preventDefault();
+            const link = event.currentTarget;
+            const pageUrl = link.getAttribute('href');
 
-function loadPage(event) {
-    event.preventDefault(); // Prevent default link behavior
-    const pageUrl = event.target.getAttribute('href'); // Get the href attribute
+            // Fetch the content from the page and insert it into the right panel
+            fetch(pageUrl)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
 
-    // Load the content of the selected page into the right panel
-    fetch(pageUrl)
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById('right-panel').innerHTML = data;
-        })
-        .catch(error => console.error('There was a problem with the fetch operation:', error));
-}
+                    // Scroll to the right panel smoothly
+                    const rightPanel = document.querySelector('.right-panel');
+                    rightPanel.scrollIntoView({ behavior: 'smooth' });
+                })
+                .catch(error => {
+                    console.error('Error loading page:', error);
+                });
+        }
+
 
 
 // Search functionality
