@@ -1,0 +1,160 @@
+<div>
+    <h1 style="text-align: center;">Data Hiding through Abstraction</h1>
+    <hr>
+    <p><b>Abstraction</b> is one of the fundamental principles of object-oriented programming (OOP). 
+        It focuses on hiding the complex implementation details of a system and showing only the essential features. 
+        Abstraction allows us to model real-world entities by exposing only relevant data and behavior, while keeping unnecessary details hidden from the user.</p>
+
+    <b>Example of Abstraction</b>
+    <div class="example">
+        <p>Imagine driving a car. You use simple actions like accelerating, braking, or steering. 
+            You don’t need to understand the complex workings of the engine or transmission system. 
+            The car abstracts the internal complexities and provides a simple interface for you to interact with. 
+            Similarly, in OOP, a class can provide an interface for interacting with its features without exposing internal implementation details.</p>
+    </div>
+</div>
+
+<div>
+    <h3 class="section-title">Implementation of Abstraction in Java</h3>
+    <p>The following is a complete code example demonstrating abstraction in Java using abstract classes:</p>
+
+    <pre><code>
+    // Abstract class representing a Vehicle
+    abstract class Vehicle {
+        // Abstract method (to be implemented by subclasses)
+        public abstract void start();
+
+        // Non-abstract method
+        public void stop() {
+            System.out.println("Vehicle is stopping.");
+        }
+    }
+
+    // Concrete subclass representing a Car
+    class Car extends Vehicle {
+        // Implementing the abstract method
+        @Override
+        public void start() {
+            System.out.println("Car is starting with a key.");
+        }
+    }
+
+    // Concrete subclass representing a Bike
+    class Bike extends Vehicle {
+        // Implementing the abstract method
+        @Override
+        public void start() {
+            System.out.println("Bike is starting with a kick.");
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            // Creating objects of Car and Bike
+            Vehicle myCar = new Car();
+            Vehicle myBike = new Bike();
+
+            // Using the abstracted methods
+            myCar.start();  // Output: Car is starting with a key.
+            myCar.stop();   // Output: Vehicle is stopping.
+
+            myBike.start(); // Output: Bike is starting with a kick.
+            myBike.stop();  // Output: Vehicle is stopping.
+        }
+    </code></pre>
+    <br>
+    <h5>Explanation:</h5>
+    <p>In this example, we have an abstract class <code>Vehicle</code> that contains an abstract method <code>start()</code> and a concrete method <code>stop()</code>. The subclasses <code>Car</code> and <code>Bike</code> provide their own implementations of the <code>start()</code> method. This demonstrates abstraction as we hide the complexity of how each vehicle starts but provide a common interface to start and stop the vehicle.</p>
+</div>
+
+<div>
+    <h3 class="section-title">Advantages of Abstraction</h3>
+    <ul>
+        <li><strong>Simplification:</strong> Abstraction simplifies complex systems by providing a simple interface to interact with, hiding unnecessary details.</li>
+        <li><strong>Code Reusability:</strong> Abstract classes and methods allow developers to reuse code efficiently. Shared functionality can be defined once in the abstract class and reused in concrete subclasses.</li>
+        <li><strong>Flexibility:</strong> Changes in the abstracted part of the program do not affect the high-level module, providing flexibility to change implementation details without altering the interface.</li>
+        <li><strong>Maintainability:</strong> It enhances code maintainability by separating implementation details from the user interaction.</li>
+    </ul>
+</div>
+
+<div>
+    <h3 class="section-title">Abstraction vs. Encapsulation</h3>
+    <table>
+        <tr>
+            <th>Aspect</th>
+            <th>Abstraction</th>
+            <th>Encapsulation</th>
+        </tr>
+        <tr>
+            <td>Purpose</td>
+            <td>Hides implementation details and shows only the essential features to the user.</td>
+            <td>Restricts access to certain data and provides controlled access via methods.</td>
+        </tr>
+        <tr>
+            <td>Focus</td>
+            <td>Focuses on what an object does (behavior).</td>
+            <td>Focuses on how data is accessed and modified (data protection).</td>
+        </tr>
+        <tr>
+            <td>Implementation</td>
+            <td>Implemented using abstract classes and interfaces.</td>
+            <td>Implemented by making variables private and providing public getter and setter methods.</td>
+        </tr>
+        <tr>
+            <td>Visibility</td>
+            <td>Used to hide complex implementation logic.</td>
+            <td>Used to hide data from external access.</td>
+        </tr>
+    </table>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Tricky Interview Questions and Answers on Abstraction</h3>
+    
+    <div class="interview-question">
+        <b>Question 1: Can you achieve abstraction without using abstract classes or interfaces?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Yes, abstraction can be achieved even without using abstract classes or interfaces. It can be done by providing a simple interface (methods) to the user, while hiding the complex logic inside the method implementations of regular classes. However, abstract classes and interfaces provide a more structured way to achieve abstraction.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 2: What is the difference between an abstract class and an interface in terms of abstraction?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Both abstract classes and interfaces provide abstraction, but with differences:
+            <ul>
+                <li>An abstract class can have both abstract and non-abstract methods, whereas an interface can have only abstract methods (prior to Java 8; after Java 8, interfaces can have default methods).</li>
+                <li>Abstract classes allow fields (variables), while interfaces cannot have fields (but can have constants).</li>
+            </ul>
+        </p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 3: How does abstraction improve code flexibility?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Abstraction decouples the user from the implementation details, allowing changes to be made to the implementation without affecting the external code. For example, if you abstract how a vehicle starts (e.g., a car starts with a key, while a bike starts with a kick), you can change the internal implementation without changing how the user interacts with the vehicle.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 4: You are asked to design an application for a payment system that supports multiple payment methods (credit card, PayPal, and bank transfer). How would you implement abstraction in this case?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> You can create an abstract class or interface called <code>PaymentMethod</code> with a method like <code>processPayment()</code>. Then, you can create concrete classes like <code>CreditCardPayment</code>, <code>PayPalPayment</code>, and <code>BankTransferPayment</code> that implement the <code>processPayment()</code> method based on their specific logic. This way, the client code interacts with a common interface, and the details of how each payment method works are abstracted away.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 5: In a banking application, different types of accounts (savings, checking) require different methods to calculate interest. How can abstraction help solve this?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> You can create an abstract class <code>BankAccount</code> with an abstract method <code>calculateInterest()</code>. Then, you can have concrete subclasses like <code>SavingsAccount</code> and <code>CheckingAccount</code> that implement <code>calculateInterest()</code> in different ways based on the account type. This abstracts the interest calculation logic, while providing a common interface for all account types.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 6: How would you use abstraction to manage different types of notifications (e.g., email, SMS, push notifications) in a messaging system?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> You can define an abstract class or interface <code>Notification</code> with an abstract method <code>sendNotification()</code>. Then, you can implement concrete classes like <code>EmailNotification</code>, <code>SMSNotification</code>, and <code>PushNotification</code>. This way, the client code can send notifications via different channels without knowing how each channel works, thanks to the abstraction provided by the <code>Notification</code> interface.</p>
+    </div>
+</div>

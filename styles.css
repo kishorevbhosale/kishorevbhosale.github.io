@@ -111,7 +111,6 @@ table {
     margin-top: 20px;
 }
 
-
 th, td {
     padding: 10px;
     text-align: left;
@@ -125,6 +124,23 @@ th {
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+/* Add horizontal scrolling for mobile */
+@media only screen and (max-width: 600px) {
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap; /* Prevent the table from breaking into multiple lines */
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+
 .interview-question {
     background-color: #e9f7fe;
     padding: 10px;
@@ -155,40 +171,22 @@ tr:nth-child(even) {
     color: #2b2c2d;
 }
 pre {
-    margin: 0;
-    background-color: #f4f4f4;
+    background-color: #f5f5f5;
     padding: 10px;
-    border-left: 4px solid #ccc;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    line-height: 1.5;
+    border-left: 4px solid #ddd;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
     white-space: pre-wrap;
     overflow-x: auto;
 }
 
 code {
-    color: #c7254e;
-    background-color: #eee;
-    padding: 2px 6px;
+    color: #d6336c;
+    background-color: #f5f5f5;
+    padding: 2px 4px;
     border-radius: 4px;
-    font-family: monospace;
-    font-size: 1.1em;
-    display: block;
-}
-
-.about-me {
-    color: #fff; /* Change the text color to white */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the text bold */
-    padding: 10px; /* Add vertical padding */
-    border-radius: 5px; /* Add rounded corners */
-    transition: background-color 0.3s; /* Smooth background change */
-    font-size: 1.5rem; /* Set font size to match h2 */
-    line-height: 1.5; /* Ensure the line height matches the h2 */
-}
-
-.about-me:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Add hover effect */
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
 }
 
 html {

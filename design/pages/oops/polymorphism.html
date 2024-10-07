@@ -1,0 +1,256 @@
+<div>
+    <h1 style="text-align: center;">Polymorphism in Java</h1>
+    <hr>
+    <p>
+        Polymorphism is one of the four fundamental principles of Object-Oriented Programming (OOP), along with Encapsulation, Abstraction, and Inheritance. It refers to the ability of a single action or method to behave differently based on the object or context in which it is invoked. The word "polymorphism" means "many forms."
+    </p>
+</div>
+
+<div>
+    <h5>Types of Polymorphism</h5>
+    <div>
+        Polymorphism in Java can be divided into two types:
+        <ul>
+            <li><strong>Compile-time Polymorphism</strong> (also known as static polymorphism or method overloading)</li>
+            <li><strong>Runtime Polymorphism</strong> (also known as dynamic polymorphism or method overriding)</li>
+        </ul>
+    </div>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Compile-Time Polymorphism (Method Overloading)</h3>
+    <div>
+        Compile-time polymorphism occurs when multiple methods have the same name but different parameter lists (different number, types, or order of parameters) within the same class. This is called "method overloading." The decision about which method to invoke is made by the compiler at compile time.
+    </div>
+
+    <pre>
+    <code>
+class Calculator {
+    // Method with 2 parameters
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    // Overloaded method with 3 parameters
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(2, 3));      // Output: 5 (calls method with 2 parameters)
+        System.out.println(calc.add(1, 2, 3));   // Output: 6 (calls method with 3 parameters)
+    }
+}
+    </code>
+    </pre>
+
+    <h5>Key Points:</h5>
+    <ul>
+        <li>Method overloading is determined at compile time.</li>
+        <li>It allows methods to have the same name but with different parameter lists.</li>
+        <li>Return type alone is not enough for method overloading; the parameters must be different.</li>
+    </ul>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Runtime Polymorphism (Method Overriding)</h3>
+    <div>
+        Runtime polymorphism occurs when a method is overridden in a subclass, allowing the subclass to provide its own specific implementation while maintaining the method signature of the parent class. The decision about which method to invoke is made at runtime based on the object being referenced.
+    </div>
+
+    <pre>
+    <code>
+class Animal {
+    // Parent class method
+    public void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    // Overriding the parent class method
+    @Override
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    // Overriding the parent class method
+    @Override
+    public void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myAnimal = new Animal();
+        Animal myDog = new Dog(); // Polymorphism at work
+        Animal myCat = new Cat();
+
+        myAnimal.sound();  // Output: Animal makes a sound
+        myDog.sound();     // Output: Dog barks
+        myCat.sound();     // Output: Cat meows
+    }
+}
+    </code>
+    </pre>
+
+    <h5>Key Points:</h5>
+    <ul>
+        <li>Method overriding allows a subclass to provide its own implementation of a method defined in its parent class.</li>
+        <li>Overriding occurs at runtime, which is why it is called runtime polymorphism.</li>
+        <li>To override a method, the method signature (name, return type, parameters) must be the same in both the superclass and the subclass.</li>
+    </ul>
+
+    <h5>How Method Overriding Supports Polymorphism:</h5>
+    <div>
+        Polymorphism allows one interface to be used for a general class of actions. It enables one method (e.g., <code>sound()</code> in the example above) to work differently based on the actual object type (Dog, Cat, etc.) at runtime. This is a core concept in designing flexible, reusable, and scalable applications.
+    </div>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Polymorphism in Interfaces</h3>
+    <div>
+        Polymorphism can also be achieved through interfaces, where multiple classes can implement the same interface but provide different implementations for the methods defined in that interface.
+    </div>
+
+    <pre>
+    <code>
+interface Shape {
+    void draw();
+}
+
+class Circle implements Shape {
+    public void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+class Square implements Shape {
+    public void draw() {
+        System.out.println("Drawing a square");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape shape1 = new Circle();  // Polymorphism at work
+        Shape shape2 = new Square();
+
+        shape1.draw();  // Output: Drawing a circle
+        shape2.draw();  // Output: Drawing a square
+    }
+}
+    </code>
+    </pre>
+
+    <h5>Key Points:</h5>
+    <ul>
+        <li>Interfaces in Java provide a way to achieve polymorphism.</li>
+        <li>A single interface can have multiple implementations, and at runtime, the correct implementation will be invoked based on the object type.</li>
+    </ul>
+
+    <h3 class="section-title">Advantages of Polymorphism</h3>
+    <ul>
+        <li><strong>Code Reusability:</strong> Polymorphism enables a method to perform different functionalities, which increases code reusability.</li>
+        <li><strong>Flexibility:</strong> It allows one object to be treated as another type. This is especially useful when designing scalable and flexible systems.</li>
+        <li><strong>Maintainability:</strong> Polymorphism allows easy management of future extensions as new classes can simply override the existing behavior without altering existing code.</li>
+        <li><strong>Dynamic Behavior:</strong> It allows different implementations of the same method to be executed based on the runtime object, thus adding dynamic behavior to the system.</li>
+    </ul>
+</div>
+<br>
+<div>
+
+    <h3 class="section-title">Method Overloading vs. Method Overriding</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Method Overloading</th>
+                <th>Method Overriding</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Binding Time</td>
+                <td>Compile-Time</td>
+                <td>Runtime</td>
+            </tr>
+            <tr>
+                <td>Definition</td>
+                <td>Multiple methods with the same name but different parameters.</td>
+                <td>Subclass provides a specific implementation of a method in the parent class.</td>
+            </tr>
+            <tr>
+                <td>Inheritance</td>
+                <td>Can happen in the same class (no inheritance required).</td>
+                <td>Requires inheritance (subclass overriding parent class method).</td>
+            </tr>
+            <tr>
+                <td>Return Type</td>
+                <td>Can have different return types.</td>
+                <td>Must have the same return type as the overridden method.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Tricky Interview Questions on Polymorphism</h3>
+    <div>
+        <div class="interview-question">
+            <b>1. What is the difference between static and dynamic polymorphism?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> Static polymorphism (method overloading) is resolved at compile time, while dynamic polymorphism (method overriding) is resolved at runtime. In static polymorphism, the method to be executed is determined by the method signature, while in dynamic polymorphism, the method is determined by the object's runtime type.</p>
+        </div>
+        
+        <div class="interview-question">
+            <b>2. Can you overload a method based only on return type?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> No, you cannot overload a method based solely on return type in Java. The parameter list must be different for method overloading to occur. If two methods have the same name and parameters but differ only in return type, it will result in a compile-time error.</p>
+        </div>
+
+        <div class="interview-question">
+            <b>3. What happens if you try to override a <b>private</b> or <b>static</b> method?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> <b>private</b> methods cannot be overridden as they are not visible to the subclass. Similarly, <b>static</b> methods belong to the class, not to instances, so they cannot be overridden, but they can be hidden using the same method signature in the subclass.</p>
+        </div>
+
+        <div class="interview-question">
+            <b>4. Why is method overriding considered runtime polymorphism?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> Method overriding is considered runtime polymorphism because the decision about which overridden method to call (the parent or child version) is made at runtime, based on the type of the object.</p>
+        </div>
+
+        <div class="interview-question">
+            <b>5. How would you implement polymorphism in a scenario where different shapes (e.g., Circle, Square) need to calculate area differently?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> You can create a base class or interface, e.g., <b>Shape</b>, with a method <b>calculateArea()</b>. Each shape class (Circle, Square) can implement or override this method to provide its own area calculation logic.</p>
+        </div>
+
+    
+        <div class="interview-question">
+            <b>6. You are building an online store. You have a base class <b>Product</b> and two subclasses <b>Book</b> and <b>Clothing</b>. Both <b>Book</b> and <b>Clothing</b> should have a method <b>calculateDiscount()</b>, but the discount calculation logic differs for each. How would you design this using polymorphism?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> Use method overriding. The base class <b>Product</b> can define a method <b>calculateDiscount()</b>. Each subclass (<b>Book</b>, <b>Clothing</b>) can override this method to implement its specific discount logic.</p>
+        </div>
+
+        <div class="interview-question">
+            <b>7. In a drawing application, you need to handle multiple shapes (e.g., circles, rectangles, and triangles). Each shape should have a method to calculate its area. How would you use polymorphism to implement this?</b>
+        </div>
+        <div class="interview-answer">
+            <p><strong>Answer:</strong> You can use an interface <b>Shape</b> with a method <b>calculateArea()</b>. Each specific shape class (Circle, Rectangle, Triangle) implements the interface and provides its own logic for calculating the area. This allows for adding new shapes easily without modifying existing code.</p>
+        </div>
+    </div>
+</div>

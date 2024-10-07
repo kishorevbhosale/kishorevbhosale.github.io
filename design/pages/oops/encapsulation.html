@@ -1,0 +1,169 @@
+<div>
+    <h1 style="text-align: center;">Data Hiding through Encapsulation</h1>
+    <hr>
+    <p><b>Encapsulation</b> is the process of bundling data (attributes) and methods that manipulate that data into a single unit or class. 
+        It restricts direct access to the internal attributes of an object and provides controlled access via public methods. 
+        Encapsulation ensures that the internal workings of an object are hidden from the outside world, allowing for more secure and maintainable code.</p>
+    <b>Example of Encapsulation</b>
+    <div class="example">
+        In the Bank Account class, the <b>balance</b> variable is private. It cannot be accessed directly by any external class or user. 
+        Instead, users interact with the balance through methods like <b>deposit()</b> and <b>withdraw()</b>, which ensure the balance is updated safely and according to predefined rules.
+    </div>
+
+</div>
+
+<div>
+    <h3 class="section-title">Implementing Encapsulation in Java</h3>
+    <pre><code>
+        public class BankAccount {
+            private double balance; // Private balance, cannot be accessed directly.
+        
+            public BankAccount(double initialBalance) {
+                balance = initialBalance;
+            }
+        
+            // Public method to deposit money.
+            public void deposit(double amount) {
+                if (amount > 0) {
+                    balance += amount; // Update balance through method.
+                }
+            }
+        
+            // Public method to withdraw money.
+            public void withdraw(double amount) {
+                if (amount > 0 && amount <= balance) {
+                    balance -= amount;
+                } else {
+                    System.out.println("Insufficient balance");
+                }
+            }
+        
+            // Getter method for balance.
+            public double getBalance() {
+                return balance; // Controlled access to balance.
+            }
+        }        
+    </code></pre>
+    <h5>Explanation of Code</h5>
+    <p>In this example, the account balance is protected by Encapsulation, and external users cannot change it directly. 
+        All interactions with the balance must go through methods like deposit() or withdraw().</p>
+
+</div>
+
+
+<div>
+    <h3 class="section-title">Advantages of Encapsulation</h3>
+    <ul>
+        <li><strong>Data Protection:</strong> By restricting direct access to attributes, encapsulation prevents unauthorized modification of data and maintains integrity.</li>
+        <li><strong>Modularity:</strong> Each class is a self-contained module, which simplifies code maintenance and increases reusability.</li>
+        <li><strong>Control:</strong> With getter and setter methods, we can add logic (such as validation) before accessing or modifying an attribute.</li>
+        <li><strong>Increased Flexibility:</strong> Internals of the class can change without affecting external code that uses the class, as long as the public interface remains consistent.</li>
+        <li><strong>Improved Readability and Debugging:</strong> Encapsulated code is easier to read, debug, and maintain since it organizes data and methods logically within a class.</li>
+    </ul>
+</div>
+
+<div>
+    <h3 class="section-title">Tricky Interview Questions and Answers on Encapsulation</h3>
+
+    <div class="interview-question">
+        <b>Question 1: What is the difference between encapsulation and abstraction?</b>
+    </div>
+    <div class="interview-answer">   
+        <p><strong>Answer:</strong> Encapsulation is the mechanism of bundling the data (attributes) and methods that operate on the data into a single unit (class), and restricting access to some of the object's components. Abstraction, on the other hand, is the concept of hiding the implementation details and showing only essential features. Encapsulation focuses on "how" to achieve data protection, while abstraction focuses on "what" functionality is available.</p>
+    </div>
+    
+
+    <div class="interview-question">
+        <b>Question 2: How does encapsulation improve security in OOP?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Encapsulation improves security by restricting direct access to the internal attributes of a class. This ensures that sensitive data cannot be accidentally or maliciously altered, and access is controlled via public getter and setter methods. This provides validation mechanisms and access control, enhancing the security of the object's state.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 3: Can we achieve encapsulation without using private variables?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Technically, yes. Encapsulation can be achieved with public or protected variables, but it's not recommended. Using private variables is a best practice because it ensures that the internal state is only accessible and modifiable through controlled interfaces (getters/setters). Public variables expose the internal structure directly, breaking the core principle of data hiding.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 4: What would happen if we do not use getter and setter methods in encapsulation?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Without getter and setter methods, there would be no controlled way to access or modify the private attributes of a class. This would defeat the purpose of encapsulation, as you wouldn’t be able to validate input or restrict access. Getters and setters provide the means to interact with the data while maintaining control over its integrity.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 5: Can you provide an example where encapsulation leads to code flexibility?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Consider a banking application where we encapsulate the "balance" of a bank account. If in the future we decide to log every time the balance is updated (for audit purposes), we can add this functionality inside the setter method for the balance. The rest of the application that uses the bank account object will not need to change, demonstrating the flexibility of encapsulated code.</p>
+                 
+        <pre><code>
+        // BankAccount class with encapsulated balance attribute
+        class BankAccount {
+            // Private attribute (data hiding)
+            private double balance;
+        
+            // Constructor to initialize the balance
+            public BankAccount(double initialBalance) {
+                this.balance = initialBalance;
+            }
+        
+            // Getter method for balance
+            public double getBalance() {
+                return balance;
+            }
+        
+            // Setter method for balance with additional logging functionality
+            public void setBalance(double balance) {
+                // Add functionality to log changes to the balance
+                System.out.println("Balance updated. Old balance: " + this.balance + ", New balance: " + balance);
+        
+                // Update the balance
+                this.balance = balance;
+            }
+        
+            // Deposit method to add money to the balance
+            public void deposit(double amount) {
+                if (amount > 0) {
+                    setBalance(this.balance + amount);  // Using the setter method to update the balance
+                }
+            }
+        
+            // Withdraw method to subtract money from the balance
+            public void withdraw(double amount) {
+                if (amount > 0 && amount <= this.balance) {
+                    setBalance(this.balance - amount);  // Using the setter method to update the balance
+                }
+            }
+        }
+        
+        // Main class to demonstrate flexibility of encapsulation
+        public class Main {
+            public static void main(String[] args) {
+                // Create a new BankAccount with an initial balance of $1000
+                BankAccount account = new BankAccount(1000.0);
+        
+                // Deposit money and see the log of balance updates
+                account.deposit(500);  // Output: Balance updated. Old balance: 1000.0, New balance: 1500.0
+        
+                // Withdraw money and see the log of balance updates
+                account.withdraw(200);  // Output: Balance updated. Old balance: 1500.0, New balance: 1300.0
+        
+                // Checking the current balance
+                System.out.println("Current balance: $" + account.getBalance());  // Output: Current balance: $1300.0
+            }
+            </code></pre>
+        
+        
+            <h5>Benefits of Encapsulation in This Example:</h5>
+            <ul>
+                <li><strong>Flexibility:</strong> We can easily add or change functionality inside the setter method without affecting the rest of the code. For example, adding logging functionality doesn't require changes to the rest of the application.</li>
+                <li><strong>Data Protection:</strong> Direct access to the balance is restricted, ensuring that changes to the balance can only happen through controlled methods.</li>
+                <li><strong>Code Maintainability:</strong> Since the balance is encapsulated, changes are centralized in one place, making future modifications simpler.</li>
+            </ul>
+        
+    </div>
+</div>

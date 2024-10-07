@@ -1,0 +1,207 @@
+<div>
+    <h1 style="text-align: center;">Inheritance</h1>
+    <hr>
+    <p><b>Inheritance</b> is an object-oriented programming concept where a new class, known as a subclass or derived class, 
+        inherits the properties and behaviors (attributes and methods) from another class, known as the superclass or base class. 
+        Inheritance allows for code reusability and the creation of a hierarchical relationship between classes.
+    </p>
+</div>
+
+<div>
+    <h3 class="section-title">IS-A Relationship</h3>
+    <p>
+        The "IS-A" relationship in inheritance represents a relationship between two classes where one class is a specialized form of another. 
+    <b>Example</b> 
+    </p>
+    <div class="example">
+        "Dog" <b>IS-A</b> "Animal". The subclass "Dog" inherits properties from the superclass "Animal", but may have additional specific characteristics.
+    </div>
+    <img src="../../../images/is-a.PNG" style="display: block; margin: auto;" class="img-fluid">
+
+    <pre>
+        <code>
+        class Animal {
+            void eat() {
+                System.out.println("Animal is eating");
+            }
+        }
+    
+        class Dog extends Animal {
+            void bark() {
+                System.out.println("Dog is barking");
+            }
+        }
+    
+        public class Main {
+            public static void main(String[] args) {
+                Dog dog = new Dog();
+                dog.eat();  // Inherited from Animal
+                dog.bark(); // Specific to Dog
+            }
+        }
+        </code>
+    </pre>
+</div>
+<div>
+    <h3 class="section-title">Types of Inheritance</h3>
+    <ul>
+        <li><strong>Single Inheritance:</strong> A subclass inherits from only one superclass.</li>
+        <img src="../../../images/single-inheritance.PNG" style="display: block; margin: auto; " class="img-fluid">
+        <li><strong>Multiple Inheritance:</strong> A subclass inherits from more than one superclass (Java doesn't support this directly but can be achieved using interfaces).</li>
+        <img src="../../../images/multiple-inheritance.PNG" style="display: block; margin: auto; " class="img-fluid">
+
+        <li><strong>Multi-level Inheritance:</strong> A class is derived from a class, which is also derived from another class.</li>
+        <img src="../../../images/multilevel-inheritance.PNG" style="display: block; margin: auto; " class="img-fluid">
+
+        <li><strong>Hierarchical Inheritance:</strong> Multiple classes inherit from the same superclass.</li>
+        <img src="../../../images/hierarchical-inheritance.PNG" style="display: block; margin: auto; " class="img-fluid">
+
+        <li><strong>Hybrid Inheritance:</strong> A combination of two or more types of inheritance (achieved in Java through interfaces).</li>
+        <img src="../../../images/hybrid-inheritance.PNG" style="display: block; margin: auto; " class="img-fluid">
+    </ul>
+</div>
+<div>
+    <h3 class="section-title">Implementation of All Types of Inheritance in a Single Class</h3>
+<pre><code>
+    <b>// Base class (Super class)</b>
+    class Animal {
+        void eat() {
+            System.out.println("Animal is eating");
+        }
+    }
+    
+    <b>// Single Inheritance: Dog extends Animal</b>
+    class Dog extends Animal {
+        void bark() {
+            System.out.println("Dog is barking");
+        }
+    }
+    
+    <b>// Multi-level Inheritance: Dog extends Animal and Puppy extends Dog</b>
+    class Puppy extends Dog {
+        void weep() {
+            System.out.println("Puppy is weeping");
+        }
+    }
+    
+    <b>// Hierarchical Inheritance: Dog and Cat both extends Animal</b>
+    class Cat extends Animal {
+        void meow() {
+            System.out.println("Cat is meowing");
+        }
+    }
+    
+    <b>// Multiple Inheritance via Interface</b>
+    interface Pet {
+        void play();
+    }
+    
+    class DomesticDog extends Dog implements Pet {
+        public void play() {
+            System.out.println("Dog is playing");
+        }
+    }
+    
+    public class Main {
+        public static void main(String[] args) {
+            // Single Inheritance
+            Dog dog = new Dog();
+            dog.eat();
+            dog.bark();
+    
+            // Multi-level Inheritance
+            Puppy puppy = new Puppy();
+            puppy.eat();
+            puppy.bark();
+            puppy.weep();
+    
+            // Hierarchical Inheritance
+            Cat cat = new Cat();
+            cat.eat();
+            cat.meow();
+    
+            // Multiple Inheritance via Interface
+            DomesticDog domesticDog = new DomesticDog();
+            domesticDog.play();
+            domesticDog.bark();
+            domesticDog.eat();
+        }
+    }
+</code></pre>
+    
+        <h3 class="section-title">Advantages of Inheritance</h3>
+        <ul>
+            <li><strong>Code Reusability:</strong> Inheritance allows classes to reuse methods and fields of the superclass without rewriting code.</li>
+            <li><strong>Method Overriding:</strong> Subclasses can override methods of the superclass to provide specific implementations.</li>
+            <li><strong>Extensibility:</strong> It allows the creation of a hierarchical structure where classes can be extended with additional functionality.</li>
+            <li><strong>Maintenance:</strong> Inheritance simplifies maintenance since changes made in the superclass are automatically reflected in subclasses.</li>
+        </ul>
+</div>
+
+<div>
+    <h3 class="section-title">Tricky Interview Questions and Answers on Inheritance</h3>
+    <div class="interview-question">
+        <b>Question 1: Can a subclass inherit private members from a superclass?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> No, private members of a superclass are not accessible directly by the subclass. However, they can be accessed through public or protected methods of the superclass.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 2: What is the difference between overriding and overloading in inheritance?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Overriding refers to redefining a method in the subclass that already exists in the superclass with the same signature. Overloading refers to having multiple methods in the same class with the same name but different parameter lists.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 3: Why does Java not support multiple inheritance?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Java doesn't support multiple inheritance using classes to avoid ambiguity caused by the "diamond problem." Instead, multiple inheritance is achieved using interfaces.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 4: Can constructors be inherited in Java?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> No, constructors are not inherited. However, the subclass can call the constructor of the superclass using the <code>super()</code> keyword.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 5: How can we prevent inheritance in Java?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> To prevent inheritance, the class can be declared as <code>final</code>. A <code>final</code> class cannot be subclassed.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 6: If a superclass has a method that is not overridden by a subclass, which method will be called when invoking that method on an object of the subclass?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> The method from the superclass will be called, as the subclass has not provided its own overriding implementation.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 7: Consider a scenario where class <code>A</code> is extended by class <code>B</code>, and class <code>B</code> is extended by class <code>C</code>. If class <code>C</code> does not override a method from class <code>A</code>, which version of the method is called when an object of class <code>C</code> invokes it?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> The method from class <code>A</code> will be called, as class <code>B</code> and class <code>C</code> do not override it.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 8: Can a subclass access protected members of a superclass?</b>
+    </div>
+    <div class="interview-answer">
+        <p><strong>Answer:</strong> Yes, protected members are accessible to subclasses and classes in the same package.</p>
+    </div>
+
+    <div class="interview-question">
+        <b>Question 9: How does inheritance affect memory management?</b>
+    </div>
+    <div class="interview-answer">    
+        <p><strong>Answer:</strong> Objects of the subclass hold a reference to the parent class, meaning all fields from the superclass are also stored in memory when an object of the subclass is created. This hierarchical allocation can impact memory usage.</p>
+    </div>
+
+    </div>
+</div>
