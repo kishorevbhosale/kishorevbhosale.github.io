@@ -1,0 +1,149 @@
+<div>
+    <h1 style="text-align: center;">Dependency Inversion Principle (DIP)</h1>
+    <hr>
+    <p>
+        <b>"High-level modules should not depend on low-level modules. Both should depend on abstractions. 
+            Abstractions should not depend on details. Details should depend on abstractions."</b>
+    </p>
+    <p>
+        In simpler terms, DIP encourages us to avoid tight coupling between high-level and low-level components 
+        by making both depend on abstractions (like interfaces or abstract classes) instead of concrete implementations. 
+        This leads to more flexible and scalable designs, as changes to low-level components won’t require 
+        changes to high-level components.
+    </p>
+</div>
+<div>
+    <h3 class="section-title">Example: Notification System</h3>
+    <p>
+        Imagine you are building a notification system that sends alerts via different channels such as email and SMS. 
+        Without dependency injection or the Dependency Inversion Principle, your NotificationService class might depend 
+        directly on concrete implementations like EmailSender or SMSSender. This creates a tight coupling between the
+        high-level class (NotificationService) and the low-level classes (EmailSender, SMSSender).
+    </p>
+</div>
+<div>
+    <pre><code>
+        // Low-level module: EmailSender
+        class EmailSender {
+            public void sendEmail(String message) {
+                System.out.println("Sending email with message: " + message);
+            }
+        }
+        
+        // Low-level module: SMSSender
+        class SMSSender {
+            public void sendSMS(String message) {
+                System.out.println("Sending SMS with message: " + message);
+            }
+        }
+        
+        // High-level module: NotificationService
+        class NotificationService {
+            private EmailSender emailSender;
+            private SMSSender smsSender;
+        
+            public NotificationService() {
+                this.emailSender = new EmailSender();  // Tight coupling to low-level module
+                this.smsSender = new SMSSender();      // Tight coupling to low-level module
+            }
+        
+            public void sendNotification(String message) {
+                emailSender.sendEmail(message);
+                smsSender.sendSMS(message);
+            }
+        }
+        
+        // Client code
+        public class Main {
+            public static void main(String[] args) {
+                NotificationService notificationService = new NotificationService();
+                notificationService.sendNotification("Hello, Dependency Inversion Principle!");
+            }
+        }
+        
+    </code></pre>
+</div>
+<div>
+    <h5>Problem (DIP Violation):</h5>
+    <ol>
+        <li>Tight Coupling: NotificationService depends directly on EmailSender and SMSSender.
+             If we want to change how these notifications are sent (e.g., introduce a PushNotificationSender), 
+             we must modify the NotificationService class, which violates DIP.</li>
+        <li>Rigid Design: Since the NotificationService class is tightly coupled to the low-level modules 
+            (EmailSender and SMSSender), adding new notification types or changing the behavior of notifications 
+            is difficult and error-prone.</li>
+        
+    </ol>
+</div>
+<div>
+    <h3 class="section-title">Refactored Design (Complying with DIP using Dependency Injection):</h3>
+    <ol>
+        <li>Create an interface MessageSender that abstracts the sending logic.</li>
+        <li>Implement EmailSender, SMSSender, and any other sender classes as low-level modules that implement this interface.</li>
+        <li>Use dependency injection to pass the desired sender to the NotificationService class.</li>
+    </ol>
+</div>
+<div>
+    <pre><code>
+        // High-level abstraction: MessageSender interface
+        interface MessageSender {
+            void send(String message);
+        }
+        
+        // Low-level module: EmailSender
+        class EmailSender implements MessageSender {
+            @Override
+            public void send(String message) {
+                System.out.println("Sending email with message: " + message);
+            }
+        }
+        
+        // Low-level module: SMSSender
+        class SMSSender implements MessageSender {
+            @Override
+            public void send(String message) {
+                System.out.println("Sending SMS with message: " + message);
+            }
+        }
+        
+        // High-level module: NotificationService (now depends on abstraction)
+        class NotificationService {
+            private MessageSender messageSender;
+        
+            // Constructor injection (dependency injection)
+            public NotificationService(MessageSender messageSender) {
+                this.messageSender = messageSender;  // Depends on abstraction, not concrete implementation
+            }
+        
+            public void sendNotification(String message) {
+                messageSender.send(message);
+            }
+        }
+        
+        // Client code demonstrating Dependency Injection
+        public class Main {
+            public static void main(String[] args) {
+                // Injecting EmailSender into NotificationService
+                MessageSender emailSender = new EmailSender();
+                NotificationService emailNotification = new NotificationService(emailSender);
+                emailNotification.sendNotification("Hello via Email!");
+        
+                // Injecting SMSSender into NotificationService
+                MessageSender smsSender = new SMSSender();
+                NotificationService smsNotification = new NotificationService(smsSender);
+                smsNotification.sendNotification("Hello via SMS!");
+            }
+        }        
+    </code></pre>
+</div>
+<div>
+    <h5>Key Points in the Refactored Design</h5>
+    <ul>
+        <li><b>Abstractions Over Concrete Classes:</b> We have introduced a MessageSender interface that both EmailSender and SMSSender implement. 
+            This makes NotificationService depend on the abstraction (MessageSender) rather than the concrete classes (EmailSender or SMSSender).</li>
+        <li><b>Dependency Injection:</b> The NotificationService no longer instantiates EmailSender or SMSSender internally. Instead, it receives 
+            the required sender through its constructor (dependency injection), which makes the class flexible and easily testable.</li>
+        <li><b>Flexibility:</b> Adding a new type of notification sender (e.g., PushNotificationSender) would not require changing the 
+            NotificationService class. You would only need to create a new class that implements the MessageSender interface and inject it where needed.</li>
+    </ul>
+</div>

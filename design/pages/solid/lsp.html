@@ -13,52 +13,48 @@
     </p>
 </div>
 <div>
-    <h3 class="section-title">SRP Violation Example</h3>
+    <h3 class="section-title">Violation of LSP</h3>
     <div class="example">
-        <p>Consider a simple example of an employee management system. We have an Employee class that handles:</p>
-        <ol>
-            <li>Storing employee information.</li>
-            <li>Calculating the salary.</li>
-            <li>Saving employee data to a database.</li>
-        </ol>
-        <p>This Employee class violates the SRP principle because it has multiple reasons to change:</p>
-        <ol>
-            <li>If the salary calculation logic changes.</li>
-            <li>If the way employee data is stored changes (e.g., moving from a SQL database to a NoSQL database). </li>
-            <li>If new information is added to employee records.</li>
-        </ol>
-        <p>Each of these tasks should belong to separate classes so that changes in one responsibility do not affect other unrelated parts of the system.</p>
+        <p>Let’s assume the Car class has a method refuel(), which fills the tank with gasoline. However, for an electric car, this concept doesn’t make sense 
+            because it doesn’t have a fuel tank, but instead, it has a battery that needs charging.
+        </p>
+        <p>
+            If we are not careful, this difference in behavior could lead to a violation of LSP because the ElectricCar class cannot correctly implement 
+            the behavior of refuel() that makes sense for the Car class.
+        </p>
     </div>
 </div>
 <div>
-    <h5>Code for SRP Violation</h5>
+    <h5>Code for LSP Violation</h5>
     <pre><code>
-        class Employee {
-            private String name;
-            private String position;
-            private double salary;
+        // Base Class: Car
+        class Car {
+            public void refuel() {
+                System.out.println("Filling the fuel tank...");
+            }
+        }
         
-            public Employee(String name, String position, double salary) {
-                this.name = name;
-                this.position = position;
-                this.salary = salary;
+        // Subclass: ElectricCar
+        class ElectricCar extends Car {
+            @Override
+            public void refuel() {
+                // Electric cars don't use fuel, so we throw an exception
+                throw new UnsupportedOperationException("Electric cars don't have fuel tanks!");
+            }
+        }
+        
+        // Method to test LSP violation
+        public class Main {
+            public static void refuelCar(Car car) {
+                car.refuel();  // Expect this method to work for any 'Car'
             }
         
-            // This method handles salary calculation (responsibility 1)
-            public double calculateSalary() {
-                // Salary calculation logic
-                return this.salary * 1.2;  // Assume some bonus calculation
-            }
+            public static void main(String[] args) {
+                Car myCar = new Car();
+                refuelCar(myCar);  // Works fine
         
-            // This method handles storing employee data to a database (responsibility 2)
-            public void saveToDatabase() {
-                // Save employee details to database logic
-                System.out.println("Saving employee to database: " + name);
-            }
-        
-            // This method handles employee data (responsibility 3)
-            public String getEmployeeDetails() {
-                return "Name: " + name + ", Position: " + position + ", Salary: $" + salary;
+                Car myElectricCar = new ElectricCar();
+                refuelCar(myElectricCar);  // Throws an exception, violating LSP
             }
         }
         
@@ -66,107 +62,80 @@
 </div>
 <br>
 <div>
-    <h5>Why This Violates SRP:</h5>
-    <p>The Employee class has multiple responsibilities:</p>
-    <ol>
-        <li>Salary Calculation (calculateSalary()).</li>
-        <li>Persistence (saving employee to the database) (saveToDatabase()).</li>
-        <li>Employee Data (getEmployeeDetails()).</li>
-    </ol>
-    <p>Any changes to the salary calculation, the database system, or employee details could require modifying this class. 
-        This makes the class fragile, harder to test, and difficult to extend.</p>
+    <h5>Explanation of the LSP Violation:</h5>
+    <p>In the above code, the method <b>refuel()</b> is part of the Car class, which implies that all Car subclasses should support 
+        this behavior. However, the ElectricCar class throws an exception when refuel() is called, which violates the 
+        Liskov Substitution Principle. This happens because the ElectricCar class doesn’t behave as expected when substituted for a Car.
+    </p>
+    <p>
+        The client code (refuelCar() method) expects all Car objects, including ElectricCar, to be refueled, but ElectricCar breaks this assumption.
+    </p>
 </div>
 <div>
-    <h3 class="section-title">How to Achieve SRP</h3>
-    <p>To adhere to SRP, we can refactor the code by separating concerns into different classes, each with a single responsibility.<br> 
-        Here's how we can do that:</p>
-        <ol>
-            <li>Employee class should only handle employee-related information.</li>
-            <li>SalaryCalculator class should be responsible for salary calculation.</li>
-            <li>EmployeeRepository class should be responsible for saving employee data to a database.</li>
-        </ol>
+    <h3 class="section-title">How to Achieve LSP</h3>
+    <p>
+        To achieve LSP compliance, we need to rethink the design so that each subclass correctly represents the behavior of its superclass. 
+        One way to solve this is by splitting the Car class into two separate abstractions: one for fuel-powered cars and one for electric-powered cars. 
+        We can introduce a common base class (or interface) like Vehicle that contains shared behavior, 
+        and then separate the logic for refueling and recharging into different subclasses.
+    </p>
 </div>
-<br>
 <div>
-    <h3 class="section-title">Refactored Code Following SRP:</h3>
+    <h5>Refactored Code Following LSP:</h5>
     <pre><code>
-<b>// Class responsible for employee information (responsibility 1)</b>
-class Employee {
-    private String name;
-    private String position;
-    private double salary;
-
-    public Employee(String name, String position, double salary) {
-        this.name = name;
-        this.position = position;
-        this.salary = salary;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-}
-
-<b>// Class responsible for salary calculation (responsibility 2)</b>
-class SalaryCalculator {
-    public double calculate(Employee employee) {
-        // Salary calculation logic
-        return employee.getSalary() * 1.2;  // Assume some bonus calculation
-    }
-}
-
-<b>// Class responsible for saving employee data to the database (responsibility 3)</b>
-class EmployeeRepository {
-    public void save(Employee employee) {
-        // Save employee details to database logic
-        System.out.println("Saving employee to database: " + employee.getName());
-    }
-}
-
-<b>// Demonstrating the usage of refactored classes</b>
-public class SRPExample {
-    public static void main(String[] args) {
-        Employee emp = new Employee("John Doe", "Developer", 50000);
+        <b>// Base Class: Vehicle</b>
+        abstract class Vehicle {
+            public abstract void start();
+        }
         
-        // Responsibility 1: Salary Calculation
-        SalaryCalculator salaryCalculator = new SalaryCalculator();
-        double salary = salaryCalculator.calculate(emp);
-        System.out.println("Calculated Salary: $" + salary);
+        <b>// Fuel-Powered Car</b>
+        class FuelCar extends Vehicle {
+            @Override
+            public void start() {
+                System.out.println("Starting fuel car...");
+            }
         
-        // Responsibility 2: Saving employee data
-        EmployeeRepository employeeRepository = new EmployeeRepository();
-        employeeRepository.save(emp);
+            public void refuel() {
+                System.out.println("Filling the fuel tank...");
+            }
+        }
         
-        // Responsibility 3: Employee data (handled by Employee class)
-        System.out.println("Employee Details: " + emp.getName() + ", " + emp.getPosition() + ", $" + emp.getSalary());
-    }
-}
-
+        <b>// Electric Car</b>
+        class ElectricCar extends Vehicle {
+            @Override
+            public void start() {
+                System.out.println("Starting electric car...");
+            }
+        
+            public void recharge() {
+                System.out.println("Recharging the battery...");
+            }
+        }
+        
+        <b>// Method to demonstrate LSP</b>
+        public class Main {
+            public static void main(String[] args) {
+                Vehicle myFuelCar = new FuelCar();
+                myFuelCar.start();  // Works fine
+        
+                FuelCar fuelCar = new FuelCar();
+                fuelCar.refuel();  // Works fine for FuelCar
+        
+                Vehicle myElectricCar = new ElectricCar();
+                myElectricCar.start();  // Works fine
+        
+                ElectricCar electricCar = new ElectricCar();
+                electricCar.recharge();  // Works fine for ElectricCar
+            }
+        }
     </code></pre>
 </div>
 <div>
-    <h5>How This Adheres to SRP:</h5>
+    <h5>Key Points in the Refactored Design:</h5>
     <ol>
-        <li>The Employee class now only manages employee-related information like name, position, and salary, which is its sole responsibility.</li>
-        <li>The SalaryCalculator class is solely responsible for salary calculation logic, adhering to its single responsibility.</li>
-        <li>The EmployeeRepository class is responsible for saving employee data to the database, handling persistence logic independently of other classes.</li>
+        <li>Common Base Class (Vehicle): Both FuelCar and ElectricCar now extend Vehicle, which provides shared behavior (start() method).</li>
+        <li>Specific Behaviors in Subclasses: The FuelCar class provides a refuel() method, while the ElectricCar class provides a recharge() method. 
+            Now, each class has behavior specific to its type without violating the contract of its parent class.</li>
     </ol>
 </div>
 <br>
-<div>
-    <h3 class="section-title">Benefits of SRP:</h3>
-    <ul>
-        <li>Easier to Maintain: If salary calculation logic changes, only the SalaryCalculator class needs to be modified. Similarly, if the database logic changes, only the EmployeeRepository class would need an update.</li>
-        <li>Improved Testability: Each responsibility is isolated, allowing for independent testing of Employee, SalaryCalculator, and EmployeeRepository classes.</li> 
-        <li>Enhanced Reusability: Each class now has a focused, reusable purpose. For instance, the SalaryCalculator class could be reused for different types of employees or in other contexts.</li>  
-        <li>Better Readability and Understanding: The code becomes cleaner and easier to understand as each class has a clear, singular responsibility.</li>  
-    </ul>
-</div>

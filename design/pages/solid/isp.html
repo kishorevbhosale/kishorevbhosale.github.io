@@ -1,0 +1,161 @@
+<div>
+    <h1 style="text-align: center;">Introduction to Interface Segregation Principle (ISP)</h1>
+    <hr>
+    <p><b>"Clients should not be forced to depend on methods they do not use."</b></p>
+    <p>In simpler terms, ISP encourages the creation of small, specific interfaces rather than large, monolithic ones. 
+        A client (class or object) should only have to implement the methods that are relevant to its purpose. </p>
+</div>
+
+<div>
+    <h5>Example: Printer System</h5>
+    <div class="example">
+        Imagine you are building a system for managing various types of printers in an office. 
+        Initially, you might have a general Printer interface that includes methods for printing, scanning, faxing, and copying.
+        However, not all printers support all of these functionalities — for instance, some printers may only print and 
+        copy but do not have fax or scan capabilities.
+    </div>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Violation of ISP</h3>
+<pre><code>
+    // Fat Interface: Violates ISP
+interface Printer {
+    void print(String document);
+    void scan(String document);
+    void fax(String document);
+    void copy(String document);
+}
+
+<b>// SimplePrinter that does not need fax or scan functionality</b>
+class SimplePrinter implements Printer {
+    @Override
+    public void print(String document) {
+        System.out.println("Printing: " + document);
+    }
+
+    @Override
+    public void scan(String document) {
+        throw new UnsupportedOperationException("SimplePrinter does not support scanning");
+    }
+
+    @Override
+    public void fax(String document) {
+        throw new UnsupportedOperationException("SimplePrinter does not support faxing");
+    }
+
+    @Override
+    public void copy(String document) {
+        System.out.println("Copying: " + document);
+    }
+}
+
+<b>// MultiFunctionPrinter that supports all functionalities</b>
+class MultiFunctionPrinter implements Printer {
+    @Override
+    public void print(String document) {
+        System.out.println("Printing: " + document);
+    }
+
+    @Override
+    public void scan(String document) {
+        System.out.println("Scanning: " + document);
+    }
+
+    @Override
+    public void fax(String document) {
+        System.out.println("Faxing: " + document);
+    }
+
+    @Override
+    public void copy(String document) {
+        System.out.println("Copying: " + document);
+    }
+}
+</code></pre>
+</div>
+<br>
+<div>
+    <h5>Problem (ISP Violation)</h5>
+    <p>The SimplePrinter class, which is a basic printer, does not support scanning or faxing. 
+        However, because it implements the Printer interface, it is forced to provide implementations for these methods. 
+        This leads to the unnecessary implementation of methods like scan() and fax(), which either throw exceptions or remain unimplemented.
+    </p>
+</div>
+<div>
+    <h3 class="section-title">Solution: ISP</h3>
+    <p>
+        To comply with the Interface Segregation Principle, we should break the large, monolithic Printer interface into smaller, 
+        more specific interfaces. This way, each printer class only implements the interfaces relevant to its capabilities.
+    </p>
+    <pre><code>
+// Segregated Interfaces adhering to ISP
+interface Printable {
+    void print(String document);
+}
+
+interface Scannable {
+    void scan(String document);
+}
+
+interface Faxable {
+    void fax(String document);
+}
+
+interface Copyable {
+    void copy(String document);
+}
+
+// SimplePrinter that only supports printing and copying
+class SimplePrinter implements Printable, Copyable {
+    @Override
+    public void print(String document) {
+        System.out.println("Printing: " + document);
+    }
+
+    @Override
+    public void copy(String document) {
+        System.out.println("Copying: " + document);
+    }
+}
+
+// MultiFunctionPrinter that supports all functionalities
+class MultiFunctionPrinter implements Printable, Scannable, Faxable, Copyable {
+    @Override
+    public void print(String document) {
+        System.out.println("Printing: " + document);
+    }
+
+    @Override
+    public void scan(String document) {
+        System.out.println("Scanning: " + document);
+    }
+
+    @Override
+    public void fax(String document) {
+        System.out.println("Faxing: " + document);
+    }
+
+    @Override
+    public void copy(String document) {
+        System.out.println("Copying: " + document);
+    }
+}
+    </code></pre>
+</div>
+<br>
+<div>
+    <h5>Key Points in the Refactored Design:</h5>
+    <ol>
+        <li>Small, Specific Interfaces: We have now segregated the functionalities into smaller, 
+            more specific interfaces: Printable, Scannable, Faxable, and Copyable. 
+            This way, printer classes only implement the functionalities they actually support.</li>
+
+        <li>SimplePrinter Class: The SimplePrinter now implements only the Printable and Copyable interfaces, 
+            which are the functionalities it supports. It no longer needs to provide implementations for scan() and fax(), 
+            which are irrelevant to its purpose.</li>
+
+        <li>MultiFunctionPrinter Class: The MultiFunctionPrinter implements all four interfaces 
+            (Printable, Scannable, Faxable, Copyable), as it supports all the functionalities.</li>
+    </ol>
+</div>
