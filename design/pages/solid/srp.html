@@ -1,0 +1,171 @@
+<div>
+    <h1 style="text-align: center;">Single Responsibility Principle (SRP)</h1>
+    <hr>
+    <p>
+        The <b>Single Responsibility Principle (SRP)</b> is one of the five S.O.L.I.D. design principles, 
+        and it focuses on the idea that a class should only have <b>one responsibility</b> or <b>one reason to change</b>.
+    </p>
+    <p>
+        A <b>responsibility</b> refers to a role or a purpose the class is supposed to fulfill. 
+        By adhering to SRP, classes become smaller, more cohesive, and easier to maintain or extend. 
+        This principle is vital for reducing code complexity and improving maintainability in object-oriented programming.
+    </p>
+</div>
+<div>
+    <h3 class="section-title">SRP Violation Example</h3>
+    <div class="example">
+        <p>Consider a simple example of an employee management system. We have an Employee class that handles:</p>
+        <ol>
+            <li>Storing employee information.</li>
+            <li>Calculating the salary.</li>
+            <li>Saving employee data to a database.</li>
+        </ol>
+        <p>This Employee class violates the SRP principle because it has multiple reasons to change:</p>
+        <ol>
+            <li>If the salary calculation logic changes.</li>
+            <li>If the way employee data is stored changes (e.g., moving from a SQL database to a NoSQL database). </li>
+            <li>If new information is added to employee records.</li>
+        </ol>
+        <p>Each of these tasks should belong to separate classes so that changes in one responsibility do not affect other unrelated parts of the system.</p>
+    </div>
+</div>
+<div>
+    <h5>Code for SRP Violation</h5>
+    <pre><code>
+        class Employee {
+            private String name;
+            private String position;
+            private double salary;
+        
+            public Employee(String name, String position, double salary) {
+                this.name = name;
+                this.position = position;
+                this.salary = salary;
+            }
+        
+            // This method handles salary calculation (responsibility 1)
+            public double calculateSalary() {
+                // Salary calculation logic
+                return this.salary * 1.2;  // Assume some bonus calculation
+            }
+        
+            // This method handles storing employee data to a database (responsibility 2)
+            public void saveToDatabase() {
+                // Save employee details to database logic
+                System.out.println("Saving employee to database: " + name);
+            }
+        
+            // This method handles employee data (responsibility 3)
+            public String getEmployeeDetails() {
+                return "Name: " + name + ", Position: " + position + ", Salary: $" + salary;
+            }
+        }
+        
+    </code></pre>
+</div>
+<br>
+<div>
+    <h5>Why This Violates SRP:</h5>
+    <p>The Employee class has multiple responsibilities:</p>
+    <ol>
+        <li>Salary Calculation (calculateSalary()).</li>
+        <li>Persistence (saving employee to the database) (saveToDatabase()).</li>
+        <li>Employee Data (getEmployeeDetails()).</li>
+    </ol>
+    <p>Any changes to the salary calculation, the database system, or employee details could require modifying this class. 
+        This makes the class fragile, harder to test, and difficult to extend.</p>
+</div>
+<div>
+    <h3 class="section-title">How to Achieve SRP</h3>
+    <p>To adhere to SRP, we can refactor the code by separating concerns into different classes, each with a single responsibility.<br> 
+        Here's how we can do that:</p>
+        <ol>
+            <li>Employee class should only handle employee-related information.</li>
+            <li>SalaryCalculator class should be responsible for salary calculation.</li>
+            <li>EmployeeRepository class should be responsible for saving employee data to a database.</li>
+        </ol>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Refactored Code Following SRP:</h3>
+    <pre><code>
+<b>// Class responsible for employee information (responsibility 1)</b>
+class Employee {
+    private String name;
+    private String position;
+    private double salary;
+
+    public Employee(String name, String position, double salary) {
+        this.name = name;
+        this.position = position;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+
+<b>// Class responsible for salary calculation (responsibility 2)</b>
+class SalaryCalculator {
+    public double calculate(Employee employee) {
+        // Salary calculation logic
+        return employee.getSalary() * 1.2;  // Assume some bonus calculation
+    }
+}
+
+<b>// Class responsible for saving employee data to the database (responsibility 3)</b>
+class EmployeeRepository {
+    public void save(Employee employee) {
+        // Save employee details to database logic
+        System.out.println("Saving employee to database: " + employee.getName());
+    }
+}
+
+<b>// Demonstrating the usage of refactored classes</b>
+public class SRPExample {
+    public static void main(String[] args) {
+        Employee emp = new Employee("John Doe", "Developer", 50000);
+        
+        // Responsibility 1: Salary Calculation
+        SalaryCalculator salaryCalculator = new SalaryCalculator();
+        double salary = salaryCalculator.calculate(emp);
+        System.out.println("Calculated Salary: $" + salary);
+        
+        // Responsibility 2: Saving employee data
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        employeeRepository.save(emp);
+        
+        // Responsibility 3: Employee data (handled by Employee class)
+        System.out.println("Employee Details: " + emp.getName() + ", " + emp.getPosition() + ", $" + emp.getSalary());
+    }
+}
+
+    </code></pre>
+</div>
+<div>
+    <h5>How This Adheres to SRP:</h5>
+    <ol>
+        <li>The Employee class now only manages employee-related information like name, position, and salary, which is its sole responsibility.</li>
+        <li>The SalaryCalculator class is solely responsible for salary calculation logic, adhering to its single responsibility.</li>
+        <li>The EmployeeRepository class is responsible for saving employee data to the database, handling persistence logic independently of other classes.</li>
+    </ol>
+</div>
+<br>
+<div>
+    <h3 class="section-title">Benefits of SRP:</h3>
+    <ul>
+        <li>Easier to Maintain: If salary calculation logic changes, only the SalaryCalculator class needs to be modified. Similarly, if the database logic changes, only the EmployeeRepository class would need an update.</li>
+        <li>Improved Testability: Each responsibility is isolated, allowing for independent testing of Employee, SalaryCalculator, and EmployeeRepository classes.</li> 
+        <li>Enhanced Reusability: Each class now has a focused, reusable purpose. For instance, the SalaryCalculator class could be reused for different types of employees or in other contexts.</li>  
+        <li>Better Readability and Understanding: The code becomes cleaner and easier to understand as each class has a clear, singular responsibility.</li>  
+    </ul>
+</div>
