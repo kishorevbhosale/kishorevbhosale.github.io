@@ -33,8 +33,14 @@
             <!-- Left Panel (Topics) -->
             <div class="col-md-3 left-panel">
                 <h3 class="panel-title">Topics</h3>
+                <div>
+                    <!-- Search Box -->
+                    <input type="text" id="searchInput" placeholder="Search topics..." />
+                    <button id="searchButton">Search</button>
+                    <br>
+                </div>
 
-                <div class="collapsible-container">
+                <div class="collapsible-container"><br>
                     <div class="collapsible-header" onclick="toggleCollapsible(event)">Object Oriented Programming</div>
                     <div class="collapsible-content">
                         <a href="design/pages/oops/basic_oops.html" class="nav-link" onclick="loadPage(event)">Basic of OOPs</a>
@@ -53,7 +59,7 @@
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapsible(event)">Design Pattern</div>
                     <div class="collapsible-content">
-                        <a href="design/pages/under_construction.html" class="nav-link" onclick="loadPage(event)">Under Construction</a>
+                        <a href="design/pages/design_pattern/introduction.html" class="nav-link" onclick="loadPage(event)">Introduction to Design Patterns</a>
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapsible(event)">Low Level Design</div>
                     <div class="collapsible-content">

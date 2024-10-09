@@ -1,0 +1,109 @@
+<div>
+    <h1 style="text-align: center;">Introduction to Design Patterns</h1>
+    <hr>
+    <p>
+        Creating efficient, reusable code is a key goal for all developers, especially when working on large-scale applications. 
+        A well-organized code structure is essential to avoid duplication when performing similar tasks. 
+        However, extending and adding new features to an existing system can be quite challenging, as developers must fully 
+        understand the system’s intricacies—such as the relationships between entities and the hierarchy they follow. 
+        Additionally, code should be designed to accommodate future changes with minimal effort. 
+        In these situations, having a structured approach to addressing common challenges becomes invaluable. 
+        This is where design patterns come into play.
+    </p>
+    <p>
+        Design patterns are standard solutions to common software design problems that developers encounter. 
+        They represent best practices and reusable approaches that help in solving recurring design issues in software architecture. 
+        Design patterns are not actual code implementations but templates or guidelines on how to structure code to achieve particular design goals.
+      </p>
+</div>
+<div>
+    <h3 class="section-title">Structure of Design Patterns</h3>
+    <ul>
+        <li><strong>Pattern Name:</strong> A clear and descriptive name for the design pattern.</li>
+        <li><strong>Intent:</strong> The problem it solves and the goal it achieves.</li>
+        <li><strong>Applicability:</strong> Scenarios where the pattern can be applied.</li>
+        <li><strong>Participants:</strong> The classes or objects involved in the pattern.</li>
+        <li><strong>Consequences:</strong> The pros and cons of using the pattern.</li>
+        <li><strong>Structure:</strong> A diagram or description of how the pattern is structured.</li>
+        <li><strong>Implementation:</strong> Guidelines on how to implement the pattern in code.</li>
+    </ul>
+</div>
+<div>
+    <h3 class="section-title">Advantages of Design Patterns</h3>
+    <ul>
+        <li><strong>Code Reusability:</strong> Design patterns provide reusable solutions that save time and effort.</li>
+        <li><strong>Best Practices:</strong> They represent tried-and-tested solutions that follow best practices.</li>
+        <li><strong>Improved Communication:</strong> Using design patterns creates a common vocabulary among developers, improving communication.</li>
+        <li><strong>Flexibility and Scalability:</strong> They help in building scalable and flexible software systems by organizing the code in a modular way.</li>
+        <li><strong>Maintainability:</strong> Code is easier to maintain and extend, reducing bugs and enhancing long-term development.</li>
+    </ul>
+</div>
+<div>
+    <h3 class="section-title">Consequences of Unfamiliarity with Design Patterns</h3>
+    <ul>
+        <li><strong>Reinventing the Wheel:</strong> Developers may spend time solving problems that already have well-established solutions.</li>
+        <li><strong>Poor Code Quality:</strong> Lack of knowledge leads to inefficient designs, making the code difficult to maintain or extend.</li>
+        <li><strong>Limited Collaboration:</strong> Inability to communicate effectively with other developers using common design terminology.</li>
+        <li><strong>Increased Technical Debt:</strong> Without proper design, code becomes rigid and more expensive to refactor later.</li>
+    </ul>
+</div>
+<div>
+    <h3 class="section-title">Classification of Design Patterns</h3>
+
+    <h5>1. Creational Design Patterns</h5>
+    <p>
+        Creational patterns deal with object creation mechanisms. They abstract the instantiation process to make the system independent of how objects are created.
+    </p>
+    <ul>
+        <li><strong>Factory Method:</strong> Defines an interface for creating objects, but lets subclasses alter the type of objects they create.</li>
+        <li><strong>Abstract Factory:</strong> Provides an interface for creating families of related or dependent objects without specifying their concrete classes.</li>
+        <li><strong>Constructor:</strong>This is a class-based design pattern that utilizes constructors in a class to create specific types of objects.</li>
+        <li><strong>Singleton:</strong> Ensures a class has only one instance and provides a global point of access to it.</li>
+        <li><strong>Builder:</strong> Separates the construction of a complex object from its representation.</li>
+        <li><strong>Prototype:</strong> Creates new objects by copying an existing object, allowing for easy cloning.</li>
+    </ul>
+    <hr style="border: none; border-top: 1px solid #d3d3d3; margin: 20px 0;">
+    <h5>2. Structural Design Patterns</h5>
+    <p>
+        Structural patterns deal with object composition, helping structure classes and objects to form larger systems. They focus on the relationship between entities.
+    </p>
+    <ul>
+        <li><strong>Adapter:</strong> Converts the interface of a class into another interface that clients expect, enabling incompatible interfaces to work together.</li>
+        <li><strong>Bridge:</strong> Separates an object’s abstraction from its implementation so the two can vary independently.</li>
+        <li><strong>Composite:</strong> Composes objects into tree structures to represent part-whole hierarchies.</li>
+        <li><strong>Decorator:</strong> Adds responsibilities to an object dynamically, without modifying its structure.</li>
+        <li><strong>Facade:</strong> Provides a unified interface to a set of interfaces in a subsystem, simplifying interactions.</li>
+        <li><strong>Flyweight:</strong> Reduces the cost of creating large numbers of similar objects by sharing common state.</li>
+        <li><strong>Proxy:</strong> Provides a surrogate or placeholder for another object to control access to it.</li>
+    </ul>
+    <hr style="border: none; border-top: 1px solid #d3d3d3; margin: 20px 0;">
+    <h5>3. Behavioral Design Patterns</h5>
+    <p>
+        Behavioral patterns focus on communication between objects, managing how objects interact with each other in a system.
+    </p>
+    <ul>
+        <li><strong>Chain of Responsibility:</strong> Passes a request along a chain of handlers, each having the chance to process it or pass it along the chain.</li>
+        <li><strong>Command:</strong> Encapsulates a request as an object, allowing for parameterization of clients with different requests.</li>
+        <li><strong>Interpreter:</strong> Defines a grammar and interprets sentences of that grammar within a given context.</li>
+        <li><strong>Iterator:</strong> Provides a way to sequentially access the elements of a collection without exposing its underlying representation.</li>
+        <li><strong>Mediator:</strong> Reduces communication complexity by centralizing communication between classes in a mediator object.</li>
+        <li><strong>Memento:</strong> Captures an object’s internal state to be restored later without violating encapsulation.</li>
+        <li><strong>Observer:</strong> Defines a dependency between objects so that when one changes state, others are notified and updated automatically.</li>
+        <li><strong>State:</strong> Allows an object to change its behavior when its internal state changes.</li>
+        <li><strong>Strategy:</strong> Defines a family of algorithms, encapsulates each one, and makes them interchangeable.</li>
+        <li><strong>Template Method:</strong> Defines the skeleton of an algorithm, with steps deferred to subclasses.</li>
+        <li><strong>Visitor:</strong> Allows adding new operations to a class hierarchy without modifying the existing classes.</li>
+    </ul>
+    <hr style="border: none; border-top: 1px solid #d3d3d3; margin: 20px 0;">
+    <h5>4. Architectural Design Patterns</h5>
+    <p>
+        Architectural patterns deal with the high-level structure of the entire system, ensuring scalability, maintainability, and robustness.
+    </p>
+    <ul>
+        <li><strong>Layered Architecture:</strong> Organizes the system into layers, with each layer having a specific responsibility.</li>
+        <li><strong>Microservices Architecture:</strong> Structures the system as a collection of loosely coupled, independently deployable services.</li>
+        <li><strong>Event-Driven Architecture:</strong> Encourages the production, detection, and consumption of events to drive application behavior.</li>
+        <li><strong>Client-Server Architecture:</strong> Defines a relationship between clients (requesters of services) and servers (providers of services).</li>
+        <li><strong>Model-View-Controller (MVC):</strong> Separates an application into three main components: Model, View, and Controller.</li>
+    </ul>
+</div>
