@@ -178,6 +178,7 @@ pre {
     font-size: 13px;
     white-space: pre-wrap;
     overflow-x: auto;
+    color: #333; /* Dark gray color for text */
 }
 
 code {
@@ -186,7 +187,9 @@ code {
     border-radius: 4px;
     font-family: 'Courier New', monospace;
     font-size: 13px;
+    color: #0c0c0c; /* Dark gray color for text */
 }
+
 
 html {
     scroll-behavior: smooth;

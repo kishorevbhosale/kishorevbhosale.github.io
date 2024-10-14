@@ -1,0 +1,71 @@
+<div class="creational-patterns">
+    <h2>Creational Design Patterns</h2>
+    <p>
+        Creational design patterns deal with object creation mechanisms. These patterns abstract the instantiation process, making a system independent of how its objects are created, composed, and represented. 
+        This is useful when the system should not depend on the way objects are instantiated or when the instantiation process is complex.
+    </p>
+
+    <h3 class="section-title">When to Use Which Creational Design Pattern</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Creational Pattern</th>
+                <th>Use Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="../../../../design/pages/design_pattern/creational/singleton.html" class="nav-link" onclick="loadPage(event)">Singleton</a></td>
+                <td>Use when only one instance of a class should exist globally (e.g., logging, database connection).</td>
+            </tr>
+            <tr>
+                <td><a href="#factory-method">Factory Method</a></td>
+                <td>Use when a class delegates the responsibility of creating objects to its subclasses or separate methods.</td>
+            </tr>
+            <tr>
+                <td><a href="#abstract-factory">Abstract Factory</a></td>
+                <td>Use when you need to create families of related objects without specifying their concrete classes.</td>
+            </tr>
+            <tr>
+                <td><a href="#builder">Builder</a></td>
+                <td>Use when constructing an object step by step is required, especially when the creation process is complex or requires multiple optional fields.</td>
+            </tr>
+            <tr>
+                <td><a href="#prototype">Prototype</a></td>
+                <td>Use when the cost of creating an object is expensive or complex, and you can create a prototype of the object and clone it.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>Most Commonly Used Creational Design Pattern</h5>
+    <p>
+        The <strong>Singleton</strong> pattern is the most commonly used creational design pattern. It ensures that a class has only one instance and provides a global point of access to it. This is particularly useful in scenarios like managing database connections, logging mechanisms, or configurations that should be shared across the system.
+    </p>
+
+    <h3 class="section-title">Pros and Cons of Creational Design Patterns</h3>
+    <div class="pros-cons">
+        <h5>Pros</h5>
+        <ul>
+            <li>Improves flexibility and reusability by decoupling object creation from the client code.</li>
+            <li>Encapsulates complex object creation logic, making the code easier to manage and maintain.</li>
+            <li>Ensures that objects are created in a controlled and consistent manner (e.g., Singleton).</li>
+            <li>Supports complex object construction (e.g., Builder) or creating multiple related objects (e.g., Abstract Factory).</li>
+        </ul>
+
+        <h5>Cons</h5>
+        <ul>
+            <li>Can add complexity to the design due to extra layers of abstraction.</li>
+            <li>Some patterns (like Singleton) can be difficult to unit test because they introduce global states.</li>
+            <li>Overuse can lead to an overly complex and hard-to-understand codebase.</li>
+        </ul>
+    </div>
+
+    <h3 class="section-title">List of Creational Design Patterns</h3>
+    <ul>
+        <li><b>Singleton Pattern</b> Ensures a class has only one instance and provides a global access point to that instance.</li>
+        <li><b>Factory Method Pattern</b>: Defines an interface for creating objects but allows subclasses to alter the type of created objects.</li>
+        <li><b>Abstract Factory Pattern</b>: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.</li>
+        <li><b>Builder Pattern</b>: Allows constructing complex objects step by step, separating the construction process from the representation.</li>
+        <li><b>Prototype Pattern</b>: Allows copying existing objects without making the code dependent on their classes.</li>
+    </ul>
+</div>
