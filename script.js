@@ -122,6 +122,9 @@ const links = [
     { text: "Spring Boot Exception Handling", url: "design/pages/spring_boot/exception_handling.html" },
     { text: "Spring Boot Input Data Validation", url: "design/pages/spring_boot/input_data_validation.html" },
     { text: "Spring Boot REST API Documentation", url: "design/pages/spring_boot/rest_api_documentation.html" },
+
+    // cicd
+    { text: "CICD flow", url: "design/pages/devops/cicd_flow.html" },
     
     // general
     { text: "OSI layer", url: "design/pages/general/osi_layer.html" },
