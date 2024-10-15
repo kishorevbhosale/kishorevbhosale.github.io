@@ -1,0 +1,76 @@
+<div>
+    <h1 style="text-align: center;">OSI Model - 7 Layers</h1>
+    <hr>
+    <img src="../../../images/osi.PNG" alt="Spring" style="display: block; margin: auto; width: 70%" class="img-fluid">
+    <h3 class="section-title">1. Physical Layer</h3>
+    <ul>
+      <li>Responsible for the actual <b>physical connection</b> between devices.</li>
+      <li>Handles transmission of raw binary data over the medium (e.g., copper wires, fiber optics).</li>
+      <li>Deals with aspects like voltage levels, timing, and data rate (bit rate).</li>
+      <li>Includes hardware components like cables, switches, and network interface cards (NICs).</li>
+      <li>Concerned with modulation, signal strength, and noise immunity.</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h3 class="section-title">2. Data Link Layer</h3>
+    <ul>
+      <li>Ensures reliable data transfer between two directly connected nodes (e.g., within a local network).</li>
+      <li>Divided into two sublayers: <b>Logical Link Control (LLC)</b> and <b>Media Access Control (MAC)</b>.</li>
+      <li>LLC handles error detection and flow control.</li>
+      <li>MAC addresses access to shared media and manages hardware (MAC) addressing.</li>
+      <li><b>Responsible for framing, addressing, error detection (CRC), and retransmission of lost frames.</b></li>
+    </ul>
+  </div>
+  
+  <div>
+    <h3 class="section-title">3. Network Layer</h3>
+    <ul>
+      <li>Manages the delivery of packets across multiple networks (routing).</li>
+      <li>Handles logical addressing through <b>IP addresses (IPv4/IPv6)</b>.</li>
+      <li>Determines the best path for data to travel across networks (<b>routing algorithms, such as OSPF, RIP, BGP</b>).</li>
+      <li><b>Responsible for packet forwarding, fragmentation, and reassembly.</b></li>
+      <li>Provides connectionless communication (e.g., the Internet).</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h3 class="section-title">4. Transport Layer</h3>
+    <ul>
+      <li>Ensures end-to-end communication between devices.</li>
+      <li>Handles <b>segmentation and reassembly of data</b> (breaks data into segments).</li>
+      <li><b>Provides error recovery, flow control, and retransmission of lost packets.</b></li>
+      <li>Protocols: Transmission Control Protocol <b>(TCP – reliable, connection-oriented)</b> and User Datagram Protocol <b>(UDP – connectionless, faster but less reliable)</b>.</li>
+      <li>Manages port addressing, allowing multiple applications to use the network simultaneously.</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h3 class="section-title">5. Session Layer</h3>
+    <ul>
+      <li>Establishes, maintains, and terminates communication <b>sessions</b> between applications.</li>
+      <li><b>Provides synchronization, session checkpoints, and recovery </b>(useful in cases of disconnection).</li>
+      <li>Manages sessions and dialogues between source and destination systems (e.g., handling sessions in video streaming or remote desktop connections).</li>
+      <li><b>Ensures full-duplex, half-duplex, or simplex communication.</b></li>
+    </ul>
+  </div>
+  
+  <div>
+    <h3 class="section-title">6. Presentation Layer</h3>
+    <ul>
+      <li>Translates data between the application layer and the lower layers <b>(data encoding, translation, and conversion)</b>.</li>
+      <li>Handles data formats such as <b>encryption, compression, and encoding</b> (e.g., JPEG, PNG, ASCII, EBCDIC, encryption standards like SSL/TLS).</li>
+      <li>Ensures that data sent by the application layer is readable by the receiving system, despite potential differences in data representation.</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h3 class="section-title">7. Application Layer</h3>
+    <ul>
+      <li>Closest to the end user, this layer interacts directly with software applications that use the network.</li>
+      <li><b>Provides network services to end-user applications</b> (e.g., email, file transfer, web browsing).</li>
+      <li>Handles application-specific protocols like <b>HTTP, FTP, SMTP, DNS, POP3</b>  etc.</li>
+      <li>Acts as an interface for communication and ensures that the network services meet user needs.</li>
+    </ul>
+  </div>
+  
