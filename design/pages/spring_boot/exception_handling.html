@@ -10,7 +10,7 @@
     <p>Spring Boot provides robust exception handling mechanisms. These mechanisms ensure that the application gracefully handles exceptions and returns meaningful error messages to the client. Below are the main ways to handle exceptions in Spring Boot:</p>
     <ul>
         <li>Using @ExceptionHandler</li>
-        <li>Using @ControllerAdvice</li>
+        <li>Using @RestControllerAdvice</li>
         <li>Using ResponseStatusException</li>
         <li>Custom error responses</li>
     </ul>
@@ -40,17 +40,17 @@ public class ExceptionController {
     </code></pre>
 
     <br>
-    <h3 class="section-title">3. Global Exception Handling using @ControllerAdvice</h3>
-    <p>The <strong>@ControllerAdvice</strong> annotation is used to define a global exception handler that applies to all controllers. This is a centralized way to manage exceptions.</p>
+    <h3 class="section-title">3. Global Exception Handling using @RestControllerAdvice</h3>
+    <p>The <strong>@RestControllerAdvice</strong> annotation is used to define a global exception handler that applies to all controllers. This is a centralized way to manage exceptions.</p>
     <p><strong>Example:</strong> Creating a global exception handler for all exceptions.</p>
     <pre><code>
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
@@ -133,12 +133,12 @@ public class CustomErrorResponse {
 
     <p><strong>Step 2:</strong> Use the custom error response in the global exception handler.</p>
     <pre><code>
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.ResponseEntity;
 import java.time.LocalDateTime;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class CustomGlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
@@ -158,7 +158,7 @@ public class CustomGlobalExceptionHandler {
     <br>
     <h3 class="section-title">7. Handling Validation Exceptions</h3>
     <p>Spring Boot automatically handles validation using annotations like <b>@Valid</b> and <b>@Validated</b>, but custom validation exceptions can also be handled.</p>
-    <p><strong>Example:</strong> Handling validation exceptions using @ControllerAdvice.</p>
+    <p><strong>Example:</strong> Handling validation exceptions using @RestControllerAdvice.</p>
     <pre><code>
     <b>// DTO Class with Validation</b>
     public class ProductRequest {
@@ -181,7 +181,7 @@ public class CustomGlobalExceptionHandler {
     }
     <hr>
     <b>// Global Exception Handler</b>
-    @ControllerAdvice
+    @RestControllerAdvice
     public class GlobalExceptionHandler {
     
         @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -216,7 +216,7 @@ public class CustomGlobalExceptionHandler {
     <h3 class="section-title">9. Summary</h3>
     <ul>
         <li><strong>@ExceptionHandler</strong> is used for local exception handling in a controller.</li>
-        <li><strong>@ControllerAdvice</strong> is used for global exception handling across all controllers.</li>
+        <li><strong>@RestControllerAdvice</strong> is used for global exception handling across all controllers.</li>
         <li><strong>@ResponseStatus</strong> maps an exception to a specific HTTP status code.</li>
         <li><strong>ResponseStatusException</strong> is used to throw exceptions directly from the controller with an HTTP status.</li>
         <li>Custom error responses can be structured using a custom error class.</li>
@@ -224,17 +224,17 @@ public class CustomGlobalExceptionHandler {
 
     <h3 class="section-title">Interview Questions and Answers</h2>
         <div class="interview-question">
-            <strong>Q1: You have a Spring Boot application where you are handling exceptions globally using @ControllerAdvice. 
+            <strong>Q1: You have a Spring Boot application where you are handling exceptions globally using @RestControllerAdvice. 
                 However, in one specific controller method, you want to handle exceptions differently and avoid global handling. 
                 How would you achieve this?</strong>
         </div>
         <div class="interview-answer">
-            <p>You can exclude specific methods from being handled by <b>@ControllerAdvice</b> by using <b>@ExceptionHandler</b> directly within the controller method itself. 
+            <p>You can exclude specific methods from being handled by <b>@RestControllerAdvice</b> by using <b>@ExceptionHandler</b> directly within the controller method itself. 
                 This allows for a more fine-grained exception handling strategy.
                 <pre><code>
 
-    <b>// Global exception handler using @ControllerAdvice</b>
-    @ControllerAdvice
+    <b>// Global exception handler using @RestControllerAdvice</b>
+    @RestControllerAdvice
     public class GlobalExceptionHandler {
 
         @ExceptionHandler(ResourceNotFoundException.class)
@@ -287,10 +287,10 @@ public class CustomGlobalExceptionHandler {
         </div>
         <div class="interview-answer">
             <p>
-                You can create custom exception handling for specific exceptions related to HTTP client and server errors by using <b>@ControllerAdvice</b> with multiple <b>@ExceptionHandler</b> methods.
+                You can create custom exception handling for specific exceptions related to HTTP client and server errors by using <b>@RestControllerAdvice</b> with multiple <b>@ExceptionHandler</b> methods.
 <pre><code>
     <b>// Exception handler for RestTemplate HTTP exceptions</b>
-    @ControllerAdvice
+    @RestControllerAdvice
     public class RestTemplateExceptionHandler {
     
         @ExceptionHandler(HttpClientErrorException.class)
