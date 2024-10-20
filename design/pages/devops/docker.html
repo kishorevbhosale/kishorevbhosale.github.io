@@ -44,6 +44,20 @@ Here’s a comprehensive list of points showcasing an in-depth understanding of 
 - **Image Versioning:** Use tags to version images, facilitating easy rollbacks and updates.
 - **Docker Compose:** A tool for defining and running multi-container Docker applications using a YAML file for configuration.
 
+### Layers in Docker image
+- **What is layers:** Docker images are built from layers. Each layer represents a specific change or addition to the image. 
+For example, a layer might contain the installation of a specific package or library that the image needs.
+- **Usecase:** When you build a Docker image for your Spring Boot application, Docker will create a layer for each step in the build process. 
+For example, one layer might contain the installation of the Java runtime environment, another layer might contain the installation of any 
+necessary dependencies, and so on. Once the image has been built, Docker caches each layer so that subsequent builds can reuse any unchanged layers. 
+-- **Advantages:** When you deploy your Spring Boot application using Docker, Docker will use a cache to speed up the deployment process. 
+When you deploy a new version of your application, Docker will only pull down the layers that have changed from the Docker registry, 
+rather than pulling down the entire image again. This can help to reduce the amount of data that needs to be transferred over the network, and speed up the deployment process.
+-- **Note:** Each layer in the Docker image is immutable, which means that any changes made to a layer will create a new layer in the image. 
+This is why it's important to structure your Dockerfile in a way that minimizes the number of layers and reduces the size of the final image.
+
+
+
 ### Networking in Docker
 - **Bridge Network:** The default network type for containers, allowing communication on the same host.
 - **Overlay Network:** Facilitates communication between containers across different hosts in a Docker Swarm.
