@@ -1,0 +1,327 @@
+<div>
+    <h1 style="text-align: center;">Git Command Cheatsheet: From Beginner to Expert</h1>
+    <hr>
+    <p>
+        Git is a powerful distributed version control system that enables developers to track changes in source code effectively. 
+        It supports branching and merging, allowing multiple developers to work on features simultaneously without disrupting the main codebase. 
+        This promotes collaboration and makes it easy to revert to previous versions when necessary. 
+        Overall, Git enhances productivity and helps teams coordinate their work effectively.
+    </p>
+</div>
+<div>
+    <div>
+        <h2>Git Command Cheatsheet: From Beginners to Expert</h2>
+        
+        <ul>    <br>
+            <li>
+                <strong>git init</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git init my_repo</code></li>
+                    <li><em>Description:</em> Initializes a new Git repository in the specified directory.</li>
+                </ul>
+            </li>
+                <br>
+            <li>
+                <strong>git clone &lt;repository_url&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git clone https://github.com/user/repo.git</code></li>
+                    <li><em>Description:</em> Creates a local copy of a remote repository.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git status</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git status</code></li>
+                    <li><em>Description:</em> Displays the state of the working directory and staging area, including changes that are staged, unstaged, or untracked.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git add &lt;file&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git add file.txt</code></li>
+                    <li><em>Description:</em> Stages changes in the specified file for the next commit.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git add .</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git add .</code></li>
+                    <li><em>Description:</em> Stages all changes (new, modified, and deleted files) in the current directory.</li>
+                    <li><em>When to use:</em> Use this command when you want to stage all changes in your project at once.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git commit -m &lt;message&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git commit -m "Fix issue with user login"</code></li>
+                    <li><em>Description:</em> Records the staged changes in the repository with a descriptive message.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git log</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git log</code></li>
+                    <li><em>Description:</em> Displays a history of commits in the current branch.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git checkout &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git checkout feature-branch</code></li>
+                    <li><em>Description:</em> Switches to the specified branch.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git branch</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git branch</code></li>
+                    <li><em>Description:</em> Lists all local branches in the repository, highlighting the current branch.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git branch &lt;branch_name&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git branch new-feature</code></li>
+                    <li><em>Description:</em> Creates a new branch with the specified name.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git merge &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git merge feature-branch</code></li>
+                    <li><em>Description:</em> Merges changes from the specified branch into the current branch.</li>
+                    <li><em>When to use:</em> Use this command after finishing work on a feature branch to integrate changes back into the main branch.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git pull</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git pull origin main</code></li>
+                    <li><em>Description:</em> Fetches changes from the remote repository and merges them into the current branch.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git push &lt;remote&gt; &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git push origin main</code></li>
+                    <li><em>Description:</em> Pushes local changes in the specified branch to the remote repository.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git remote add &lt;remote_name&gt; &lt;repository_url&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git remote add origin https://github.com/user/repo.git</code></li>
+                    <li><em>Description:</em> Adds a new remote repository under a specified name.</li>
+                    <li><em>When to use:</em> Use this command when you want to associate a local repository with a remote one.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git remote -v</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git remote -v</code></li>
+                    <li><em>Description:</em> Displays a list of remote repositories and their URLs.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git stash</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git stash</code></li>
+                    <li><em>Description:</em> Temporarily saves changes that are not ready to be committed, allowing you to revert to a clean working directory.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git stash pop</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git stash pop</code></li>
+                    <li><em>Description:</em> Restores the most recent stashed changes and removes them from the stash list.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git rebase &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git rebase main</code></li>
+                    <li><em>Description:</em> Reapplies commits on top of another base tip, effectively changing the base of your branch.</li>
+                    <li><em>When to use:</em> Use this command to integrate changes from one branch into another while keeping a cleaner history.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git reset &lt;file&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git reset file.txt</code></li>
+                    <li><em>Description:</em> Unstages the specified file, keeping the changes in the working directory.</li>
+                    <li><em>When to use:</em> Use this command if you accidentally added a file to the staging area and want to unstage it.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git reset --hard</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git reset --hard HEAD</code></li>
+                    <li><em>Description:</em> Resets the index and working directory to match the last commit, discarding all changes.</li>
+                    <li><em>When to use:</em> Use this command when you want to completely discard all local changes and return to the last commit.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git cherry-pick &lt;commit&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git cherry-pick abc1234</code></li>
+                    <li><em>Description:</em> Applies the changes introduced by a specific commit onto the current branch.</li>
+                    <li><em>When to use:</em> Use this command to apply specific commits from another branch without merging the entire branch.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git tag &lt;tag_name&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git tag v1.0</code></li>
+                    <li><em>Description:</em> Creates a new tag at the current commit.</li>
+                    <li><em>When to use:</em> Use this command to mark specific points in your project’s history, like releases or significant changes.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git fetch</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git fetch origin</code></li>
+                    <li><em>Description:</em> Downloads objects and refs from a remote repository without merging changes.</li>
+                    <li><em>When to use:</em> Use this command to check for changes on the remote repository without altering your working directory.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git diff</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git diff</code></li>
+                    <li><em>Description:</em> Shows changes between the working directory and the index (staging area).</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git config --global user.name &lt;name&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git config --global user.name "Your Name"</code></li>
+                    <li><em>Description:</em> Sets the name that will be used for commits.</li>
+                    <li><em>When to use:</em> Use this command once to configure your identity in Git for all repositories.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git config --global user.email &lt;email&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git config --global user.email "you@example.com"</code></li>
+                    <li><em>Description:</em> Sets the email that will be used for commits.</li>
+                    <li><em>When to use:</em> Use this command once to configure your email in Git for all repositories.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git rebase -i &lt;commit&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git rebase -i HEAD~3</code></li>
+                    <li><em>Description:</em> Opens an interactive rebase session for the last three commits, allowing for editing, squashing, or reordering.</li>
+                    <li><em>When to use:</em> Use this command when you want to clean up your commit history before pushing to a remote repository.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git merge --no-ff &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git merge --no-ff feature-branch</code></li>
+                    <li><em>Description:</em> Merges the specified branch into the current branch, ensuring a new merge commit is created, even if the merge could be resolved as a fast-forward.</li>
+                    <li><em>When to use:</em> Use this command when you want to maintain the branch history clearly and explicitly, showing that a merge has occurred.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git merge --squash &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git merge --squash feature-branch</code></li>
+                    <li><em>Description:</em> Combines all changes from the specified branch into the current branch as a single commit, without retaining the individual commit history from the feature branch.</li>
+                    <li><em>When to use:</em> Use this command when you want to merge changes from a feature branch but want to keep a cleaner history by squashing multiple commits into one.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git merge --abort</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git merge --abort</code></li>
+                    <li><em>Description:</em> Cancels a merge process that is currently in progress, reverting to the state before the merge started.</li>
+                    <li><em>When to use:</em> Use this command when you encounter conflicts during a merge and decide to abandon the merge attempt.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git rebase --onto &lt;newbase&gt; &lt;upstream&gt; &lt;branch&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git rebase --onto newbase upstream branch</code></li>
+                    <li><em>Description:</em> Rebases the specified branch onto a new base, effectively applying its commits to the new base starting from a specific upstream commit.</li>
+                    <li><em>When to use:</em> Use this command when you want to move a feature branch to a different base without including changes from upstream.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git rebase -i HEAD~&lt;n&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git rebase -i HEAD~4</code></li>
+                    <li><em>Description:</em> Opens an interactive rebase session for the last specified number of commits, allowing you to edit, squash, or reorder them.</li>
+                    <li><em>When to use:</em> Use this command to clean up commit history or make changes to multiple recent commits before pushing them.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git rebase --continue</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git rebase --continue</code></li>
+                    <li><em>Description:</em> Continues the rebase process after resolving conflicts.</li>
+                    <li><em>When to use:</em> Use this command after you have resolved any conflicts that arose during a rebase.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git rebase --skip</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git rebase --skip</code></li>
+                    <li><em>Description:</em> Skips the current commit during a rebase, effectively removing it from the history.</li>
+                    <li><em>When to use:</em> Use this command when you encounter a problematic commit during a rebase that you want to exclude from the final history.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git cherry-pick --no-commit &lt;commit&gt;</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git cherry-pick --no-commit abc1234</code></li>
+                    <li><em>Description:</em> Applies the changes from the specified commit without committing them, allowing further modifications before finalizing.</li>
+                    <li><em>When to use:</em> Use this command when you want to apply changes from another branch but need to make additional adjustments before committing.</li>
+                </ul>
+            </li>
+            <br>
+            <li>
+                <strong>git reflog</strong>
+                <ul>
+                    <li><em>Example:</em> <code>git reflog</code></li>
+                    <li><em>Description:</em> Shows a log of all references and updates to the HEAD pointer, including commits, checkouts, and resets.</li>
+                    <li><em>When to use:</em> Use this command to recover lost commits or branches by viewing the recent history of HEAD movements.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+</div>
