@@ -1,0 +1,179 @@
+<div>
+    <h1 style="text-align: center;">REST API Authentication Methods</h1>
+    <hr>
+    <p>
+      Authentication in REST APIs is crucial for verifying the identity of a user or application trying to access an API. There are several methods available, each suited for different types of applications and security requirements.
+    </p>
+    <ol>
+        <li>Basic Authentication</li>
+        <li>Token-Based Authentication (Bearer Tokens)</li>
+        <li></li>
+        <li></li>
+    </ol>
+<div>
+    <h3 class="section-title">Basic Authentication</h3>
+    <p>
+      <strong>Overview:</strong> Basic Authentication involves sending the username and password encoded in Base64 format within the request's header.
+      <br />
+      <br>
+      <img src="../../../images/basic_auth.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+      <br>
+      <strong>How it works:</strong><br>
+      - The client sends a request with an "Authorization" header.<br>
+      - The header contains the word "Basic" followed by a space, then the base64-encoded "username:password" combination.
+      <br />
+      <pre>
+        GET /api/data HTTP/1.1
+        Host: api.example.com
+        Authorization: Basic YWRtaW46cGFzc3dvcmQxMjM=
+        Content-Type: application/json
+      </pre>
+      <p>
+        In this example:
+        <ul>
+          <li>The username is <b>admin</b> and the password is <b>password123</b>.</li>
+          <li>These credentials are Base64-encoded as <b>YWRtaW46cGFzc3dvcmQxMjM=</b>.</li>
+          <li>The "Authorization" header carries the encoded credentials in the format: <b>Authorization: Basic <base64-encoded-credentials>;</b>.</li>
+        </ul>
+      </p>
+      <strong>Advantages:</strong> Simple and easy to implement.
+      <br />
+      <b>Disadvantages:</b><br> 
+      - Credentials are exposed in every request, making it vulnerable to interception.<br>
+      - Should always be used over HTTPS for security.
+    </p>
+</div>
+<div>
+    <h3 class="section-title">Token-Based Authentication (Bearer Tokens)</h3>
+    <p>
+      <strong>Overview:</strong> Token-based authentication is a stateless authentication mechanism where a client (user or service) sends credentials 
+      (e.g., username and password) to a server, and if validated, the server responds with a token (usually a JWT or JSON Web Token). 
+      The client then uses this token in subsequent requests for authentication.<br><br>
+      <img src="../../../images/token_auth.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+      <br>
+      
+      <strong>How it works:</strong><br>
+      - The client first authenticates using credentials and receives a token in response.<br>
+      - The token is then included in the "Authorization" header of subsequent API requests.
+      <ol>
+        <li>Request Token from Authentication Server (Login to get the token)</li>
+        <pre>
+            POST /api/login HTTP/1.1
+            Host: api.example.com
+            Content-Type: application/json
+            
+            {
+                "username": "admin",
+                "password": "password123"
+            }            
+        </pre>
+        <li>After a successful login, the server will return a Bearer Token. For example:</li>
+        <pre>
+            {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+            }            
+        </pre>
+        <li>Authenticated Request using the Bearer Token</li>
+        <pre>
+            GET /api/data HTTP/1.1
+            Host: api.example.com
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+            Content-Type: application/json            
+        </pre>
+      </ol>
+      <strong>Advantages:</strong><br>
+      - No need to send credentials with every request.<br>
+      - Tokens can be stateless and self-contained (e.g., JWTs), meaning no need for server-side session storage.
+      <br />
+      <strong>Disadvantages:</strong>
+      - Tokens can expire or be revoked, requiring proper token management.
+    </p>
+</div>
+<div>
+  
+    <h3 class="section-title">OAuth 2.0</h3>
+    <p>
+      <strong>Overview:</strong> OAuth (Open Authorization) is like giving a friend a key to your house so they can check on your pet while you're away, 
+      but without giving them your house keys. Instead, you give them a temporary access key that allows them to enter your house only when needed. 
+      This way, they can't access other parts of your house that they shouldn't, and they don’t need to know your private keys (like your actual house key).
+
+      <br />
+      <strong>How it works:</strong><br>
+      - The client requests an access token from an authorization server.<br>
+      - The user or resource owner grants or denies permission.<br>
+      - The authorization server returns an access token, which is then used in the "Authorization" header.
+      <br />
+      <strong>Advantages:</strong><br>
+      - Provides granular access control, allowing specific permissions for third-party applications.<br>
+      - Commonly used in services like Google, Facebook, and GitHub for single sign-on (SSO).<br>
+      <br />
+      <strong>Disadvantages:</strong><br>
+      - Complex setup compared to Basic or Token-based authentication.<br>
+      - Requires managing access and refresh tokens.
+    </p>
+</div>
+<div>
+    <h3>4. API Key Authentication</h3>
+    <p>
+      <strong>Overview:</strong> API Key Authentication uses a unique key to identify the client.
+      <br />
+      <strong>How it works:</strong>
+      - The client includes the API key in either the query parameters or the request header.
+      - The API key is used by the server to authenticate and authorize the client.
+      <br />
+      <strong>Advantages:</strong> 
+      - Simple to implement and easy for developers to use.
+      <br />
+      <strong>Disadvantages:</strong>
+      - API keys are less secure compared to OAuth or tokens since they do not expire and are often hard-coded into applications.
+      - API keys lack fine-grained access control.
+    </p>
+  
+    <h3>5. HMAC Authentication (Hash-Based Message Authentication Code)</h3>
+    <p>
+      <strong>Overview:</strong> HMAC Authentication involves hashing both the request and a shared secret key to generate a signature. This signature is then sent with the request to prove its authenticity.
+      <br />
+      <strong>How it works:</strong>
+      - The client computes a hash using a secret key and message body.
+      - The hash is sent in the "Authorization" header along with the request.
+      - The server validates the hash using its own version of the shared secret.
+      <br />
+      <strong>Advantages:</strong> 
+      - Ensures message integrity and authentication.
+      <br />
+      <strong>Disadvantages:</strong> 
+      - More complex to implement.
+      - Requires both client and server to maintain a shared secret key.
+    </p>
+  
+    <h3>6. Digest Authentication</h3>
+    <p>
+      <strong>Overview:</strong> Digest Authentication improves upon Basic Authentication by using a challenge-response mechanism where credentials are never sent directly over the network.
+      <br />
+      <strong>How it works:</strong>
+      - The server sends a nonce (a random number) to the client.
+      - The client responds with a hashed combination of the password and nonce.
+      <br />
+      <strong>Advantages:</strong> More secure than Basic Authentication, as passwords are not exposed in plain text.
+      <br />
+      <strong>Disadvantages:</strong> 
+      - More complex than Basic Authentication.
+      - Can still be vulnerable to replay attacks if nonces are not handled properly.
+    </p>
+  
+    <h3>7. Mutual SSL/TLS Authentication</h3>
+    <p>
+      <strong>Overview:</strong> Mutual SSL/TLS Authentication uses digital certificates to authenticate both the client and the server.
+      <br />
+      <strong>How it works:</strong>
+      - Both the client and server present SSL certificates to authenticate each other during the connection.
+      - This method uses encryption to ensure the confidentiality and integrity of the communication.
+      <br />
+      <strong>Advantages:</strong> 
+      - Very secure, with strong encryption and two-way authentication.
+      <br />
+      <strong>Disadvantages:</strong> 
+      - Requires both client and server to manage digital certificates, which can be complex.
+    </p>
+  </div>
+  

@@ -1,30 +1,487 @@
-docker commands
-- docker images
-- docker image inspect [image-id]
-- docker image rm [image-id]
-- docker build . -t [image-name]
-- docker run -p [hostport]:[containerport] [image_id]
-- docker ps
-- docker ps -a
-- docker container start [container-id]
-- docker container pause [container-id]
-- docker container unpause [container-id]
-- docker container stop [container-id]
-- docker container kill [container-id]
-- docker container restart [container-id]
-- docker container inspect [container-id]
-- docker container logs [container-id]
-- docker container logs -f [container-id]
-- docker rm [container-id]
-- docker container prune
-- docker images push [container_registry/username:tag]
-- docker image pull [container_registry/username:tag]
-- docker images purn
-- docker container stats
-- docker rmi [image-id]
-- docker login -u [username]
-- docker logout
-- docker history [image-name]
-- docker exec -it [container-id] sh
-- docker compose up
-- docker compose down
+<div>
+    <h1 style="text-align: center;">Complete Docker Command Cheatsheet</h1>
+    <hr>
+    <ul>
+        <li>
+            <strong>docker --version</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker --version</code></li>
+                <li><em>Description:</em> Displays the installed Docker version.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker info</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker info</code></li>
+                <li><em>Description:</em> Provides detailed information about Docker's configuration and system details.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Image Management Commands</h3>
+    <ul>
+        <li>
+            <strong>docker images</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker images</code></li>
+                <li><em>Description:</em> Lists all Docker images stored on the local machine.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker pull &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker pull nginx</code></li>
+                <li><em>Description:</em> Downloads a Docker image from Docker Hub or another registry.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker build -t &lt;image_name&gt; .</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker build -t my_image .</code></li>
+                <li><em>Description:</em> Builds an image from a Dockerfile in the current directory.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker tag &lt;image_id&gt; &lt;repository:tag&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker tag 123abc myrepo/myimage:latest</code></li>
+                <li><em>Description:</em> Tags an image for versioning or pushing to a registry.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker rmi &lt;image_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker rmi 123456abc</code></li>
+                <li><em>Description:</em> Removes a specified image by its ID.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Container Management Commands</h3>
+    <ul>
+        <li>
+            <strong>docker ps</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker ps</code></li>
+                <li><em>Description:</em> Lists all running containers.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker ps -a</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker ps -a</code></li>
+                <li><em>Description:</em> Lists all containers, including stopped ones.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run ubuntu</code></li>
+                <li><em>Description:</em> Runs a container from a specified image.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -d &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -d nginx</code></li>
+                <li><em>Description:</em> Runs a container in detached mode (background).</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -it &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -it ubuntu</code></li>
+                <li><em>Description:</em> Starts a container in interactive mode, allowing the user to interact with the terminal directly. Useful for debugging or exploring an environment.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run --rm &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run --rm ubuntu</code></li>
+                <li><em>Description:</em> Automatically removes the container once it stops, useful for temporary tasks to avoid leaving stopped containers.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -P &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -P nginx</code></li>
+                <li><em>Description:</em> Automatically maps all exposed ports of the container to random host ports.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -p &lt;host_port&gt;:&lt;container_port&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -p 8080:80 nginx</code></li>
+                <li><em>Description:</em> Maps a port from the host to a port in the container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run --name &lt;container_name&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run --name my_nginx nginx</code></li>
+                <li><em>Description:</em> Assigns a custom name to a container, making it easier to reference it in future commands.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -e &lt;ENV_VAR&gt;=&lt;value&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -e MY_VAR=myvalue ubuntu</code></li>
+                <li><em>Description:</em> Sets environment variables for the container, which can be accessed by processes within the container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -v &lt;host_path&gt;:&lt;container_path&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -v /mydata:/data ubuntu</code></li>
+                <li><em>Description:</em> Mounts a host directory or file into the container. Useful for data persistence or sharing data between the host and container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run --network &lt;network_name&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run --network my_network ubuntu</code></li>
+                <li><em>Description:</em> Connects a container to a specified network, enabling better communication between services.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -p &lt;host_port&gt;:&lt;container_port&gt; -e ENV_VAR=value --name container_name &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -p 5000:80 -e MY_VAR=value --name my_app app_image</code></li>
+                <li><em>Description:</em> Demonstrates combining options to expose ports, set environment variables, and name the container. Useful for detailed configuration of container startup.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run --cap-add &lt;capability&gt; --cap-drop &lt;capability&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run --cap-add NET_ADMIN --cap-drop MKNOD ubuntu</code></li>
+                <li><em>Description:</em> Grants or restricts Linux capabilities within the container. For instance, `NET_ADMIN` gives network administration privileges to the container, while `MKNOD` is removed.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run --cpus &lt;num_cpus&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run --cpus=2 nginx</code></li>
+                <li><em>Description:</em> Limits the container to use a specified number of CPU cores, controlling resource usage for more efficient system management.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker stop &lt;container_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker stop abc123</code></li>
+                <li><em>Description:</em> Stops a running container by its ID.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker start &lt;container_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker start abc123</code></li>
+                <li><em>Description:</em> Starts a stopped container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker restart &lt;container_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker restart abc123</code></li>
+                <li><em>Description:</em> Restarts a running or stopped container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker rm &lt;container_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker rm abc123</code></li>
+                <li><em>Description:</em> Removes a stopped container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker exec -it &lt;container_id&gt; /bin/bash</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker exec -it abc123 /bin/bash</code></li>
+                <li><em>Description:</em> Opens a shell session inside a running container.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+
+    <h3 class="section-title">Docker Logs and Inspection Commands</h3>
+    <ul>
+        <li>
+            <strong>docker logs &lt;container_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker logs abc123</code></li>
+                <li><em>Description:</em> Retrieves the logs for a specific container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker inspect &lt;container_id_or_image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker inspect nginx</code></li>
+                <li><em>Description:</em> Provides detailed metadata about a container or image.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+
+    <h3 class="section-title">Network Management Commands</h3>
+    <ul>
+        <li>
+            <strong>docker network ls</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker network ls</code></li>
+                <li><em>Description:</em> Lists all Docker networks.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker network create &lt;network_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker network create my_network</code></li>
+                <li><em>Description:</em> Creates a custom network.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker network connect &lt;network_name&gt; &lt;container_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker network connect my_network service2</code></li>
+                <li><em>Description:</em> Connects an existing container to an additional network, which is useful for cross-network communication between services.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker network disconnect &lt;network_name&gt; &lt;container_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker network disconnect my_network service2</code></li>
+                <li><em>Description:</em> Disconnects a container from a specific network, isolating it from other containers on that network.</li>
+            </ul>
+        </li>
+
+    </ul>
+    <br>
+    <h3 class="section-title">Docker Compose Commands</h3>
+    <ul>
+
+        <li>
+            <strong>docker-compose up</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker-compose up</code></li>
+                <li><em>Description:</em> Starts services defined in a <code>docker-compose.yml</code> file.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker-compose down</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker-compose down</code></li>
+                <li><em>Description:</em> Stops and removes containers, networks, and volumes created by <code>docker-compose up</code>.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker-compose exec &lt;service_name&gt; &lt;command&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker-compose exec service1 curl http://service2:port</code></li>
+                <li><em>Description:</em> Executes a command in a running service created with Docker Compose, useful for checking network connectivity between services.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Volume Creation and Management Commands</h3>
+    <ul>
+        <li>
+            <strong>docker volume ls</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker volume ls</code></li>
+                <li><em>Description:</em> Lists all Docker volumes on the system, showing their names and details.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker volume create &lt;volume_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker volume create my_volume</code></li>
+                <li><em>Description:</em> Creates a named Docker volume for persistent storage, which can be shared across multiple containers.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker volume inspect &lt;volume_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker volume inspect my_volume</code></li>
+                <li><em>Description:</em> Provides detailed information about a specific volume, including its mountpoint on the host system and metadata.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker volume rm &lt;volume_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker volume rm my_volume</code></li>
+                <li><em>Description:</em> Removes a specific Docker volume. This is irreversible and should be used with caution as it deletes all data stored in the volume.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker volume prune</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker volume prune</code></li>
+                <li><em>Description:</em> Removes all unused Docker volumes, freeing up storage space. This only affects volumes not used by any containers.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Using Volumes in Containers</h3>
+    <ul>
+        <li>
+            <strong>docker run -v &lt;volume_name&gt;:&lt;container_path&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -v my_volume:/data nginx</code></li>
+                <li><em>Description:</em> Mounts a named volume to a specific path in the container. Data written to <code>/data</code> in the container is stored in <code>my_volume</code> on the host.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run -v &lt;host_path&gt;:&lt;container_path&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run -v /mydata:/data nginx</code></li>
+                <li><em>Description:</em> Binds a directory or file on the host to a path in the container, useful for sharing data between the host and container.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker run --mount type=volume,source=&lt;volume_name&gt;,target=&lt;container_path&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker run --mount type=volume,source=my_volume,target=/app_data nginx</code></li>
+                <li><em>Description:</em> An alternative method to <code>-v</code> for mounting volumes with more explicit options. The `--mount` option provides a clear structure and is helpful in more complex configurations.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Persistent Data Management Commands</h3>
+    <ul>
+        <li>
+            <strong>docker commit &lt;container_id&gt; &lt;new_image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker commit abc123 my_image:latest</code></li>
+                <li><em>Description:</em> Captures the current state of a container's filesystem and saves it as a new image, which includes all changes made since the container was started.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker export -o &lt;file_name.tar&gt; &lt;container_id&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker export -o my_container_data.tar abc123</code></li>
+                <li><em>Description:</em> Exports a container’s filesystem to a tar archive, which can then be saved, shared, or re-imported. Only captures data within the container at the time of export.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker import &lt;file_name.tar&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker import my_container_data.tar</code></li>
+                <li><em>Description:</em> Imports a tar archive as a new Docker image, creating a new container environment based on previously exported filesystem data.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Cleaning Up Docker Storage</h3>
+    <ul>
+        <li>
+            <strong>docker system df</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker system df</code></li>
+                <li><em>Description:</em> Displays Docker disk usage by images, containers, and volumes, helping identify which parts of Docker storage are consuming the most space.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker system prune</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker system prune</code></li>
+                <li><em>Description:</em> Removes all unused containers, networks, and images to free up storage space. By adding <code>--volumes</code>, it also removes all unused volumes.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker system prune --all --volumes</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker system prune --all --volumes</code></li>
+                <li><em>Description:</em> Performs a full cleanup of unused images, stopped containers, unused networks, and volumes, maximizing storage reclamation.</li>
+            </ul>
+        </li>
+    </ul>
+    <br>
+    <h3 class="section-title">Advanced Commands</h3>
+    <ul>
+        <li>
+            <strong>docker push &lt;repository:tag&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker push myrepo/myimage:latest</code></li>
+                <li><em>Description:</em> Pushes a Docker image to a remote registry.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker stats</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker stats</code></li>
+                <li><em>Description:</em> Displays real-time statistics of running containers, including CPU, memory, and network usage.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker save -o &lt;filename.tar&gt; &lt;image_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker save -o my_image.tar my_image</code></li>
+                <li><em>Description:</em> Saves an image to a tar archive file.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker load -i &lt;filename.tar&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker load -i my_image.tar</code></li>
+                <li><em>Description:</em> Loads an image from a tar archive.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker import &lt;filename.tar&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker import my_container.tar</code></li>
+                <li><em>Description:</em> Imports a tar file as a Docker image.</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            <strong>docker checkpoint create &lt;container_id&gt; &lt;checkpoint_name&gt;</strong>
+            <ul>
+                <li><em>Example:</em> <code>docker checkpoint create abc123 checkpoint1</code></li>
+                <li><em>Description:</em> Creates a checkpoint for a container’s current state.</li>
+            </ul>
+        </li>
+    </ul>
+</div>

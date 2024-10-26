@@ -125,6 +125,7 @@ const links = [
 
     // cicd
     { text: "CICD flow", url: "design/pages/devops/cicd_flow.html" },
+    { text: "Complete Docker Command Cheatsheet", url: "design/pages/devops/docker_commands.html" },
     
     // general
     { text: "OSI layer", url: "design/pages/general/osi_layer.html" },
