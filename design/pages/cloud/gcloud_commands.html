@@ -1,0 +1,33 @@
+gcloud config list 
+
+gcloud config set project <project-id>
+
+gcloud compute instances list 
+
+
+# List Cloud Run Services
+gcloud run services list
+
+# Create Google Cloud Run Service
+gcloud run deploy myservice102 --image=stacksimplify/google-cloud-run:v1 --allow-unauthenticated --port=80 
+
+# Describe Cloud Run Service
+gcloud run services describe myservice102 
+
+
+# List Revisions
+gcloud run revisions list
+
+# Describe Revision
+gcloud run revisions describe <Revision-Name> 
+
+
+# Update Application 
+gcloud run services update myservice102 --image=stacksimplify/google-cloud-run:v2
+    
+
+# Set Tags (Add Revision URLs)
+gcloud run services update-traffic myservice102 --set-tags=myappv1=myservice102-00001-2rk,myappv2=myservice102-00002-xgl 
+
+# Update Traffic - V1-50%, V2-50%
+gcloud run services update-traffic myservice102 --to-revisions=myservice102-00001-2rk=50,myservice102-00002-xgl=50 

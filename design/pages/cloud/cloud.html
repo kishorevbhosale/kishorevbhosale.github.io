@@ -1,1 +1,58 @@
-1) AWS DNS (Amazon Route 53)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    code {
+      font-family: monospace;
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    ul, ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rendered Markdown</h1>
+  <div id="content"></div>
+
+  <script>
+    // Fetch and render the Markdown file
+    fetch('cloud_run.md')
+      .then(response => response.text())
+      .then(markdown => {
+        // Convert Markdown to HTML using marked.js
+        const htmlContent = marked(markdown);
+        // Inject the converted HTML into the page
+        document.getElementById('content').innerHTML = htmlContent;
+      })
+      .catch(error => console.error('Error loading Markdown:', error));
+  </script>
+</body>
+</html>

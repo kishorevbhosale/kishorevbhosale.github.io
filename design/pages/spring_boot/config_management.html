@@ -1,0 +1,212 @@
+<div class="story">
+        <h2 style="text-align: center;">Configurations Management in Microservices</h2>
+        <hr>
+        <p>
+            Imagine you are part of a development team working on a microservice called <strong>Account Service</strong>, which is built with Spring Boot. 
+            The application needs to be deployed in three different environments: <strong>dev</strong>, <strong>qa</strong>, and <strong>prod</strong>.
+            The challenge is to:
+        </p>
+        <ul>
+            <li>Manage environment-specific configurations without hardcoding them in the codebase.</li>
+            <li>Ensure sensitive data like database credentials are stored securely.</li>
+            <li>Deploy the application seamlessly across environments using a <strong>Jenkins CI/CD pipeline</strong>.</li>
+        </ul>
+    
+
+    <div class="act act-1">
+        <h3 class="section-title">1. Setting Up the Configurations</h3>
+        <p>To address the challenge, you decide to leverage <strong>Spring Boot profiles</strong> and <strong>externalize configurations</strong>:</p>
+        
+        <div class="section">
+            <p>
+            <h4>Environment-Specific Configuration Files</h4>
+            <p>Create <code>application.yml</code> for common settings and environment-specific files (<code>application-dev.yml</code>, <code>application-qa.yml</code>, <code>application-prod.yml</code>) for custom properties.</p>
+            <div class="code">
+                <h5>Example:</h5>
+                <pre><code>
+<b>application.yml:</b>
+spring:
+  application:
+    name: account-service
+logging:
+  level:
+    root: INFO
+                </code></pre>
+                <pre><code>
+<b>application-dev.yml:</b>
+datasource:
+  url: jdbc:mysql://dev-db:3306/accounts
+  username: dev_user
+                </code></pre>
+                <pre><code>
+<b>application-qa.yml:</b>
+datasource:
+  url: jdbc:mysql://qa-db:3306/accounts
+  username: qa_user
+                </code></pre>
+                <pre><code>
+<b>application-prod.yml:</b>
+datasource:
+  url: jdbc:mysql://prod-db:3306/accounts
+  username: prod_user
+                </code></pre>
+            </div>
+            </p>
+        </div>
+        <hr>
+        <div class="section">
+            <h4>Secure Database Credentials</h4>
+            <p>Use <strong>AWS Secrets Manager</strong> to securely store sensitive data like database passwords.</p>
+            <ul>
+                <li>Store environment-specific secrets (<code>account-service-dev-db-creds</code>, <code>account-service-qa-db-creds</code>, <code>account-service-prod-db-creds</code>).</li>
+            </ul>
+        </div>
+        <hr>
+        <div class="section">
+            <h4>Centralized Configuration Management</h4>
+            <p>Use <strong>Spring Cloud Config Server</strong> to pull properties from a <strong>Git repository</strong>.</p>
+            <div class="code">
+                <h5>Repository Structure:</h5>
+                <pre><code>
+config-repo/
+  account-service-dev.yml
+  account-service-qa.yml
+  account-service-prod.yml
+                </code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="act act-2">
+        <h3 class="section-title">2. Building a Flexible CI/CD Pipeline</h3>
+        <div class="section">
+            <h4>Configuring Jenkins for Parameterized Deployment</h4>
+            <p>Create a <strong>parameterized Jenkins job</strong> with a dropdown to select the target environment.</p>
+            <div class="code">
+                <pre><code>
+parameters {
+    choice(name: 'ENVIRONMENT', choices: ['dev', 'qa', 'prod'], description: 'Select the deployment environment')
+}
+                </code></pre>
+            </div>
+        </div>
+        <hr>
+        <div class="section">
+            <h4>Setting the Profile Dynamically</h4>
+            <div class="code">
+                <pre><code>
+environment {
+    SPRING_PROFILES_ACTIVE = "${params.ENVIRONMENT}"
+}
+                </code></pre>
+            </div>
+        </div>
+        <hr>
+        <div class="section">
+            <h4>Pipeline Stages</h4>
+            <div class="code">
+                <h5>Checkout Code:</h5>
+                <pre><code>
+stage('Checkout Code') {
+    steps {
+        checkout scm
+    }
+}
+                </code></pre>
+                
+                <h5>Build the Application:</h5>
+                <pre><code>
+stage('Build') {
+    steps {
+        sh 'mvn clean package'
+    }
+}
+                </code></pre>
+                
+                <h5>Deploy the Application:</h5>
+                <pre><code>
+stage('Deploy') {
+    steps {
+        sh "java -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} -jar target/account-service.jar"
+    }
+}
+                </code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="act act-3">
+        <h3 class="section-title">3. Deploying Across Environments</h3>
+        <p>When the pipeline is executed:</p>
+        <ol>
+            <li>The user selects the target environment (e.g., <code>qa</code>) from the Jenkins job dropdown.</li>
+            <li>Jenkins sets <code>SPRING_PROFILES_ACTIVE</code> to <code>qa</code> and starts the deployment process.</li>
+            <li>During the application startup, Spring Boot loads environment-specific properties and fetches sensitive credentials from <strong>AWS Secrets Manager</strong>.</li>
+        </ol>
+    </div>
+    
+    <div class="act act-4">
+        <h3 class="section-title">4. Handling Secrets Securely</h3>
+        <p>To handle sensitive credentials securely:</p>
+        <ul>
+            <li>Store secrets in AWS Secrets Manager for each environment.</li>
+            <li>Use the AWS SDK to fetch secrets at runtime.</li>
+        </ul>
+        <div class="code">
+            <pre><code>
+@Configuration
+public class SecretsConfig {
+    @Bean
+    public String dbPassword() {
+        AWSSecretsManager secretsManager = AWSSecretsManagerClientBuilder.standard()
+            .withRegion("us-east-1")
+            .build();
+        String secretValue = secretsManager.getSecretValue(new GetSecretValueRequest()
+            .withSecretId("account-service-" + System.getProperty("spring.profiles.active") + "-db-creds"))
+            .getSecretString();
+        return new JSONObject(secretValue).getString("password");
+    }
+}
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="act act-5">
+        <h3 class="section-title">5. Deployment on Kubernetes</h3>
+        <p>For Kubernetes deployment:</p>
+        <ul>
+            <li>Use a <strong>ConfigMap</strong> for non-sensitive properties and a <strong>Secret</strong> for credentials.</li>
+            <li>Pass <code>SPRING_PROFILES_ACTIVE</code> as an environment variable in the deployment YAML.</li>
+        </ul>
+        <div class="code">
+            <pre><code>
+env:
+- name: SPRING_PROFILES_ACTIVE
+  value: "qa"
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="climax">
+        <h3 class="section-title">Climax: Automated and Flexible Deployment</h3>
+        <p>With the pipeline in place:</p>
+        <ul>
+            <li>The <strong>build artifact</strong> is the same for all environments.</li>
+            <li>Jenkins dynamically applies the correct profile and deploys the application with environment-specific configurations and secrets.</li>
+            <li>Updates to configurations are automatically picked up through <strong>Spring Cloud Config</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="resolution">
+        <h3 class="section-title">Resolution: Seamless CI/CD Workflow</h3>
+        <p>
+            The team now enjoys:
+            <ul>
+                <li><strong>Centralized Configuration</strong>: Managed via Git and AWS Secrets Manager.</li>
+                <li><strong>Secure Credentials</strong>: Protected by AWS Secrets Manager.</li>
+                <li><strong>Dynamic Deployments</strong>: Profiles are set dynamically without modifying the codebase.</li>
+                <li><strong>Reusability</strong>: The same Jenkins pipeline works for all environments.</li>
+            </ul>
+        </p>
+    </div>
+</div>
