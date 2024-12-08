@@ -1,59 +1,60 @@
 <div class="story">
-        <h2 style="text-align: center;">Configurations Management in Microservices</h2>
+    <h2 style="text-align: center;">Configurations Management in Microservices</h2>
         <hr>
         <p>
-            Imagine you are part of a development team working on a microservice called <strong>Account Service</strong>, which is built with Spring Boot. 
-            The application needs to be deployed in three different environments: <strong>dev</strong>, <strong>qa</strong>, and <strong>prod</strong>.
-            The challenge is to:
+            You're developing a microservice called <b>Account Service</b> using Spring Boot. The application needs to be deployed across multiple environments (dev, qa, prod) with different configurations. The goal is to:
         </p>
         <ul>
             <li>Manage environment-specific configurations without hardcoding them in the codebase.</li>
             <li>Ensure sensitive data like database credentials are stored securely.</li>
-            <li>Deploy the application seamlessly across environments using a <strong>Jenkins CI/CD pipeline</strong>.</li>
+            <li>Allow the application to refresh its configuration dynamically across environments using <b>Spring Cloud Bus and Spring Cloud Config Monitor</b>.</li>
         </ul>
-    
 
     <div class="act act-1">
-        <h3 class="section-title">1. Setting Up the Configurations</h3>
-        <p>To address the challenge, you decide to leverage <strong>Spring Boot profiles</strong> and <strong>externalize configurations</strong>:</p>
-        
+        <h3 class="section-title">Step 1: Setting Up the Configurations</h3>
+        <p>
+            To address these challenges, we'll use Spring Boot profiles and externalize configurations:
+        </p>
+
         <div class="section">
-            <p>
             <h4>Environment-Specific Configuration Files</h4>
             <p>Create <code>application.yml</code> for common settings and environment-specific files (<code>application-dev.yml</code>, <code>application-qa.yml</code>, <code>application-prod.yml</code>) for custom properties.</p>
             <div class="code">
                 <h5>Example:</h5>
-                <pre><code>
 <b>application.yml:</b>
+<pre><code>
 spring:
   application:
     name: account-service
 logging:
   level:
     root: INFO
-                </code></pre>
-                <pre><code>
+</code></pre>
+
 <b>application-dev.yml:</b>
+<pre><code>
 datasource:
   url: jdbc:mysql://dev-db:3306/accounts
   username: dev_user
-                </code></pre>
-                <pre><code>
+</code></pre>
+
 <b>application-qa.yml:</b>
+<pre><code>
 datasource:
   url: jdbc:mysql://qa-db:3306/accounts
   username: qa_user
-                </code></pre>
-                <pre><code>
+</code></pre>
+
 <b>application-prod.yml:</b>
+<pre><code>
 datasource:
   url: jdbc:mysql://prod-db:3306/accounts
   username: prod_user
-                </code></pre>
+ </code></pre>
+
             </div>
-            </p>
         </div>
-        <hr>
+
         <div class="section">
             <h4>Secure Database Credentials</h4>
             <p>Use <strong>AWS Secrets Manager</strong> to securely store sensitive data like database passwords.</p>
@@ -61,10 +62,10 @@ datasource:
                 <li>Store environment-specific secrets (<code>account-service-dev-db-creds</code>, <code>account-service-qa-db-creds</code>, <code>account-service-prod-db-creds</code>).</li>
             </ul>
         </div>
-        <hr>
+
         <div class="section">
             <h4>Centralized Configuration Management</h4>
-            <p>Use <strong>Spring Cloud Config Server</strong> to pull properties from a <strong>Git repository</strong>.</p>
+            <p>Use Spring Cloud Config Server to pull properties from a Git repository:</p>
             <div class="code">
                 <h5>Repository Structure:</h5>
                 <pre><code>
@@ -78,10 +79,14 @@ config-repo/
     </div>
 
     <div class="act act-2">
-        <h3 class="section-title">2. Building a Flexible CI/CD Pipeline</h3>
+        <h3 class="section-title">Step 2: Building a Flexible CI/CD Pipeline</h3>
+        <p>
+            Now, let's set up a Jenkins pipeline to automate builds and deployments:
+        </p>
+
         <div class="section">
             <h4>Configuring Jenkins for Parameterized Deployment</h4>
-            <p>Create a <strong>parameterized Jenkins job</strong> with a dropdown to select the target environment.</p>
+            <p>Create a parameterized Jenkins job with a dropdown to select the target environment:</p>
             <div class="code">
                 <pre><code>
 parameters {
@@ -90,7 +95,7 @@ parameters {
                 </code></pre>
             </div>
         </div>
-        <hr>
+
         <div class="section">
             <h4>Setting the Profile Dynamically</h4>
             <div class="code">
@@ -101,7 +106,7 @@ environment {
                 </code></pre>
             </div>
         </div>
-        <hr>
+
         <div class="section">
             <h4>Pipeline Stages</h4>
             <div class="code">
@@ -113,7 +118,7 @@ stage('Checkout Code') {
     }
 }
                 </code></pre>
-                
+
                 <h5>Build the Application:</h5>
                 <pre><code>
 stage('Build') {
@@ -122,7 +127,7 @@ stage('Build') {
     }
 }
                 </code></pre>
-                
+
                 <h5>Deploy the Application:</h5>
                 <pre><code>
 stage('Deploy') {
@@ -136,21 +141,25 @@ stage('Deploy') {
     </div>
 
     <div class="act act-3">
-        <h3 class="section-title">3. Deploying Across Environments</h3>
-        <p>When the pipeline is executed:</p>
+        <h3 class="section-title">Step 3: Deploying Across Environments</h3>
+        <p>
+            When the pipeline is executed:
+        </p>
         <ol>
             <li>The user selects the target environment (e.g., <code>qa</code>) from the Jenkins job dropdown.</li>
             <li>Jenkins sets <code>SPRING_PROFILES_ACTIVE</code> to <code>qa</code> and starts the deployment process.</li>
             <li>During the application startup, Spring Boot loads environment-specific properties and fetches sensitive credentials from <strong>AWS Secrets Manager</strong>.</li>
         </ol>
     </div>
-    
+
     <div class="act act-4">
-        <h3 class="section-title">4. Handling Secrets Securely</h3>
-        <p>To handle sensitive credentials securely:</p>
+        <h3 class="section-title">Step 4: Handling Secrets Securely</h3>
+        <p>
+            To handle sensitive credentials securely:
+        </p>
         <ul>
             <li>Store secrets in AWS Secrets Manager for each environment.</li>
-            <li>Use the AWS SDK to fetch secrets at runtime.</li>
+            <li>Use the AWS SDK to fetch secrets at runtime:</li>
         </ul>
         <div class="code">
             <pre><code>
@@ -172,11 +181,13 @@ public class SecretsConfig {
     </div>
 
     <div class="act act-5">
-        <h3 class="section-title">5. Deployment on Kubernetes</h3>
-        <p>For Kubernetes deployment:</p>
+        <h3 class="section-title">Step 5: Deployment on Kubernetes</h3>
+        <p>
+            For Kubernetes deployment:
+        </p>
         <ul>
             <li>Use a <strong>ConfigMap</strong> for non-sensitive properties and a <strong>Secret</strong> for credentials.</li>
-            <li>Pass <code>SPRING_PROFILES_ACTIVE</code> as an environment variable in the deployment YAML.</li>
+            <li>Pass <code>SPRING_PROFILES_ACTIVE</code> as an environment variable in the deployment YAML:</li>
         </ul>
         <div class="code">
             <pre><code>
@@ -187,13 +198,95 @@ env:
         </div>
     </div>
 
+    <div class="act act-6">
+        <h3 class="section-title">Step 6: Refreshing Configurations at Runtime</h3>
+        <p>
+            To allow the application to refresh its configurations dynamically without redeploying:
+        </p>
+        <ul>
+            <li>Integrate Spring Cloud Bus to send refresh events across the environments.</li>
+            <li>Use Spring Cloud Config Monitor to trigger configuration refresh based on changes in the configuration repository.</li>
+        </ul>
+        <div class="code">
+            <h5>Spring Cloud Bus Setup:</h5>
+            <pre><code>
+@SpringBootApplication
+@EnableConfigServer
+@EnableDiscoveryClient
+@EnableAutoConfiguration
+public class ConfigServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServerApplication.class, args);
+    }
+}
+            </code></pre>
+
+            <h5>Spring Cloud Bus Configuration:</h5>
+            <pre><code>
+@SpringBootApplication
+@EnableSpringCloudBus
+@EnableConfigServer
+@EnableDiscoveryClient
+public class AccountServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AccountServiceApplication.class, args);
+    }
+}
+            </code></pre>
+
+            <h5>Application.yml for Config Refresh:</h5>
+            <pre><code>
+spring:
+  cloud:
+    config:
+      monitor:
+        enabled: true
+      bus:
+        refresh:
+          applications: account-service
+            </code></pre>
+
+            <h5>Runtime Refresh Controller:</h5>
+            <pre><code>
+@RestController
+public class ConfigRefreshController {
+
+    private final ConfigurableApplicationContext context;
+
+    @Autowired
+    public ConfigRefreshController(ConfigurableApplicationContext context) {
+        this.context = context;
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<String> refreshConfig() {
+        context.publishEvent(new RefreshEvent(this));
+        return ResponseEntity.ok("Configuration refreshed!");
+    }
+}
+            </code></pre>
+        </div>
+
+        <h4>Triggering /refresh Endpoint Automatically</h4>
+        <p>
+            The <code>/refresh</code> endpoint can be triggered manually via a Jenkins job or automatically upon detecting changes in the Git repository monitored by Spring Cloud Config Monitor:
+        </p>
+        <ul>
+            <li><strong>Jenkins Integration:</strong> Configure Jenkins to periodically check for changes in the Git repository. If changes are detected, trigger the <code>/refresh</code> endpoint.</li>
+            <li><strong>Manual Trigger:</strong> Developers can manually trigger the <code>/refresh</code> endpoint by accessing the endpoint URL through a browser or a REST client.</li>
+        </ul>
+    </div>
+
     <div class="climax">
         <h3 class="section-title">Climax: Automated and Flexible Deployment</h3>
-        <p>With the pipeline in place:</p>
+        <p>
+            With the pipeline in place:
+        </p>
         <ul>
-            <li>The <strong>build artifact</strong> is the same for all environments.</li>
-            <li>Jenkins dynamically applies the correct profile and deploys the application with environment-specific configurations and secrets.</li>
-            <li>Updates to configurations are automatically picked up through <strong>Spring Cloud Config</strong>.</li>
+            <li><strong>The build artifact is the same for all environments</strong> (no code changes for `dev`, `qa`, `prod`).</li>
+            <li><strong>Jenkins dynamically applies the correct profile</strong> and deploys the application with environment-specific configurations and secrets.</li>
+            <li><strong>Updates to configurations are automatically picked up</strong> through Spring Cloud Config Monitor.</li>
+            <li><strong>Spring Cloud Bus enables seamless refresh</strong> of configurations at runtime.</li>
         </ul>
     </div>
 
@@ -205,7 +298,7 @@ env:
                 <li><strong>Centralized Configuration</strong>: Managed via Git and AWS Secrets Manager.</li>
                 <li><strong>Secure Credentials</strong>: Protected by AWS Secrets Manager.</li>
                 <li><strong>Dynamic Deployments</strong>: Profiles are set dynamically without modifying the codebase.</li>
-                <li><strong>Reusability</strong>: The same Jenkins pipeline works for all environments.</li>
+                <li><strong>Automated Configuration Refresh</strong>: Managed through Spring Cloud Bus and Config Monitor.</li>
             </ul>
         </p>
     </div>
