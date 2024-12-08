@@ -1,0 +1,187 @@
+<div class="microservices-factors">
+    <h2 style="text-align: center;">15 Factors in Microservices</h2>
+    <p>
+        Microservices architecture involves breaking down a monolithic application into smaller, independent services, each with its own responsibilities and boundaries. 
+        The 15 factors are principles that guide the design, implementation, and management of microservices, ensuring their effectiveness, scalability, and maintainability.
+    </p>
+    <hr>
+    <div class="factor">
+        <h3>1) Single Code Base</h3>
+        <p>
+            <ul>
+                <li>Maintaining a single code base ensures that all microservices share the same set of code and libraries.</li>
+                <li>Enables easier updates and bug fixes across all services simultaneously without diverging code bases.</li>
+                <li>Helps in ensuring consistency in the application’s functionality and reduces duplication of effort.</li>
+                <li>Facilitates better collaboration among development teams as they work on the same code base.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>2) API First</h3>
+        <p>
+            <ul>
+                <li>Adopting an API-first approach means designing APIs before implementing the actual service logic.</li>
+                <li>Ensures services are loosely coupled, with well-defined interfaces for communication between microservices.</li>
+                <li>Promotes a more modular architecture where services are more independent.</li>
+                <li>Allows for better flexibility in choosing technologies and easier integration with third-party systems.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>3) Dependency Management</h3>
+        <p>
+            <ul>
+                <li>Each microservice manages its dependencies independently, including external libraries and services.</li>
+                <li>Reduces the risk of version conflicts across microservices.</li>
+                <li>Dependencies are isolated to their respective microservice, which simplifies updates and reduces potential issues.</li>
+                <li>Tools like Docker and package managers (e.g., Maven, npm) play a key role in managing these dependencies.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>4) Design, Build and Deploy</h3>
+        <p>
+            <ul>
+                <li>Microservices follow a continuous integration/continuous deployment (CI/CD) pipeline for design, build, and deploy processes.</li>
+                <li>Each service is versioned independently and can be deployed independently.</li>
+                <li>Automated testing and deployment ensure that any updates do not impact the entire system.</li>
+                <li>Enables faster release cycles and easier scaling and updating of services without downtime.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>5) Configuration, Credentials</h3>
+        <p>
+            <ul>
+                <li>Microservices need a mechanism for managing configuration and sensitive credentials independently.</li>
+                <li>Spring Cloud Config and Vault are used to manage configurations and secrets securely across microservices.</li>
+                <li>Environment-specific properties are loaded dynamically at runtime.</li>
+                <li>Helps in isolating sensitive data and making changes without requiring a redeployment.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>6) Logs</h3>
+        <p>
+            <ul>
+                <li>Each microservice maintains its own logs for tracing and debugging.</li>
+                <li>Centralized logging solutions like ELK stack or Splunk aggregate logs from all microservices.</li>
+                <li>Logs provide insights into the health and performance of each microservice.</li>
+                <li>Allows for easier troubleshooting and monitoring across the distributed system.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>7) Disposability</h3>
+        <p>
+            <ul>
+                <li>Microservices are designed to be disposable, which means they can be started, stopped, and replaced easily.</li>
+                <li>Facilitates better management of resources and allows scaling based on demand.</li>
+                <li>Promotes fault tolerance by isolating failures to individual services.</li>
+                <li>Enables seamless updates without downtime by replacing old instances with new ones.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>8) Backing Services</h3>
+        <p>
+            <ul>
+                <li>Microservices rely on external backing services like databases, caches, or messaging queues.</li>
+                <li>These services are abstracted away from the microservices, allowing them to remain independent.</li>
+                <li>Backing services are managed independently and can be scaled or updated without impacting the microservices.</li>
+                <li>Enables flexibility and simplifies management, as services can be changed without affecting the application logic.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>9) Environment Parity</h3>
+        <p>
+            <ul>
+                <li>All environments (development, testing, production) should be as similar as possible.</li>
+                <li>Ensures that a service behaves the same in all environments, reducing surprises when moving to production.</li>
+                <li>Environment parity is maintained by using tools like Docker, container orchestration (Kubernetes), and CI/CD pipelines.</li>
+                <li>Helps in achieving consistent results and reducing the risk of environment-specific bugs.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>10) Administrative Process</h3>
+        <p>
+            <ul>
+                <li>Microservices require different administrative processes for managing deployments, monitoring, and scaling.</li>
+                <li>Each microservice has its lifecycle management, independent of the others.</li>
+                <li>Tools like Docker, Kubernetes, and automated scripts manage deployments and scaling automatically.</li>
+                <li>Centralized dashboards help in monitoring all microservices and managing alerts effectively.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>11) Port Binding</h3>
+        <p>
+            <ul>
+                <li>Microservices use dynamic port binding for communication.</li>
+                <li>Each service binds to a different port, avoiding conflicts and ensuring that they can run independently.</li>
+                <li>Communication is done through APIs, using REST or messaging protocols like AMQP.</li>
+                <li>Allows for easy scaling and flexibility, as services can be moved across different servers or environments without conflicts.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>12) Stateless Process</h3>
+        <p>
+            <ul>
+                <li>Each microservice is designed to be stateless, storing no client-specific data between requests.</li>
+                <li>Data is managed outside of the service itself, often in backing services or external databases.</li>
+                <li>Helps in scaling services horizontally, as instances of the microservice can be added or removed without impacting session state.</li>
+                <li>Ensures fault tolerance and reduces complexity in managing state across the system.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>13) Concurrency</h3>
+        <p>
+            <ul>
+                <li>Microservices are designed to handle concurrent requests efficiently.</li>
+                <li>Each service handles multiple requests concurrently, which can be managed via load balancing and threading mechanisms.</li>
+                <li>Concurrency is managed at the service level, preventing interference between requests.</li>
+                <li>Helps in maximizing resource utilization and ensures responsiveness even under heavy loads.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>14) Telemetry</h3>
+        <p>
+            <ul>
+                <li>Microservices require comprehensive telemetry for monitoring and troubleshooting.</li>
+                <li>Includes metrics, logs, and traces to monitor the health and performance of services.</li>
+                <li>Tools like Prometheus, Grafana, and Zipkin are commonly used for collecting and visualizing telemetry data.</li>
+                <li>Telemetry helps in early detection of issues, optimizing performance, and ensuring compliance.</li>
+            </ul>
+        </p>
+    </div>
+<hr>
+    <div class="factor">
+        <h3>15) Authentication and Authorization</h3>
+        <p>
+            <ul>
+                <li>Security is crucial in microservices architecture, requiring robust authentication and authorization mechanisms.</li>
+                <li>Each service manages its own authentication, often using OAuth, JWT, or API keys.</li>
+                <li>Authorization is managed by roles and permissions, ensuring that users and services can access only the resources they are entitled to.</li>
+                <li>Tools like Spring Security and identity management systems (e.g., Okta, Auth0) are used for managing security across services.</li>
+            </ul>
+        </p>
+    </div>
+</div>
