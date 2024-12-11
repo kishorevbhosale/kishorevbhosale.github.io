@@ -1,0 +1,238 @@
+<div>
+  <h2 style="text-align: center;">Service Discovery and Registration in Microservices</h2>
+  <hr>
+  <div>
+    <h3>Challenges in Microservices</h3>
+    <h5>Q1. How Do Services Locate Each Other Inside a Network?</h5>
+    <p>
+      Each instance of a microservice exposes a remote API with its own host and port. 
+      However, these endpoint URLs can be dynamic and may change frequently. 
+      How do other microservices or clients discover and invoke these services without hardcoding the details?
+    </p>
+  </div>
+  
+  <div>
+    <h5>Q2. How Do New Service Instances Enter the Network?</h5>
+    <p>
+      When a microservice instance fails, new instances are spun up to ensure constant availability. 
+      These new instances may have different IP addresses or ports. 
+      How can these new service instances seamlessly join the network and start serving requests without manual intervention?
+    </p>
+  </div>
+  
+  <div>
+    <h5>Q3. How Is Load Balancing and Information Sharing Managed?</h5>
+    <p>
+      With multiple instances of a microservice running, how do we ensure proper load balancing between them? 
+      Additionally, how is information about specific service instances shared across the network 
+      to enable efficient communication and invocation between microservices?
+    </p>
+  </div>
+
+  <div>
+    <h3>Solutions:</h3>
+    <p>
+      The challenges of locating services, integrating new service instances, and ensuring load balancing in microservices can be addressed using the following concepts:
+    </p>
+    <div>
+        <ol>
+            <li><h6>Service Discovery</h6></li>
+            <li><h6>Service Registration</h6></li>
+            <li><h6>Load Balancing</h6></li>
+        </ol>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <h3 class="section-title">How service communication happens in Traditional apps ?</h3>
+    <div>
+        <p>
+          For a service or application to communicate with another service or application within a web network, 
+          it must have the necessary details to locate it, such as its IP address or DNS name.  
+        </p>
+        <p>
+          Consider an example with two services: <b>Accounts</b> and <b>Loans</b>. If only one instance of the Loans microservice exists, 
+          the communication between these two services can be visualized as follows:
+        </p>
+    </div>
+  </div>
+<hr>
+<div>
+    <div>
+
+        <h3>How Traditional Load Balancers Operate</h3>
+        <p>Traditional load balancers distribute incoming client requests across a pool of backend servers to optimize resource utilization and enhance application performance. They operate on the basis of algorithms and rules to determine which server receives the next request.</p>
+        <img src="../../images/traditional_lb.png" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+
+        <h4>Basic Architecture</h4>
+        <p>Traditional load balancers use a primary-secondary setup, with the primary load balancer handling all incoming traffic. The secondary load balancer acts as a failover mechanism in case the primary fails. The load balancer sits between the client and the backend servers, directing requests based on its load balancing algorithms.</p>
+    
+        <h4>Load Balancing Algorithms</h4>
+        <p>The traditional load balancers use different algorithms to distribute the incoming requests:</p>
+        <ul>
+            <li><strong>Round Robin:</strong> Distributes requests equally among all available servers. Each server is selected in turn, ensuring an even distribution of load. This is the simplest method but may not always be the most effective.</li>
+            <li><strong>Least Connections:</strong> Assigns requests to the server with the fewest active connections. This ensures that no server is overwhelmed by too many connections, which can be particularly useful in environments where connections vary widely.</li>
+            <li><strong>IP Hash:</strong> Routes requests based on the client's IP address. By hashing the IP address, it ensures consistent routing for repeated requests from the same client. This can help improve cache effectiveness but may not always balance the load optimally.</li>
+            <li><strong>Weighted Round Robin:</strong> Assigns weights to servers based on their capacities, directing more traffic to servers that can handle it better. This algorithm is useful for balancing load according to server capacities.</li>
+        </ul>
+    
+        <h4>Handling Failures and Redundancy</h4>
+        <p>Traditional load balancers handle server failures through redundancy. If a server fails, the load balancer will simply bypass it and continue to distribute traffic to the remaining servers. The secondary load balancer will take over in the event of the primary failure, ensuring high availability of the application.</p>
+        <p><strong>Failover Mechanism:</strong> The secondary load balancer checks the health of the primary periodically. If the primary fails, the secondary assumes control, allowing the application to remain available to users without interruption.</p>
+    
+        <h4>Limitations of Traditional Load Balancers</h4>
+        <ul>
+            <li><strong>Scalability Issues:</strong> Traditional load balancers are often bound by hardware limitations. Scaling them horizontally (adding more load balancers) to handle increased traffic can be complex and costly.</li>
+            <li><strong>Static Configuration:</strong> They require manual setup and do not support dynamic changes in the environment. For instance, if a new server is added, it needs to be manually configured into the load balancer, which can be prone to human error.</li>
+            <li><strong>Limited Visibility:</strong> Traditional load balancers do not provide insight into the health or status of individual servers. They do not monitor detailed metrics, such as CPU usage or memory load, which can be crucial for troubleshooting and optimization.</li>
+            <li><strong>Complex Configuration for Cloud Environments:</strong> Adapting traditional load balancers for cloud environments often requires significant modifications or additional services like Elastic Load Balancers (ELB) to bridge the gap between on-premises infrastructure and cloud resources.</li>
+        </ul>
+    
+    </div>
+    <hr>
+
+    <h3>Solutions for Cloud-Native Applications</h3>
+    <p>Cloud-native applications utilize modern tools like Service Discovery and Load Balancing as part of their architecture. These tools offer dynamic, automated methods for managing services and load distribution.</p>
+
+    <h4>Service Discovery</h4>
+    <p>Service Discovery enables applications to discover and communicate with other services in a dynamic environment. It reduces the need for hard-coded IP addresses and simplifies the process of adding new services.</p>
+    <p><strong>How it Works:</strong> Services register themselves with the service registry upon startup, and the registry keeps track of all available services. Other services can query the registry to find the available instances of a specific service.</p>
+    <pre><code>public class EurekaServiceRegistry implements ServiceRegistry {
+    private final EurekaClient eurekaClient;
+
+    public EurekaServiceRegistry(EurekaClient eurekaClient) {
+        this.eurekaClient = eurekaClient;
+    }
+
+    @Override
+    public List<ServiceInstance> getAllServices() {
+        return eurekaClient.getInstancesById("my-service-id");
+    }
+}
+</code></pre>
+    <p><strong>Configuration:</strong> In Spring Cloud, enable service discovery with <code>@EnableEurekaClient</code> for Eureka, or <code>@EnableDiscoveryClient</code> for Consul.</p>
+<hr>
+    <h4>Service Registry</h4>
+    <p>Service Registry keeps a catalog of services available in the system. This ensures services can register and deregister automatically, making it easier to handle failures and scale services dynamically.</p>
+    <p><strong>How it Works:</strong> Services register themselves with the service registry, and the registry provides a central view of all service instances. This setup allows services to be self-healing, where a failed instance can be automatically removed from the registry and replaced by a new instance.</p>
+    <pre><code>public class EurekaServiceRegistry implements ServiceRegistry {
+    private final EurekaClient eurekaClient;
+
+    public EurekaServiceRegistry(EurekaClient eurekaClient) {
+        this.eurekaClient = eurekaClient;
+    }
+
+    @Override
+    public void register(ServiceInstance serviceInstance) {
+        eurekaClient.registerInstance(serviceInstance);
+    }
+
+    @Override
+    public void deregister(ServiceInstance serviceInstance) {
+        eurekaClient.deregisterInstance(serviceInstance.getServiceId(), serviceInstance.getInstanceId());
+    }
+}
+</code></pre>
+<hr>
+    <h4>Load Balancing in Cloud-Native Applications</h4>
+    <p>Load balancing in cloud-native applications can be done either at the client-side or server-side.</p>
+    <h5>Client-Side Service Discovery</h5>
+    <p>Client-side load balancing involves the client application making decisions about which service instance to call. The client consults the service registry to discover the available instances of a service, chooses one, and then sends requests directly to that service.</p>
+    <img src="../../images/client-side_SD.PNG" style="display: block; margin: auto; width: 80%;" class="img-fluid">
+    <br>
+    <h5>Key aspects of client side service discovery</h5>
+    <ol>
+        <li><b>Service Registration: </b>Client applications register themselves with the service registry upon
+            startup. They provide essential information about their location, such as IP address, port, and
+            metadata, which helps identify and categorize the service.</li>
+        <li><b>Service Discovery: </b>When a client application needs to communicate with a specific service, it
+            queries the service registry for available instances of that service. The registry responds with
+            the necessary information, such as IP addresses and connection details.</li>
+        <li><b>Load Balancing: </b>Client-side service discovery often involves load balancing to distribute the
+            workload across multiple service instances. The client application can implement a load-
+            balancing strategy to select a specific instance based on factors like round-robin, weighted
+            distribution, or latency.</li>
+    </ol>
+    <img src="../../images/client-side_SD_1.png" style="display: block; margin: auto; width: 80%;" class="img-fluid">
+    <br>
+    <img src="../../images/client-side_SD_2.png" style="display: block; margin: auto; width: 80%;" class="img-fluid">
+    <br>
+    <h5>Spring cloud support for client side discovery:</h5>
+    <ol>
+        <li><b>Eureka Server: </b>Spring Cloud Netflix's Eureka service which will act as a service discovery agent</li>
+        <li>Spring Cloud Load Balancer library for client-side load balancing</li>
+        <li><b>Feign Client: </b>Netflix Feign client to look up for a service b/w microservices</li>
+    </ol>
+   
+    <hr>
+    <h4>Steps to Build a Eureka Server Application using Spring Cloud Netflix's Eureka</h4>
+    
+        <h5>1. Set up a New Spring Boot Project</h5>
+        <p>Start by creating a new Spring Boot project using your preferred IDE or by using Spring Initializr (https://start.spring.io/). Include the <code>spring-cloud-starter-netflix-eureka-server</code> Maven dependency in your project.</p>
+    
+        <h5>2. Configure the Properties</h5>
+        <pre><code>
+    server:
+      port: 8070
+    eureka:
+      instance:
+        hostname: localhost
+      client:
+        fetchRegistry: false
+        registerWithEureka: false
+      serviceUrl:
+        defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    </code></pre>
+    
+        <h5>3. Add the Eureka Server Annotation</h5>
+        <p>In the main class of your project, annotate it with <code>@EnableEurekaServer</code>. This annotation configures the application to act as a Eureka Server.</p>
+    
+        <h5>4. Build and Run the Eureka Server</h5>
+        <p>Build your project and run it as a Spring Boot application. Open a web browser and navigate to <code>http://localhost:8070</code>. You should see the Eureka Server dashboard, which displays information about registered service instances.</p>
+    
+    <hr>
+<div>
+
+    <h4>Steps to Make a Microservice Application to Register as a Eureka Client</h4>
+
+    <h5>1. Set Up a New Spring Boot Project</h5>
+    <p>Start by creating a new Spring Boot project using your preferred IDE or by using Spring Initializr (https://start.spring.io/). Include the <code>spring-cloud-starter-netflix-eureka-client</code> Maven dependency.</p>
+
+    <h5>2. Configure the Properties</h5>
+    <pre><code>
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+  serviceUrl:
+    defaultZone: "http://localhost:8070/eureka/"
+</code></pre>
+
+    <h5>3. Build and Run the Application</h5>
+    <p>Build your project and run it as a Spring Boot application. Open a web browser and navigate to <code>http://localhost:8070</code>. You should see the microservice registered itself as an application, which can be confirmed inside the Eureka Server dashboard.</p>
+
+</div>
+<hr>
+    <h5>Server-Side Service Discovery</h5>
+    <p>In server-side load balancing, a central component (like a load balancer) decides which service instance to forward a request to. The client application does not need to be aware of the specific instances or their details; it simply sends requests to a load balancer.</p>
+    <p><strong>How it Works:</strong> The load balancer chooses an appropriate instance to forward the request based on factors like health, load, or latency.</p>
+<hr>
+<div>
+    <h3>Scenario-Based Interview Questions and Answers</h3>
+    <ul>
+        <li><strong>Q1: What are the main differences between client-side and server-side service discovery?</strong>
+            <p><em>Answer:</em> Client-side service discovery involves the client making requests directly to service instances based on dynamic information from the service registry. Server-side discovery involves a central load balancer making decisions about which instance to forward the request to.</p>
+        </li>
+        <li><strong>Q2: How do you handle service failures in a cloud-native environment?</strong>
+            <p><em>Answer:</em> Cloud-native applications use service registries that automatically remove failed instances, ensuring that new requests are not directed to them. Additionally, health checks (liveness and readiness probes) can be used to detect and respond to failures.</p>
+        </li>
+        <li><strong>Q3: What are the advantages of using a service registry?</strong>
+            <p><em>Answer:</em> A service registry provides a central point of truth for service instances, simplifying service discovery and making the system more resilient to changes and failures. It allows for automatic registration and deregistration of services, reducing manual management efforts.</p>
+        </li>
+    </ul>
+
+</div>
+
+</div>

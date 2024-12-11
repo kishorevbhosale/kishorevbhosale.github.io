@@ -1,0 +1,186 @@
+<div>
+    <h2 style="text-align: center;">Key Annotations for Spring Boot Microservices</h2>
+    <h4>@RestController</h4>
+    <p>
+        Combines @Controller and @ResponseBody. It indicates that a class is a Spring MVC controller where every method returns a domain object instead of a view.
+    </p>
+    <pre><code>
+        @RestController
+        @RequestMapping("/api")
+        public class MyController {
+            @GetMapping("/hello")
+            public String sayHello() {
+                return "Hello, World!";
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@RequestMapping</h4>
+    <p>
+        Used to map web requests to a specific handler class or method. It can be applied at the class or method level.
+    </p>
+    <pre><code>
+        @RestController
+        @RequestMapping("/api")
+        public class MyController {
+            @RequestMapping(value = "/hello", method = RequestMethod.GET)
+            public String sayHello() {
+                return "Hello, World!";
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@GetMapping</h4>
+    <p>
+        A shortcut for @RequestMapping with method=RequestMethod.GET. Used for handling GET requests.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @GetMapping("/hello")
+            public String sayHello() {
+                return "Hello, World!";
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@PostMapping</h4>
+    <p>
+        A shortcut for @RequestMapping with method=RequestMethod.POST. Used for handling POST requests.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @PostMapping("/create")
+            public String create(@RequestBody String data) {
+                return "Data created: " + data;
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@PutMapping</h4>
+    <p>
+        A shortcut for @RequestMapping with method=RequestMethod.PUT. Used for handling PUT requests.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @PutMapping("/update")
+            public String update(@RequestBody String data) {
+                return "Data updated: " + data;
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@DeleteMapping</h4>
+    <p>
+        A shortcut for @RequestMapping with method=RequestMethod.DELETE. Used for handling DELETE requests.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @DeleteMapping("/delete/{id}")
+            public String delete(@PathVariable("id") String id) {
+                return "Deleted ID: " + id;
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@PathVariable</h4>
+    <p>
+        Used to extract values from the URI and bind them to method parameters.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @GetMapping("/user/{id}")
+            public String getUserById(@PathVariable("id") String id) {
+                return "User ID: " + id;
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@RequestBody</h4>
+    <p>
+        Maps the body of the HTTP request to a Java object. Useful for handling JSON data.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @PostMapping("/create")
+            public String createUser(@RequestBody User user) {
+                return "User created: " + user.getName();
+            }
+        }
+
+        class User {
+            private String name;
+            public String getName() { return name; }
+            public void setName(String name) { this.name = name; }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@RequestParam</h4>
+    <p>
+        Used to extract query parameters from the URL.
+    </p>
+    <pre><code>
+        @RestController
+        public class MyController {
+            @GetMapping("/greet")
+            public String greet(@RequestParam("name") String name) {
+                return "Hello, " + name;
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@ExceptionHandler</h4>
+    <p>
+        Used to handle exceptions in a specific controller or globally.
+    </p>
+    <pre><code>
+        @RestController
+        @ControllerAdvice
+        public class ExceptionController {
+            @ExceptionHandler(Exception.class)
+            public String handleException(Exception e) {
+                return "Error: " + e.getMessage();
+            }
+        }
+    </code></pre>
+</div>
+
+<div>
+    <h4>@CrossOrigin</h4>
+    <p>
+        Enables cross-origin resource sharing (CORS).
+    </p>
+    <pre><code>
+        @RestController
+        @CrossOrigin(origins = "http://example.com")
+        public class MyController {
+            @GetMapping("/data")
+            public String getData() {
+                return "Data";
+            }
+        }
+    </code></pre>
+</div>

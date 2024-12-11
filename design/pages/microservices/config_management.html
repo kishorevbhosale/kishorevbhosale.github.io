@@ -1,24 +1,169 @@
 <div class="story">
     <h2 style="text-align: center;">Configurations Management in Microservices</h2>
-        <hr>
+        <hr>   
+</div>
+
+<div>
+        <h3>How to Read Properties in Spring Boot</h3>
+        <p>Spring Boot provides multiple ways to read properties from configuration files like <code>application.properties</code> or <code>application.yml</code>. These properties can be accessed in your application using various approaches depending on the use case.</p>
+    
+        <h5>1. Using @Value</h5>
+        <p>The <code>@Value</code> annotation is used to inject a single property value into a field.</p>
+        <pre><code>@RestController
+    public class MyController {
+    
+        @Value("${app.name}")
+        private String appName;
+    
+        @GetMapping("/app-name")
+        public String getAppName() {
+            return appName;
+        }
+    }
+    </code></pre>
+        <p><strong>Explanation:</strong> The <code>@Value</code> annotation injects the value of <code>app.name</code> from <code>application.properties</code>.</p>
+        <pre><code># application.properties
+    app.name=My Spring Boot App
+    </code></pre>
+    
+        <h5>2. Using @ConfigurationProperties</h5>
+        <p>The <code>@ConfigurationProperties</code> annotation binds a group of properties into a Java class.</p>
+        <pre><code>@Component
+    @ConfigurationProperties(prefix = "app")
+    public class AppConfig {
+        private String name;
+        private String version;
+    
+        // Getters and Setters
+    }
+    
+    @RestController
+    public class MyController {
+    
+        private final AppConfig appConfig;
+    
+        public MyController(AppConfig appConfig) {
+            this.appConfig = appConfig;
+        }
+    
+        @GetMapping("/app-info")
+        public String getAppInfo() {
+            return "Name: " + appConfig.getName() + ", Version: " + appConfig.getVersion();
+        }
+    }
+    </code></pre>
+        <p><strong>Explanation:</strong> The <code>@ConfigurationProperties</code> binds all properties with the prefix <code>app</code> into the <code>AppConfig</code> class.</p>
+        <pre><code># application.properties
+    app.name=My Spring Boot App
+    app.version=1.0.0
+    </code></pre>
+    
+        <h5>3. Using Environment Object</h5>
+        <p>The <code>Environment</code> object can be used to programmatically fetch property values.</p>
+        <pre><code>@RestController
+    public class MyController {
+    
+        private final Environment environment;
+    
+        public MyController(Environment environment) {
+            this.environment = environment;
+        }
+    
+        @GetMapping("/app-description")
+        public String getAppDescription() {
+            return environment.getProperty("app.description");
+        }
+    }
+    </code></pre>
+        <p><strong>Explanation:</strong> The <code>Environment</code> object retrieves the value of <code>app.description</code> at runtime.</p>
+        <pre><code># application.properties
+    app.description=This is a Spring Boot application.
+    </code></pre>
+    
+        <h5>4. Using @PropertySource Annotation</h5>
+        <p>The <code>@PropertySource</code> annotation is used to load properties from an external file.</p>
+        <pre><code>@Configuration
+    @PropertySource("classpath:custom.properties")
+    public class CustomConfig {
+    
+        @Value("${custom.property}")
+        private String customProperty;
+    
+        public String getCustomProperty() {
+            return customProperty;
+        }
+    }
+    
+    @RestController
+    public class MyController {
+    
+        private final CustomConfig customConfig;
+    
+        public MyController(CustomConfig customConfig) {
+            this.customConfig = customConfig;
+        }
+    
+        @GetMapping("/custom-property")
+        public String getCustomProperty() {
+            return customConfig.getCustomProperty();
+        }
+    }
+    </code></pre>
+        <p><strong>Explanation:</strong> The <code>@PropertySource</code> annotation loads properties from the <code>custom.properties</code> file.</p>
+        <pre><code># custom.properties
+    custom.property=Custom Value
+    </code></pre>
+    
+        <h5>5. Using @Configuration and Beans</h5>
+        <p>Properties can also be loaded and injected into beans.</p>
+        <pre><code>@Configuration
+    public class AppConfig {
+    
+        @Bean
+        public String appName(@Value("${app.name}") String appName) {
+            return appName;
+        }
+    }
+    
+    @RestController
+    public class MyController {
+    
+        private final String appName;
+    
+        public MyController(String appName) {
+            this.appName = appName;
+        }
+    
+        @GetMapping("/bean-app-name")
+        public String getBeanAppName() {
+            return appName;
+        }
+    }
+    </code></pre>
+        <p><strong>Explanation:</strong> This approach uses a bean to inject the property value, which can then be used in the application.</p>
+    
+        <h3>Conclusion</h3>
+        <p>Each method has its own use case. Use <code>@Value</code> for single properties, <code>@ConfigurationProperties</code> for grouped properties, and <code>Environment</code> for programmatic access. The <code>@PropertySource</code> annotation and Bean configuration provide additional flexibility for loading and injecting properties.</p>
+</div>
+<hr>
+    <div class="act act-1">
+        <h3 class="section-title">Step 1: Setting Up the Configurations</h3>
         <p>
-            You're developing a microservice called <b>Account Service</b> using Spring Boot. The application needs to be deployed across multiple environments (dev, qa, prod) with different configurations. The goal is to:
+            You're developing a microservice called <b>Account Service</b> using Spring Boot. The application needs to be deployed across multiple environments <b>(dev, qa, prod)</b> with different configurations. 
+            The goal is to:
         </p>
         <ul>
             <li>Manage environment-specific configurations without hardcoding them in the codebase.</li>
             <li>Ensure sensitive data like database credentials are stored securely.</li>
             <li>Allow the application to refresh its configuration dynamically across environments using <b>Spring Cloud Bus and Spring Cloud Config Monitor</b>.</li>
         </ul>
-
-    <div class="act act-1">
-        <h3 class="section-title">Step 1: Setting Up the Configurations</h3>
         <p>
             To address these challenges, we'll use Spring Boot profiles and externalize configurations:
         </p>
 
         <div class="section">
             <h4>Environment-Specific Configuration Files</h4>
-            <p>Create <code>application.yml</code> for common settings and environment-specific files (<code>application-dev.yml</code>, <code>application-qa.yml</code>, <code>application-prod.yml</code>) for custom properties.</p>
+            <p>Create <code><b>application.yml</b></code> for common settings and environment-specific files (<code>application-dev.yml</code>, <code>application-qa.yml</code>, <code>application-prod.yml</code>) for custom properties.</p>
             <div class="code">
                 <h5>Example:</h5>
 <b>application.yml:</b>

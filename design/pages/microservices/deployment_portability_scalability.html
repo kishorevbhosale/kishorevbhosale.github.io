@@ -1,0 +1,126 @@
+<div>
+    <h2 style="text-align: center;">Deployment, Portability and Scalability of Microservices</h2>
+    <hr>
+    <h4>1) Deployment Challenges:</h4>
+    <p>Deploying 100s of Microservices with Less Effort & Cost</p>
+    <p>Deploying microservices involves managing many independent services that need to be consistently available across various environments. 
+        Docker helps streamline this process by packaging each microservice into a lightweight, self-contained container. 
+        This reduces the overhead and complexity associated with deploying each microservice separately, leading to cost efficiency and easier maintenance.</p>
+
+    <h4>2) Portability Challenges:</h4>
+    <p>Moving 100s of Microservices Across Environments with Less Effort, Configurations & Cost</p>
+    <p>Docker makes microservices highly portable across different environments, such as development, staging, and production. 
+        Since Docker containers package the application and all its dependencies into a single unit, 
+        the application can run consistently across any environment where Docker is supported, with minimal modifications needed.</p>
+
+    <h4>3) Scalability Challenges:</h4>
+    <p>Scaling Applications Based on Demand on the Fly with Minimum Effort & Cost</p>
+    <p>Docker supports dynamic scaling by allowing new containers to be instantiated based on demand without affecting the performance or stability of existing containers. This scalability is crucial for handling varying workloads without additional infrastructure investments.</p>
+
+</div>
+<hr>
+<div>    
+    <h4>Solution: Docker</h4>
+    <p><strong>Docker</strong> is an open-source platform that automates software deployment inside lightweight, portable containers. A container is a standard unit of software that packages up code and all its dependencies so that an application runs quickly and reliably from one computing environment to another.</p>
+
+    <h4>Containers:</h4>
+    <ul>
+        <li><strong>Contain the application</strong>: A container includes the application's code, libraries, and dependencies, making it portable and easy to deploy.</li>
+        <li><strong>Isolated</strong>: Containers share the host operating system's kernel but operate in isolated user spaces. This isolation ensures that issues in one container do not affect others.</li>
+        <li><strong>Lightweight</strong>: Containers are much smaller and faster than virtual machines (VMs) because they don’t require a full operating system.</li>
+        <li><strong>Self-sufficient</strong>: A container can run independently of other containers on the same host, leading to better resource utilization and efficiency.</li>
+    </ul>
+
+    <h4>Namespaces and Control Groups (cgroups) in Docker:</h4>
+    <b>Namespaces:</b>
+    <ul>
+        <li><strong>Isolation Mechanism</strong>: Linux namespace allows for the creation of isolation environments within the operating system. Each container has its own set of namespaces, including process, network, mount, IPC and user namespaces. 
+            These namespaces ensure theat processes within a container are only aware of and interact with resources within their specific namespace, providing a leavel of isolation</li>
+        <li><strong>Resource Control</strong>: By isolating the network namespace, a container can only communicate with other containers within the same namespace or the host machine.</li>
+    </ul>
+    <b>Control Groups (cgroups):</b>
+    <ul>
+        <li><strong>Resource Management</strong>: cgroups in Docker manage the resources (CPU, memory, I/O) allocated to each container.</li>
+        <li><strong>Limits and Prioritization</strong>: They allow for control over resource limits for containers to ensure they don’t overwhelm the host system. This is crucial for scalability and stability.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h4>Virtual Machine vs Docker</h4>
+    <b>Virtual Machines (VMs):</b>
+    <ul>
+        <li><strong>Full OS Emulation</strong>: VMs run a full operating system, requiring more resources, including CPU, memory, and disk.</li>
+        <li><strong>Heavyweight</strong>: Each VM runs a full OS, making it slower and more resource-intensive.</li>
+        <li><strong>Isolation</strong>: VMs provide strong isolation but at a higher cost in terms of resources.</li>
+    </ul>
+    <b>Docker:</b>
+    <ul>
+        <li><strong>Lightweight and Efficient</strong>: Runs on the host OS without the overhead of a full OS. Each Docker container shares the host OS kernel.</li>
+        <li><strong>Performance</strong>: Docker containers are faster and require less memory compared to VMs.</li>
+        <li><strong>Portability</strong>: Docker containers are more portable across environments because they do not depend on the underlying OS.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h4>Generating Docker Image from Existing Microservices</h4>
+    <ol>
+        <li><strong>Build the microservice</strong>: Compile and build the application as a JAR file (for Java Spring Boot) or executable (for other languages).</li>
+        <li><strong>Create a Dockerfile</strong>: A Dockerfile is a script containing instructions on how to build a Docker image.</li>
+        <pre><code class="language-dockerfile"># Sample Dockerfile
+# Use the official Java image as base
+FROM openjdk:11
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the compiled JAR file into the container
+COPY target/your-app.jar /app/
+
+# Expose the port that the application will run on
+EXPOSE 8080
+
+# Command to run the application
+CMD ["java", "-jar", "your-app.jar"]
+</code></pre>
+        <li><strong>Build the Docker image</strong>: Navigate to the directory containing the Dockerfile and run the following command:
+            <pre><code>docker build -t your-app .</code></pre>
+        </li>
+    </ol>
+</div>
+<hr>
+<div>    
+    <h3>Running Spring boot app as a Containers using Dockerfile</h3>
+    <ol>
+        <li><strong>Build the application</strong>: Compile the Spring Boot application to a standalone executable JAR. Run the command <pre><code>mvn clean install</code></pre></li><br>
+        <li><strong>Create Dockerfile</strong>: Place the Dockerfile in the same directory as your JAR file.</li><br>
+        <li><strong>Build the Docker image</strong>: Run <pre><code>docker build -t image-name:tag .</code></pre> from the directory containing the Dockerfile.</li><br>
+        <li><strong>Run the Docker container</strong>: 
+            <pre><code>docker run -p 8080:8080 your-app</code></pre>
+        </li>
+    </ol>
+</div>
+<hr>
+<div>
+    <h4>PORT Mapping in Docker</h4>
+    <p>
+        By default, containers are connected to an isolated network within the Docker host. To access a container from your local network, you need to configure port mapping explicitly. 
+        This involves specifying the desired mapping between an external port on your local machine and a port within the container. 
+        For example, when running the application using the `docker run` command, you can use the `-p 8080:8080` option to map port 8080 on the host machine to port 8080 within the container. 
+        The first value (`8080`) represents the external port, while the second value (`8080`) indicates the port inside the container.
+    </p>
+</div>
+<hr>
+<div>
+    <h4>Build docker image without Dockerfile</h4>
+    <b>Buildpacks</b>
+    <p>Buildpacks are tools that automate the process of building container images directly from application source code without requiring a Dockerfile. They analyze the codebase, detect the programming language and dependencies, and create an optimized image with the necessary runtime and dependencies.</p>
+    <p>Buildpacks are part of the <strong>Cloud Native Buildpacks</strong> initiative, supported by platforms like Heroku and Cloud Foundry. They streamline containerization and are particularly useful for developers unfamiliar with writing Dockerfiles.</p>
+    <p>Add Buildpacks Dependency in Spring Boot's pom.xml</p>
+    <pre><code>mvn spring-boot:build-image</code></pre>
+    <br>
+    <b>Google Jib</b>
+    <p>Google Jib is an open-source Java containerization tool designed to create optimized Docker and OCI images for Java applications directly from their build systems, such as Maven or Gradle, without needing a Docker daemon.</p>
+    <p>Jib simplifies the process by layering the application, dependencies, and runtime efficiently, leading to faster builds and smaller image sizes.</p>
+    <p>Add Google Jib Dependency in Spring Boot's pom.xml</p>
+    <pre><code>mvn compile jib:dockerBuild</code></pre>
+</div>

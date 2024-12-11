@@ -1,0 +1,60 @@
+<div>
+    <h2 style="text-align: center;">Liveness and Readiness in Actuator/Health</h2>
+    <hr>
+    <p>Spring Boot Actuator provides health indicators to monitor the state of the application. Among these indicators, two crucial ones are Liveness and Readiness checks, which help manage the application’s lifecycle in a cloud-native environment.</p>
+
+    <h4>Liveness</h4>
+    <p>Liveness probes are used to determine if an application is alive and responsive. The main purpose of a liveness check is to ensure that the application is still running and capable of accepting requests. If the liveness probe fails, Kubernetes or other orchestration platforms will consider the container unhealthy and may decide to restart it to recover from potential failures.</p>
+    <pre><code># application.properties
+management.health.liveness.enabled=true
+management.health.liveness.database.enabled=true
+management.health.liveness.database.jdbc-url=jdbc:mysql://localhost:3306/mydb
+</code></pre>
+    <p><strong>Example:</strong> You can configure liveness probes to check a database connection or other health indicators to ensure the application is functional. The health endpoint for liveness would typically be accessed via <code>/actuator/health/liveness</code>.</p>
+    <pre><code>curl http://localhost:8080/actuator/health/liveness
+{
+    "status": "UP",
+    "details": {
+        "database": {
+            "status": "UP",
+            "database": "mydb",
+            "validationQuery": "SELECT 1"
+        }
+    }
+}
+</code></pre>
+<hr>
+    <h4>Readiness</h4>
+    <p>Readiness probes are used to determine if the application is fully initialized and ready to accept traffic. The readiness probe is especially crucial during the startup phase of the application or after a configuration change. If the readiness probe fails, the orchestrator can block traffic to the application, preventing users from encountering errors due to incomplete service startup.</p>
+    <pre><code># application.properties
+management.health.readiness.enabled=true
+management.health.readiness.database.enabled=true
+management.health.readiness.database.jdbc-url=jdbc:mysql://localhost:3306/mydb
+</code></pre>
+    <p><strong>Example:</strong> Readiness checks are typically used to ensure all required services, dependencies, and configuration are ready before the application starts accepting traffic. The health endpoint for readiness would be accessed via <code>/actuator/health/readiness</code>.</p>
+    <pre><code>curl http://localhost:8080/actuator/health/readiness
+{
+    "status": "UP",
+    "details": {
+        "database": {
+            "status": "UP",
+            "database": "mydb",
+            "validationQuery": "SELECT 1"
+        }
+    }
+}
+</code></pre>
+<hr>
+    <h3>Key Differences:</h3>
+    <ul>
+        <li><strong>Liveness:</strong> Indicates whether the application is operational and capable of accepting traffic. If the probe fails, the container is restarted.</li>
+        <li><strong>Readiness:</strong> Checks if the application is fully initialized and ready to serve traffic. If the probe fails, traffic is blocked to the container.</li>
+    </ul>
+
+    <h3>Configuring Liveness and Readiness in Spring Boot</h3>
+    <p>To configure these checks, you can use the <code>management.endpoints.web.exposure.include</code> property to expose the health endpoint, and the specific health indicators can be enabled using properties like <code>management.health.liveness.enabled</code> and <code>management.health.readiness.enabled</code>.</p>
+    <pre><code># application.properties
+management.endpoints.web.exposure.include=health
+</code></pre>
+
+</div>
