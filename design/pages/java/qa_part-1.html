@@ -1,0 +1,2416 @@
+<!-- Platform Independence and JVM -->
+<div>
+    <h5>Q. Is Java platform-independent? How?</h5>
+    <p><strong>Answer:</strong> Java is platform-independent because it uses the concept of bytecode. Java code is compiled into bytecode by the Java compiler, which can then run on any platform with a compatible Java Virtual Machine (JVM). This "Write Once, Run Anywhere" feature is the core of Java's platform independence.</p>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Explain JVM, JRE and JDK</h5>
+    <p><b>Java Virtual Machine (JVM): </b>The Java Virtual Machine (JVM) is a runtime environment that executes Java bytecode. It abstracts the underlying hardware and operating system, allowing Java programs to run on any device or platform. JVM handles key tasks like memory management, garbage collection, and security. It ensures that Java code written once can run anywhere (platform independence), provided a compatible JVM exists.</p>
+    <img src="../../images/jvm.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+    <img src="../../images/jvm_1.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+    <p><b>Java Runtime Environment (JRE): </b>The Java Runtime Environment (JRE) is a software package that provides libraries, JVM, and other components needed to run Java applications. It is the runtime portion of Java, enabling users to execute pre-compiled Java programs. The JRE does not include development tools like compilers or debuggers, making it ideal for users who only need to run Java applications.</p>
+    <p><b>Java Development Kit (JDK): </b>The Java Development Kit (JDK) is a complete development environment for building Java applications. It includes the JRE, development tools like javac (compiler), jdb (debugger), and additional utilities. Developers use the JDK to write, compile, and debug Java code, making it essential for Java application development. Multiple versions of JDK are available, including Standard Edition (SE), Enterprise Edition (EE), and more.</p>
+    <img src="../../images/jvm_jre_jdk.PNG" style="display: block; margin: auto; width: 35%;" class="img-fluid">
+  </div>
+  <hr>
+  <div>
+    <h5>Q. What is JIT?</h5>
+    <p><strong>Answer:</strong> JIT (Just-In-Time) Compiler is a component of the JVM that optimizes bytecode execution by compiling frequently used bytecode into native machine code during runtime, improving performance.</p>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. What is GraalVM, and how is it different from the JIT compiler?</h5>
+    <p>GraalVM is a high-performance runtime that enhances the execution of Java applications and supports multiple programming languages beyond Java, such as JavaScript, Python, Ruby, R, and even languages like C and C++. It is designed to integrate and optimize applications written in a variety of languages within a single runtime environment.</p>
+    <b>Key Features of GraalVM:</b>
+    <ul>
+        <li>Polyglot Support: GraalVM allows seamless interoperability between supported languages. For example, Java code can invoke Python or JavaScript functions directly, enabling diverse language ecosystems in a single application.</li>
+        <li>Ahead-of-Time (AOT) Compilation: Unlike traditional Just-In-Time (JIT) compilation, GraalVM offers AOT compilation through its Native Image feature. This generates a standalone, platform-specific executable with fast startup times and reduced memory usage, making it ideal for microservices and serverless deployments.</li>
+        <li>High-Performance JIT Compiler: GraalVM replaces the standard JIT compiler in the JVM (C2) with its own compiler, which provides enhanced optimization for Java applications. This includes better inlining, escape analysis, and reduced overhead, resulting in significant performance improvements.</li>
+    </ul>
+    <b>How it Works:</b>
+    <ul>
+        <li><b>Static Analysis of Code:</b>
+            GraalVM performs a whole-program analysis to identify all reachable classes, methods, and fields starting from a defined entry point (usually the main() method).
+            This ensures that only the necessary code is included in the native image, leading to smaller binaries.
+        </li>
+        <li><b>Code Compilation:</b>
+            The GraalVM compiler converts Java bytecode into machine code during the build process.
+            Unlike JIT, which compiles code incrementally during runtime, AOT compiles the entire application into a native executable beforehand.
+        </li>
+        <li><b>Ahead-of-Time Optimizations:</b>
+            The compiler applies several optimizations, such as inlining, dead-code elimination, and constant folding, to produce a highly efficient executable.
+            These optimizations are done during the AOT build process, ensuring that the executable is optimized for performance and resource usage.
+        </li>
+        <li><b>Native Image Output:</b>
+            The final output is a self-contained native executable that includes the application code and the minimal runtime needed to execute it.
+            This eliminates the need for an external JVM or classpath, making the executable lightweight and portable.
+
+        </li>
+    </ul>
+    <b>Advantages of GraalVM:</b>
+    <ul>
+        <li>Faster Startup Times: GraalVM's native image reduces cold-start latency, particularly useful for cloud and serverless environments.</li>
+        <li>Lower Memory Usage: By pre-compiling code into native images, GraalVM reduces memory overhead compared to traditional JVMs.</li>
+        <li>Improved Application Performance: Advanced optimizations make Java applications run faster, especially in long-running scenarios.</li>
+    </ul>
+    Faster startup times and low memory consumption make GraalVM a strong choice for microservices in containerized environments.
+  </div>
+  <hr>
+  <div>
+    <h5>Q. What is a classloader?</h5>
+    <p><strong>Answer:</strong> A classloader is a subsystem of JVM responsible for loading class files. It converts bytecode into JVM-readable formats. Java has three types of classloaders:
+    <p>When a request reaches the JVM, it first checks if the class is already loaded. If the class is not loaded, the JVM searches for it using class loaders. If the class cannot be found after all searches, a `ClassNotFoundException` is thrown.</p>
+    <ul>
+        <li><strong>Bootstrap ClassLoader:</strong> Loads core Java classes.(jdk/jre/lib/*)</li>
+        <li><strong>Extension ClassLoader:</strong> Loads classes from the extension directory.(jdk/jre/ext/*)</li>
+        <li><strong>Application ClassLoader:</strong> Loads classes from the application's classpath.</li>
+        <img src="../../images/classloader.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+
+      </ul>
+    </p>
+  </div>
+  <hr>
+
+  
+  <!-- Memory Management -->
+  <div>
+    <h5>Q. What are the memory storages available with JVM?</h5>
+    <p><strong>Answer:</strong> JVM memory is divided into the following areas:
+      <ul>
+        <li><strong>Heap:</strong> For storing objects and class instances.</li>
+        <li><strong>Stack:</strong> For storing method calls, local variables, and partial results.</li>
+        <li><strong>Method Area:</strong> For storing class metadata and static variables.</li>
+        <li><strong>Program Counter (PC) Register:</strong> For tracking the current instruction.</li>
+        <li><strong>Native Method Stack:</strong> For native method executions.</li>
+      </ul>
+    </p>
+  </div>
+  <hr>
+  
+  <!-- Main Method -->
+  <div>
+    <h5>Q. What will happen if we don’t declare the main method as static?</h5>
+    <p><strong>Answer:</strong> The program will fail to run because the JVM requires the <code>main</code> method to be static to invoke it without creating an object.</p>
+  </div>
+  <hr>
+  <!-- Data Types -->
+  <div>
+    <h5>Q. Explain different data types in Java and its default value.</h5>
+    <p><strong>Answer:</strong> Java provides two categories of data types:
+      <ul>
+        <li><strong>Primitive:</strong> byte, short, int, long, float, double, char, boolean.</li>
+        <li><strong>Non-Primitive:</strong> String, arrays, classes, interfaces, etc.</li>
+      </ul>
+    </p>     
+
+    <b>Primitive Data Types</b>
+    <table border="1">
+        <tr>
+            <th>Data Type</th>
+            <th>Default Value</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>byte</td>
+            <td>0</td>
+            <td>8-bit signed integer.</td>
+        </tr>
+        <tr>
+            <td>short</td>
+            <td>0</td>
+            <td>16-bit signed integer.</td>
+        </tr>
+        <tr>
+            <td>int</td>
+            <td>0</td>
+            <td>32-bit signed integer.</td>
+        </tr>
+        <tr>
+            <td>long</td>
+            <td>0L</td>
+            <td>64-bit signed integer.</td>
+        </tr>
+        <tr>
+            <td>float</td>
+            <td>0.0f</td>
+            <td>32-bit floating-point number.</td>
+        </tr>
+        <tr>
+            <td>double</td>
+            <td>0.0d</td>
+            <td>64-bit floating-point number.</td>
+        </tr>
+        <tr>
+            <td>char</td>
+            <td>\u0000</td>
+            <td>Default Unicode character.</td>
+        </tr>
+        <tr>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Boolean value representing true/false.</td>
+        </tr>
+    </table>
+    <br>
+    <b>Non-Primitive Data Types</b>
+    <table border="1">
+        <tr>
+            <th>Data Type</th>
+            <th>Default Value</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>String</td>
+            <td>null</td>
+            <td>A reference type representing text.</td>
+        </tr>
+        <tr>
+            <td>Object</td>
+            <td>null</td>
+            <td>Any user-defined or built-in object.</td>
+        </tr>
+        <tr>
+            <td>Array</td>
+            <td>null</td>
+            <td>Arrays are reference types, default to null.</td>
+        </tr>
+    </table>
+    <br>    
+    <b>Notes</b>
+    <ul>
+        <li><b>Local Variables</b>: Local variables must be explicitly initialized before use; they do not have default values.</li>
+        <li><b>Null for Non-Primitive Types</b>: Non-primitive types like <code>String</code> or objects always default to <code>null</code>.</li>
+    </ul>
+  </div>
+  <hr>
+  <!-- Wrapper Classes -->
+  <div>
+    <h5>Q. What is the Wrapper class in Java, and why do we need it?</h5>
+        <p>
+            In Java, <b>wrapper classes</b> are part of the <code>java.lang</code> package and provide an object representation for primitive data types. 
+            Each primitive type (e.g., <code>int</code>, <code>double</code>, <code>char</code>) has a corresponding wrapper class 
+            (e.g., <code>Integer</code>, <code>Double</code>, <code>Character</code>). 
+            These classes "wrap" the primitive data type in an object, allowing primitives to be treated as objects.
+        </p>
+    
+        <b>Wrapper Classes and Their Corresponding Primitive Types</b>
+        <table border="1">
+            <tr>
+                <th>Primitive Type</th>
+                <th>Wrapper Class</th>
+            </tr>
+            <tr>
+                <td>byte</td>
+                <td>Byte</td>
+            </tr>
+            <tr>
+                <td>short</td>
+                <td>Short</td>
+            </tr>
+            <tr>
+                <td>int</td>
+                <td>Integer</td>
+            </tr>
+            <tr>
+                <td>long</td>
+                <td>Long</td>
+            </tr>
+            <tr>
+                <td>float</td>
+                <td>Float</td>
+            </tr>
+            <tr>
+                <td>double</td>
+                <td>Double</td>
+            </tr>
+            <tr>
+                <td>char</td>
+                <td>Character</td>
+            </tr>
+            <tr>
+                <td>boolean</td>
+                <td>Boolean</td>
+            </tr>
+        </table>
+    
+        <b>Why Do We Need Wrapper Classes?</b>
+        <ul>
+            <li>
+                <b>Working with Collections:</b> Java Collections (e.g., <code>ArrayList</code>, <code>HashMap</code>) can only store objects, 
+                not primitive data types. Wrapper classes allow primitives to be converted into objects (via autoboxing) so they can be used 
+                with collections.
+                <pre>
+    ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+    list.add(10);  // Autoboxes int to Integer
+                </pre>
+            </li>
+            <li>
+                <b>Utility Methods:</b> Wrapper classes provide utility methods for conversions, parsing, and operations. For instance:
+                <ul>
+                    <li>Converting a <code>String</code> to a primitive: <code>Integer.parseInt()</code>, <code>Double.valueOf()</code>.</li>
+                    <li>Getting the maximum or minimum value of a data type: <code>Integer.MAX_VALUE</code>, <code>Double.MIN_VALUE</code>.</li>
+                </ul>
+            </li>
+            <li>
+                <b>Autoboxing and Unboxing:</b> Java automatically converts between primitives and their wrapper classes using 
+                <b>autoboxing</b> (primitive → wrapper) and <b>unboxing</b> (wrapper → primitive).
+                <pre>
+    Integer a = 5;       // Autoboxing: int → Integer
+    int b = a;           // Unboxing: Integer → int
+                </pre>
+            </li>
+            <li>
+                <b>Default Values in Collections:</b> A wrapper class allows <code>null</code> values, which can be useful in certain scenarios, 
+                unlike primitive types that cannot represent <code>null</code>.
+            </li>
+            <li>
+                <b>Immutable Objects:</b> Wrapper classes are immutable. Once created, their value cannot be changed, ensuring thread safety 
+                in concurrent applications.
+            </li>
+            <li>
+                <b>Interoperability with Frameworks:</b> Many Java frameworks, such as Hibernate and Spring, expect objects, not primitives, 
+                making wrapper classes essential.
+            </li>
+        </ul>
+  </div>
+  <hr>
+  <!-- Access Specifiers -->
+  <div>
+    <h5>Q. Explain Access Specifiers and their types.</h5>
+    <p>
+        Access specifiers in Java define the visibility and accessibility of classes, methods, and variables. 
+        They control how and where these components can be accessed within the application. Java provides four 
+        main types of access specifiers: <b>public</b>, <b>private</b>, <b>protected</b>, and <b>default</b> (no keyword).
+    </p>
+
+    <table border="1">
+        <tr>
+            <th>Access Specifier</th>
+            <th>Scope</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><b>public</b></td>
+            <td>Accessible everywhere</td>
+            <td>
+                The <code>public</code> specifier allows the member (class, method, or variable) to be accessed 
+                from any other class or package.
+            </td>
+        </tr>
+        <tr>
+            <td><b>private</b></td>
+            <td>Accessible only within the same class</td>
+            <td>
+                The <code>private</code> specifier restricts access to the member so it is only visible within 
+                the class where it is declared. It ensures encapsulation.
+            </td>
+        </tr>
+        <tr>
+            <td><b>protected</b></td>
+            <td>Accessible within the same package and subclasses</td>
+            <td>
+                The <code>protected</code> specifier allows the member to be accessed within the same package 
+                and by subclasses (even if they are in different packages).
+            </td>
+        </tr>
+        <tr>
+            <td><b>default</b> (no keyword)</td>
+            <td>Accessible within the same package</td>
+            <td>
+                If no access specifier is specified, it is treated as <i>default</i>. The member is accessible 
+                only within the package where it is declared.
+            </td>
+        </tr>
+    </table>
+    <br>
+    <b>Key Points</b>
+    <ul>
+        <li>
+            <b>public:</b> The most permissive specifier; provides global access.
+        </li>
+        <li>
+            <b>private:</b> The most restrictive; ideal for encapsulation and sensitive data.
+        </li>
+        <li>
+            <b>protected:</b> Useful in inheritance to share functionality with subclasses while maintaining some restrictions.
+        </li>
+        <li>
+            <b>default:</b> A package-private level of access; members are not visible outside their package.
+        </li>
+    </ul> 
+  </div>
+  <hr>
+  <div>
+        <h5>Q. Different types of Variables in Java</h5>
+        <p>
+            Variables in Java are containers for storing data values. They can be classified into three main types based on where they are declared and how they are used:
+            <b>Instance Variables</b>, <b>Static Variables</b>, and <b>Local Variables</b>. Each type has its specific scope, lifetime, and behavior.
+        </p>
+    
+        <b>1. Instance Variables</b>
+        <p>
+            Instance variables are declared inside a class but outside any method, constructor, or block. 
+            They are tied to a specific instance of the class, meaning each object has its own copy of these variables.
+        </p>
+        <ul>
+            <li><b>Scope:</b> Available throughout the object’s lifetime.</li>
+            <li><b>Default Value:</b> Initialized to default values (e.g., 0 for int, null for objects) if not explicitly initialized.</li>
+            <li><b>Example:</b></li>
+            <pre>
+    class Example {
+        int instanceVar = 10; // Instance variable
+    
+        void display() {
+            System.out.println("Instance Variable: " + instanceVar);
+        }
+    }
+            </pre>
+        </ul>
+    
+        <b>2. Static Variables</b>
+        <p>
+            Static variables are declared with the <code>static</code> keyword. They belong to the class rather than any specific instance, 
+            meaning all objects of the class share the same static variable.
+        </p>
+        <ul>
+            <li><b>Scope:</b> Exists for the duration of the program and can be accessed using the class name.</li>
+            <li><b>Default Value:</b> Initialized to default values if not explicitly initialized.</li>
+            <li><b>Example:</b></li>
+            <pre>
+    class Example {
+        static int staticVar = 20; // Static variable
+    
+        static void display() {
+            System.out.println("Static Variable: " + staticVar);
+        }
+    }
+            </pre>
+        </ul>
+    
+        <b>3. Local Variables</b>
+        <p>
+            Local variables are declared within a method, constructor, or block. 
+            They are temporary and only exist during the execution of the block in which they are defined.
+        </p>
+        <ul>
+            <li><b>Scope:</b> Accessible only within the block where they are defined.</li>
+            <li><b>Default Value:</b> Must be explicitly initialized before use; no default values are assigned by the compiler.</li>
+            <li><b>Example:</b></li>
+            <pre>
+    class Example {
+        void display() {
+            int localVar = 30; // Local variable
+            System.out.println("Local Variable: " + localVar);
+        }
+    }
+            </pre>
+        </ul>
+    
+        <b>Difference Between Variable Types</b>
+        <table border="1">
+            <tr>
+                <th>Aspect</th>
+                <th>Instance Variables</th>
+                <th>Static Variables</th>
+                <th>Local Variables</th>
+            </tr>
+            <tr>
+                <td><b>Declaration</b></td>
+                <td>Declared inside the class but outside methods or blocks.</td>
+                <td>Declared with the <code>static</code> keyword inside the class.</td>
+                <td>Declared inside methods, constructors, or blocks.</td>
+            </tr>
+            <tr>
+                <td><b>Scope</b></td>
+                <td>Throughout the lifetime of the object.</td>
+                <td>Throughout the lifetime of the program (class-level).</td>
+                <td>Within the block/method where they are defined.</td>
+            </tr>
+            <tr>
+                <td><b>Default Value</b></td>
+                <td>Assigned default values (e.g., 0, null).</td>
+                <td>Assigned default values (e.g., 0, null).</td>
+                <td>No default value; must be initialized before use.</td>
+            </tr>
+            <tr>
+                <td><b>Access</b></td>
+                <td>Accessed via objects.</td>
+                <td>Accessed via the class name or objects.</td>
+                <td>Accessed directly within the defining method/block.</td>
+            </tr>
+            <tr>
+                <td><b>Memory</b></td>
+                <td>Stored in the heap memory.</td>
+                <td>Stored in the method area.</td>
+                <td>Stored in the stack memory.</td>
+            </tr>
+        </table>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Explain the static block in Java.</h5>
+        <p>
+            In Java, a <b>static block</b> (also called a static initializer block) is a block of code that is executed when the class is loaded into memory. 
+            It is used to initialize static variables or perform any setup that is required before the class is used. 
+            Static blocks are executed only once, and they run before the main method or any instance of the class is created.
+        </p>
+    
+        <b>Key Characteristics of Static Block</b>
+        <ul>
+            <li>
+                <b>Execution Time:</b> Executes once when the class is loaded into the memory by the Java ClassLoader.
+            </li>
+            <li>
+                <b>Order of Execution:</b> If there are multiple static blocks, they are executed in the order in which they appear in the class.
+            </li>
+            <li>
+                <b>Purpose:</b> Primarily used for initializing static variables or performing tasks that need to be executed once for the class.
+            </li>
+            <li>
+                <b>No Direct Invocation:</b> A static block cannot be called explicitly; it runs automatically during class loading.
+            </li>
+        </ul>
+    
+        <b>Syntax of Static Block</b>
+        <pre>
+    class Example {
+        static {
+            // Code to initialize static variables or perform setup
+            System.out.println("Static block executed.");
+        }
+    }
+        </pre>
+    
+        <b>Example of Static Block</b>
+        <pre>
+    public class StaticBlockExample {
+        static int staticVar;
+    
+        // Static block to initialize staticVar
+        static {
+            System.out.println("Static block is called.");
+            staticVar = 100; // Initialize static variable
+        }
+    
+        public static void main(String[] args) {
+            System.out.println("Main method is called.");
+            System.out.println("Static Variable: " + staticVar);
+        }
+    }
+        </pre>
+    
+        <b>Output of the Example</b>
+        <pre>
+    Static block is called.
+    Main method is called.
+    Static Variable: 100
+        </pre>
+    
+        <b>Use Cases of Static Block</b>
+        <ul>
+            <li>
+                <b>Static Variable Initialization:</b> Used to assign values to static variables before any object of the class is created.
+            </li>
+            <li>
+                <b>Loading Configuration:</b> Load configuration settings, such as reading values from a file or database, required for the class.
+            </li>
+            <li>
+                <b>Complex Setup:</b> Perform complex initializations that cannot be achieved with a simple static variable assignment.
+            </li>
+        </ul>
+  </div>
+  <hr>
+  <div>
+        <h5>Q. Difference Between Static (Class) Methods and Instance Methods in Java</h5>
+        <p>
+            In Java, methods can either be <b>static</b> (class-level) or <b>instance</b> (object-level). 
+            These two types of methods differ in their behavior, accessibility, and use cases.
+        </p>
+    
+        <b>Static (Class) Methods</b>
+        <p>
+            Static methods are declared with the <code>static</code> keyword. They belong to the class rather than any specific object, 
+            meaning they can be called directly using the class name without creating an instance of the class.
+        </p>
+        <ul>
+            <li><b>Declaration:</b> Declared using the <code>static</code> keyword.</li>
+            <li><b>Access:</b> Accessed using the class name (e.g., <code>ClassName.methodName()</code>).</li>
+            <li><b>Access to Members:</b> Can access only <b>static variables</b> and other <b>static methods</b> directly.</li>
+            <li><b>Use Case:</b> Used for utility methods or operations that do not depend on instance variables.</li>
+            <li><b>Example:</b></li>
+            <pre>
+    class StaticExample {
+        static void staticMethod() {
+            System.out.println("This is a static method.");
+        }
+        
+        public static void main(String[] args) {
+            StaticExample.staticMethod(); // Calling static method without an instance
+        }
+    }
+            </pre>
+        </ul>
+    
+        <b>Instance Methods</b>
+        <p>
+            Instance methods are non-static methods that belong to an object of the class. 
+            They require an instance of the class to be invoked and can access instance variables and methods directly.
+        </p>
+        <ul>
+            <li><b>Declaration:</b> Do not use the <code>static</code> keyword.</li>
+            <li><b>Access:</b> Accessed using an object of the class (e.g., <code>objectName.methodName()</code>).</li>
+            <li><b>Access to Members:</b> Can access both <b>instance</b> and <b>static</b> variables and methods.</li>
+            <li><b>Use Case:</b> Used for operations that require data specific to an object.</li>
+            <li><b>Example:</b></li>
+            <pre>
+    class InstanceExample {
+        void instanceMethod() {
+            System.out.println("This is an instance method.");
+        }
+    
+        public static void main(String[] args) {
+            InstanceExample obj = new InstanceExample(); // Create an object
+            obj.instanceMethod(); // Call the instance method
+        }
+    }
+            </pre>
+        </ul>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Difference between <b>new()</b> and <b>newInstance()</b>?</h5>
+        <p>
+            In Java, both <code>new()</code> and <code>newInstance()</code> are used to create objects, 
+            but they have different mechanisms and use cases. Below is a detailed explanation of each.
+        </p>
+    
+        <b><code>new()</code></b>
+        <ul>
+            <li>
+                <b>Definition:</b> The <code>new()</code> keyword is used to create a new instance of a class at compile time.
+            </li>
+            <li>
+                <b>How it Works:</b> Allocates memory for the object and invokes the constructor explicitly.
+            </li>
+            <li>
+                <b>Syntax:</b> <code>ClassName obj = new ClassName();</code>
+            </li>
+            <li>
+                <b>Usage:</b> Preferred when the class to instantiate is known at compile time.
+            </li>
+            <li>
+                <b>Example:</b>
+                <pre>
+    class Example {
+        Example() {
+            System.out.println("Constructor called using new().");
+        }
+    
+        public static void main(String[] args) {
+            Example obj = new Example(); // Creates an object using new()
+        }
+    }
+                </pre>
+            </li>
+        </ul>
+    
+        <b><code>newInstance()</code></b>
+        <ul>
+            <li>
+                <b>Definition:</b> The <code>newInstance()</code> method is used to create an object dynamically at runtime using reflection.
+            </li>
+            <li>
+                <b>How it Works:</b> It uses the <code>Class</code> class or <code>Constructor</code> class to invoke the no-argument constructor.
+            </li>
+            <li>
+                <b>Syntax:</b> <code>ClassName obj = Class.forName("ClassName").newInstance();</code>
+            </li>
+            <li>
+                <b>Usage:</b> Useful when the class name is determined dynamically at runtime.
+            </li>
+            <li>
+                <b>Restrictions:</b> The class must have a public no-argument constructor; otherwise, it throws an exception.
+            </li>
+            <li>
+                <b>Example:</b>
+                <pre>
+    class Example {
+        Example() {
+            System.out.println("Constructor called using newInstance().");
+        }
+    
+        public static void main(String[] args) throws Exception {
+            Class<?> clazz = Class.forName("Example");
+            Example obj = (Example) clazz.getDeclaredConstructor().newInstance(); // Creates an object dynamically
+        }
+    }
+                </pre>
+            </li>
+        </ul>
+  </div>
+  <hr>
+  <!-- I/O Hierarchies -->
+  <div>
+    <h5>Q. Explain Java I/O: Reader/Writer vs InputStream/OutputStream, File Streams, Buffered Streams, FilterStreams, and I/O Filters</h5>
+    <p>
+        Java provides two main hierarchies for handling input and output: <b>Reader/Writer</b> and <b>InputStream/OutputStream</b>. 
+        Additionally, various stream types such as <code>FileInputStream</code>, <code>FileOutputStream</code>, <code>BufferedInputStream</code>, and <code>BufferedOutputStream</code> enhance performance and functionality. 
+        FilterStreams and I/O Filters add processing capabilities to the streams. Below is a detailed explanation of these concepts.
+    </p>
+
+    <b>1. Reader/Writer vs InputStream/OutputStream</b>
+    <ul>
+        <li>
+            <b>Reader/Writer:</b> This hierarchy is designed for handling character data (text). Classes like <code>FileReader</code> and <code>FileWriter</code> are part of this hierarchy. 
+            It supports Unicode and is ideal for reading and writing text files.
+        </li>
+        <li>
+            <b>InputStream/OutputStream:</b> This hierarchy deals with byte data (binary). Classes like <code>FileInputStream</code> and <code>FileOutputStream</code> fall under this category. 
+            It is suitable for handling binary files such as images, videos, and executables.
+        </li>
+        <li><b>Key Difference:</b> Use <code>Reader/Writer</code> for character streams and <code>InputStream/OutputStream</code> for byte streams.</li>
+    </ul>
+
+    <b>2. FileInputStream and FileOutputStream</b>
+    <ul>
+        <li>
+            <b>FileInputStream:</b> A class in the <code>InputStream</code> hierarchy used to read raw byte data from a file. 
+            It is ideal for reading binary files (e.g., images, PDFs).
+        </li>
+        <li>
+            <b>FileOutputStream:</b> A class in the <code>OutputStream</code> hierarchy used to write raw byte data to a file. 
+            It is useful for writing binary data to files.
+        </li>
+        <li><b>Example:</b></li>
+        <pre>
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+public class FileStreamExample {
+    public static void main(String[] args) throws Exception {
+        FileInputStream fis = new FileInputStream("input.txt");
+        FileOutputStream fos = new FileOutputStream("output.txt");
+
+        int data;
+        while ((data = fis.read()) != -1) {
+            fos.write(data); // Writes data to output.txt
+        }
+
+        fis.close();
+        fos.close();
+    }
+}
+        </pre>
+    </ul>
+
+    <b>3. BufferedInputStream and BufferedOutputStream</b>
+    <ul>
+        <li>
+            <b>BufferedInputStream:</b> Adds a buffer to the <code>InputStream</code> for efficient reading of large data. 
+            It reduces the number of I/O operations by reading chunks of data into a buffer.
+        </li>
+        <li>
+            <b>BufferedOutputStream:</b> Adds a buffer to the <code>OutputStream</code> for efficient writing of large data. 
+            Data is collected in a buffer and written to the file in larger chunks.
+        </li>
+        <li><b>Purpose:</b> Improves performance by minimizing direct disk I/O operations.</li>
+        <li><b>Example:</b></li>
+        <pre>
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+
+public class BufferedStreamExample {
+    public static void main(String[] args) throws Exception {
+        FileInputStream fis = new FileInputStream("input.txt");
+        BufferedInputStream bis = new BufferedInputStream(fis);
+
+        int data;
+        while ((data = bis.read()) != -1) {
+            System.out.print((char) data);
+        }
+
+        bis.close();
+        fis.close();
+    }
+}
+        </pre>
+    </ul>
+
+    <b>4. FilterStreams</b>
+    <ul>
+        <li>
+            <b>Definition:</b> FilterStreams are a subclass of <code>InputStream</code> and <code>OutputStream</code> that allow filtering or modifying data as it is read or written. 
+            Examples include <code>DataInputStream</code>, <code>DataOutputStream</code>, and <code>PushbackInputStream</code>.
+        </li>
+        <li><b>Purpose:</b> Used to process raw data streams for specific use cases, such as reading primitive data types or implementing custom filters.</li>
+    </ul>
+
+    <b>5. I/O Filters</b>
+    <ul>
+        <li>
+            <b>Definition:</b> I/O Filters are used to modify or filter the data being read or written. They are often implemented by chaining streams together.
+        </li>
+        <li>
+            <b>Example:</b> <code>BufferedInputStream</code> and <code>BufferedOutputStream</code> are examples of filter streams used to add buffering capabilities.
+        </li>
+        <li>
+            <b>Custom Filters:</b> You can create custom filters by extending <code>FilterInputStream</code> or <code>FilterOutputStream</code>.
+        </li>
+        <li>Filter can compress data before writing it or decompress it while reading.</li>
+    </ul>
+
+    <b>Summary</b>
+    <p>
+        The Reader/Writer hierarchy is for text, while InputStream/OutputStream handles binary data. 
+        FileInputStream and FileOutputStream are specific for file-based byte streams, while BufferedInputStream and BufferedOutputStream optimize performance by reducing I/O overhead. 
+        FilterStreams and I/O Filters provide advanced capabilities for customizing data processing in streams.
+    </p>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. How many ways can you take input from the console?</h5>
+    <p>
+        Java provides several ways to take input from the console. These methods differ in terms of simplicity, flexibility, and use cases. 
+        Below are the commonly used approaches:
+    </p>
+
+    <b>1. Using <code>Scanner</code> Class</b>
+    <ul>
+        <li>
+            <b>Description:</b> The <code>Scanner</code> class is the most common and user-friendly way to read input from the console.
+        </li>
+        <li>
+            <b>Features:</b> Allows reading of various data types like integers, strings, doubles, etc.
+        </li>
+        <li>
+            <b>Example:</b>
+            <pre>
+import java.util.Scanner;
+
+public class ScannerExample {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter your age: ");
+        int age = scanner.nextInt();
+
+        System.out.println("Name: " + name + ", Age: " + age);
+        scanner.close();
+    }
+}
+            </pre>
+        </li>
+    </ul>
+
+    <b>2. Using <code>BufferedReader</code> Class</b>
+    <ul>
+        <li>
+            <b>Description:</b> <code>BufferedReader</code> provides efficient reading of text data using a buffer.
+        </li>
+        <li>
+            <b>Features:</b> Requires more code compared to <code>Scanner</code> but offers better performance for large inputs.
+        </li>
+        <li>
+            <b>Example:</b>
+            <pre>
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class BufferedReaderExample {
+    public static void main(String[] args) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.print("Enter your name: ");
+        String name = reader.readLine();
+
+        System.out.print("Enter your age: ");
+        int age = Integer.parseInt(reader.readLine());
+
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}
+            </pre>
+        </li>
+    </ul>
+
+    <b>3. Using <code>Console</code> Class</b>
+    <ul>
+        <li>
+            <b>Description:</b> The <code>Console</code> class is part of the <code>java.io</code> package and is specifically designed for console input and output.
+        </li>
+        <li>
+            <b>Features:</b> Does not work in IDEs; works only in command-line environments.
+        </li>
+        <li>
+            <b>Example:</b>
+            <pre>
+import java.io.Console;
+
+public class ConsoleExample {
+    public static void main(String[] args) {
+        Console console = System.console();
+        if (console != null) {
+            String name = console.readLine("Enter your name: ");
+            int age = Integer.parseInt(console.readLine("Enter your age: "));
+
+            System.out.println("Name: " + name + ", Age: " + age);
+        } else {
+            System.out.println("Console is not available.");
+        }
+    }
+}
+            </pre>
+        </li>
+    </ul>
+
+    <b>4. Using <code>DataInputStream</code></b>
+    <ul>
+        <li>
+            <b>Description:</b> The <code>DataInputStream</code> class is an older way to take input. It is less preferred due to limited functionality and lack of ease.
+        </li>
+        <li>
+            <b>Features:</b> Requires manual parsing of input data.
+        </li>
+        <li>
+            <b>Example:</b>
+            <pre>
+import java.io.DataInputStream;
+
+public class DataInputStreamExample {
+    public static void main(String[] args) throws Exception {
+        DataInputStream dis = new DataInputStream(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = dis.readLine();
+
+        System.out.print("Enter your age: ");
+        int age = Integer.parseInt(dis.readLine());
+
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}
+            </pre>
+        </li>
+    </ul>
+
+    <b>5. Using <code>Command-Line Arguments</code></b>
+    <ul>
+        <li>
+            <b>Description:</b> Inputs are passed as arguments when running the program from the command line.
+        </li>
+        <li>
+            <b>Features:</b> Useful for static input that doesn’t require user interaction during runtime.
+        </li>
+        <li>
+            <b>Example:</b>
+            <pre>
+public class CommandLineExample {
+    public static void main(String[] args) {
+        if (args.length > 0) {
+            String name = args[0];
+            int age = Integer.parseInt(args[1]);
+
+            System.out.println("Name: " + name + ", Age: " + age);
+        } else {
+            System.out.println("No arguments passed.");
+        }
+    }
+}
+            </pre>
+        </li>
+    </ul>
+
+    <b>Summary</b>
+    <p>
+        Java offers multiple ways to take console input depending on your requirements. 
+        For beginner-friendly input, use <code>Scanner</code>. For efficient reading, choose <code>BufferedReader</code>. 
+        If you're working in a command-line environment, <code>Console</code> is a good option. For legacy systems, you may encounter <code>DataInputStream</code>, 
+        and command-line arguments are best for static input.
+    </p>
+  </div>
+  <hr>  
+  <!-- Operators -->
+  <div>
+    <h5>Q. Explain the difference between <code>&gt;&gt;</code> and <code>&gt;&gt;&gt;</code> operators.</h5>
+    <p><strong>Answer:</strong> 
+      <ul>
+        <li><code>&gt;&gt;</code>: Arithmetic right shift operator that retains the sign bit.</li>
+        <li><code>&gt;&gt;&gt;</code>: Logical right shift operator that does not retain the sign bit, filling it with zero.</li>
+      </ul>
+    </p>
+    <pre><code>int x = -8; // Binary: 11111111111111111111111111111000
+  System.out.println(x >> 2);  // Output: -2 (Arithmetic shift)
+  System.out.println(x >>> 2); // Output: 1073741822 (Logical shift)
+  </code></pre>
+  </div>
+  <hr>
+  <!-- Covariant Return Type -->
+  <div>
+    <h5>What is Covariant Return Type in Java?</h5>
+    <p>
+        In Java, <b>Covariant Return Type</b> refers to the ability of an overriding method in a subclass 
+        to return a more specific (or derived) type than the return type declared in the method of the superclass.
+    </p>
+
+    <b>Key Points:</b>
+    <ul>
+        <li>
+            It allows flexibility in method overriding by returning a subtype of the original method's return type.
+        </li>
+        <li>
+            Introduced in Java 5, it helps in reducing the need for explicit type casting.
+        </li>
+        <li>
+            The overriding method must maintain the method signature except for the return type.
+        </li>
+        <li>
+            The return type in the subclass must be a subtype of the return type in the superclass.
+        </li>
+    </ul>
+
+    <b>Example of Covariant Return Type</b>
+    <pre>
+class Animal {
+    Animal getAnimal() {
+        System.out.println("Returning an Animal");
+        return new Animal();
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    Dog getAnimal() {
+        System.out.println("Returning a Dog");
+        return new Dog();
+    }
+}
+
+public class CovariantReturnTypeExample {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        animal.getAnimal(); // Outputs: Returning an Animal
+
+        Animal dog = new Dog();
+        dog.getAnimal(); // Outputs: Returning a Dog
+    }
+}
+    </pre>
+
+    <b>Why is Covariant Return Type Useful?</b>
+    <ul>
+        <li>
+            It improves code readability and maintainability by eliminating unnecessary type casting.
+        </li>
+        <li>
+            Enables better type-specific functionality in subclasses.
+        </li>
+    </ul>
+
+    <b>Rules for Covariant Return Type</b>
+    <ul>
+        <li>
+            The overriding method must have the same name and parameters as the method in the superclass.
+        </li>
+        <li>
+            The return type in the subclass must be a subclass of the return type declared in the superclass.
+        </li>
+        <li>
+            This feature is applicable to reference data types, not primitive types.
+        </li>
+    </ul>
+
+    <b>Summary</b>
+    <p>
+        The <b>Covariant Return Type</b> feature makes method overriding more flexible by allowing a subclass to narrow the return type. 
+        It improves code usability, particularly in polymorphic scenarios, by enabling type-specific behavior without requiring explicit casting.
+    </p>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Explain Serialization and Deserialization in Java</h5>
+    <p>
+        Serialization and Deserialization are processes used in Java to save the state of an object to a medium (like a file or a network) and reconstruct the object from that medium, respectively.
+    </p>
+
+    <b>What is Serialization?</b>
+    <p>
+        Serialization is the process of converting an object into a byte stream, which can be saved to a file, sent over a network, or stored in a database. 
+        It enables the persistence of object states for later reconstruction.
+    </p>
+
+    <ul>
+        <li>
+            To serialize an object in Java, the class must implement the <code>java.io.Serializable</code> interface.
+        </li>
+        <li>
+            Serializable is a marker interface (does not have any methods) that indicates a class can be serialized.
+        </li>
+        <li>
+            During serialization, all the non-transient and non-static fields are written to the byte stream.
+        </li>
+    </ul>
+
+    <b>What is Deserialization?</b>
+    <p>
+        Deserialization is the process of reconstructing an object from a byte stream. It is the reverse of serialization and restores the saved state of an object.
+    </p>
+    <ul>
+        <li>
+            During deserialization, the object's state is recreated using the byte stream and the class definition.
+        </li>
+        <li>
+            If a field is marked as <code>transient</code>, its value will not be restored and will be set to its default value.
+        </li>
+    </ul>
+
+    <b>transient</b>
+    <p>The transient keyword in Java is used to indicate that a variable should not be serialized during the serialization process.</p>
+    <b>Example of Serialization and Deserialization</b>
+    <pre>
+import java.io.*;
+
+// Class must implement Serializable
+class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private transient int age; // 'age' will not be serialized
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Age: " + age;
+    }
+}
+
+public class SerializationExample {
+    public static void main(String[] args) {
+        User user = new User("Alice", 25);
+
+        // Serialization
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("user.ser"))) {
+            oos.writeObject(user);
+            System.out.println("Serialization done: " + user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Deserialization
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("user.ser"))) {
+            User deserializedUser = (User) ois.readObject();
+            System.out.println("Deserialization done: " + deserializedUser);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+    </pre>
+    <p>
+        <b>Output:</b> After deserialization, the <code>age</code> field will show its default value (0), as it was marked <code>transient</code>.
+    </p>
+
+    <b>Custom Serialization Code</b>
+    <p>
+        You can customize the serialization process by defining <code>writeObject</code> and <code>readObject</code> methods in your class.
+    </p>
+    <pre>
+import java.io.*;
+
+class CustomUser implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private transient int age; // 'age' is transient but will be manually serialized
+
+    public CustomUser(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject(); // Serialize non-transient fields
+        oos.writeInt(age); // Manually serialize transient field
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject(); // Deserialize non-transient fields
+        age = ois.readInt(); // Manually deserialize transient field
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Age: " + age;
+    }
+}
+
+public class CustomSerializationExample {
+    public static void main(String[] args) {
+        CustomUser user = new CustomUser("Bob", 30);
+
+        // Custom Serialization
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("customUser.ser"))) {
+            oos.writeObject(user);
+            System.out.println("Custom Serialization done: " + user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Custom Deserialization
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("customUser.ser"))) {
+            CustomUser deserializedUser = (CustomUser) ois.readObject();
+            System.out.println("Custom Deserialization done: " + deserializedUser);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+    </pre>
+    <p>
+        <b>Output:</b> Even though the <code>age</code> field is marked as <code>transient</code>, it will be properly serialized and deserialized because of the custom implementation.
+    </p>
+
+    <b>Advantages of Serialization</b>
+    <ul>
+        <li>Enables object persistence for saving object states to files or databases.</li>
+        <li>Allows easy transmission of objects over a network.</li>
+        <li>Useful in distributed systems where objects need to be passed between applications.</li>
+    </ul>
+
+    <b>Limitations of Serialization</b>
+    <ul>
+        <li>Serialization can have performance overhead due to the conversion process.</li>
+        <li>Serialized data is not human-readable and may require additional tools to inspect.</li>
+        <li>Changes in the class structure can lead to compatibility issues during deserialization.</li>
+    </ul>
+
+    <b>Summary</b>
+    <p>
+        <b>Serialization</b> and <b>Deserialization</b> are essential features in Java for persisting and transferring objects. 
+        By customizing the process using <code>writeObject</code> and <code>readObject</code>, developers can control how data is serialized, especially for transient fields or fields requiring special handling.
+    </p>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Understanding String, StringBuilder, StringBuffer, and Java String Pool in Java</h5>
+
+    <b>What is String in Java?</b>
+    <p>
+        <b>String</b> in Java is an immutable object that represents a sequence of characters. 
+        It is used to store and manipulate text data. Strings are created using string literals (e.g., `"Hello"`) or the `new` keyword (e.g., `new String("Hello")`).
+    </p>
+    <ul>
+        <li>String literals are stored in the string pool to save memory, making multiple references to the same string efficient.</li>
+        <li>Strings created with the `new` keyword are stored on the heap and are not automatically added to the string pool.</li>
+    </ul>
+
+    <b>Java String Pool Example</b>
+    <pre>
+        String str1 = "Hello";  // Creates a string literal in the pool
+        String str2 = "Hello";  // Reuses the existing "Hello" from the pool
+        String str3 = new String("Hello");  // Creates a new String object on the heap, not in the pool
+        System.out.println(str1 == str2);  // true (points to the same reference)
+        System.out.println(str1 == str3);  // false (different objects)
+    </pre>
+
+    <b>What is the Java String Pool?</b>
+    <p>
+        The Java String Pool is a special memory area in Java where string literals are stored.
+        It helps improve performance by reusing string objects to avoid creating duplicate strings.
+    </p>
+    <ul>
+        <li>When a string literal is created, if it already exists in the pool, the same reference is returned; otherwise, a new entry is added.</li>
+        <li>Strings created using the `new` keyword do not go into the pool.</li>
+    </ul>
+
+    <b>Code Snippet Comparing String and StringBuffer</b>
+    <pre>
+        String str = "Hello";
+        str += " World";  // Creates a new String object each time
+        System.out.println(str);  // "Hello World"
+        
+        StringBuffer sb = new StringBuffer("Hello");
+        sb.append(" World");  // Modifies the existing StringBuffer object
+        System.out.println(sb.toString());  // "Hello World"
+    </pre>
+
+    <b>Code Snippet Comparing StringBuffer and StringBuilder</b>
+    <pre>
+        // StringBuffer example
+        StringBuffer sbf = new StringBuffer("Hello");
+        sbf.append(" World");
+        System.out.println(sbf.toString());  // "Hello World"
+        
+        // StringBuilder example
+        StringBuilder sbd = new StringBuilder("Hello");
+        sbd.append(" World");
+        System.out.println(sbd.toString());  // "Hello World"
+    </pre>
+
+    <b>Why is StringBuffer called mutable?</b>
+    <p>
+        <b>StringBuffer</b> is mutable because its methods (`append()`, `insert()`, `delete()`, etc.) modify the contents of the object directly.
+        Unlike String, which creates a new object on every modification, StringBuffer modifies the existing object.
+    </p>
+
+    <b>Custom Example of String Modifications</b>
+    <pre>
+        // Using String
+        String str = "Hello";
+        str += " World";  // Creates a new String object each time
+        System.out.println(str);  // "Hello World"
+
+        // Using StringBuffer
+        StringBuffer sb = new StringBuffer("Hello");
+        sb.append(" World");  // Modifies the existing StringBuffer object
+        System.out.println(sb.toString());  // "Hello World"
+    </pre>
+
+    <b>Summary</b>
+    <p>
+        Java offers various classes for handling strings, each with its own characteristics:
+        - <b>String</b> is immutable and stored in the string pool.
+        - <b>StringBuffer</b> is synchronized and thread-safe, allowing for modifications.
+        - <b>StringBuilder</b> is similar to StringBuffer but not synchronized, providing better performance for single-threaded use cases.
+    </p>
+
+    <b>Differences between String, StringBuilder, and StringBuffer</b>
+    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>String</th>
+                <th>StringBuffer</th>
+                <th>StringBuilder</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mutability</td>
+                <td>Immutable</td>
+                <td>Mutable (thread-safe)</td>
+                <td>Mutable (not thread-safe)</td>
+            </tr>
+            <tr>
+                <td>Thread Safety</td>
+                <td>No</td>
+                <td>Yes (synchronized)</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>Performance</td>
+                <td>Slower due to immutability</td>
+                <td>Slower due to synchronization</td>
+                <td>Faster due to lack of synchronization</td>
+            </tr>
+            <tr>
+                <td>Use Cases</td>
+                <td>Simple text manipulation</td>
+                <td>Multi-threaded applications</td>
+                <td>Single-threaded applications</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
+<div>
+    <h5>Q. What is a Marker Interface?</h5>
+    <p>
+        A <b>Marker Interface</b> in Java is an interface that does not contain any methods or fields. It is an empty interface used to provide a "marker" or "tag" to a class. The presence of a marker interface indicates to the Java runtime or a specific framework that the class implementing the interface has a specific property or behavior.
+    </p>
+    <p>
+        If we try to clone object that doesn’t implement the marker interface(Cloneable) the JVM throws CloneNotSupportedException.
+    </p>
+    
+    <b>Examples of Marker Interfaces</b>
+    <ul>
+        <li><b>Serializable:</b> Classes implementing this interface can be serialized (converted to a byte stream).</li>
+        <li><b>Cloneable:</b> Classes implementing this interface allow the cloning of their objects using the <code>Object.clone()</code> method.</li>
+    </ul>
+
+    <b>Custom Marker Interface Example</b>
+    <p>Here is an example of how to create and use a custom marker interface:</p>
+    <pre>
+        // Marker Interface
+        public interface MyMarkerInterface {
+        }
+
+        // Class implementing the marker interface
+        public class MyClass implements MyMarkerInterface {
+            public void display() {
+                System.out.println("MyClass implementing MyMarkerInterface.");
+            }
+        }
+
+        // Test the marker interface
+        public class MarkerInterfaceTest {
+            public static void main(String[] args) {
+                MyClass obj = new MyClass();
+                
+                // Check if the object is an instance of MyMarkerInterface
+                if (obj instanceof MyMarkerInterface) {
+                    System.out.println("MyClass is marked with MyMarkerInterface.");
+                } else {
+                    System.out.println("MyClass is not marked with MyMarkerInterface.");
+                }
+            }
+        }
+    </pre>
+    <p><b>Output:</b></p>
+    <pre>
+        MyClass is marked with MyMarkerInterface.
+    </pre>
+    
+    <b>Alternatives to Marker Interfaces</b>
+    <p>
+        In modern Java, annotations are often used as an alternative to marker interfaces because they provide more flexibility and allow metadata to be added to classes without altering the inheritance hierarchy.
+    </p>
+    <p>For example:</p>
+    <pre>
+        // Using an annotation instead of a marker interface
+        @interface MyMarker {
+        }
+
+        @MyMarker
+        public class MyClass {
+        }
+    </pre>
+</div>
+<hr>
+<div>
+    <h5>Q. Can You Override Private or Static Methods in Java?</h5>
+
+    <b>Private Methods</b>
+    <p>
+        <b>No, private methods cannot be overridden in Java.</b> Private methods are not accessible outside the class in which they are declared, so they are not part of the class's inheritance structure.
+        Instead, if a subclass defines a method with the same name and parameters as a private method in the parent class, it is considered as a separate, independent method in the subclass (not an override).
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        class Parent {
+            private void display() {
+                System.out.println("Private method in Parent.");
+            }
+        }
+
+        class Child extends Parent {
+            private void display() {
+                System.out.println("Private method in Child.");
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                Child child = new Child();
+                // child.display(); // Error: Cannot access private method
+            }
+        }
+    </pre>
+    <p><b>Explanation:</b> Each class has its own `display()` method. The child class does not override the parent’s private method.</p>
+
+    <b>Static Methods</b>
+    <p>
+        <b>No, static methods cannot be overridden in Java, but they can be re-declared (hidden).</b> Static methods belong to the class rather than an instance, so they are not subject to runtime polymorphism. If a subclass defines a static method with the same signature as a static method in the parent class, it hides the parent class's method rather than overriding it.
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        class Parent {
+            static void display() {
+                System.out.println("Static method in Parent.");
+            }
+        }
+
+        class Child extends Parent {
+            static void display() {
+                System.out.println("Static method in Child.");
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                Parent parent = new Parent();
+                parent.display();  // Output: Static method in Parent.
+
+                Parent child = new Child();
+                child.display();   // Output: Static method in Parent (method hiding, not overriding).
+
+                Child actualChild = new Child();
+                actualChild.display();  // Output: Static method in Child.
+            }
+        }
+    </pre>
+    <p><b>Explanation:</b> The `display()` method in the `Child` class hides the `display()` method in the `Parent` class. Which method is called depends on the type of the reference at compile time.</p>
+</div>
+<hr>
+<div>
+    <h5>q. eXPLAIN Shallow Copy vs. Deep Copy in Java</h5>
+
+    <b>What is a Shallow Copy?</b>
+    <p>
+        A <b>shallow copy</b> of an object copies only the object's top-level structure. It does not create separate copies of the objects referenced within the original object. Instead, the references are shared between the original and the copied object.
+    </p>
+    <p><b>Implication:</b> Changes to the referenced objects affect both the original and the copied object because they share the same reference.</p>
+    <h5>Example of Shallow Copy:</h5>
+    <pre>
+        import java.util.Arrays;
+
+        class ShallowCopyExample {
+            int[] data;
+
+            ShallowCopyExample(int[] data) {
+                this.data = data;
+            }
+
+            public ShallowCopyExample shallowCopy() {
+                return new ShallowCopyExample(this.data); // Only the reference is copied
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                int[] numbers = {1, 2, 3};
+                ShallowCopyExample original = new ShallowCopyExample(numbers);
+                ShallowCopyExample copy = original.shallowCopy();
+
+                // Modifying the copied object's data
+                copy.data[0] = 99;
+
+                System.out.println("Original: " + Arrays.toString(original.data)); // [99, 2, 3]
+                System.out.println("Copy: " + Arrays.toString(copy.data));         // [99, 2, 3]
+            }
+        }
+    </pre>
+    <p><b>Output:</b> Changes in the copied object's array reflect in the original object.</p>
+
+    <b>What is a Deep Copy?</b>
+    <p>
+        A <b>deep copy</b> creates an entirely new object, along with independent copies of all the objects it references. This ensures that changes to the copied object do not affect the original object and vice versa.
+    </p>
+    <p><b>Implication:</b> Deep copy provides full independence between the original and the copied object.</p>
+    <h5>Example of Deep Copy:</h5>
+    <pre>
+        import java.util.Arrays;
+
+        class DeepCopyExample {
+            int[] data;
+
+            DeepCopyExample(int[] data) {
+                this.data = data;
+            }
+
+            public DeepCopyExample deepCopy() {
+                // Create a new object and a copy of the array
+                return new DeepCopyExample(Arrays.copyOf(this.data, this.data.length));
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                int[] numbers = {1, 2, 3};
+                DeepCopyExample original = new DeepCopyExample(numbers);
+                DeepCopyExample copy = original.deepCopy();
+
+                // Modifying the copied object's data
+                copy.data[0] = 99;
+
+                System.out.println("Original: " + Arrays.toString(original.data)); // [1, 2, 3]
+                System.out.println("Copy: " + Arrays.toString(copy.data));         // [99, 2, 3]
+            }
+        }
+    </pre>
+    <p><b>Output:</b> Changes in the copied object's array do not reflect in the original object.</p>
+
+</div>
+<hr>
+  <div>
+    <h5>Q. Explain in detail about Constructors in Java</h5>
+    <p>
+        A <b>constructor</b> is a special method in Java used to initialize objects. It is invoked automatically when an object of a class is created. Constructors have the same name as the class and do not have a return type, not even void.
+    </p>
+
+    <b>Key Features of Constructors</b>
+    <ul>
+        <li>Constructors are used to initialize an object's state.</li>
+        <li>They are automatically called during object creation.</li>
+        <li>They cannot have a return type, including <code>void</code>.</li>
+        <li>If no constructor is defined, Java provides a default no-argument constructor.</li>
+    </ul>
+
+    <b>Types of Constructors</b>
+    <ol>
+        <li><b>Default Constructor:</b> A no-argument constructor provided by the compiler if no constructor is explicitly defined.</li>
+        <li><b>Parameterized Constructor:</b> A constructor that accepts arguments to initialize an object with specific values.</li>
+    </ol>
+    <h5>Example:</h5>
+    <pre>
+        class Example {
+            int value;
+
+            // Default constructor
+            public Example() {
+                value = 0;
+                System.out.println("Default constructor called.");
+            }
+
+            // Parameterized constructor
+            public Example(int value) {
+                this.value = value;
+                System.out.println("Parameterized constructor called.");
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                Example obj1 = new Example();         // Calls default constructor
+                Example obj2 = new Example(42);      // Calls parameterized constructor
+            }
+        }
+    </pre>
+
+    <b>Calling a Constructor Inside Another Constructor</b>
+    <p>
+        In Java, you can call one constructor from another using the <b><code>this()</code></b> keyword. This process is known as <b>constructor chaining</b>. It helps avoid code duplication and ensures consistent initialization logic.
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        class Example {
+            int a, b;
+
+            // Constructor 1
+            public Example() {
+                this(10, 20); // Calls Constructor 2
+                System.out.println("Default constructor called.");
+            }
+
+            // Constructor 2
+            public Example(int a, int b) {
+                this.a = a;
+                this.b = b;
+                System.out.println("Parameterized constructor called with values: " + a + ", " + b);
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                Example obj = new Example(); // Chained constructors will be invoked
+            }
+        }
+    </pre>
+    <p><b>Output:</b></p>
+    <pre>
+        Parameterized constructor called with values: 10, 20
+        Default constructor called.
+    </pre>
+
+    <b>Can a Constructor Return a Value?</b>
+    <p>
+        <b>No, constructors cannot return a value.</b> By design, constructors do not have a return type, as their sole purpose is to initialize an object. However, constructors can implicitly return the reference to the newly created object.
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        class Example {
+            Example() {
+                System.out.println("Constructor called.");
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                Example obj = new Example(); // Constructor creates and returns the object reference
+            }
+        }
+    </pre>
+
+    <b>Difference Between Constructors and Methods</b>
+    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Constructors</th>
+                <th>Methods</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Purpose</td>
+                <td>Used for initializing an object.</td>
+                <td>Used to define behavior or operations of an object.</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>Must have the same name as the class.</td>
+                <td>Can have any name, typically a verb or action word.</td>
+            </tr>
+            <tr>
+                <td>Return Type</td>
+                <td>No return type (not even <code>void</code>).</td>
+                <td>Must have a return type (e.g., <code>void</code>, <code>int</code>).</td>
+            </tr>
+            <tr>
+                <td>Invocation</td>
+                <td>Automatically called when an object is created.</td>
+                <td>Called explicitly using the object's reference.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <b>Key Points to Remember</b>
+    <ul>
+        <li>Constructors can be overloaded (multiple constructors in a class with different parameter lists).</li>
+        <li>They cannot be inherited by a subclass, but a subclass can call the parent class constructor using <code>super()</code>.</li>
+        <li>Static constructors are not allowed in Java because constructors are specific to an object instance.</li>
+    </ul>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Does Java Use Pass-by-Value or Pass-by-Reference?</h5>
+    <p>
+        In Java, <b>everything is pass-by-value</b>. However, the way it behaves for primitive types and reference types can sometimes create confusion. Understanding how Java handles passing values and references is crucial to clearing this up.
+    </p>
+
+    <b>Pass-by-Value in Java</b>
+    <p>
+        When a method is called, the actual value of the argument is passed to the method. The method works on a <b>copy</b> of the argument, meaning changes made inside the method do not affect the original variable in the calling code.
+    </p>
+
+    <b>Behavior for Primitive Types</b>
+    <p>
+        For primitive types (e.g., <code>int</code>, <code>double</code>), the method receives a copy of the value. Any modifications to the value inside the method do not affect the original variable.
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        public class Test {
+            public static void modifyPrimitive(int num) {
+                num = 10; // This change affects only the local copy
+            }
+
+            public static void main(String[] args) {
+                int x = 5;
+                modifyPrimitive(x);
+                System.out.println("Value of x: " + x); // Output: Value of x: 5
+            }
+        }
+    </pre>
+
+    <p><b>Explanation:</b> The method <code>modifyPrimitive()</code> changes only the local copy of the variable. The original <code>x</code> remains unchanged.</p>
+
+    <b>Behavior for Reference Types</b>
+    <p>
+        For reference types (e.g., objects, arrays), the reference to the object is passed by value. This means the method receives a copy of the reference. The method can modify the object that the reference points to, but it cannot change the reference itself in the calling code.
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        class Data {
+            int value;
+        }
+
+        public class Test {
+            public static void modifyObject(Data obj) {
+                obj.value = 10; // Modifies the object the reference points to
+            }
+
+            public static void main(String[] args) {
+                Data d = new Data();
+                d.value = 5;
+                modifyObject(d);
+                System.out.println("Value of d.value: " + d.value); // Output: Value of d.value: 10
+            }
+        }
+    </pre>
+
+    <p><b>Explanation:</b> The method <code>modifyObject()</code> changes the state of the object that the reference <code>d</code> points to. Therefore, the original object's state is affected.</p>
+
+    <h5>Can We Change the Reference Itself?</h5>
+    <p>
+        No, the method cannot change the reference itself in the calling code because the reference is passed by value. It can only modify the object that the reference points to.
+    </p>
+    <h5>Example:</h5>
+    <pre>
+        class Data {
+            int value;
+        }
+
+        public class Test {
+            public static void changeReference(Data obj) {
+                obj = new Data(); // This changes only the local reference
+                obj.value = 20;
+            }
+
+            public static void main(String[] args) {
+                Data d = new Data();
+                d.value = 5;
+                changeReference(d);
+                System.out.println("Value of d.value: " + d.value); // Output: Value of d.value: 5
+            }
+        }
+    </pre>
+
+    <p><b>Explanation:</b> In the method <code>changeReference()</code>, the local reference <code>obj</code> is reassigned to a new object, but the original reference <code>d</code> in the calling code remains unaffected.</p>
+
+    <b>Summary</b>
+    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Primitive Types</th>
+                <th>Reference Types</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Passed Value</td>
+                <td>A copy of the primitive value is passed.</td>
+                <td>A copy of the reference is passed.</td>
+            </tr>
+            <tr>
+                <td>Effect of Modifications</td>
+                <td>Changes inside the method do not affect the original variable.</td>
+                <td>The object the reference points to can be modified, but the reference itself cannot be changed in the caller.</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+<hr>
+<div>
+    <h5>Q. What is Object Cloning in Java?</h5>
+    <p>
+        <b>Object Cloning</b> is the process of creating an exact copy of an object. In Java, this is done using the <code>clone()</code> method defined in the <code>Object</code> class. Cloning is primarily used when you want to create a copy of an object with the same state as the original.
+    </p>
+
+    <b>How Does Object Cloning Work?</b>
+    <p>
+        To enable cloning, a class must:
+    </p>
+    <ul>
+        <li>Implement the <code>Cloneable</code> interface, which is a marker interface indicating the class supports cloning.</li>
+        <li>Override the <code>clone()</code> method from the <code>Object</code> class.</li>
+    </ul>
+    <p>
+        If the <code>Cloneable</code> interface is not implemented, the JVM throws a <code>CloneNotSupportedException</code> when <code>clone()</code> is invoked.
+    </p>
+
+    <b>Example of Object Cloning</b>
+    <pre>
+        class Person implements Cloneable {
+            String name;
+            int age;
+
+            Person(String name, int age) {
+                this.name = name;
+                this.age = age;
+            }
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                return super.clone();
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) {
+                try {
+                    Person original = new Person("John", 30);
+                    Person cloned = (Person) original.clone();
+
+                    System.out.println("Original: " + original.name + ", " + original.age);
+                    System.out.println("Cloned: " + cloned.name + ", " + cloned.age);
+
+                    // Verify the two objects are different
+                    System.out.println("Are objects same? " + (original == cloned)); // false
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    </pre>
+    <p><b>Output:</b></p>
+    <pre>
+        Original: John, 30
+        Cloned: John, 30
+        Are objects same? false
+    </pre>
+
+    <b>Types of Cloning</b>
+    <p>Cloning can be categorized into two types:</p>
+    <ul>
+        <li><b>Shallow Cloning:</b> Creates a copy of the object but does not clone the objects referenced by it. Changes to the referenced objects will reflect in the cloned object.</li>
+        <li><b>Deep Cloning:</b> Creates a copy of the object and also clones all the objects referenced by it, ensuring complete independence.</li>
+    </ul>
+
+    <h5>Example of Shallow Cloning:</h5>
+    <pre>
+        class Address {
+            String city;
+
+            Address(String city) {
+                this.city = city;
+            }
+        }
+
+        class Person implements Cloneable {
+            String name;
+            Address address;
+
+            Person(String name, Address address) {
+                this.name = name;
+                this.address = address;
+            }
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                return super.clone(); // Shallow copy
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) throws CloneNotSupportedException {
+                Address address = new Address("New York");
+                Person original = new Person("John", address);
+                Person cloned = (Person) original.clone();
+
+                System.out.println("Original address: " + original.address.city);
+                System.out.println("Cloned address: " + cloned.address.city);
+
+                // Modify the address
+                cloned.address.city = "Los Angeles";
+
+                System.out.println("Original address after modification: " + original.address.city); // Los Angeles
+            }
+        }
+    </pre>
+    <p><b>Output:</b></p>
+    <pre>
+        Original address: New York
+        Cloned address: New York
+        Original address after modification: Los Angeles
+    </pre>
+    <p><b>Explanation:</b> Both the original and cloned objects share the same address reference.</p>
+
+    <h5>Example of Deep Cloning:</h5>
+    <pre>
+        class Address {
+            String city;
+
+            Address(String city) {
+                this.city = city;
+            }
+
+            // Deep copy for Address
+            public Address copy() {
+                return new Address(this.city);
+            }
+        }
+
+        class Person implements Cloneable {
+            String name;
+            Address address;
+
+            Person(String name, Address address) {
+                this.name = name;
+                this.address = address;
+            }
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                Person cloned = (Person) super.clone();
+                cloned.address = this.address.copy(); // Deep copy
+                return cloned;
+            }
+        }
+
+        public class Test {
+            public static void main(String[] args) throws CloneNotSupportedException {
+                Address address = new Address("New York");
+                Person original = new Person("John", address);
+                Person cloned = (Person) original.clone();
+
+                System.out.println("Original address: " + original.address.city);
+                System.out.println("Cloned address: " + cloned.address.city);
+
+                // Modify the address
+                cloned.address.city = "Los Angeles";
+
+                System.out.println("Original address after modification: " + original.address.city); // New York
+            }
+        }
+    </pre>
+    <p><b>Output:</b></p>
+    <pre>
+        Original address: New York
+        Cloned address: New York
+        Original address after modification: New York
+    </pre>
+    <p><b>Explanation:</b> In deep cloning, a new <code>Address</code> object is created for the clone, ensuring complete independence.</p>
+
+    <b>Key Differences Between Shallow Cloning and Deep Cloning</b>
+    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Shallow Cloning</th>
+                <th>Deep Cloning</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Definition</td>
+                <td>Copies the object and shares references to the objects it references.</td>
+                <td>Copies the object and creates independent copies of all referenced objects.</td>
+            </tr>
+            <tr>
+                <td>Performance</td>
+                <td>Faster as it does not copy referenced objects.</td>
+                <td>Slower due to the creation of additional copies.</td>
+            </tr>
+            <tr>
+                <td>Memory Usage</td>
+                <td>Uses less memory.</td>
+                <td>Requires more memory due to duplication.</td>
+            </tr>
+            <tr>
+                <td>Independence</td>
+                <td>Changes to referenced objects affect both the original and the cloned object.</td>
+                <td>Complete independence between the original and cloned objects.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <b>When to Use Object Cloning?</b>
+    <ul>
+        <li>When you need a quick way to copy objects with the same state.</li>
+        <li>Use shallow cloning for immutable or less complex objects.</li>
+        <li>Use deep cloning when the object contains mutable references, and full independence is required.</li>
+    </ul>
+</div>
+
+  <hr>
+  <!-- Arrays -->
+  <div>
+    <h5>Q. How to copy an array in Java?</h5>
+    <p><strong>Answer:</strong> Arrays can be copied using methods like <code>System.arraycopy()</code>, <code>Arrays.copyOf()</code>, or <code>clone()</code>.</p>
+    <pre><code>int[] original = {1, 2, 3};
+  int[] copy = Arrays.copyOf(original, original.length);
+  </code></pre>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. What do you understand by the jagged array?</h5>
+    <p><strong>Answer:</strong> A jagged array is a multi-dimensional array where each row can have a different length.</p>
+    <pre><code>int[][] jagged = {
+      {1, 2},
+      {3, 4, 5},
+      {6}
+  };
+  </code></pre>
+  </div>
+  <hr>
+  <div>
+    <h5>q. What is the Object Class in Java?</h5>
+    <p>
+        The <b>Object</b> class is the parent class of all classes in Java. Every class in Java either directly or indirectly inherits from the <code>Object</code> class. It is part of the <code>java.lang</code> package, so it is automatically imported into every Java program.
+    </p>
+    <p>
+        The <code>Object</code> class provides basic methods that are essential for all objects, such as comparing objects, cloning, getting class information, and more.
+    </p>
+
+    <b>Methods in the Object Class</b>
+    <p>The following are the key methods provided by the <code>Object</code> class:</p>
+
+    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>toString()</code></td>
+                <td>
+                    Returns a string representation of the object. By default, it returns the class name followed by the hash code.
+                </td>
+                <td>
+                    <pre>
+class Example {
+    int value = 10;
+
+    @Override
+    public String toString() {
+        return "Value: " + value;
+    }
+
+    public static void main(String[] args) {
+        Example obj = new Example();
+        System.out.println(obj.toString()); // Output: Value: 10
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td><code>equals(Object obj)</code></td>
+                <td>
+                    Compares the current object with the specified object. By default, it checks reference equality. This method can be overridden for custom equality logic.
+                </td>
+                <td>
+                    <pre>
+class Example {
+    int id;
+
+    Example(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Example example = (Example) obj;
+        return id == example.id;
+    }
+
+    public static void main(String[] args) {
+        Example obj1 = new Example(1);
+        Example obj2 = new Example(1);
+        System.out.println(obj1.equals(obj2)); // Output: true
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td><code>hashCode()</code></td>
+                <td>
+                    Returns an integer hash code value for the object. This is used for hashing-based collections like <code>HashMap</code> or <code>HashSet</code>.
+                </td>
+                <td>
+                    <pre>
+class Example {
+    int id;
+
+    Example(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id * 31; // Custom hash logic
+    }
+
+    public static void main(String[] args) {
+        Example obj = new Example(5);
+        System.out.println(obj.hashCode()); // Output: 155
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td><code>getClass()</code></td>
+                <td>
+                    Returns the runtime class of the object. It is useful for reflection.
+                </td>
+                <td>
+                    <pre>
+class Example {
+    public static void main(String[] args) {
+        Example obj = new Example();
+        System.out.println(obj.getClass()); // Output: class Example
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td><code>clone()</code></td>
+                <td>
+                    Creates a shallow copy of the object. The class must implement the <code>Cloneable</code> interface; otherwise, a <code>CloneNotSupportedException</code> is thrown.
+                </td>
+                <td>
+                    <pre>
+class Example implements Cloneable {
+    int value;
+
+    Example(int value) {
+        this.value = value;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Example obj1 = new Example(10);
+        Example obj2 = (Example) obj1.clone();
+        System.out.println(obj2.value); // Output: 10
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td><code>finalize()</code></td>
+                <td>
+                    Called by the garbage collector before the object is destroyed. It is rarely used in modern Java development.
+                </td>
+                <td>
+                    <pre>
+class Example {
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println("Object is being garbage collected");
+    }
+
+    public static void main(String[] args) {
+        Example obj = new Example();
+        obj = null; // Eligible for garbage collection
+        System.gc(); // Suggests JVM to run Garbage Collector
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td><code>wait()</code>, <code>notify()</code>, <code>notifyAll()</code></td>
+                <td>
+                    These methods are used for inter-thread communication. They must be called within synchronized blocks.
+                </td>
+                <td>
+                    <pre>
+class Example {
+    public static void main(String[] args) {
+        Object lock = new Object();
+
+        Thread t1 = new Thread(() -> {
+            synchronized (lock) {
+                try {
+                    System.out.println("Thread 1 waiting");
+                    lock.wait();
+                    System.out.println("Thread 1 resumed");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (lock) {
+                System.out.println("Thread 2 notifying");
+                lock.notify();
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+                    </pre>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <b>Summary</b>
+    <p>
+        The <code>Object</code> class provides fundamental methods required by all Java objects. It is designed to be overridden in custom classes for enhanced functionality, such as custom equality, hash code logic, or string representation.
+    </p>
+</div>
+<hr>
+<div>
+    <h5>Q. Contiguous memory locations are usually used for storing actual values in an array but not in ArrayList. Explain.</h5>
+    <p><strong>Answer:</strong> 
+      <ul>
+        <li>Arrays use contiguous memory locations to store values, ensuring efficient random access.</li>
+        <li>ArrayLists store objects (not primitives) and use dynamic memory allocation. The elements themselves are references to objects, not contiguous memory locations.</li>
+      </ul>
+    </p>
+  </div>
+  <hr>
+  <!-- Jagged Arrays -->
+  <div>
+    <h5>Q. What do you understand by the jagged array?</h5>
+    <p><strong>Answer:</strong> A jagged array is a multi-dimensional array where each row can have a different number of columns.</p>
+    <pre><code>int[][] jaggedArray = {
+      {1, 2, 3},
+      {4, 5},
+      {6}
+  };
+  
+  System.out.println(jaggedArray[1][1]); // Outputs 5
+  </code></pre>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. What happens if the main method is not declared static?</h5>
+    <p><strong>Answer:</strong> If the main method is not static, the JVM cannot invoke it without creating an instance of the class, leading to a runtime error.</p>
+  </div>
+  <hr>
+  <div>
+    <h5>Q. Can a constructor call another constructor in the same class?</h5>
+    <p><strong>Answer:</strong> Yes, using the <code>this()</code> keyword, one constructor can call another in the same class.</p>
+    <pre><code>class Example {
+      Example() {
+          this(42); // Calls parameterized constructor
+      }
+  
+      Example(int data) {
+          System.out.println("Data: " + data);
+      }
+  }
+  </code></pre>
+  </div>
+  <hr>
+  <div>
+    <h5>What is the Purpose of the <code>equals()</code> and <code>hashCode()</code> Methods?</h5>
+
+    <p>
+        The <code>equals()</code> and <code>hashCode()</code> methods are fundamental methods in Java, defined in the <b>Object</b> class. They are essential for comparing objects and using objects in collections like <code>HashSet</code>, <code>HashMap</code>, or <code>HashTable</code>.
+    </p>
+
+    <b>1. Purpose of <code>equals()</code></b>
+    <p>
+        The <code>equals()</code> method is used to compare the equality of two objects. By default, the implementation in the <b>Object</b> class checks for reference equality, meaning it checks if the two objects point to the same memory location. This method is often overridden to provide custom equality logic based on the object's state.
+    </p>
+
+    <h5>Default Implementation</h5>
+    <pre>
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
+    </pre>
+
+    <h5>Example of Overriding <code>equals()</code></h5>
+    <pre>
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            Person person = (Person) obj;
+            return age == person.age && name.equals(person.name);
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person p1 = new Person("Alice", 25);
+            Person p2 = new Person("Alice", 25);
+            System.out.println(p1.equals(p2)); // Output: true
+        }
+    }
+    </pre>
+
+    <b>2. Purpose of <code>hashCode()</code></b>
+    <p>
+        The <code>hashCode()</code> method returns an integer hash code value for the object. This value is used in hashing-based collections like <code>HashMap</code>, <code>HashSet</code>, and <code>HashTable</code> to determine the bucket where the object will be stored.
+    </p>
+    <p>
+        If two objects are considered equal (via <code>equals()</code>), their hash codes must also be equal. However, two objects with the same hash code do not necessarily have to be equal (this is known as a hash collision).
+    </p>
+
+    <h5>Default Implementation</h5>
+    <pre>
+    public native int hashCode();
+    </pre>
+
+    <h5>Example of Overriding <code>hashCode()</code></h5>
+    <pre>
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode() * 31 + age;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            Person person = (Person) obj;
+            return age == person.age && name.equals(person.name);
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Person p1 = new Person("Alice", 25);
+            Person p2 = new Person("Alice", 25);
+            System.out.println(p1.hashCode() == p2.hashCode()); // Output: true
+        }
+    }
+    </pre>
+
+    <b>3. Relationship Between <code>equals()</code> and <code>hashCode()</code></b>
+    <ul>
+        <li>If two objects are equal according to <code>equals()</code>, they must have the same <code>hashCode()</code>.</li>
+        <li>If two objects have the same <code>hashCode()</code>, they are not guaranteed to be equal (this is called a hash collision).</li>
+        <li>Overriding one of these methods usually requires overriding the other to maintain consistency.</li>
+    </ul>
+
+    <b>4. Use in Collections</b>
+    <p>
+        Hashing-based collections rely on these methods:
+    </p>
+    <ul>
+        <li>
+            <b>HashMap:</b> Uses <code>hashCode()</code> to find the bucket for an object and <code>equals()</code> to check for key equality within the bucket.
+        </li>
+        <li>
+            <b>HashSet:</b> Uses <code>hashCode()</code> to identify duplicate elements and <code>equals()</code> to confirm equality.
+        </li>
+    </ul>
+
+    <b>5. Summary</b>
+    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+                <th>Default Behavior</th>
+                <th>When to Override</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>equals()</code></td>
+                <td>Checks for equality between two objects.</td>
+                <td>Checks reference equality (same memory location).</td>
+                <td>When you want to compare objects based on their state or content.</td>
+            </tr>
+            <tr>
+                <td><code>hashCode()</code></td>
+                <td>Returns a hash code value for the object.</td>
+                <td>Generates a unique hash code based on memory address.</td>
+                <td>When using the object in hashing-based collections (e.g., HashMap, HashSet).</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  <hr>
+  
+  <div>
+    <h5>Q. How does Java handle memory management for objects?</h5>
+    <p><strong>Answer:</strong> Java uses automatic garbage collection to manage memory. Objects no longer referenced are eligible for collection by the garbage collector.</p>
+  </div>

@@ -1,0 +1,443 @@
+<div>
+    <h5>Threading-Related Points in Java for Interview Preparation</h5>
+    <ul>
+        <li><b>Thread Life Cycle:</b> Understand the states: New, Runnable, Running, Blocked/Waiting, and Terminated.</li>
+        <li><b>Thread Creation:</b> Create threads by:
+            <ul>
+                <li>Extending <code>Thread</code> class.</li>
+                <li>Implementing <code>Runnable</code> interface.</li>
+                <li>Using <code>Callable</code> with <code>Future</code> for result-returning tasks.</li>
+            </ul>
+        </li>
+        <li><b>Thread Safety:</b> Techniques like synchronization, volatile keyword, and using atomic classes (e.g., <code>AtomicInteger</code>).</li>
+        <li><b>Synchronized Block vs Method:</b> Block provides finer-grained control than a synchronized method.</li>
+        <li><b>Volatile Keyword:</b> Ensures visibility of changes to variables across threads but does not guarantee atomicity.</li>
+        <li><b>Thread Communication:</b> Use <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code> for inter-thread communication.</li>
+        <li><b>Executor Framework:</b> Use <code>Executors</code> for managing thread pools and asynchronous task execution.</li>
+        <li><b>Deadlock:</b> Understand the concept and techniques to avoid it (e.g., avoiding nested locks, using <code>tryLock()</code>).</li>
+        <li><b>Race Conditions:</b> Occur when threads access shared resources concurrently without proper synchronization.</li>
+        <li><b>Locks:</b> 
+            <ul>
+                <li>ReentrantLock for explicit locking mechanisms.</li>
+                <li>ReadWriteLock for separating read and write locks.</li>
+            </ul>
+        </li>
+        <li><b>ThreadLocal:</b> Provides thread-specific variables, isolating data among threads.</li>
+        <li><b>ForkJoin Framework:</b> Used for parallel task execution by dividing tasks into smaller subtasks (introduced in Java 7).</li>
+        <li><b>Java Concurrency Utilities:</b> Includes classes like <code>CountDownLatch</code>, <code>CyclicBarrier</code>, <code>Semaphore</code>, <code>Phaser</code>, and <code>Exchanger</code>.</li>
+        <li><b>Immutable Objects:</b> Preferred in multithreaded environments to avoid data inconsistency.</li>
+        <li><b>Thread Priority:</b> Threads can have priorities, but they are not guaranteed to affect execution order.</li>
+        <li><b>Daemon Threads:</b> Background threads (e.g., garbage collector). Use <code>setDaemon(true)</code> to mark a thread as daemon.</li>
+        <li><b>Thread Interruption:</b> Use <code>interrupt()</code> to signal a thread to stop. Check with <code>isInterrupted()</code> or <code>Thread.interrupted()</code>.</li>
+        <li><b>Callable and Future:</b> Use for tasks that return results or throw exceptions, unlike <code>Runnable</code>.</li>
+        <li><b>ScheduledExecutorService:</b> For scheduling tasks at fixed rates or with delays.</li>
+        <li><b>BlockingQueue:</b> Thread-safe queue used for producer-consumer scenarios.</li>
+        <li><b>Atomic Variables:</b> Use <code>java.util.concurrent.atomic</code> classes for lock-free thread-safe operations.</li>
+        <li><b>Reentrant Locks:</b> A lock that can be acquired multiple times by the same thread without causing a deadlock.</li>
+        <li><b>Joining Threads:</b> Use <code>join()</code> to wait for a thread to complete its execution.</li>
+        <li><b>Thread Group:</b> Allows grouping multiple threads for collective management.</li>
+        <li><b>Common Exceptions:</b> Be familiar with <code>InterruptedException</code>, <code>IllegalThreadStateException</code>, and <code>RejectionExecutionException</code>.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Q. Explain Thread Life Cycle in Java</h5>
+    <p>
+        A thread in Java goes through a defined series of states during its life cycle. These states are managed by the <code>Thread</code> class and the Java Virtual Machine (JVM). The thread life cycle includes the following states:
+    </p>
+
+    <b>1. New State</b>
+    <p>
+        When a thread object is created but not yet started, it is in the <b>New</b> state. 
+    </p>
+    <pre>
+        Thread thread = new Thread(() -> System.out.println("Thread running"));
+    </pre>
+    <p>
+        Here, the thread is not yet started and is waiting to be activated using the <code>start()</code> method.
+    </p>
+
+    <b>2. Runnable State</b>
+    <p>
+        After calling the <code>start()</code> method, the thread enters the <b>Runnable</b> state. In this state, the thread is ready to run but is waiting for CPU time for execution.
+    </p>
+    <pre>
+        thread.start(); // Moves the thread to Runnable state
+    </pre>
+    <p>
+        The thread may not immediately begin execution since it depends on the thread scheduler to allocate CPU time.
+    </p>
+
+    <b>3. Running State</b>
+    <p>
+        When the thread scheduler selects a thread from the <b>Runnable</b> pool and allocates CPU time, the thread enters the <b>Running</b> state and executes its task.
+    </p>
+    <pre>
+        public void run() {
+            System.out.println("Thread is running...");
+        }
+    </pre>
+
+    <b>4. Blocked/Waiting/Timed Waiting State</b>
+    <p>
+        A thread enters one of these states if it is waiting for a resource or for another thread's signal:
+    </p>
+    <ul>
+        <li><b>Blocked:</b> The thread is waiting to acquire a lock on an object.</li>
+        <li><b>Waiting:</b> The thread is indefinitely waiting for another thread to signal, using methods like <code>wait()</code>.</li>
+        <li><b>Timed Waiting:</b> The thread is waiting for another thread's signal, but only for a specified time, using methods like <code>sleep()</code> or <code>join(timeout)</code>.</li>
+    </ul>
+    <pre>
+        synchronized (lock) {
+            lock.wait(); // Waiting state
+        }
+    </pre>
+
+    <b>5. Terminated State</b>
+    <p>
+        Once the thread completes its task, it enters the <b>Terminated</b> state, also called the <b>Dead</b> state. A thread in this state cannot be restarted.
+    </p>
+    <pre>
+        System.out.println("Thread has finished execution.");
+    </pre>
+
+    <b>Thread Life Cycle Diagram</b>
+    <img src="../../images/thread_lifecycle.PNG" alt="cache" style="display: block; margin: auto; width: 80%;">
+</div>
+<hr>
+<div>
+    <h5>Q. Explain Thread Creation in Java</h5>
+    <p>
+        In Java, threads are represented by the <code>Thread</code> class, and there are multiple ways to create and start a thread. Here are the main approaches to create threads:
+    </p>
+
+    <b>1. Extending the Thread Class</b>
+    <p>
+        To create a thread by extending the <code>Thread</code> class, you need to override its <code>run()</code> method. The <code>run()</code> method contains the code that will execute when the thread is started.
+    </p>
+    <pre>
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("Thread is running");
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            MyThread thread = new MyThread();
+            thread.start(); // Starts the thread
+        }
+    }
+    </pre>
+    <p>
+        <b>Note:</b> This approach is simple but limits inheritance because Java does not support multiple inheritance.
+    </p>
+
+    <b>2. Implementing the Runnable Interface</b>
+    <p>
+        You can create a thread by implementing the <code>Runnable</code> interface and defining the <code>run()</code> method. This approach is more flexible since your class can extend another class.
+    </p>
+    <pre>
+    class MyRunnable implements Runnable {
+        @Override
+        public void run() {
+            System.out.println("Thread is running");
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            MyRunnable runnable = new MyRunnable();
+            Thread thread = new Thread(runnable);
+            thread.start(); // Starts the thread
+        }
+    }
+    </pre>
+
+    <b>3. Using Lambda Expressions (Java 8+)</b>
+    <p>
+        With Java 8, you can use lambda expressions to create threads more concisely.
+    </p>
+    <pre>
+    public class Main {
+        public static void main(String[] args) {
+            Thread thread = new Thread(() -> System.out.println("Thread is running"));
+            thread.start(); // Starts the thread
+        }
+    }
+    </pre>
+
+    <b>4. Using the Callable and Future Interfaces</b>
+    <p>
+        The <code>Callable</code> interface allows creating threads that can return a result or throw exceptions. This is achieved by using an <code>ExecutorService</code>.
+    </p>
+    <pre>
+    import java.util.concurrent.*;
+
+    public class Main {
+        public static void main(String[] args) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Callable&lt;String&gt; task = () -> "Thread result";
+            
+            Future&lt;String&gt; future = executor.submit(task);
+            
+            try {
+                System.out.println(future.get()); // Retrieves the result
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                executor.shutdown();
+            }
+        }
+    }
+    </pre>
+
+    <b>5. Creating Threads with the Executor Framework</b>
+    <p>
+        The <code>Executor</code> framework simplifies thread management by decoupling task submission from thread creation. You can submit tasks to an <code>ExecutorService</code>, and it manages the thread pool.
+    </p>
+    <pre>
+    import java.util.concurrent.Executors;
+
+    public class Main {
+        public static void main(String[] args) {
+            ExecutorService executor = Executors.newFixedThreadPool(2);
+
+            Runnable task1 = () -> System.out.println("Task 1 running");
+            Runnable task2 = () -> System.out.println("Task 2 running");
+
+            executor.submit(task1);
+            executor.submit(task2);
+
+            executor.shutdown(); // Gracefully shuts down the executor
+        }
+    }
+    </pre>
+
+    <b>6. Anonymous Inner Class</b>
+    <p>
+        You can create a thread using an anonymous inner class for quick implementation without creating separate classes.
+    </p>
+    <pre>
+    public class Main {
+        public static void main(String[] args) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Thread is running");
+                }
+            });
+            thread.start(); // Starts the thread
+        }
+    }
+    </pre>
+
+    <b>Key Notes</b>
+    <ul>
+        <li>Always use the <code>start()</code> method to begin a thread's execution. Calling <code>run()</code> directly will not start a new thread but will execute in the current thread.</li>
+        <li>For complex thread management, prefer using the <b>Executor Framework</b>.</li>
+        <li>Use <code>Callable</code> for tasks that return results.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Q. Explain how Thread Safety in Java</h5>
+    <p>
+        Thread safety refers to the ability of a program to handle multiple threads simultaneously without causing data inconsistency or corruption. In Java, several techniques are available to ensure thread safety:
+    </p>
+
+    <b>1. Synchronization</b>
+    <p>
+        <b>Synchronization</b> ensures that only one thread at a time can access a specific section of code (a synchronized block or method) that accesses shared resources. This is achieved using the <code>synchronized</code> keyword.
+    </p>
+    <pre>
+    public class Counter {
+        private int count = 0;
+
+        public synchronized void increment() {
+            count++;
+        }
+    }
+    </pre>
+    <p>
+        In the example above, the <code>increment()</code> method is synchronized, ensuring that only one thread can increment the count at a time.
+    </p>
+
+    <b>2. Volatile Keyword</b>
+    <p>
+        <b>Volatile</b> is used to declare variables whose updates are immediately visible to all threads. It guarantees that all reads and writes to the variable are directly from main memory, not cached locally in a thread’s CPU.
+    </p>
+    <pre>
+    private volatile boolean flag = false;
+    
+    public void setFlag() {
+        flag = true;
+    }
+
+    public void checkFlag() {
+        if (flag) {
+            // Do something
+        }
+    }
+    </pre>
+    <p>
+        By marking <code>flag</code> as volatile, it ensures that any thread reading this variable will see the latest value written by another thread.
+    </p>
+
+    <b>3. Atomic Classes</b>
+    <p>
+        <b>Atomic classes</b> provide lock-free and thread-safe operations on single variables. These classes ensure atomicity without requiring synchronization. They are part of the <code>java.util.concurrent.atomic</code> package.
+    </p>
+    <ul>
+        <li><code>AtomicInteger</code> for integer operations.</li>
+        <li><code>AtomicLong</code> for long operations.</li>
+        <li><code>AtomicReference</code> for reference-type atomic operations.</li>
+    </ul>
+    <pre>
+    AtomicInteger atomicInt = new AtomicInteger(0);
+
+    public void incrementCounter() {
+        atomicInt.incrementAndGet();
+    }
+
+    public int getCounter() {
+        return atomicInt.get();
+    }
+    </pre>
+    <p>
+        These classes offer methods like <code>incrementAndGet()</code>, <code>getAndSet()</code>, <code>compareAndSet()</code>, etc., to perform atomic operations without the need for synchronization.
+    </p>
+
+    <b>Comison</b>
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Technique</th>
+                <th>Description</th>
+                <th>Use Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>Synchronization</b></td>
+                <td>Locks a method or block, allowing only one thread to access the code block at a time.</td>
+                <td>When you need to protect access to shared resources such as counters, queues, or other mutable data.</td>
+            </tr>
+            <tr>
+                <td><b>Volatile Keyword</b></td>
+                <td>Ensures that changes to a variable are visible to all threads immediately.</td>
+                <td>When you need to access and update a shared boolean flag across multiple threads.</td>
+            </tr>
+            <tr>
+                <td><b>Atomic Classes</b></td>
+                <td>Provides atomic operations on variables without using synchronization.</td>
+                <td>For variables that are frequently updated by multiple threads, ensuring atomicity and thread safety.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
+<div>
+    <h5>Synchronized Block in Java</h5>
+    <p>
+        <b>Synchronized Block</b> is used in Java to restrict access to a particular section of code so that only one thread can execute it at a time. This ensures thread safety when multiple threads access shared resources.
+    </p>
+    
+    <b>Syntax</b>
+    <pre>
+    public class Example {
+        private int counter = 0;
+
+        public void increment() {
+            synchronized (this) {
+                counter++;
+            }
+        }
+    }
+    </pre>
+    <p>
+        In the example above, the <code>increment()</code> method is synchronized, and the block inside it is a synchronized block that only allows one thread to access the increment operation at a time.
+    </p>
+
+    <h5>Synchronization Block vs Synchronized Method</h5>
+    <p>
+        Both synchronization block and synchronized method provide thread safety but differ in how they are used and their scope.
+    </p>
+
+    <b>1. Synchronized Method</b>
+    <p>
+        A synchronized method locks the entire method for exclusive access. Only one thread can execute a synchronized method at a time, preventing other threads from entering the method until the current thread completes its operation.
+    </p>
+    <pre>
+    public class Counter {
+        private int count = 0;
+
+        public synchronized void increment() {
+            count++;
+        }
+    }
+    </pre>
+    <p>
+        Here, the <code>increment()</code> method is synchronized, meaning the entire method is locked for access by only one thread at a time.
+    </p>
+
+    <b>2. Synchronized Block</b>
+    <p>
+        A synchronized block is used to lock only a part of a method, providing finer-grained control over which resources need to be synchronized. It allows other parts of the method to execute without synchronization.
+    </p>
+    <pre>
+    public class Counter {
+        private int count = 0;
+
+        public void increment() {
+            synchronized (this) {
+                count++;
+            }
+
+            // Other code
+        }
+    }
+    </pre>
+    <p>
+        In the above example, only the increment operation is synchronized, not the entire method.
+    </p>
+
+    <b>Key Differences</b>
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Synchronized Method</th>
+                <th>Synchronized Block</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>Scope</b></td>
+                <td>Locks the entire method.</td>
+                <td>Locks only a specific section of the method.</td>
+            </tr>
+            <tr>
+                <td><b>Flexibility</b></td>
+                <td>Less flexible as it locks the entire method.</td>
+                <td>More flexible as you can control which part of the method is synchronized.</td>
+            </tr>
+            <tr>
+                <td><b>Performance</b></td>
+                <td>Higher performance overhead due to entire method lock.</td>
+                <td>Lower performance overhead since only a specific section is locked.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <b>Use Cases</b>
+    <p>
+        <ul>
+            <li><b>Synchronized Method</b> is ideal when the entire method's execution needs to be thread-safe.</li>
+            <li><b>Synchronized Block</b> is suitable for smaller critical sections within a method, allowing other parts of the method to be executed freely.</li>
+        </ul>
+    </p>
+</div>
+
+
