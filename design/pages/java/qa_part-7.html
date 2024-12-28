@@ -1,0 +1,1641 @@
+<div>
+    <h5>Newly Added Features in Java 8</h5>
+    <ul>
+        <li><strong>Lambda Expressions:</strong> Introduces functional programming in Java, enabling more concise and readable code for implementing functional interfaces.</li>
+        <li><strong>Functional Interfaces:</strong> Interfaces with a single abstract method (e.g., <code>Runnable</code>, <code>Comparator</code>), annotated with <code>@FunctionalInterface</code>.</li>
+        <li><strong>Stream API:</strong> Provides a powerful way to process collections of data using a functional approach, supporting operations like filtering, mapping, and reduction.</li>
+        <li><strong>Default and Static Methods in Interfaces:</strong> Java 8 introduced the ability to define default and static methods in interfaces. Default methods provide a way to add new methods to interfaces without breaking existing implementations, while static methods allow interfaces to have utility methods that can be called without an instance</li>
+        <li><strong>Optional Class:</strong> Introduced to avoid <code>NullPointerException</code> by providing a container object that may or may not contain a non-null value.</li>
+        <li><strong>New Date and Time API:</strong> A robust API for date and time handling under the <code>java.time</code> package, addressing flaws in the old <code>java.util.Date</code> and <code>Calendar</code> classes.</li>
+        <li><strong>Method References:</strong> Simplifies lambda expressions by referring to methods directly using the <code>::</code> operator.</li>
+        <li><strong>Collectors:</strong> Provides utility functions to accumulate elements from streams into collections or other data structures.</li>
+        <li><strong>Nashorn JavaScript Engine:</strong> A high-performance JavaScript engine integrated into Java for executing JavaScript code within the JVM.</li>
+        <li><strong>Base64 Encoding and Decoding:</strong> Introduced the <code>java.util.Base64</code> class for encoding and decoding Base64 content.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>What is a Lambda Expression?</h5>
+    <p>
+        A Lambda Expression is a concise way to represent an anonymous function in Java. It provides a clear and concise syntax for implementing functional interfaces (interfaces with a single abstract method). 
+        Lambda expressions are primarily used to enable functional programming and simplify the development of inline implementations.
+    </p>
+    <b>Syntax:</b>
+    <p><code>(parameters) -> { body }</code></p>
+   
+    
+    <p>Lambda expressions can take different numbers of parameters based on the use case. The syntax adjusts accordingly for zero, single, or multiple parameters.</p>
+    <b>Types of Lambda Expression Parameters:</b>
+        <ul>
+            <li><strong>Zero Parameter:</strong> A lambda expression with no parameters. Parentheses are empty.</li>
+            <li><strong>Single Parameter:</strong> A lambda expression with one parameter. Parentheses are optional if the type is inferred.</li>
+            <li><strong>Multiple Parameters:</strong> A lambda expression with two or more parameters, all enclosed in parentheses.</li>
+        </ul>
+    <b>Examples:</b>
+        <p><strong>Zero Parameter:</strong></p>
+        Syntax: <pre>() -> System.out.println("Zero parameter lambda");</pre>
+<pre><code>
+Runnable r = () -> {
+    System.out.println("No parameters in this lambda.");
+};
+r.run();
+</code></pre>
+        <p><strong>Single Parameter:</strong></p>
+        Syntax : <pre>(p) -> System.out.println("One parameter: " + p);</pre>
+<pre><code>
+import java.util.ArrayList;
+class Test {
+    public static void main(String args[])
+    {
+        ArrayList&lt;Integer&gt; arrL = new ArrayList&lt;Integer&gt;();
+        arrL.add(1);
+        arrL.add(2);
+        arrL.add(3);
+        arrL.add(4);
+
+        // Using lambda expression to print all elements
+        arrL.forEach(n -> System.out.println(n));
+    }
+}
+</code></pre>
+        <p><strong>Multiple Parameters:</strong></p>
+        <pre><code>
+    java.util.function.BiFunction<Integer, Integer, Integer> add = (a, b) -> {
+        return a + b;
+    };
+    System.out.println("Sum: " + add.apply(5, 10));
+        </code></pre>
+        <b>Key Points:</b>
+        <ul>
+            <li>Parentheses can be omitted for single parameters without type declaration.</li>
+            <li>Multiple parameters require parentheses and are separated by commas.</li>
+            <li>Types of parameters can be explicitly declared or inferred by the compiler.</li>
+        </ul>
+    
+    <b>Benefits:</b>
+    <ul>
+        <li>Reduces boilerplate code.</li>
+        <li>Enhances readability and maintainability.</li>
+        <li>Encourages functional programming style.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>What is Stream API in Java 8?</h5>
+    <p>
+        Stream API in Java 8 is a powerful tool introduced to process collections of data in a functional and declarative manner. It allows developers to perform operations like filtering, mapping, and reducing on data with minimal boilerplate code. Streams enable a more expressive way to handle data transformations and aggregations.
+    </p>
+    <b>Key Features:</b>
+    <ul>
+        <li><strong>Declarative Style:</strong> Focuses on <em>what</em> to do rather than <em>how</em> to do it.</li>
+        <li><strong>Lazy Evaluation:</strong> Intermediate operations are not executed until a terminal operation is invoked.</li>
+        <li><strong>Pipelining:</strong> Allows chaining of multiple operations for better readability and efficiency.</li>
+        <li><strong>Parallel Processing:</strong> Supports parallel execution for performance improvement with <code>parallelStream()</code>.</li>
+        <li><strong>Immutability:</strong> Streams do not modify the original data source but create a new result.</li>
+    </ul>
+    <b>Example:</b>
+    <pre><code>
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StreamAPIExample {
+    public static void main(String[] args) {
+        List&lt;String&gt; names = Arrays.asList("Alice", "Bob", "Charlie", "David", "Eve");
+
+        // Filtering and Mapping using Stream API
+        List&lt;String&gt; filteredNames = names.stream()
+                                          .filter(name -> name.startsWith("A"))
+                                          .map(String::toUpperCase)
+                                          .collect(Collectors.toList());
+
+        System.out.println(filteredNames); // Output: [ALICE]
+    }
+}
+    </code></pre>
+    <b>Types of Operations:</b>
+    <ul>
+        <li><strong>Intermediate Operations:</strong> Transform streams, e.g., <code>filter()</code>, <code>map()</code>, <code>sorted()</code>.</li>
+        <li><strong>Terminal Operations:</strong> Consume streams and produce results, e.g., <code>collect()</code>, <code>forEach()</code>, <code>reduce()</code>, <code>match()</code>, <code>count</code>.</li>
+        <li><strong>Short Circuit Operations: </strong>Short-circuit operations provide performance benefits by avoiding unnecessary computations when the desired result can be obtained early. They are particularly useful when working with large or infinite streams. for e.g. <code>findFrist()</code>, <code>anyMatch()</code>.</li>
+    </ul>
+    <b>Benefits:</b>
+    <ul>
+        <li>Improves code readability and maintainability.</li>
+        <li>Reduces boilerplate code for data processing tasks.</li>
+        <li>Leverages parallelism for better performance.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>What is a Functional Interface in Java 8?</h5>
+    <p>
+        A Functional Interface in Java 8 is an interface that contains exactly one abstract method. 
+        It can have any number of default or static methods, but it must have only one abstract method. 
+        Functional interfaces are the foundation of lambda expressions in Java, enabling functional programming.
+        Runnable, ActionListener, and Comparator are common examples of Java functional interfaces.
+        <ul>
+            <li>Runnable: This interface only contains the run() method.</li>
+            <li>Comparable: This interface only contains the compareTo() method.</li>
+            <li>ActionListener: This interface only contains the actionPerformed() method.</li>
+            <li>Callable: This interface only contains the call() method.</li>
+        </ul>
+    </p>
+    <b>Key Features:</b>
+    <ul>
+        <li><strong>Single Abstract Method (SAM):</strong> Functional interfaces are also known as Single Abstract Method interfaces.</li>
+        <li><strong>Annotation:</strong> Marked with <code>@FunctionalInterface</code> annotation to ensure the interface meets the functional interface requirements.</li>
+        <li><strong>Default and Static Methods:</strong> Can have these methods in addition to the single abstract method.</li>
+    </ul>
+    <p><strong>Defining and Using a Functional Interface:</strong></p>
+    <pre><code>
+@FunctionalInterface
+interface MyFunctionalInterface {
+    void displayMessage(String message);
+}
+
+public class FunctionalInterfaceExample {
+    public static void main(String[] args) {
+        // Using a Lambda Expression
+        MyFunctionalInterface myFunction = (message) -> System.out.println("Message: " + message);
+
+        // Invoking the abstract method
+        myFunction.displayMessage("Hello, Functional Interface!");
+    }
+}
+    </code></pre>
+    <b>Built-in Functional Interfaces:</b>
+    <ul>
+        <li><strong><code>java.util.function.Predicate&lt;T&gt;</code>:</strong> Tests a condition and returns a boolean.</li>
+        <li><strong><code>java.util.function.Consumer&lt;T&gt;</code>:</strong> The Consumer interface accepts one argument and returns nothing.</li>
+        <li><strong><code>java.util.function.Function&lt;T, R&gt;</code>:</strong> The Function interface processes one argument and returns a value.</li>
+        <li><strong><code>java.util.function.Supplier&lt;T&gt;</code>:</strong> The Supplier interface takes no input and returns output.</li>
+        <li><strong><code>java.util.function.BiFunction&lt;T, U, R&gt;</code>:</strong> Accepts two arguments and produces a result.</li>
+    </ul>
+    <b>Benefits:</b>
+    <ul>
+        <li>Enables the use of lambda expressions.</li>
+        <li>Encourages functional programming patterns in Java.</li>
+        <li>Simplifies code by reducing boilerplate for inline implementations.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>When to Use map and flatMap in Java 8?</h5>
+    <p>
+        Both <code>map</code> and <code>flatMap</code> are functions in the Stream API that allow transformation of elements in a stream, but they differ in how they handle nested structures.
+    </p>
+    <b>1. <code>map</code></b>
+    <p>
+        The <code>map</code> function is used when you want to apply a transformation to each element in the stream and get a single, transformed element for each input element. It produces a stream of transformed elements.
+    </p>
+    <p><strong>Example:</strong></p>
+    <pre><code>
+List&lt;String&gt; words = Arrays.asList("apple", "banana", "cherry");
+List&lt;Integer&gt; wordLengths = words.stream()
+                                 .map(String::length)
+                                 .collect(Collectors.toList());
+System.out.println(wordLengths); // Output: [5, 6, 6]
+    </code></pre>
+    <p>
+        In this case, each word is transformed into its length using <code>map</code>.
+    </p>
+
+    <b>2. <code>flatMap</code></b>
+    <p>
+        The <code>flatMap</code> function is used when the transformation results in multiple elements for a single element. It flattens the nested stream structure into a single stream.
+    </p>
+    <p><strong>Example:</strong></p>
+    <pre><code>
+List&lt;List&lt;String&gt;&gt; nestedList = Arrays.asList(
+    Arrays.asList("apple", "banana"),
+    Arrays.asList("cherry", "date"),
+    Arrays.asList("elderberry", "fig")
+);
+
+List&lt;String&gt; flatList = nestedList.stream()
+                                 .flatMap(List::stream)
+                                 .collect(Collectors.toList());
+System.out.println(flatList); // Output: [apple, banana, cherry, date, elderberry, fig]
+    </code></pre>
+    <p>
+        In this case, <code>flatMap</code> is used to flatten the nested lists into a single list.
+    </p>
+
+    <b>Key Differences:</b>
+    <ul>
+        <li><strong><code>map</code>:</strong> Transforms each element into a single new element. It returns a stream of transformed elements.</li>
+        <li><strong><code>flatMap</code>:</strong> Transforms each element into multiple elements (or a stream) and flattens the result into a single stream.</li>
+    </ul>
+    <b>When to Use:</b>
+    <ul>
+        <li>Use <code>map</code> when each input element should be transformed into exactly one output element.</li>
+        <li>Use <code>flatMap</code> when each input element can produce zero or more output elements (for example, when dealing with nested collections or streams).</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Can We Extend a Functional Interface from Another Functional Interface?</h5>
+    <p>
+        Yes, it is possible to extend a functional interface from another functional interface in Java. A functional interface can inherit from another functional interface, as long as it still maintains the rule of having exactly one abstract method.
+    </p>
+    <p>
+        When a functional interface extends another functional interface, it can inherit the abstract method(s) of the parent interface, and you can add additional methods as long as the single abstract method rule is maintained.
+    </p>
+    <b>Example:</b>
+    <pre><code>
+@FunctionalInterface
+interface Animal {
+    void makeSound();
+}
+
+@FunctionalInterface
+interface Dog extends Animal {
+    void bark();
+}
+
+public class FunctionalInterfaceExample {
+    public static void main(String[] args) {
+        Dog dog = new Dog() {
+            @Override
+            public void makeSound() {
+                System.out.println("Dog makes sound");
+            }
+
+            @Override
+            public void bark() {
+                System.out.println("Dog barks");
+            }
+        };
+        
+        dog.makeSound();  // Output: Dog makes sound
+        dog.bark();       // Output: Dog barks
+    }
+}
+    </code></pre>
+    <b>Key Points:</b>
+    <ul>
+        <li>A functional interface can extend another functional interface, but it must have one abstract method.</li>
+        <li>The extending interface can have additional methods, including default or static methods.</li>
+        <li>The rule of having exactly one abstract method is still applicable to the child interface.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Tell a few functional interfaces which are already there before Java 8?</h5>
+    <ul>
+        <li>Runnable</li>
+        <li>Callable</li>
+        <li>Comparator </li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>What are all functional interfaces introduced in Java 8?</h5>
+    <ul>
+        <li>Function</li>
+        <li>Predicate</li>
+        <li>Consumer</li>
+        <li>Supplier </li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Stream Methods in Java 8</h5>
+    <p>Java 8 Stream API provides a wide variety of methods to work with collections in a functional style. Below are explanations and examples for each of the mentioned methods.</p>
+
+    <b>1. <code>anyMatch()</code></b>
+    <p>Returns <code>true</code> if any elements of the stream satisfy the provided predicate.</p>
+    <pre><code>
+List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5);
+boolean hasEven = numbers.stream().anyMatch(n -> n % 2 == 0);
+System.out.println(hasEven); // Output: true
+    </code></pre>
+
+    <b>2. <code>noneMatch()</code></b>
+    <p>Returns <code>true</code> if no elements of the stream satisfy the provided predicate.</p>
+    <pre><code>
+boolean noNegative = numbers.stream().noneMatch(n -> n < 0);
+System.out.println(noNegative); // Output: true
+    </code></pre>
+
+    <b>3. <code>mapToLong()</code></b>
+    <p>Transforms the elements of the stream into <code>long</code> values.</p>
+    <pre><code>
+List&lt;Integer&gt; integers = Arrays.asList(1, 2, 3, 4, 5);
+long sum = integers.stream().mapToLong(Integer::longValue).sum();
+System.out.println(sum); // Output: 15
+    </code></pre>
+
+    <b>4. <code>findAny()</code></b>
+    <p>Returns any element from the stream, or an empty <code>Optional</code> if no element is present. It may be useful in parallel streams.</p>
+    <pre><code>
+Optional&lt;Integer&gt; anyNumber = numbers.stream().findAny();
+System.out.println(anyNumber.orElse(-1)); // Output: Any element
+    </code></pre>
+
+    <b>5. <code>forEachOrdered()</code></b>
+    <p>Performs an action for each element of the stream, maintaining the encounter order (in case of parallel streams).</p>
+    <pre><code>
+numbers.stream().forEachOrdered(System.out::println); 
+// Output: 1 2 3 4 5 (in order)
+    </code></pre>
+
+    <b>6. <code>forEach()</code></b>
+    <p>Performs an action for each element of the stream.</p>
+    <pre><code>
+numbers.stream().forEach(System.out::println); 
+// Output: 1 2 3 4 5
+    </code></pre>
+
+    <b>7. <code>allMatch()</code></b>
+    <p>Returns <code>true</code> if all elements of the stream satisfy the provided predicate.</p>
+    <pre><code>
+boolean allEven = numbers.stream().allMatch(n -> n % 2 == 0);
+System.out.println(allEven); // Output: false
+    </code></pre>
+
+    <b>8. <code>filter()</code></b>
+    <p>Filters elements of the stream based on a predicate.</p>
+    <pre><code>
+List&lt;Integer&gt; evenNumbers = numbers.stream().filter(n -> n % 2 == 0).collect(Collectors.toList());
+System.out.println(evenNumbers); // Output: [2, 4]
+    </code></pre>
+
+    <b>9. <code>findFirst()</code></b>
+    <p>Returns the first element of the stream, or an empty <code>Optional</code> if no element is present.</p>
+    <pre><code>
+Optional&lt;Integer&gt; first = numbers.stream().findFirst();
+System.out.println(first.orElse(-1)); // Output: 1
+    </code></pre>
+
+    <b>10. <code>flatMapToInt()</code></b>
+    <p>Transforms the elements of the stream into an <code>IntStream</code> by flattening nested collections.</p>
+    <pre><code>
+List&lt;List&lt;Integer&gt;&gt; nestedNumbers = Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4));
+int sum = nestedNumbers.stream()
+                       .flatMapToInt(list -> list.stream().mapToInt(Integer::intValue))
+                       .sum();
+System.out.println(sum); // Output: 10
+    </code></pre>
+
+    <b>11. <code>mapToInt()</code></b>
+    <p>Transforms the elements of the stream into <code>IntStream</code>.</p>
+    <pre><code>
+List&lt;Integer> integers = Arrays.asList(1, 2, 3, 4);
+int sum = integers.stream().mapToInt(Integer::intValue).sum();
+System.out.println(sum); // Output: 10
+    </code></pre>
+
+    <b>12. <code>map()</code></b>
+    <p>Transforms the elements of the stream using a function.</p>
+    <pre><code>
+List&lt;String&gt; words = Arrays.asList("hello", "world");
+List&lt;String&gt; upperWords = words.stream().map(String::toUpperCase).collect(Collectors.toList());
+System.out.println(upperWords); // Output: [HELLO, WORLD]
+    </code></pre>
+
+    <b>13. <code>peek()</code></b>
+    <p>Allows for performing an action on each element as the stream is processed, without modifying the stream.</p>
+    <pre><code>
+List&lt;Integer&gt; modifiedList = numbers.stream()
+                                    .peek(n -> System.out.println("Processing: " + n))
+                                    .map(n -> n * 2)
+                                    .collect(Collectors.toList());
+    </code></pre>
+
+    <b>14. <code>counting()</code></b>
+    <p>Counts the number of elements in the stream.</p>
+    <pre><code>
+long count = numbers.stream().count();
+System.out.println(count); // Output: 5
+    </code></pre>
+
+    <b>15. <code>Iterator()</code></b>
+    <p>Converts the stream to an <code>Iterator</code> (only available in the <code>Stream</code> interface).</p>
+    <pre><code>
+Iterator&lt;Integer&gt; iterator = numbers.stream().iterator();
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+    </code></pre>
+
+    <b>16. <code>generate()</code></b>
+    <p>Generates an infinite stream using a supplier function.</p>
+    <pre><code>
+Stream&lt;Integer&gt; infiniteStream = Stream.generate(() -> (int) (Math.random() * 100));
+infiniteStream.limit(5).forEach(System.out::println);
+    </code></pre>
+
+    <b>17. <code>skip()</code></b>
+    <p>Skips the first <code>n</code> elements of the stream.</p>
+    <pre><code>
+List&lt;Integer&gt; skippedNumbers = numbers.stream().skip(2).collect(Collectors.toList());
+System.out.println(skippedNumbers); // Output: [3, 4, 5]
+    </code></pre>
+
+    <b>18. <code>SummaryStatistics()</code></b>
+    <p>Collects statistics, such as count, sum, min, average, and max, from a stream of data.</p>
+    <pre><code>
+IntSummaryStatistics stats = numbers.stream().mapToInt(Integer::intValue).summaryStatistics();
+System.out.println(stats); // Output: IntSummaryStatistics{count=5, sum=15, min=1, average=3.000000, max=5}
+    </code></pre>
+
+    <b>19. <code>Builder()</code></b>
+    <p>Used to create a stream through <code>Stream.builder()</code>.</p>
+    <pre><code>
+Stream&lt;Integer&gt; stream = Stream.<Integer>builder().add(1).add(2).add(3).build();
+stream.forEach(System.out::println); // Output: 1 2 3
+    </code></pre>
+
+    <b>20. <code>empty()</code></b>
+    <p>Returns an empty stream.</p>
+    <pre><code>
+Stream&lt;String&gt; emptyStream = Stream.empty();
+System.out.println(emptyStream.count()); // Output: 0
+    </code></pre>
+
+    <b>21. <code>Stream toArray()</code></b>
+    <p>Converts a stream into an array.</p>
+    <pre><code>
+Integer[] array = numbers.stream().toArray(Integer[]::new);
+System.out.println(Arrays.toString(array)); // Output: [1, 2, 3, 4, 5]
+    </code></pre>
+
+    <b>22. <code>Sum of List with Stream Filter</code></b>
+    <p>Calculates the sum of elements after filtering the stream based on a condition.</p>
+    <pre><code>
+int sumOfEvens = numbers.stream()
+                        .filter(n -> n % 2 == 0)
+                        .mapToInt(Integer::intValue)
+                        .sum();
+System.out.println(sumOfEvens); // Output: 6
+    </code></pre>
+
+</div>
+<hr>
+<div>
+    <h5>What is the Optional Class in Java 8?</h5>
+    <p>
+        The <code>Optional</code> class in Java 8 is a container object used to represent the presence or absence of a value. It helps to avoid <code>NullPointerException</code> by providing methods that allow the programmer to check if a value is present or not, and to handle cases where a value may be missing without directly dealing with <code>null</code>.
+    </p>
+    <b>Key Features of Optional:</b>
+    <ul>
+        <li><strong>Null Safety:</strong> It prevents null pointer exceptions by providing a safe way to handle null values.</li>
+        <li><strong>Functional Programming:</strong> The <code>Optional</code> class allows functional-style methods like <code>map</code>, <code>flatMap</code>, and <code>filter</code> for working with values.</li>
+        <li><strong>Presence Check:</strong> It can check whether a value is present or absent using methods like <code>isPresent()</code> and <code>ifPresent()</code>.</li>
+        <li><strong>Empty Value:</strong> It represents an empty value when there is no data available, helping you avoid null checks.</li>
+    </ul>
+    <b>Creating an Optional Object:</b>
+    <pre><code>
+Optional&lt;String&gt; nonEmptyOptional = Optional.of("Hello");
+Optional&lt;String&gt; emptyOptional = Optional.empty();
+Optional&lt;String&gt; nullableOptional = Optional.ofNullable(null);
+    </code></pre>
+    <b>Common Methods:</b>
+    <ul>
+        <li><strong><code>isPresent()</code>:</strong> Returns <code>true</code> if there is a value present, otherwise <code>false</code>.</li>
+        <li><strong><code>ifPresent()</code>:</strong> If the value is present, performs the provided action on it.</li>
+        <li><strong><code>get()</code>:</strong> Returns the value if present, throws <code>NoSuchElementException</code> if not.</li>
+        <li><strong><code>orElse()</code>:</strong> Returns the value if present, or a default value if not.</li>
+        <li><strong><code>orElseGet()</code>:</strong> Returns the value if present, or invokes a supplier to return a default value if not.</li>
+        <li><strong><code>orElseThrow()</code>:</strong> Returns the value if present, or throws an exception if not.</li>
+        <li><strong><code>filter()</code>:</strong> Returns an empty Optional if the value does not satisfy the given predicate.</li>
+        <li><strong><code>map()</code>:</strong> Transforms the value inside the Optional if it is present.</li>
+        <li><strong><code>flatMap()</code>:</strong> Similar to <code>map()</code>, but expects an Optional return value from the transformation function.</li>
+    </ul>
+   
+   
+        
+    
+        <b>1. <code>isPresent()</code></b>
+        <p>Returns <code>true</code> if the value is present, otherwise <code>false</code>.</p>
+        <pre><code>
+    Optional&lt;String&gt; optionalName = Optional.of(&quot;John&quot;);
+    System.out.println(optionalName.isPresent()); // Output: true
+    
+    Optional&lt;String&gt; emptyOptional = Optional.empty();
+    System.out.println(emptyOptional.isPresent()); // Output: false
+        </code></pre>
+    
+        <b>2. <code>ifPresent()</code></b>
+        <p>If the value is present, it performs the provided action on it.</p>
+        <pre><code>
+    optionalName.ifPresent(name -&gt; System.out.println(&quot;Hello, &quot; + name)); 
+    // Output: Hello, John
+    
+    emptyOptional.ifPresent(name -&gt; System.out.println(&quot;Hello, &quot; + name)); 
+    // No output since the value is absent
+        </code></pre>
+    
+        <b>3. <code>get()</code></b>
+        <p>Returns the value if present, or throws <code>NoSuchElementException</code> if not.</p>
+        <pre><code>
+    String name = optionalName.get();
+    System.out.println(name); // Output: John
+    
+    // Uncommenting the following will throw NoSuchElementException
+    // String emptyName = emptyOptional.get(); 
+        </code></pre>
+    
+        <b>4. <code>orElse()</code></b>
+        <p>Returns the value if present, or a default value if not.</p>
+        <pre><code>
+    String result = optionalName.orElse(&quot;Default Name&quot;);
+    System.out.println(result); // Output: John
+    
+    String resultEmpty = emptyOptional.orElse(&quot;Default Name&quot;);
+    System.out.println(resultEmpty); // Output: Default Name
+        </code></pre>
+    
+        <b>5. <code>orElseGet()</code></b>
+        <p>Returns the value if present, or invokes a supplier to return a default value if not.</p>
+        <pre><code>
+    String resultFromSupplier = emptyOptional.orElseGet(() -&gt; &quot;Generated Default Name&quot;);
+    System.out.println(resultFromSupplier); // Output: Generated Default Name
+        </code></pre>
+    
+        <b>6. <code>orElseThrow()</code></b>
+        <p>Returns the value if present, or throws an exception if not.</p>
+        <pre><code>
+    String value = optionalName.orElseThrow(() -&gt; new IllegalArgumentException(&quot;Value is absent&quot;));
+    System.out.println(value); // Output: John
+    
+    // Uncommenting the following will throw IllegalArgumentException
+    // String emptyValue = emptyOptional.orElseThrow(() -&gt; new IllegalArgumentException(&quot;Value is absent&quot;));
+        </code></pre>
+    
+        <b>7. <code>filter()</code></b>
+        <p>Returns an empty <code>Optional</code> if the value does not satisfy the given predicate.</p>
+        <pre><code>
+    Optional&lt;String&gt; filteredName = optionalName.filter(name -&gt; name.startsWith(&quot;J&quot;));
+    System.out.println(filteredName.orElse(&quot;No match&quot;)); // Output: John
+    
+    Optional&lt;String&gt; filteredEmpty = emptyOptional.filter(name -&gt; name.startsWith(&quot;J&quot;));
+    System.out.println(filteredEmpty.orElse(&quot;No match&quot;)); // Output: No match
+        </code></pre>
+    
+        <b>8. <code>map()</code></b>
+        <p>Transforms the value inside the <code>Optional</code> if it is present.</p>
+        <pre><code>
+    Optional&lt;String&gt; upperCaseName = optionalName.map(String::toUpperCase);
+    System.out.println(upperCaseName.orElse(&quot;No value&quot;)); // Output: JOHN
+    
+    Optional&lt;String&gt; emptyUpperCase = emptyOptional.map(String::toUpperCase);
+    System.out.println(emptyUpperCase.orElse(&quot;No value&quot;)); // Output: No value
+        </code></pre>
+    
+        <b>9. <code>flatMap()</code></b>
+        <p>Similar to <code>map()</code>, but expects an <code>Optional</code> return value from the transformation function.</p>
+        <pre><code>
+    Optional&lt;String&gt; flatMappedName = optionalName.flatMap(name -&gt; Optional.of(name.toUpperCase()));
+    System.out.println(flatMappedName.orElse(&quot;No value&quot;)); // Output: JOHN
+    
+    Optional&lt;String&gt; emptyFlatMap = emptyOptional.flatMap(name -&gt; Optional.of(name.toUpperCase()));
+    System.out.println(emptyFlatMap.orElse(&quot;No value&quot;)); // Output: No value
+        </code></pre>
+    
+    
+    <b>Benefits of Optional:</b>
+    <ul>
+        <li>Reduces the need for null checks.</li>
+        <li>Improves readability and intent of the code by expressing the possibility of absence explicitly.</li>
+        <li>Encourages the use of functional programming concepts.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>What is Date-Time API in Java 8?</h5>
+    <p>
+        The Date-Time API, introduced in Java 8 as part of the <code>java.time</code> package, is designed to overcome the limitations of the older <code>java.util.Date</code> and <code>java.util.Calendar</code> classes. The new API is more user-friendly, immutable, and thread-safe, and it follows the ISO-8601 standard for time representation.
+    </p>
+    
+    <b>Key Features of Date-Time API:</b>
+    <ul>
+        <li><strong>Immutability:</strong> The classes are immutable, meaning their values cannot be changed once created.</li>
+        <li><strong>Thread Safety:</strong> The API is thread-safe, meaning it can be safely used in multi-threaded environments.</li>
+        <li><strong>ISO-8601 Standard:</strong> The Date-Time API follows the ISO-8601 standard for representing dates and times, making it suitable for international applications.</li>
+        <li><strong>Comprehensive:</strong> It includes separate classes for dates, times, durations, and time zones.</li>
+    </ul>
+
+    <b>Main Classes in Date-Time API:</b>
+    <ul>
+        <li><code>LocalDate</code>: Represents a date (year, month, day) without a time zone.</li>
+        <li><code>LocalTime</code>: Represents a time without a date and without a time zone.</li>
+        <li><code>LocalDateTime</code>: Combines both date and time without a time zone.</li>
+        <li><code>ZonedDateTime</code>: Represents a date and time with a time zone.</li>
+        <li><code>Instant</code>: Represents a point on the timeline in UTC.</li>
+        <li><code>Duration</code>: Measures the amount of time between two <code>Instant</code> objects.</li>
+        <li><code>Period</code>: Represents the amount of time in terms of years, months, and days.</li>
+    </ul>
+
+    <b>Example:</b>
+    <pre><code>
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class DateTimeExample {
+    public static void main(String[] args) {
+        // LocalDate
+        LocalDate today = LocalDate.now();
+        System.out.println(&quot;Today's date: &quot; + today);
+
+        // LocalTime
+        LocalTime now = LocalTime.now();
+        System.out.println(&quot;Current time: &quot; + now);
+
+        // LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.now();
+        System.out.println(&quot;Current date and time: &quot; + dateTime);
+
+        // ZonedDateTime
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+        System.out.println(&quot;Current date and time with time zone: &quot; + zonedDateTime);
+
+        // Formatting Date-Time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy HH:mm&quot;);
+        String formattedDateTime = dateTime.format(formatter);
+        System.out.println(&quot;Formatted date-time: &quot; + formattedDateTime);
+    }
+}
+    </code></pre>
+
+    <b>Benefits of Date-Time API:</b>
+    <ul>
+        <li>Improved readability and maintainability of code.</li>
+        <li>More accurate handling of dates and times, including leap years, daylight saving time, and time zones.</li>
+        <li>Built-in support for internationalization with the <code>ZoneId</code> and <code>Locale</code> classes.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>What are Default Methods in Java 8?</h5>
+    <p>
+        Default methods, introduced in Java 8, allow developers to add concrete methods to interfaces without affecting the classes that implement the interface. They provide a way to add new functionality to interfaces without breaking existing code.
+    </p>
+
+    <b>Key Features of Default Methods:</b>
+    <ul>
+        <li><strong>Concrete Methods in Interfaces:</strong> Default methods allow interfaces to have methods with an implementation, unlike traditional interfaces that could only have abstract methods.</li>
+        <li><strong>Backward Compatibility:</strong> Existing classes that implement an interface can continue to work without modification, even if new methods are added to the interface.</li>
+        <li><strong>Use of the <code>default</code> keyword:</strong> The method implementation is provided using the <code>default</code> keyword inside the interface.</li>
+        <li><strong>Can be Overridden:</strong> A default method can be overridden by a class or another interface if needed.</li>
+    </ul>
+
+    <b>Syntax:</b>
+    <pre><code>
+interface MyInterface {
+    default void defaultMethod() {
+        System.out.println(&quot;This is a default method.&quot;);
+    }
+}
+    </code></pre>
+
+    <b>Example:</b>
+    <pre><code>
+interface Animal {
+    default void sound() {
+        System.out.println(&quot;Animals make sound&quot;);
+    }
+
+    void sleep();
+}
+
+class Dog implements Animal {
+    @Override
+    public void sleep() {
+        System.out.println(&quot;Dog is sleeping&quot;);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.sound(); // Output: Animals make sound
+        dog.sleep(); // Output: Dog is sleeping
+    }
+}
+    </code></pre>
+
+    <b>Multiple Inheritance of Default Methods:</b>
+    <p>
+        Java allows multiple interfaces with default methods. In case of a conflict (when two interfaces define the same default method), the class implementing the interfaces must explicitly override the method to resolve the conflict.
+    </p>
+
+    <pre><code>
+interface InterfaceA {
+    default void commonMethod() {
+        System.out.println(&quot;InterfaceA default method&quot;);
+    }
+}
+
+interface InterfaceB {
+    default void commonMethod() {
+        System.out.println(&quot;InterfaceB default method&quot;);
+    }
+}
+
+class TestClass implements InterfaceA, InterfaceB {
+    @Override
+    public void commonMethod() {
+        System.out.println(&quot;TestClass overrides commonMethod&quot;);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        TestClass obj = new TestClass();
+        obj.commonMethod(); // Output: TestClass overrides commonMethod
+    }
+}
+    </code></pre>
+
+    <b>Benefits of Default Methods:</b>
+    <ul>
+        <li>Enables developers to add new functionality to interfaces without breaking existing implementations.</li>
+        <li>Supports multiple interfaces with default methods, allowing more flexibility in interface design.</li>
+        <li>Helps in maintaining backward compatibility in large systems with interfaces that are widely used.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>How to Find Duplicate Elements in a Stream in Java?</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class FindDuplicates {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 2, 4, 5, 1, 6, 7, 8, 5);
+
+        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+        Set&lt;Integer&gt; duplicates = new HashSet&lt;&gt;();
+
+        numbers.stream()
+                .forEach(n -&gt; {
+                    if (!seen.add(n)) {
+                        duplicates.add(n);
+                    }
+                });
+
+        duplicates.forEach(n -&gt; System.out.println(&quot;Duplicate element: &quot; + n));
+    }
+}
+    </code></pre>
+
+    <b>Output:</b>
+    <pre><code>
+Duplicate element: 1
+Duplicate element: 2
+Duplicate element: 5
+    </code></pre>
+
+    <b>Explanation of Alternative Approach:</b>
+    <ul>
+        <li><code>seen.add(n)</code>: Adds the element to the <code>Set</code> and returns <code>false</code> if the element is already present.</li>
+        <li><code>duplicates.add(n)</code>: Adds the element to the <code>duplicates</code> set if it was already seen, indicating it’s a duplicate.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Count Occurrence of a Given Character in a String using Stream API in Java</h5>
+    <p>
+        You can use the Stream API to efficiently count the occurrences of a given character in a string by converting the string into a stream of characters and using the <code>filter()</code> method to count matches.
+    </p>
+
+    <b>Optimized and Easy Solution:</b>
+    <pre><code>
+import java.util.stream.*;
+
+public class CharacterCount {
+    public static void main(String[] args) {
+        String str = &quot;Java Stream API is awesome&quot;;
+        char targetChar = 'a';
+
+        // Using Stream API to count occurrences of the character
+        long count = str.chars()  // Convert string to an IntStream
+                        .filter(c -&gt; c == targetChar)  // Filter the characters that match the target
+                        .count();  // Count the matching characters
+
+        System.out.println(&quot;Occurrence of character '" + targetChar + "': &quot; + count);
+    }
+}
+    </code></pre>
+
+    <b>Explanation:</b>
+    <ul>
+        <li><code>str.chars()</code>: Converts the string into an <code>IntStream</code> of character codes (Unicode values of the characters in the string).</li>
+        <li><code>filter(c -&gt; c == targetChar)</code>: Filters the stream to keep only the characters that match the target character.</li>
+        <li><code>count()</code>: Counts the number of characters in the stream that passed the filter (i.e., the occurrences of the target character).</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+Occurrence of character 'a': 3
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>How to Get Slice of a Stream in Java?</h5>
+    <p>
+        In Java, you can get a slice (a substream) of a stream by using the <code>skip()</code> and <code>limit()</code> methods. These methods allow you to select a specific portion of a stream by skipping elements and limiting the number of elements you want to process.
+    </p>
+
+    <b>Optimized Solution:</b>
+    <p>The most efficient and simple way to get a slice of a stream is by chaining the <code>skip()</code> and <code>limit()</code> methods:</p>
+    
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamSliceExample {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        // Get a slice of the stream from index 3 to index 7 (exclusive)
+        List&lt;Integer&gt; slicedList = numbers.stream()
+            .skip(3)  // Skip first 3 elements
+            .limit(5) // Limit the stream to the next 5 elements
+            .collect(Collectors.toList());
+
+        System.out.println(slicedList);  // Output: [4, 5, 6, 7, 8]
+    }
+}
+    </code></pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>skip(3)</code>: Skips the first 3 elements of the stream.</li>
+        <li><code>limit(5)</code>: Limits the stream to the next 5 elements after skipping 3.</li>
+        <li><code>collect(Collectors.toList())</code>: Collects the resulting stream into a list.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+[4, 5, 6, 7, 8]
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>How to Reverse Elements of a Parallel Stream in Java?</h5>
+    <p>
+        Reversing elements of a parallel stream in Java can be tricky because parallel streams process elements in parallel, which can affect the order. To reverse the elements, the most efficient and easy solution is to collect the elements into a list first, then reverse the list. 
+    </p>
+
+    <b>Optimized Solution:</b>
+    <ol>
+        <li>First, collect the elements from the parallel stream into a list using <code>Collectors.toList()</code>.</li>
+        <li>Then, use the <code>Collections.reverse()</code> method to reverse the list.</li>
+        <li>Finally, create a stream from the reversed list.</li>
+    </ol>
+
+    <b>Example:</b>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class ReverseParallelStream {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+
+        // Reverse the elements of a parallel stream
+        List&lt;Integer&gt; reversedList = numbers.parallelStream()
+                .collect(Collectors.toList()); // Collect to List
+
+        Collections.reverse(reversedList); // Reverse the List
+
+        // Create a new stream from the reversed list
+        reversedList.stream().forEach(System.out::println); // Output reversed elements
+    }
+}
+    </code></pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>numbers.parallelStream()</code>: Creates a parallel stream from the list.</li>
+        <li><code>Collectors.toList()</code>: Collects the stream elements into a <code>List</code>.</li>
+        <li><code>Collections.reverse(reversedList)</code>: Reverses the list in place.</li>
+        <li><code>reversedList.stream().forEach()</code>: Creates a stream from the reversed list and processes each element.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+8
+7
+6
+5
+4
+3
+2
+1
+    </code></pre>
+
+    <b>Why This Solution is Optimized:</b>
+    <ul>
+        <li>Using <code>parallelStream()</code> ensures the stream is processed in parallel for performance improvement, while collecting the result ensures we can reverse it without affecting parallel processing.</li>
+        <li><code>Collections.reverse()</code> is an efficient, in-place reversal operation that does not require additional resources.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Program to Iterate Over a Stream with Indices in Java 8</h5>
+    <p>
+        Java 8 streams do not provide a direct way to work with indices, but you can achieve this by using the <code>IntStream</code> to generate indices and map them to elements in the stream. This approach is optimized and straightforward.
+    </p>
+
+    <b>Example Code:</b>
+    <pre><code>
+import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Arrays;
+
+public class StreamWithIndices {
+    public static void main(String[] args) {
+        List&lt;String&gt; items = Arrays.asList(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;);
+
+        // Iterate with indices
+        IntStream.range(0, items.size())
+                 .forEach(index -&gt; System.out.println(&quot;Index: &quot; + index + &quot;, Value: &quot; + items.get(index)));
+    }
+}
+    </code></pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>IntStream.range(0, items.size())</code>: Generates a stream of indices from <code>0</code> to <code>items.size() - 1</code>.</li>
+        <li><code>forEach(index -&gt; ...)</code>: Iterates over the indices and retrieves the corresponding elements from the list using <code>items.get(index)</code>.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+Index: 0, Value: A
+Index: 1, Value: B
+Index: 2, Value: C
+Index: 3, Value: D
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>What is CompletableFuture in Java 8?</h5>
+    <p>
+        <code>CompletableFuture</code> is a class introduced in Java 8 as part of the <code>java.util.concurrent</code> package. It provides a framework for asynchronous programming, enabling developers to write non-blocking and event-driven code. It is an enhancement of the <code>Future</code> interface, adding features for chaining, combining tasks, and handling exceptions.
+    </p>
+
+    <b>Key Features of CompletableFuture:</b>
+    <ul>
+        <li><strong>Asynchronous Execution:</strong> Tasks can be executed in the background without blocking the main thread.</li>
+        <li><strong>Chaining:</strong> Allows linking multiple computations together using methods like <code>thenApply</code>, <code>thenAccept</code>, etc.</li>
+        <li><strong>Combining Futures:</strong> Supports combining multiple asynchronous tasks using methods like <code>thenCombine</code> and <code>thenCompose</code>.</li>
+        <li><strong>Exception Handling:</strong> Provides methods like <code>exceptionally</code> and <code>handle</code> for error handling.</li>
+        <li><strong>Completing a Future Manually:</strong> Can manually complete a future using <code>complete()</code> or <code>completeExceptionally()</code>.</li>
+    </ul>
+
+    <b>Example Code:</b>
+    <pre><code>
+import java.util.concurrent.CompletableFuture;
+
+public class CompletableFutureExample {
+    public static void main(String[] args) {
+        // Asynchronous computation
+        CompletableFuture&lt;String&gt; future = CompletableFuture.supplyAsync(() -&gt; {
+            // Simulating a long-running task
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            return &quot;Hello, CompletableFuture!&quot;;
+        });
+
+        // Chain another task
+        future.thenApply(result -&gt; {
+            return result.toUpperCase();
+        }).thenAccept(result -&gt; {
+            System.out.println(&quot;Result: &quot; + result);
+        });
+
+        // Keep the program alive to see the result
+        try {
+            Thread.sleep(2000); // Wait for completion
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+    </code></pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>CompletableFuture.supplyAsync(() -&gt; ...)</code>: Creates an asynchronous task that returns a result.</li>
+        <li><code>thenApply(result -&gt; ...)</code>: Chains another computation to transform the result.</li>
+        <li><code>thenAccept(result -&gt; ...)</code>: Consumes the result after all computations are complete.</li>
+        <li><code>Thread.sleep()</code>: Simulates a delay to ensure the main thread doesn’t terminate before the computation completes.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+Result: HELLO, COMPLETABLEFUTURE!
+    </code></pre>
+
+    <b>Benefits of CompletableFuture:</b>
+    <ul>
+        <li>Improves performance by enabling non-blocking, asynchronous programming.</li>
+        <li>Simplifies complex asynchronous workflows with method chaining.</li>
+        <li>Built-in support for error handling and combining multiple tasks.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Why Use CompletableFuture Instead of Future?</h5>
+    <p>
+        Java 8 introduced <code>CompletableFuture</code> as an enhanced version of the <code>Future</code> interface, addressing its limitations and providing more powerful and flexible tools for asynchronous programming.
+    </p>
+
+    <b>Limitations of Future:</b>
+    <ul>
+        <li><strong>Blocking Get:</strong> The <code>Future.get()</code> method blocks the calling thread until the computation is complete, defeating the purpose of asynchronous execution.</li>
+        <li><strong>No Manual Completion:</strong> There is no way to manually complete a <code>Future</code>.</li>
+        <li><strong>No Chaining:</strong> <code>Future</code> does not support chaining or combining multiple tasks.</li>
+        <li><strong>No Exception Handling:</strong> <code>Future</code> lacks built-in mechanisms for handling exceptions.</li>
+        <li><strong>No Multiple Task Support:</strong> Combining results of multiple tasks is cumbersome with <code>Future</code>.</li>
+    </ul>
+
+    <b>Advantages of CompletableFuture:</b>
+    <ul>
+        <li><strong>Non-blocking:</strong> <code>CompletableFuture</code> allows non-blocking calls and provides callback methods like <code>thenApply()</code>, <code>thenAccept()</code>, etc.</li>
+        <li><strong>Chaining:</strong> Supports chaining of asynchronous tasks to build complex workflows.</li>
+        <li><strong>Manual Completion:</strong> Tasks can be completed manually using methods like <code>complete()</code> or <code>completeExceptionally()</code>.</li>
+        <li><strong>Exception Handling:</strong> Provides methods like <code>exceptionally()</code> and <code>handle()</code> to manage exceptions effectively.</li>
+        <li><strong>Combining Multiple Futures:</strong> Easily combines multiple asynchronous tasks using methods like <code>thenCombine()</code> and <code>thenCompose()</code>.</li>
+    </ul>
+
+    <b>Example Comparison:</b>
+    <h5>Using Future:</h5>
+    <pre><code>
+import java.util.concurrent.*;
+
+public class FutureExample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future&lt;String&gt; future = executor.submit(() -&gt; {
+            Thread.sleep(1000);
+            return &quot;Future Result&quot;;
+        });
+
+        // Blocks until the result is available
+        String result = future.get();
+        System.out.println(result);
+        executor.shutdown();
+    }
+}
+    </code></pre>
+    <p><strong>Limitation:</strong> The <code>future.get()</code> call blocks the thread, which defeats asynchronous programming.</p>
+
+    <h5>Using CompletableFuture:</h5>
+    <pre><code>
+import java.util.concurrent.CompletableFuture;
+
+public class CompletableFutureExample {
+    public static void main(String[] args) {
+        CompletableFuture&lt;String&gt; future = CompletableFuture.supplyAsync(() -&gt; {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            return &quot;CompletableFuture Result&quot;;
+        });
+
+        // Non-blocking and chaining
+        future.thenApply(result -&gt; result.toUpperCase())
+              .thenAccept(result -&gt; System.out.println(result));
+
+        // Keep main thread alive for async result
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+    </code></pre>
+    <p><strong>Advantage:</strong> Non-blocking execution and result processing with chaining.</p>
+
+    <b>Conclusion:</b>
+    <p>
+        <code>CompletableFuture</code> is a significant improvement over <code>Future</code>, enabling non-blocking, flexible, and scalable asynchronous programming with better error handling and chaining capabilities.
+    </p>
+</div>
+<hr>
+<div>
+    <h5>What is Method Reference in Java 8?</h5>
+    <p>
+        Method reference is a shorthand notation of a lambda expression to call a method directly. It is introduced in Java 8 and allows developers to refer to methods of a class or an object without invoking them. Method references make code more readable and concise by reducing boilerplate code.
+    </p>
+
+    <b>Types of Method References:</b>
+    <ol>
+        <li><strong>Reference to a static method:</strong> <code>ClassName::methodName</code></li>
+        <li><strong>Reference to an instance method of a particular object:</strong> <code>object::methodName</code></li>
+        <li><strong>Reference to an instance method of an arbitrary object of a particular type:</strong> <code>ClassName::methodName</code></li>
+        <li><strong>Reference to a constructor:</strong> <code>ClassName::new</code></li>
+    </ol>
+
+    <b>Examples:</b>
+
+    <h5>1. Reference to a Static Method</h5>
+    <pre><code>
+import java.util.function.Consumer;
+
+public class StaticMethodReference {
+    public static void printMessage(String message) {
+        System.out.println(message);
+    }
+
+    public static void main(String[] args) {
+        Consumer&lt;String&gt; consumer = StaticMethodReference::printMessage;
+        consumer.accept(&quot;Hello, Method Reference!&quot;);
+    }
+}
+    </code></pre>
+
+    <h5>2. Reference to an Instance Method of a Particular Object</h5>
+    <pre><code>
+import java.util.function.Consumer;
+
+public class InstanceMethodReference {
+    public void displayMessage(String message) {
+        System.out.println(message);
+    }
+
+    public static void main(String[] args) {
+        InstanceMethodReference obj = new InstanceMethodReference();
+        Consumer&lt;String&gt; consumer = obj::displayMessage;
+        consumer.accept(&quot;Instance Method Reference Example&quot;);
+    }
+}
+    </code></pre>
+
+    <h5>3. Reference to an Instance Method of an Arbitrary Object of a Particular Type</h5>
+    <pre><code>
+import java.util.function.Function;
+
+public class ArbitraryObjectMethodReference {
+    public static void main(String[] args) {
+        Function&lt;String, String&gt; function = String::toUpperCase;
+        String result = function.apply(&quot;method reference example&quot;);
+        System.out.println(result);
+    }
+}
+    </code></pre>
+
+    <h5>4. Reference to a Constructor</h5>
+    <pre><code>
+import java.util.function.Supplier;
+
+public class ConstructorReference {
+    public ConstructorReference() {
+        System.out.println(&quot;Constructor Reference Example&quot;);
+    }
+
+    public static void main(String[] args) {
+        Supplier&lt;ConstructorReference&gt; supplier = ConstructorReference::new;
+        supplier.get(); // Invokes the constructor
+    }
+}
+    </code></pre>
+
+    <b>Advantages of Method References:</b>
+    <ul>
+        <li>Improves readability by reducing verbose lambda expressions.</li>
+        <li>Provides a more concise way to write functional-style code.</li>
+        <li>Works seamlessly with functional interfaces in Java.</li>
+    </ul>
+
+    <b>Conclusion:</b>
+    <p>
+        Method references are a feature of Java 8 that enhance the expressiveness and simplicity of lambda expressions by enabling direct references to existing methods or constructors.
+    </p>
+</div>
+<hr>
+<div>
+    <h5>What is Java Class Dependency Analyzer (jdeps) in Java 8?</h5>
+    <p>
+        The <strong>Java Class Dependency Analyzer</strong> (<code>jdeps</code>) is a command-line tool introduced in Java 8. It is used to analyze the dependencies of Java classes and provides insights into the packages and modules that a Java application depends on. This helps developers better understand the structure of their applications and identify potential issues, such as cyclic dependencies or unnecessary dependencies on internal APIs.
+    </p>
+
+    <b>Key Features of jdeps:</b>
+    <ul>
+        <li><strong>Dependency Analysis:</strong> Analyzes class files to identify dependencies between packages and modules.</li>
+        <li><strong>Support for Modularization:</strong> Helps in transitioning applications to the Java module system (introduced in Java 9).</li>
+        <li><strong>Reports:</strong> Provides detailed dependency reports for better understanding and optimization.</li>
+        <li><strong>Internal API Detection:</strong> Identifies usage of unsupported or internal APIs that may lead to compatibility issues.</li>
+    </ul>
+
+    <b>Basic Syntax:</b>
+    <pre><code>
+jdeps [options] &lt;path-to-jar/class-files&gt;
+    </code></pre>
+
+    <b>Options:</b>
+    <ul>
+        <li><code>-s</code>: Summarizes the dependencies at the package level.</li>
+        <li><code>-verbose</code>: Provides detailed information about dependencies.</li>
+        <li><code>-version</code>: Shows the version of the jdeps tool.</li>
+        <li><code>-jdkinternals</code>: Identifies usage of JDK internal APIs.</li>
+        <li><code>-summary</code>: Outputs a summary of dependencies.</li>
+    </ul>
+
+    <b>Examples:</b>
+
+    <h5>1. Analyzing Dependencies of a JAR File:</h5>
+    <pre><code>
+jdeps -s myapp.jar
+    </code></pre>
+    <p><strong>Output:</strong> Displays a summary of dependencies for the JAR file.</p>
+
+    <h5>2. Verbose Dependency Analysis:</h5>
+    <pre><code>
+jdeps -verbose:class myapp.jar
+    </code></pre>
+    <p><strong>Output:</strong> Provides detailed dependencies at the class level.</p>
+
+    <h5>3. Detecting JDK Internal API Usage:</h5>
+    <pre><code>
+jdeps -jdkinternals myapp.jar
+    </code></pre>
+    <p><strong>Output:</strong> Lists internal APIs used by the application, helping to avoid compatibility issues in future JDK versions.</p>
+
+    <b>Benefits of jdeps:</b>
+    <ul>
+        <li>Helps developers understand and refactor application dependencies.</li>
+        <li>Supports modularization efforts by identifying unnecessary or cyclic dependencies.</li>
+        <li>Ensures better compatibility with future Java versions by detecting internal API usage.</li>
+    </ul>
+
+    <b>Conclusion:</b>
+    <p>
+        The Java Class Dependency Analyzer (<code>jdeps</code>) is a powerful tool introduced in Java 8 for analyzing and managing dependencies in Java applications. It is especially useful for optimizing applications and preparing them for modularization and long-term compatibility with newer Java versions.
+    </p>
+</div>
+<hr>
+<div>
+    <h5>What does <code>String::valueOf</code> mean?</h5>
+    <p>
+        The expression <code>String::valueOf</code> is a method reference in Java 8. It refers to the static <code>valueOf</code> method in the <code>String</code> class. The <code>valueOf</code> method is used to convert various types of data (such as primitives, objects, or arrays) into their string representation.
+    </p>
+
+    <b>How It Works:</b>
+    <ul>
+        <li><strong>Static Method Reference:</strong> The <code>String::valueOf</code> is a reference to the static method <code>valueOf</code> in the <code>String</code> class.</li>
+        <li><strong>Functionality:</strong> When used in a lambda-compatible context, it acts as a shorthand for calling <code>String.valueOf</code> on an argument.</li>
+        <li><strong>Syntax:</strong> <code>String::valueOf</code> is equivalent to a lambda expression <code>x -> String.valueOf(x)</code>.</li>
+    </ul>
+
+    <b>Example Usage:</b>
+    <h5>1. Using <code>String::valueOf</code> to Convert Numbers to Strings</h5>
+    <pre><code>
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class MethodReferenceExample {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4);
+        
+        // Using String::valueOf as a method reference
+        List&lt;String&gt; stringNumbers = numbers.stream()
+                                                 .map(String::valueOf)
+                                                 .collect(Collectors.toList());
+
+        System.out.println(stringNumbers); // Output: [1, 2, 3, 4]
+    }
+}
+    </code></pre>
+
+    <h5>2. Lambda Equivalent</h5>
+    <pre><code>
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class LambdaExample {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4);
+
+        // Using a lambda expression equivalent to String::valueOf
+        List&lt;String&gt; stringNumbers = numbers.stream()
+                                                 .map(x -&gt; String.valueOf(x))
+                                                 .collect(Collectors.toList());
+
+        System.out.println(stringNumbers); // Output: [1, 2, 3, 4]
+    }
+}
+    </code></pre>
+
+    <b>Common Uses of <code>String::valueOf</code>:</b>
+    <ul>
+        <li>Converting numeric or boolean values into strings for display or storage.</li>
+        <li>Converting object references to strings by calling their <code>toString()</code> method (if implemented).</li>
+        <li>Processing collections of objects to produce a list of their string representations.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Difference Between Collections and Stream</h5>
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Collections</th>
+                <th>Stream</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Nature</strong></td>
+                <td>Collections are in-memory data structures that store and organize data.</td>
+                <td>Streams are a sequence of elements that allow functional-style operations on data.</td>
+            </tr>
+            <tr>
+                <td><strong>Storage</strong></td>
+                <td>Collections store data explicitly and can be modified.</td>
+                <td>Streams do not store data; they process data on-demand.</td>
+            </tr>
+            <tr>
+                <td><strong>Processing</strong></td>
+                <td>Collections process data eagerly (immediate evaluation).</td>
+                <td>Streams process data lazily (evaluation happens only when required).</td>
+            </tr>
+            <tr>
+                <td><strong>Mutability</strong></td>
+                <td>Data in a collection can be added, removed, or modified.</td>
+                <td>Streams are immutable; operations produce a new stream without modifying the source.</td>
+            </tr>
+            <tr>
+                <td><strong>Iteration</strong></td>
+                <td>Collections support both external and internal iteration.</td>
+                <td>Streams only support internal iteration.</td>
+            </tr>
+            <tr>
+                <td><strong>Parallelism</strong></td>
+                <td>Collections require explicit handling for parallel operations.</td>
+                <td>Streams have built-in support for parallel operations using <code>parallelStream()</code>.</td>
+            </tr>
+            <tr>
+                <td><strong>Data Source</strong></td>
+                <td>Collections act as a data source for streams.</td>
+                <td>Streams operate on a data source, such as collections, arrays, or I/O channels.</td>
+            </tr>
+            <tr>
+                <td><strong>Reusability</strong></td>
+                <td>Collections can be reused multiple times.</td>
+                <td>Streams cannot be reused; once a terminal operation is invoked, the stream is closed.</td>
+            </tr>
+            <tr>
+                <td><strong>API Introduced</strong></td>
+                <td>Introduced in earlier versions of Java (e.g., Java 2 for the <code>java.util</code> package).</td>
+                <td>Introduced in Java 8 as part of the <code>java.util.stream</code> package.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
+<div>
+    <h5>Java 8 Program to Find the Second Highest Number in a List</h5>
+   
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class SecondHighest {
+    public static void main(String[] args) {
+        // Sample List
+        List&lt;Integer&gt; numbers = Arrays.asList(10, 20, 15, 30, 25, 40, 35);
+
+        // Find the second highest number
+        Optional&lt;Integer&gt; secondHighest = numbers.stream()
+                .sorted(Comparator.reverseOrder()) // Sort in descending order
+                .distinct() // Remove duplicates
+                .skip(1) // Skip the highest number
+                .findFirst(); // Get the second highest number
+
+        // Print the result
+        secondHighest.ifPresentOrElse(
+            value -&gt; System.out.println(&quot;Second Highest Number: &quot; + value),
+            () -&gt; System.out.println(&quot;No second highest number found&quot;)
+        );
+    }
+}
+    </code></pre>
+    <b>Output:</b>
+    <pre><code>
+Second Highest Number: 35
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Java 8 Program to Remove Duplicates from a List of Integers</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class RemoveDuplicates {
+    public static void main(String[] args) {
+        // Sample list with duplicates
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 2, 4, 5, 1, 6, 7, 8, 5);
+
+        // Remove duplicates using Stream API
+        List&lt;Integer&gt; uniqueNumbers = numbers.stream()
+                .distinct() // Removes duplicates
+                .collect(Collectors.toList()); // Collects the result into a List
+
+        // Print the list without duplicates
+        System.out.println(&quot;List without duplicates: &quot; + uniqueNumbers);
+    }
+}
+    </code></pre>
+
+    <b>Output:</b>
+    <pre><code>
+List without duplicates: [1, 2, 3, 4, 5, 6, 7, 8]
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Java 8 Program to Partition a List of Strings Based on Length</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.Predicate;
+
+public class PartitionStrings {
+    public static void main(String[] args) {
+        List&lt;String&gt; strings = Arrays.asList(&quot;apple&quot;, &quot;cat&quot;, &quot;dog&quot;, &quot;elephant&quot;, &quot;bat&quot;, &quot;rat&quot;);
+
+        // Partitioning strings based on length (greater than 3 characters)
+        Map&lt;Boolean, List&lt;String&gt;&gt; partitioned = strings.stream()
+                .collect(Collectors.partitioningBy(str -&gt; str.length() &gt; 3));
+
+        // Print the partitioned lists
+        System.out.println(&quot;Strings with length greater than 3: &quot; + partitioned.get(true));
+        System.out.println(&quot;Strings with length 3 or less: &quot; + partitioned.get(false));
+    }
+}
+    </code></pre>
+
+    <b>Output:</b>
+    <pre><code>
+Strings with length greater than 3: [apple, elephant]
+Strings with length 3 or less: [cat, dog, bat, rat]
+    </code></pre>
+
+</div>
+<hr>
+<div>
+    <h5>You have a collection of employee objects. How would you retrieve the names of all employees? </h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+class Employee {
+    private String name;
+    private int id;
+
+    // Constructor
+    public Employee(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    // Getter for name
+    public String getName() {
+        return name;
+    }
+}
+
+public class EmployeeNames {
+    public static void main(String[] args) {
+        // Create a list of employees
+        List&lt;Employee&gt; employees = Arrays.asList(
+            new Employee(&quot;Alice&quot;, 1),
+            new Employee(&quot;Bob&quot;, 2),
+            new Employee(&quot;Charlie&quot;, 3)
+        );
+
+        // Retrieve the names of all employees
+        List&lt;String&gt; employeeNames = employees.stream()
+                .map(Employee::getName) // Extract the name
+                .collect(Collectors.toList()); // Collect into a list
+
+        // Print the names
+        System.out.println(&quot;Employee Names: &quot; + employeeNames);
+    }
+}
+    </code></pre>
+
+    <b>Output:</b>
+    <pre><code>
+Employee Names: [Alice, Bob, Charlie]
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>You have a list of transactions. How would you find the transaction with the highest amount?</h5>
+    <pre><code>
+Transaction maxTransaction = transactions.stream()
+    .max(Comparator.comparing(Transaction::getAmount))
+    .orElse(null);
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Java 8 Program to Find Maximum and Minimum Values in a List</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class MaxMinValues {
+    public static void main(String[] args) {
+        // Sample list of integers
+        List&lt;Integer&gt; numbers = Arrays.asList(10, 20, 5, 8, 15, 3, 25);
+
+        // Find the maximum value
+        Optional&lt;Integer&gt; max = numbers.stream()
+                .max(Comparator.naturalOrder());
+
+        // Find the minimum value
+        Optional&lt;Integer&gt; min = numbers.stream()
+                .min(Comparator.naturalOrder());
+
+        // Print the results
+        System.out.println(&quot;Maximum value: &quot; + max.orElse(null));
+        System.out.println(&quot;Minimum value: &quot; + min.orElse(null));
+    }
+}
+    </code></pre>
+
+   
+    <b>Output:</b>
+    <pre><code>
+Maximum value: 25
+Minimum value: 3
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h3>Find the Employee of a Specific Department with the Second Highest Salary</h3>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+@Getter
+@AllArgConstructor
+@ToString
+class Employee {
+    private String name;
+    private String department;
+    private double salary;
+}
+
+public class SecondHighestSalary {
+    public static void main(String[] args) {
+        // Sample employee list
+        List&lt;Employee&gt; employees = Arrays.asList(
+            new Employee(&quot;Alice&quot;, &quot;IT&quot;, 80000),
+            new Employee(&quot;Bob&quot;, &quot;IT&quot;, 75000),
+            new Employee(&quot;Charlie&quot;, &quot;HR&quot;, 90000),
+            new Employee(&quot;David&quot;, &quot;IT&quot;, 85000),
+            new Employee(&quot;Eve&quot;, &quot;HR&quot;, 87000)
+        );
+
+        // Specify the department
+        String targetDepartment = &quot;IT&quot;;
+
+        // Find the employee with the second highest salary in the target department
+        Optional&lt;Employee&gt; secondHighestSalaryEmployee = employees.stream()
+                .filter(emp -&gt; emp.getDepartment().equals(targetDepartment)) // Filter by department
+                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed()) // Sort by salary in descending order
+                .skip(1) // Skip the first (highest salary)
+                .findFirst(); // Get the second employee
+
+        // Print the result
+        if (secondHighestSalaryEmployee.isPresent()) {
+            System.out.println(&quot;Employee with second highest salary in &quot; + targetDepartment + &quot;: &quot; + secondHighestSalaryEmployee.get());
+        } else {
+            System.out.println(&quot;No employee found for the given criteria.&quot;);
+        }
+    }
+}
+    </code></pre>
+
+   
+    <h4>Output:</h4>
+    <pre><code>
+Employee with second highest salary in IT: Employee{name=Bob, department=IT, salary=75000.0}
+    </code></pre>
+</div>
+<hr>
