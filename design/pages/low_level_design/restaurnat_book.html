@@ -1,8 +1,8 @@
 <div>
-    <h3>Restaurant Management System</h3>
-    <p>This design outlines a Restaurant Management System that allows customers to interact with the restaurant and enables the restaurant to manage orders, inventory, staff, and analytics efficiently.</p>
+    <h2 style="text-align: center;">Restaurant Management System</h2>    
+    <hr>
 
-    <h4>Key Features and Requirements:</h4>
+    <h5>Key Features and Requirements:</h5>
     <ul>
         <li>Customers can:
             <ul>
@@ -27,207 +27,229 @@
             </ul>
         </li>
     </ul>
+    <hr>
 
-    <h4>Class Design:</h4>
+    <h5>Sequnece Diagram</h5>
+    <img src="../images/restaurnat.PNG" alt="cache" style="display: block; margin: auto; width: 80%;">
+    <hr>
+
+    <h5>Class Design:</h5>
     <p>The following are the main components of the system, along with their functionality:</p>
 
-    <h5>1. MenuItem Class</h5>
-    <p>Represents an item in the menu.</p>
-    <pre><code>
-class MenuItem {
-    private String name;
-    private double price;
-    private String category;
-
-    public MenuItem(String name, double price, String category) {
-        this.name = name;
-        this.price = price;
-        this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-}
-    </code></pre>
-
-    <h5>2. Customer Class</h5>
-    <p>Represents a customer interacting with the system.</p>
-    <pre><code>
-class Customer {
-    private String name;
-    private String contactNumber;
-
-    public Customer(String name, String contactNumber) {
-        this.name = name;
-        this.contactNumber = contactNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-}
-    </code></pre>
-
-    <h5>3. Order Class</h5>
-    <p>Represents an order placed by a customer.</p>
-    <pre><code>
-import java.util.List;
-
-class Order {
-    private int orderId;
-    private Customer customer;
-    private List<MenuItem> items;
-    private double totalAmount;
-    private String paymentMethod;
-
-    public Order(int orderId, Customer customer, List<MenuItem> items, String paymentMethod) {
-        this.orderId = orderId;
-        this.customer = customer;
-        this.items = items;
-        this.paymentMethod = paymentMethod;
-        this.totalAmount = calculateTotal();
-    }
-
-    private double calculateTotal() {
-        return items.stream().mapToDouble(MenuItem::getPrice).sum();
-    }
-
-    public void displayOrderSummary() {
-        System.out.println("Order ID: " + orderId);
-        System.out.println("Customer: " + customer.getName());
-        System.out.println("Items:");
-        for (MenuItem item : items) {
-            System.out.println("- " + item.getName() + ": $" + item.getPrice());
-        }
-        System.out.println("Total Amount: $" + totalAmount);
-        System.out.println("Payment Method: " + paymentMethod);
-    }
-}
-    </code></pre>
-
-    <h5>4. Inventory Class</h5>
-    <p>Tracks ingredients and their quantities.</p>
-    <pre><code>
-import java.util.HashMap;
-import java.util.Map;
-
-class Inventory {
-    private Map<String, Integer> ingredients = new HashMap<>();
-
-    public void addIngredient(String ingredient, int quantity) {
-        ingredients.put(ingredient, ingredients.getOrDefault(ingredient, 0) + quantity);
-    }
-
-    public boolean useIngredient(String ingredient, int quantity) {
-        if (ingredients.containsKey(ingredient) && ingredients.get(ingredient) >= quantity) {
-            ingredients.put(ingredient, ingredients.get(ingredient) - quantity);
-            return true;
-        }
-        return false;
-    }
-
-    public void displayInventory() {
-        System.out.println("Current Inventory:");
-        for (Map.Entry<String, Integer> entry : ingredients.entrySet()) {
-            System.out.println("- " + entry.getKey() + ": " + entry.getValue());
-        }
-    }
-}
-    </code></pre>
-
-    <h5>5. Reservation Class</h5>
-    <p>Handles table reservations for customers.</p>
-    <pre><code>
-import java.util.HashMap;
-import java.util.Map;
-
-class Reservation {
-    private Map<String, String> reservations = new HashMap<>();
-
-    public boolean reserveTable(String customerName, String timeSlot) {
-        if (!reservations.containsKey(timeSlot)) {
-            reservations.put(timeSlot, customerName);
-            return true;
-        }
-        return false;
-    }
-
-    public void displayReservations() {
-        System.out.println("Reservations:");
-        for (Map.Entry<String, String> entry : reservations.entrySet()) {
-            System.out.println("- " + entry.getKey() + ": Reserved by " + entry.getValue());
-        }
-    }
-}
-    </code></pre>
-
-    <h5>Sample Input and Output:</h5>
-    <p>The following demonstrates a simple flow:</p>
-    <pre><code>
-public class RestaurantApp {
-    public static void main(String[] args) {
-        // Inventory setup
-        Inventory inventory = new Inventory();
-        inventory.addIngredient("Cheese", 10);
-        inventory.addIngredient("Tomato", 15);
-
-        // Menu setup
-        MenuItem pizza = new MenuItem("Pizza", 12.5, "Main Course");
-        MenuItem salad = new MenuItem("Salad", 5.0, "Appetizer");
-
-        // Customer and Order
-        Customer customer = new Customer("Alice", "123-456-7890");
-        Order order = new Order(1, customer, List.of(pizza, salad), "Credit Card");
-
-        // Display Order Summary
-        order.displayOrderSummary();
-
-        // Reservation
-        Reservation reservation = new Reservation();
-        if (reservation.reserveTable("Alice", "7:00 PM")) {
-            System.out.println("Reservation successful for 7:00 PM.");
-        } else {
-            System.out.println("Time slot already reserved.");
-        }
-
-        // Display Reservations
-        reservation.displayReservations();
-
-        // Inventory after usage
-        inventory.useIngredient("Cheese", 2);
-        inventory.useIngredient("Tomato", 3);
-        inventory.displayInventory();
-    }
-}
-    </code></pre>
-
-    <h5>Sample Output:</h5>
+        
+    <h5>1. Menu Management</h5>
     <pre>
-Order ID: 1
-Customer: Alice
-Items:
-- Pizza: $12.5
-- Salad: $5.0
-Total Amount: $17.5
-Payment Method: Credit Card
-Reservation successful for 7:00 PM.
-Reservations:
-- 7:00 PM: Reserved by Alice
-Current Inventory:
-- Cheese: 8
-- Tomato: 12
+        // Class to represent the menu
+        class Menu {
+            private Map<String, Double> items;
+    
+            public Menu() {
+                items = new HashMap<>();
+            }
+    
+            public void addItem(String name, double price) {
+                items.put(name, price);
+            }
+    
+            public Map<String, Double> viewMenu() {
+                return items;
+            }
+        }
     </pre>
+    
+    <h5>2. Inventory Management</h5>
+    <pre>
+        // Class to manage restaurant inventory
+        class Inventory {
+            private Map<String, Integer> ingredients;
+    
+            public Inventory() {
+                ingredients = new HashMap<>();
+            }
+    
+            public void updateInventory(String ingredient, int quantity) {
+                ingredients.put(ingredient, quantity);
+            }
+    
+            public boolean checkAvailability(String ingredient, int requiredQuantity) {
+                return ingredients.getOrDefault(ingredient, 0) >= requiredQuantity;
+            }
+        }
+    </pre>
+    
+    <h5>3. Order Management</h5>
+    <pre>
+        // Class to manage orders
+        class Order {
+            private List<String> items;
+            private double totalAmount;
+    
+            public Order() {
+                items = new ArrayList<>();
+                totalAmount = 0;
+            }
+    
+            public void addItem(String item, double price) {
+                items.add(item);
+                totalAmount += price;
+            }
+    
+            public double getTotalAmount() {
+                return totalAmount;
+            }
+    
+            public List<String> getItems() {
+                return items;
+            }
+        }
+    </pre>
+    
+    <h5>4. Payment Processing</h5>
+    <pre>
+        // Enum for payment methods
+        enum PaymentMethod {
+            CASH, CREDIT_CARD, MOBILE
+        }
+    
+        // Class to handle payment processing
+        class Payment {
+            public boolean processPayment(double amount, PaymentMethod method) {
+                System.out.println("Processing payment of " + amount + " using " + method);
+                // Simulate payment processing
+                return true;
+            }
+        }
+    </pre>
+    
+    <h5>5. Reservation Management</h5>
+    <pre>
+        // Class to manage reservations
+        class Reservation {
+            private Map<String, String> reservations;
+    
+            public Reservation() {
+                reservations = new HashMap<>();
+            }
+    
+            public boolean makeReservation(String customerName, String time) {
+                if (reservations.containsKey(time)) {
+                    return false; // Time slot already booked
+                }
+                reservations.put(time, customerName);
+                return true;
+            }
+        }
+    </pre>
+    
+    <h5>6. Staff Management</h5>
+    <pre>
+        // Class to manage staff
+        class Staff {
+            private String name;
+            private String role;
+    
+            public Staff(String name, String role) {
+                this.name = name;
+                this.role = role;
+            }
+    
+            public String getName() {
+                return name;
+            }
+    
+            public String getRole() {
+                return role;
+            }
+        }
+    
+        // Class to manage staff schedules
+        class StaffSchedule {
+            private Map<String, String> schedule;
+    
+            public StaffSchedule() {
+                schedule = new HashMap<>();
+            }
+    
+            public void setSchedule(String staffName, String scheduleTime) {
+                schedule.put(staffName, scheduleTime);
+            }
+    
+            public String getSchedule(String staffName) {
+                return schedule.get(staffName);
+            }
+        }
+    </pre>
+    
+    <h5>7. Report and Analytics</h5>
+    <pre>
+        // Class for generating sales reports
+        class Report {
+            public void generateSalesReport(List<Order> orders) {
+                double totalSales = orders.stream().mapToDouble(Order::getTotalAmount).sum();
+                System.out.println("Total Sales: $" + totalSales);
+            }
+    
+            public void generateInventoryReport(Inventory inventory) {
+                System.out.println("Inventory Report: " + inventory);
+            }
+        }
+    </pre>
+    
+    <h5>8. Main Class - Simulating Interaction</h5>
+    <pre>
+        public class RestaurantManagementSystem {
+    
+            public static void main(String[] args) {
+                // Create instances of required classes
+                Menu menu = new Menu();
+                Inventory inventory = new Inventory();
+                Order order = new Order();
+                Payment payment = new Payment();
+                Reservation reservation = new Reservation();
+                StaffSchedule staffSchedule = new StaffSchedule();
+                Report report = new Report();
+    
+                // Add items to the menu
+                menu.addItem("Pizza", 10.00);
+                menu.addItem("Pasta", 8.50);
+                menu.addItem("Salad", 5.00);
+    
+                // Manage inventory
+                inventory.updateInventory("Tomato", 100);
+                inventory.updateInventory("Cheese", 50);
+    
+                // Customer places an order
+                order.addItem("Pizza", 10.00);
+                order.addItem("Pasta", 8.50);
+    
+                // Check inventory before confirming order
+                if (inventory.checkAvailability("Tomato", 2) && inventory.checkAvailability("Cheese", 1)) {
+                    System.out.println("Order placed: " + order.getItems());
+                    System.out.println("Total Amount: $" + order.getTotalAmount());
+                } else {
+                    System.out.println("Insufficient ingredients for the order.");
+                }
+    
+                // Process payment
+                payment.processPayment(order.getTotalAmount(), PaymentMethod.CREDIT_CARD);
+    
+                // Make a reservation
+                if (reservation.makeReservation("John Doe", "7:00 PM")) {
+                    System.out.println("Reservation confirmed for John Doe at 7:00 PM.");
+                } else {
+                    System.out.println("Sorry, the time slot is already booked.");
+                }
+    
+                // Manage staff schedule
+                staffSchedule.setSchedule("Jane Doe", "9:00 AM - 5:00 PM");
+    
+                // Generate reports
+                report.generateSalesReport(Arrays.asList(order));
+                report.generateInventoryReport(inventory);
+            }
+        }
+    </pre>
+    
+    
+    
 </div>
