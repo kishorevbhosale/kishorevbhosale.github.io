@@ -1,0 +1,279 @@
+<div>
+    <h2 style="text-align: center;">Designing a Parking Lot System</h2>
+    <hr>
+
+    <h5>Requirements:</h5>
+    <ul>
+        <li><strong>R1:</strong> The parking lot must accommodate up to 5,000 vehicles.</li>
+        <li><strong>R2:</strong> There are four types of parking spots: handicapped, compact, large, and motorcycle.</li>
+        <li><strong>R3:</strong> The parking lot should have multiple entry and exit points.</li>
+        <li><strong>R4:</strong> Four types of vehicles are allowed: car, truck, van, and motorcycle.</li>
+        <li><strong>R5:</strong> A display board should show available spots for each parking spot type.</li>
+        <li><strong>R6:</strong> The system should prevent additional vehicles from entering if the lot reaches its 5,000 vehicle capacity.</li>
+        <li><strong>R7:</strong> If the lot is full, the entrance and display board should show a "full" message.</li>
+        <li><strong>R8:</strong> Customers should receive a parking ticket at the entrance and pay at the exit.</li>
+        <li><strong>R9:</strong> Payments can be made at an automated exit panel or to a parking agent.</li>
+        <li><strong>R10:</strong> Charges should be based on an hourly rate.</li>
+        <li><strong>R11:</strong> Payments can be made by credit/debit card or cash.</li>
+    </ul>
+    <hr>
+
+    <h5>Sequnece Diagram</h5>
+    <img src="../../images/sq-parking.PNG" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+
+    <h5>Components:</h5>
+    <p>
+        The parking lot system can be divided into various components:
+        <ul>
+            <li><strong>ParkingSpot:</strong> Represents individual parking spaces of various types (handicapped, compact, large, motorcycle).</li>
+            <li><strong>Vehicle:</strong> Represents different vehicle types (car, truck, van, motorcycle).</li>
+            <li><strong>ParkingTicket:</strong> Represents the ticket issued to the customer, including the time of entry and payment details.</li>
+            <li><strong>ParkingLot:</strong> The main system that handles parking spot allocation, vehicle tracking, entry, exit, and payment.</li>
+            <li><strong>PaymentSystem:</strong> Handles payment and billing operations, including credit/debit payments and cash.</li>
+            <li><strong>DisplayBoard:</strong> Displays available parking spots and full status of the parking lot.</li>
+        </ul>
+    </p>
+    <hr>
+
+    <h5>Code Implementation:</h5>
+<pre><code>
+import java.util.ArrayList;
+import java.util.List;
+
+// Enum for vehicle types
+enum VehicleType {
+    CAR, TRUCK, VAN, MOTORCYCLE
+}
+
+// Enum for parking spot types
+enum ParkingSpotType {
+    HANDICAPPED, COMPACT, LARGE, MOTORCYCLE
+}
+</code></pre>
+
+<pre><code>
+// ParkingSpot class
+class ParkingSpot {
+    private ParkingSpotType type;
+    private boolean isOccupied;
+
+    public ParkingSpot(ParkingSpotType type) {
+        this.type = type;
+        this.isOccupied = false;
+    }
+
+    public boolean isOccupied() {
+        return isOccupied;
+    }
+
+    public void occupy() {
+        isOccupied = true;
+    }
+
+    public void vacate() {
+        isOccupied = false;
+    }
+
+    public ParkingSpotType getType() {
+        return type;
+    }
+}
+</code></pre>
+
+<pre><code>
+// Vehicle class
+class Vehicle {
+    private VehicleType type;
+
+    public Vehicle(VehicleType type) {
+        this.type = type;
+    }
+
+    public VehicleType getType() {
+        return type;
+    }
+}
+</code></pre>
+
+<pre><code>
+// ParkingTicket class
+class ParkingTicket {
+    private Vehicle vehicle;
+    private ParkingSpot spot;
+    private long entryTime;
+    private long exitTime;
+    private double fee;
+
+    public ParkingTicket(Vehicle vehicle, ParkingSpot spot) {
+        this.vehicle = vehicle;
+        this.spot = spot;
+        this.entryTime = System.currentTimeMillis();
+    }
+
+    public void setExitTime(long exitTime) {
+        this.exitTime = exitTime;
+        this.fee = calculateFee();
+    }
+
+    private double calculateFee() {
+        long durationInMillis = exitTime - entryTime;
+        long durationInHours = durationInMillis / (1000 * 60 * 60);
+        // Charge is $10 per hour
+        return durationInHours * 10.0;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+}
+</code></pre>
+
+<pre><code>
+// ParkingLot class
+class ParkingLot {
+    private List&lt;ParkingSpot&gt; spots;
+    private int capacity;
+    private int currentOccupancy;
+    private DisplayBoard displayBoard;
+
+    public ParkingLot(int capacity) {
+        this.capacity = capacity;
+        this.spots = new ArrayList<>();
+        this.currentOccupancy = 0;
+        this.displayBoard = new DisplayBoard(this);
+        initializeParkingSpots();
+    }
+
+    private void initializeParkingSpots() {
+        for (int i = 0; i < capacity; i++) {
+            if (i % 4 == 0) {
+                spots.add(new ParkingSpot(ParkingSpotType.HANDICAPPED));
+            } else if (i % 4 == 1) {
+                spots.add(new ParkingSpot(ParkingSpotType.COMPACT));
+            } else if (i % 4 == 2) {
+                spots.add(new ParkingSpot(ParkingSpotType.LARGE));
+            } else {
+                spots.add(new ParkingSpot(ParkingSpotType.MOTORCYCLE));
+            }
+        }
+    }
+
+    public boolean isFull() {
+        return currentOccupancy >= capacity;
+    }
+
+    public ParkingTicket parkVehicle(Vehicle vehicle) {
+        if (isFull()) {
+            displayBoard.displayFullMessage();
+            return null;
+        }
+        for (ParkingSpot spot : spots) {
+            if (!spot.isOccupied() && isSuitableSpot(vehicle, spot)) {
+                spot.occupy();
+                currentOccupancy++;
+                return new ParkingTicket(vehicle, spot);
+            }
+        }
+        return null;
+    }
+
+    private boolean isSuitableSpot(Vehicle vehicle, ParkingSpot spot) {
+        // Logic to check if a vehicle type can park in a spot
+        if (vehicle.getType() == VehicleType.MOTORCYCLE && spot.getType() == ParkingSpotType.MOTORCYCLE) {
+            return true;
+        }
+        if (vehicle.getType() == VehicleType.CAR && (spot.getType() == ParkingSpotType.COMPACT || spot.getType() == ParkingSpotType.LARGE)) {
+            return true;
+        }
+        if (vehicle.getType() == VehicleType.TRUCK && spot.getType() == ParkingSpotType.LARGE) {
+            return true;
+        }
+        if (vehicle.getType() == VehicleType.VAN && (spot.getType() == ParkingSpotType.COMPACT || spot.getType() == ParkingSpotType.LARGE)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void vacateSpot(ParkingTicket ticket) {
+        ticket.getSpot().vacate();
+        currentOccupancy--;
+        displayBoard.updateDisplay();
+    }
+
+    public int getCurrentOccupancy() {
+        return currentOccupancy;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+}
+</code></pre>
+
+<pre><code>
+// DisplayBoard class
+class DisplayBoard {
+    private ParkingLot parkingLot;
+
+    public DisplayBoard(ParkingLot parkingLot) {
+        this.parkingLot = parkingLot;
+    }
+
+    public void displayFullMessage() {
+        System.out.println("Parking Lot is Full!");
+    }
+
+    public void updateDisplay() {
+        System.out.println("Available Spots: " + (parkingLot.getCapacity() - parkingLot.getCurrentOccupancy()));
+    }
+}
+</code></pre>
+
+<pre><code>
+// Main class for testing
+public class ParkingLotSystem {
+    public static void main(String[] args) {
+        ParkingLot parkingLot = new ParkingLot(5000);
+
+        Vehicle car = new Vehicle(VehicleType.CAR);
+        Vehicle truck = new Vehicle(VehicleType.TRUCK);
+
+        ParkingTicket carTicket = parkingLot.parkVehicle(car);
+        if (carTicket != null) {
+            System.out.println("Car parked. Ticket issued.");
+        }
+
+        ParkingTicket truckTicket = parkingLot.parkVehicle(truck);
+        if (truckTicket != null) {
+            System.out.println("Truck parked. Ticket issued.");
+        }
+
+        // Simulate exit and payment
+        truckTicket.setExitTime(System.currentTimeMillis() + 3600000); // 1 hour later
+        System.out.println("Truck parking fee: $" + truckTicket.getFee());
+        parkingLot.vacateSpot(truckTicket);
+
+        parkingLot.displayBoard.updateDisplay();
+    }
+}
+</code></pre>
+<hr>
+    <h5>Design Explanation:</h5>
+    <ul>
+        <li><strong>Vehicle:</strong> Represents a vehicle, either a car, truck, van, or motorcycle.</li>
+        <li><strong>ParkingSpot:</strong> Represents a parking spot, with a specific type (e.g., handicapped, compact, large, motorcycle). It can be occupied or vacant.</li>
+        <li><strong>ParkingTicket:</strong> Issued when a vehicle parks. Contains entry time, exit time, and parking fee calculation based on duration.</li>
+        <li><strong>ParkingLot:</strong> Manages the parking spots and parking tickets. It checks if the parking lot is full and assigns spots based on vehicle type.</li>
+        <li><strong>DisplayBoard:</strong> Updates the parking availability and shows if the parking lot is full.</li>
+    </ul>
+    <hr>
+
+    <h5>Design Considerations:</h5>
+    <ul>
+        <li><strong>Scalability:</strong> The system is designed to handle up to 5,000 vehicles and multiple spot types.</li>
+        <li><strong>Extensibility:</strong> New vehicle types or parking spot types can be added easily by modifying enums and the logic.</li>
+        <li><strong>Payment:</strong> The payment system can be extended to handle different payment methods.</li>
+    </ul>
+<hr>
+</div>

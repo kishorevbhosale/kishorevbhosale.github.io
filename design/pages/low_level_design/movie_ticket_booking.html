@@ -1,0 +1,254 @@
+<div>
+    <h2 style="text-align: center;">Designing Movie Ticket Booking System</h2>    
+    <hr>
+
+    <h5>Requirements:</h5>
+    <ul>
+        <li>Users can view movies playing in various theaters.</li>
+        <li>Users can select movies, theaters, and show timings for booking tickets.</li>
+        <li>The system should show seat arrangements and allow seat selection.</li>
+        <li>Users can make payments and confirm bookings.</li>
+        <li>Real-time seat availability updates to handle concurrent bookings.</li>
+        <li>Support for seat types (e.g., normal, premium) with different pricing.</li>
+        <li>Theater admins can manage movies, shows, and seating arrangements.</li>
+        <li>Scalable for high traffic and concurrent bookings.</li>
+    </ul>
+    <hr>
+
+    <h5>Sequnece Diagram</h5>
+    <img src="../../images/movie.PNG" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+
+    <h5>Classes and Responsibilities:</h5>
+    <ul>
+        <li><strong>Movie:</strong> Represents a movie with attributes like title, genre, and duration.</li>
+        <li><strong>Theater:</strong> Represents a theater with its shows, seating, and movies.</li>
+        <li><strong>Show:</strong> Represents a specific show with timing, movie, and seating arrangement.</li>
+        <li><strong>Seat:</strong> Represents an individual seat with attributes like seat type and price.</li>
+        <li><strong>Booking:</strong> Represents a user’s booking with selected seats and payment details.</li>
+        <li><strong>Admin:</strong> Allows admins to manage movies, shows, and theaters.</li>
+    </ul>
+    <hr>
+
+    <h5>Code Implementation:</h5>
+    <pre><code>
+import java.util.*;
+
+class Movie {
+    private String title;
+    private String genre;
+    private int duration; // in minutes
+
+    public Movie(String title, String genre, int duration) {
+        this.title = title;
+        this.genre = genre;
+        this.duration = duration;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+}
+</code></pre>
+
+<pre><code>
+class Seat {
+    private int seatNumber;
+    private String seatType; // e.g., normal, premium
+    private double price;
+    private boolean isBooked;
+
+    public Seat(int seatNumber, String seatType, double price) {
+        this.seatNumber = seatNumber;
+        this.seatType = seatType;
+        this.price = price;
+        this.isBooked = false;
+    }
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
+    public String getSeatType() {
+        return seatType;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void bookSeat() {
+        if (!isBooked) {
+            isBooked = true;
+        } else {
+            throw new IllegalStateException("Seat already booked.");
+        }
+    }
+}
+</code></pre>
+
+<pre><code>
+class Show {
+    private Movie movie;
+    private String timing; // e.g., "6:00 PM"
+    private List&lt;Seat&gt; seats;
+
+    public Show(Movie movie, String timing, int totalSeats) {
+        this.movie = movie;
+        this.timing = timing;
+        this.seats = new ArrayList&lt;&gt;();
+        initializeSeats(totalSeats);
+    }
+
+    private void initializeSeats(int totalSeats) {
+        for (int i = 1; i &lt;= totalSeats; i++) {
+            String seatType = i &lt;= 10 ? "Premium" : "Normal";
+            double price = i &lt;= 10 ? 300.0 : 150.0;
+            seats.add(new Seat(i, seatType, price));
+        }
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public String getTiming() {
+        return timing;
+    }
+
+    public List&lt;Seat&gt; getSeats() {
+        return seats;
+    }
+}
+</code></pre>
+
+<pre><code>
+class Theater {
+    private String name;
+    private List&lt;Show&gt; shows;
+
+    public Theater(String name) {
+        this.name = name;
+        this.shows = new ArrayList&lt;&gt;();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List&lt;Show&gt; getShows() {
+        return shows;
+    }
+
+    public void addShow(Show show) {
+        shows.add(show);
+    }
+}
+</code></pre>
+
+<pre><code>
+class Booking {
+    private Show show;
+    private List&lt;Seat&gt; bookedSeats;
+    private double totalAmount;
+
+    public Booking(Show show, List&lt;Integer&gt; seatNumbers) {
+        this.show = show;
+        this.bookedSeats = new ArrayList&lt;&gt;();
+        this.totalAmount = 0.0;
+
+        for (int seatNumber : seatNumbers) {
+            Seat seat = show.getSeats().get(seatNumber - 1);
+            seat.bookSeat();
+            bookedSeats.add(seat);
+            totalAmount += seat.getPrice();
+        }
+    }
+
+    public void printBookingDetails() {
+        System.out.println("Movie: " + show.getMovie().getTitle());
+        System.out.println("Timing: " + show.getTiming());
+        System.out.println("Seats Booked: ");
+        for (Seat seat : bookedSeats) {
+            System.out.println(" - Seat " + seat.getSeatNumber() + " (" + seat.getSeatType() + ")");
+        }
+        System.out.println("Total Amount: $" + totalAmount);
+    }
+}
+</code></pre>
+
+<pre><code>
+public class MovieTicketBookingSystem {
+    public static void main(String[] args) {
+        // Sample Data
+        Movie movie1 = new Movie("Avengers: Endgame", "Action", 180);
+        Movie movie2 = new Movie("Frozen 2", "Animation", 120);
+
+        Theater theater = new Theater("Cineplex");
+
+        Show show1 = new Show(movie1, "6:00 PM", 20);
+        Show show2 = new Show(movie2, "8:00 PM", 20);
+
+        theater.addShow(show1);
+        theater.addShow(show2);
+
+        // Booking Process
+        System.out.println("Available shows at " + theater.getName() + ":");
+        for (Show show : theater.getShows()) {
+            System.out.println("- " + show.getMovie().getTitle() + " at " + show.getTiming());
+        }
+
+        System.out.println("\nBooking seats for 'Avengers: Endgame' at 6:00 PM.");
+        Booking booking = new Booking(show1, Arrays.asList(1, 2, 11));
+        booking.printBookingDetails();
+    }
+}
+</code></pre>
+<hr>
+    <h5>Sample Input:</h5>
+    <ul>
+        <li>Movie: Avengers: Endgame</li>
+        <li>Show Timing: 6:00 PM</li>
+        <li>Seats Selected: 1, 2, 11</li>
+    </ul>
+
+    <h5>Sample Output:</h5>
+    <pre>
+Movie: Avengers: Endgame
+Timing: 6:00 PM
+Seats Booked: 
+ - Seat 1 (Premium)
+ - Seat 2 (Premium)
+ - Seat 11 (Normal)
+Total Amount: $750.0
+    </pre>
+<hr>
+    <h5>Explanation:</h5>
+    <ul>
+        <li><strong>Movies:</strong> Movies are created with a title, genre, and duration.</li>
+        <li><strong>Theater:</strong> The theater contains multiple shows.</li>
+        <li><strong>Shows:</strong> Each show has a movie, timing, and seats. Premium and normal seats are initialized with different prices.</li>
+        <li><strong>Booking:</strong> When a booking is made, selected seats are marked as booked, and the total amount is calculated.</li>
+    </ul>
+    <hr>
+
+    <h5>Scalability Considerations:</h5>
+    <ul>
+        <li>Use a database to store movies, theaters, and shows.</li>
+        <li>Implement distributed locking mechanisms for concurrent seat booking.</li>
+        <li>Integrate payment gateways for secure transactions.</li>
+    </ul>
+    <hr>
+</div>

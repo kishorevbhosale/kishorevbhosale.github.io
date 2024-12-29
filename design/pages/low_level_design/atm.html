@@ -1,0 +1,236 @@
+<div>
+    <h2 style="text-align: center;">Designing an ATM System</h2>
+    <hr>
+
+    <h5>Requirements:</h5>
+    <p>
+        The ATM system should support the following operations:
+        <ul>
+            <li>Balance inquiry</li>
+            <li>Cash withdrawal</li>
+            <li>Cash deposit</li>
+            <li>User authentication using card and PIN</li>
+            <li>Interaction with a bank's backend system to validate user accounts and perform transactions</li>
+            <li>Cash dispensing functionality</li>
+            <li>Handling of concurrent access and ensuring data consistency</li>
+            <li>User-friendly interface</li>
+        </ul>
+    </p>
+    <hr>
+
+    <h5>Sequnece Diagram</h5>
+    <img src="../../images/atm.PNG" alt="cache" style="display: block; margin: auto; width: 80%;">
+    <hr>
+
+    <h5>Design Overview:</h5>
+    <p>
+        The low-level design for the ATM system involves several components that will interact with each other to handle various tasks such as authentication, balance inquiry, withdrawal, deposit, and cash dispensing.
+        Below are the key components that need to be designed:
+        <ul>
+            <li><strong>User:</strong> A class to represent the user details.</li>
+            <li><strong>BankAccount:</strong> A class to represent the user's bank account and manage balance and transaction history.</li>
+            <li><strong>ATM:</strong> The central class managing the interaction between the user, the bank system, and the ATM hardware (cash dispenser, etc.).</li>
+            <li><strong>CashDispenser:</strong> The class to simulate dispensing cash.</li>
+            <li><strong>Transaction:</strong> A class to manage the transaction details such as withdrawal, deposit, etc.</li>
+            <li><strong>BackendSystem:</strong> Simulates the bank's backend that validates user information and performs actions.</li>
+        </ul>
+    </p>
+    <hr>
+
+    <h5>Code Implementation:</h5>
+    <pre><code>
+// BankAccount Class - Represents the user's bank account
+class BankAccount {
+    private String accountNumber;
+    private double balance;
+
+    public BankAccount(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public boolean withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+}
+</code></pre>
+
+<pre><code>
+// User Class - Represents an ATM user
+class User {
+    private String cardNumber;
+    private String pin;
+    private BankAccount bankAccount;
+
+    public User(String cardNumber, String pin, BankAccount bankAccount) {
+        this.cardNumber = cardNumber;
+        this.pin = pin;
+        this.bankAccount = bankAccount;
+    }
+
+    public boolean authenticate(String inputCardNumber, String inputPin) {
+        return cardNumber.equals(inputCardNumber) && pin.equals(inputPin);
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+}
+</code></pre>
+
+<pre><code>
+// CashDispenser Class - Simulates the dispensing of cash
+class CashDispenser {
+    public void dispenseCash(double amount) {
+        System.out.println("Dispensing cash: " + amount);
+    }
+}
+</code></pre>
+
+<pre><code>
+// BackendSystem Class - Simulates the bank's backend system
+class BackendSystem {
+    public boolean validateAccount(String cardNumber, String pin) {
+        // Simulate validating credentials (in real life, interact with the database or system)
+        return cardNumber.equals("12345") && pin.equals("1234");
+    }
+}
+</code></pre>
+
+<pre><code>
+// ATM Class - Represents the ATM system
+class ATM {
+    private CashDispenser cashDispenser;
+    private BackendSystem backendSystem;
+    private User currentUser;
+
+    public ATM() {
+        this.cashDispenser = new CashDispenser();
+        this.backendSystem = new BackendSystem();
+    }
+
+    public void authenticateUser(String cardNumber, String pin) {
+        if (backendSystem.validateAccount(cardNumber, pin)) {
+            // Simulate finding the user from the system
+            BankAccount account = new BankAccount(cardNumber, 1000); // Assume initial balance
+            this.currentUser = new User(cardNumber, pin, account);
+            System.out.println("Authentication successful.");
+        } else {
+            System.out.println("Authentication failed. Invalid card number or PIN.");
+        }
+    }
+
+    public void checkBalance() {
+        if (currentUser != null) {
+            System.out.println("Your current balance is: " + currentUser.getBankAccount().getBalance());
+        } else {
+            System.out.println("Please authenticate first.");
+        }
+    }
+
+    public void depositCash(double amount) {
+        if (currentUser != null) {
+            currentUser.getBankAccount().deposit(amount);
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Please authenticate first.");
+        }
+    }
+
+    public void withdrawCash(double amount) {
+        if (currentUser != null) {
+            boolean success = currentUser.getBankAccount().withdraw(amount);
+            if (success) {
+                cashDispenser.dispenseCash(amount);
+            } else {
+                System.out.println("Insufficient funds.");
+            }
+        } else {
+            System.out.println("Please authenticate first.");
+        }
+    }
+}
+</code></pre>
+
+<pre><code>
+// Main class to simulate ATM operations
+public class ATMSystemApp {
+    public static void main(String[] args) {
+        ATM atm = new ATM();
+
+        // Authenticate user
+        atm.authenticateUser("12345", "1234");
+
+        // Perform operations
+        atm.checkBalance();
+        atm.depositCash(200);
+        atm.checkBalance();
+        atm.withdrawCash(300);
+        atm.checkBalance();
+        atm.withdrawCash(1000); // Insufficient funds case
+    }
+}
+</code></pre>
+<hr>
+    
+    <h5>Sample Input:</h5>
+    <pre><code>
+    Authenticate user with card number "12345" and PIN "1234".
+    Deposit 200 units.
+    Withdraw 300 units.
+    Withdraw 1000 units (which should fail due to insufficient balance).
+    </code></pre>
+
+
+    <h5>Sample Output:</h5>
+    <pre><code>
+    Authentication successful.
+    Your current balance is: 1000.0
+    Deposited: 200
+    Your current balance is: 1200.0
+    Dispensing cash: 300
+    Your current balance is: 900.0
+    Insufficient funds.
+    </code></pre>
+    <hr>
+
+    <h5>Explanation of Output:</h5>
+    <ul>
+        <li>The user is authenticated using card number "12345" and PIN "1234".</li>
+        <li>The balance after successful authentication is 1000.0.</li>
+        <li>The user deposits 200 units, increasing the balance to 1200.0.</li>
+        <li>The user successfully withdraws 300 units, reducing the balance to 900.0.</li>
+        <li>When attempting to withdraw 1000 units, the system responds with "Insufficient funds" since the available balance is only 900.0.</li>
+    </ul>
+    <hr>
+
+    <h5>Design Considerations:</h5>
+    <ul>
+        <li><strong>Concurrency:</strong> In a real-world scenario, we need to ensure that the ATM system handles multiple users accessing the machine simultaneously. This can be achieved through synchronized methods or other concurrency management techniques.</li>
+        <li><strong>Security:</strong> Sensitive user data like PIN and account number should be securely stored and transmitted. Encryption and secure communication protocols should be used in a real-world implementation.</li>
+        <li><strong>Bank System Integration:</strong> In the actual system, the backend system would need to interact with a real bank's backend API or database for account validation, transaction history, and other tasks.</li>
+        <li><strong>Error Handling:</strong> The design assumes simple success/failure cases. In reality, more robust error handling (e.g., invalid input, transaction failures) should be included.</li>
+    </ul>
+    <hr>
+
+    <h5>Extensions & Future Improvements:</h5>
+    <ul>
+        <li>Implementing transaction history to keep track of deposits, withdrawals, and balance changes.</li>
+        <li>Adding multi-currency support to allow users to choose their preferred currency.</li>
+        <li>Adding a display interface for users to view transaction details and confirmation.</li>
+        <li>Handling advanced features such as PIN change, card blocking, and multi-ATM system integration.</li>
+    </ul>
+    <hr>
+</div>
