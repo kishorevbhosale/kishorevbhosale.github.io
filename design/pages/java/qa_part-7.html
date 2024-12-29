@@ -1587,7 +1587,7 @@ Minimum value: 3
 </div>
 <hr>
 <div>
-    <h3>Find the Employee of a Specific Department with the Second Highest Salary</h3>
+    <h5>Find the Employee of a Specific Department with the nth Highest Salary</h5>
     <pre><code>
 import java.util.*;
 import java.util.stream.*;
@@ -1615,27 +1615,324 @@ public class SecondHighestSalary {
         // Specify the department
         String targetDepartment = &quot;IT&quot;;
 
-        // Find the employee with the second highest salary in the target department
-        Optional&lt;Employee&gt; secondHighestSalaryEmployee = employees.stream()
-                .filter(emp -&gt; emp.getDepartment().equals(targetDepartment)) // Filter by department
+        int nthHighest = 2; // Example: Find the 2nd highest salary
+
+        // Find the nth highest salary employee in the specific department
+        Optional&lt;Employee&gt; nthHighestEmployee = employees.stream()
+                .filter(emp -&gt; emp.getDepartment().equalsIgnoreCase(targetDepartment)) // Filter by department
                 .sorted(Comparator.comparingDouble(Employee::getSalary).reversed()) // Sort by salary in descending order
-                .skip(1) // Skip the first (highest salary)
-                .findFirst(); // Get the second employee
+                .skip(nthHighest - 1) // Skip n-1 employees
+                .findFirst(); // Get the nth employee
 
         // Print the result
-        if (secondHighestSalaryEmployee.isPresent()) {
-            System.out.println(&quot;Employee with second highest salary in &quot; + targetDepartment + &quot;: &quot; + secondHighestSalaryEmployee.get());
-        } else {
-            System.out.println(&quot;No employee found for the given criteria.&quot;);
-        }
+        nthHighestEmployee.ifPresentOrElse(
+            emp -&gt; System.out.println(&quot;Employee with &quot; + nthHighest + &quot; highest salary: &quot; + emp),
+            () -&gt; System.out.println(&quot;No employee found for the given criteria.&quot;)
+        );
     }
 }
     </code></pre>
 
    
-    <h4>Output:</h4>
+    <b>Output:</b>
     <pre><code>
 Employee with second highest salary in IT: Employee{name=Bob, department=IT, salary=75000.0}
     </code></pre>
 </div>
 <hr>
+<div>
+    <h5>Find the First Non-Repeated Character in a String using Java Streams</h5>
+    <pre><code>
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
+public class FirstNonRepeatedCharacter {
+    public static void main(String[] args) {
+        String input = "swiss";
+
+        // Find the first non-repeated character
+        Optional&lt;Character&gt; firstNonRepeated = input.chars()
+                .mapToObj(c -&gt; (char) c)
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(entry -&gt; entry.getValue() == 1)
+                .map(Map.Entry::getKey)
+                .findFirst();
+
+        // Print the result
+        System.out.println(&quot;First Non-Repeated Character: &quot; +
+                firstNonRepeated.orElse(&#39;None&#39;));
+    }
+}
+    </code></pre>
+    <b>Input and Output Example:</b>
+    <p>
+        For the input string <code>&quot;swiss&quot;</code>, the program will output:
+    </p>
+    <pre><code>
+First Non-Repeated Character: w
+    </code></pre>
+    <b>Explanation:</b>
+    <ul>
+        <li><code>Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())</code>: 
+            Groups the characters by their occurrence, maintaining the insertion order using <code>LinkedHashMap</code>, and counts their frequency.
+        </li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h5>Finding the First Repeated Character in a String Using Stream Functions</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class FirstRepeatedCharacter {
+    public static void main(String[] args) {
+        String input = "streamfunction";
+
+        // Find the first repeated character
+        Optional&lt;Character&gt; firstRepeated = input.chars()
+                .mapToObj(c -&gt; (char) c) // Convert int to char
+                .filter(new HashSet&lt;&gt;()::add)
+                .findFirst();
+
+        // Print the result
+        firstRepeated.ifPresentOrElse(
+            c -&gt; System.out.println(&quot;First repeated character: &quot; + c),
+            () -&gt; System.out.println(&quot;No repeated characters found&quot;)
+        );
+    }
+}
+    </code></pre>
+
+    <b>Explanation:</b>
+    <ul>
+        <li><code>filter(new HashSet&lt;&gt;()::add)</code>: Attempts to add each character to a <code>HashSet</code>. The <code>add</code> method returns <code>false</code> if the character is already in the set, indicating it is repeated.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+First repeated character: t
+    </code></pre>
+
+</div>
+<hr>
+<div>
+    <h5>Given a list of integers, sort all the values present in it using Stream functions?</h5>
+    <pre><code>
+public class SortValues{
+    public static void main(String args[]) {
+            List&lt;Integer&gt; myList = Arrays.asList(10,15,8,49,25,98,98,32,15);
+  
+             myList.stream()
+                   .sorted()
+                   .forEach(System.out::println);
+  
+          /* Or can also try below way */
+  
+          Arrays.stream(arr).boxed().sorted().collect(Collectors.toList())
+    }
+  }
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Given a list of integers, sort all the values present in it in descending order using Stream functions?</h5>
+    <pre><code>
+public class SortDescending{
+    public static void main(String args[]) {
+        List&lt;Integer&gt; myList = Arrays.asList(10,15,8,49,25,98,98,32,15);
+  
+             myList.stream()
+                   .sorted(Collections.reverseOrder())
+                   .forEach(System.out::println);
+    }
+}
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.</h5>
+    <pre><code>
+public boolean containsDuplicate(int[] nums) {
+    List&lt;Integer&gt; list = Arrays.stream(nums)
+                               .boxed()
+                               .collect(Collectors.toList());
+    Set&lt;Integer&gt; set = new HashSet<>(list);
+     if(set.size() == list.size()) {
+       return false;
+   } 
+      return true;
+
+/* or can also try below way */ 
+    Set&lt;Integer&gt; setData = new HashSet<>();
+        return Arrays.stream(nums)
+                     .anyMatch(num -> !setData.add(num));
+  }
+</code></pre>
+    <b>output</b>
+    <pre><code>
+Input: nums = [1,2,3,1]
+Output: true
+
+Input: nums = [1,2,3,4]
+Output: false
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>How to Convert a List of Objects into a Map by Considering Duplicate Keys and Store Them in Sorted Order?</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+@Getter
+@AllArgConstructor
+@ToString
+class Person {
+    private String name;
+    private int age;
+}
+
+public class ListToSortedMap {
+    public static void main(String[] args) {
+        // Sample list of Person objects
+        List&lt;Person&gt; people = Arrays.asList(
+            new Person(&quot;Alice&quot;, 30),
+            new Person(&quot;Bob&quot;, 25),
+            new Person(&quot;Alice&quot;, 28),
+            new Person(&quot;David&quot;, 35),
+            new Person(&quot;Bob&quot;, 22)
+        );
+
+        // Convert to a sorted map with duplicate keys handled
+        Map&lt;String, List&lt;Person&gt;&gt; sortedMap = people.stream()
+            .collect(Collectors.groupingBy(
+                Person::getName,           // Group by the 'name' key
+                () -&gt; new TreeMap&lt;&gt;(),   // Use TreeMap for sorted keys
+                Collectors.toList()        // Collect the grouped values into a List
+            ));
+
+        // Print the resulting sorted map
+        sortedMap.forEach((key, value) -&gt; 
+            System.out.println(key + &quot;: &quot; + value)
+        );
+    }
+}
+    </code></pre>
+
+    <b>Explanation:</b>
+    <ul>
+        <li><code>Person::getName</code>: Extracts the key (name) from each <code>Person</code> object.</li>
+        <li><code>() -&gt; new TreeMap&lt;&gt;()</code>: Ensures that the keys are stored in sorted order by using a <code>TreeMap</code>.</li>
+        <li><code>Collectors.toList()</code>: Collects the grouped values into a list for each key.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+Alice: [Person{name=Alice, age=30}, Person{name=Alice, age=28}]
+Bob: [Person{name=Bob, age=25}, Person{name=Bob, age=22}]
+David: [Person{name=David, age=35}]
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>How to Count Each Element/Word from a String ArrayList in Java 8?</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class WordCount {
+    public static void main(String[] args) {
+        // Sample ArrayList of words
+        List&lt;String&gt; words = Arrays.asList(&quot;apple&quot;, &quot;banana&quot;, &quot;apple&quot;, &quot;orange&quot;, &quot;banana&quot;, &quot;apple&quot;);
+
+        // Count each word using Stream API
+        Map&lt;String, Long&gt; wordCount = words.stream()
+                .collect(Collectors.groupingBy(word -&gt; word, Collectors.counting()));
+
+        // Print the word count
+        wordCount.forEach((word, count) -&gt; System.out.println(word + &quot;: &quot; + count));
+    }
+}
+    </code></pre>
+
+    <b>Explanation:</b>
+    <ul>
+        <li><code>words.stream()</code>: Converts the ArrayList into a Stream.</li>
+        <li><code>Collectors.groupingBy(word -&gt; word, Collectors.counting())</code>: Groups the elements by their value (the word itself) and counts the occurrences of each group.</li>
+        <li><code>wordCount.forEach((word, count) -&gt; ...)</code>: Iterates through the map to print each word and its count.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre><code>
+apple: 3
+banana: 2
+orange: 1
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Program to Print the Count of Each Character in a String</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class CharacterCount {
+    public static void main(String[] args) {
+        String input = "hello world";
+
+        // Calculate character frequency
+        Map&lt;Character, Long&gt; characterCount = input.chars()
+                .filter(c -&gt; !Character.isWhitespace(c)) // Ignore spaces
+                .mapToObj(c -&gt; (char) c) // Convert int to char
+                .collect(Collectors.groupingBy(c -&gt; c, Collectors.counting()));
+
+        // Print the character counts
+        characterCount.forEach((character, count) -&gt; 
+            System.out.println(&quot;Character: &quot; + character + &quot;, Count: &quot; + count));
+    }
+}
+    </code></pre>
+
+    <b>Output for Input "hello world":</b>
+    <pre><code>
+Character: h, Count: 1
+Character: e, Count: 1
+Character: l, Count: 3
+Character: o, Count: 2
+Character: w, Count: 1
+Character: r, Count: 1
+Character: d, Count: 1
+    </code></pre>
+</div>
+<hr>
+<div>
+    <h5>Find Numbers Starting with 1 Using Stream Functions</h5>
+    <pre><code>
+import java.util.*;
+import java.util.stream.*;
+
+public class FindNumbersStartingWithOne {
+    public static void main(String[] args) {
+        // Sample list of integers
+        List&lt;Integer&gt; numbers = Arrays.asList(10, 15, 20, 30, 1, 100, 121, 99);
+
+        // Stream API to find numbers starting with '1'
+        List&lt;Integer&gt; result = numbers.stream()
+                .filter(n -&gt; String.valueOf(n).startsWith(&quot;1&quot;))
+                .collect(Collectors.toList());
+
+        // Print the result
+        System.out.println(&quot;Numbers starting with 1: &quot; + result);
+    }
+}
+    </code></pre>
+
+    <b>Output:</b>
+    <pre><code>
+Numbers starting with 1: [10, 15, 1, 100, 121]
+    </code></pre>
+</div>
