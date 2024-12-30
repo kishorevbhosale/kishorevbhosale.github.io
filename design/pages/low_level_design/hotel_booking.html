@@ -1,0 +1,256 @@
+<div>
+    <h2 style="text-align: center;">Designing a Hotel Management System</h2>
+    <hr>
+
+    <b>Requirements:</b>
+    <ul>
+        <li>Guests can book rooms, check-in, and check-out.</li>
+        <li>Manage different types of rooms: single, double, deluxe, and suite.</li>
+        <li>Track room availability and reservation status.</li>
+        <li>Allow hotel staff to manage guest information, room assignments, and billing.</li>
+        <li>Support multiple payment methods: cash, credit card, and online payment.</li>
+        <li>Handle concurrent bookings and ensure data consistency.</li>
+        <li>Provide reporting and analytics features.</li>
+        <li>Scalable for a large number of rooms and guests.</li>
+    </ul>
+    <hr>
+
+    <h5>Sequnece Diagram</h5>
+    <img src="../../../images/hotel.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+
+    <b>Low-Level Design:</b>
+    <p>The system includes the following key classes:</p>
+    <ul>
+        <li><strong>Room:</strong> Represents a room with type, number, and availability status.</li>
+        <li><strong>Guest:</strong> Represents a guest with name, contact details, and reservation information.</li>
+        <li><strong>Reservation:</strong> Tracks booking details, including check-in and check-out dates.</li>
+        <li><strong>HotelManagementSystem:</strong> Handles room availability, guest information, and reservations.</li>
+        <li><strong>Billing:</strong> Manages billing details and payment methods.</li>
+    </ul>
+    <hr>
+
+    <b>Code Implementation:</b>
+<pre><code>
+import java.util.*;
+
+enum RoomType {
+    SINGLE, DOUBLE, DELUXE, SUITE
+}
+</code></pre>
+
+<pre><code>
+class Room {
+    private int roomNumber;
+    private RoomType roomType;
+    private boolean isAvailable;
+
+    public Room(int roomNumber, RoomType roomType) {
+        this.roomNumber = roomNumber;
+        this.roomType = roomType;
+        this.isAvailable = true;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+</code></pre>
+
+<pre><code>
+class Guest {
+    private String name;
+    private String contact;
+    private Reservation reservation;
+
+    public Guest(String name, String contact) {
+        this.name = name;
+        this.contact = contact;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+}
+</code></pre>
+
+<pre><code>
+class Reservation {
+    private Room room;
+    private Date checkInDate;
+    private Date checkOutDate;
+
+    public Reservation(Room room, Date checkInDate, Date checkOutDate) {
+        this.room = room;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public Date getCheckInDate() {
+        return checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return checkOutDate;
+    }
+}
+</code></pre>
+
+<pre><code>
+class HotelManagementSystem {
+    private List&lt;Room&gt; rooms = new ArrayList<>();
+    private Map&lt;Integer, Guest&gt; guestMap = new HashMap<>();
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
+
+    public Room findAvailableRoom(RoomType roomType) {
+        for (Room room : rooms) {
+            if (room.getRoomType() == roomType && room.isAvailable()) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+    public void bookRoom(String guestName, String contact, RoomType roomType, Date checkInDate, Date checkOutDate) {
+        Room room = findAvailableRoom(roomType);
+        if (room == null) {
+            System.out.println("No rooms available of type " + roomType);
+            return;
+        }
+        Guest guest = new Guest(guestName, contact);
+        Reservation reservation = new Reservation(room, checkInDate, checkOutDate);
+        guest.setReservation(reservation);
+        guestMap.put(room.getRoomNumber(), guest);
+        room.setAvailable(false);
+        System.out.println("Room " + room.getRoomNumber() + " booked for " + guestName);
+    }
+
+    public void checkOut(int roomNumber) {
+        Guest guest = guestMap.get(roomNumber);
+        if (guest == null) {
+            System.out.println("No reservation found for room " + roomNumber);
+            return;
+        }
+        Room room = guest.getReservation().getRoom();
+        room.setAvailable(true);
+        guestMap.remove(roomNumber);
+        System.out.println("Checked out guest: " + guest.getName() + " from room " + roomNumber);
+    }
+
+    public void listAvailableRooms() {
+        System.out.println("Available Rooms:");
+        for (Room room : rooms) {
+            if (room.isAvailable()) {
+                System.out.println("Room " + room.getRoomNumber() + " - " + room.getRoomType());
+            }
+        }
+    }
+}
+</code></pre>
+
+<pre><code>
+public class HotelManagementApp {
+    public static void main(String[] args) {
+        HotelManagementSystem system = new HotelManagementSystem();
+
+        // Add rooms
+        system.addRoom(new Room(101, RoomType.SINGLE));
+        system.addRoom(new Room(102, RoomType.DOUBLE));
+        system.addRoom(new Room(103, RoomType.DELUXE));
+        system.addRoom(new Room(104, RoomType.SUITE));
+
+        // List available rooms
+        system.listAvailableRooms();
+
+        // Book a room
+        system.bookRoom("Alice", "123-456-7890", RoomType.SINGLE, new Date(), new Date());
+
+        // List available rooms after booking
+        system.listAvailableRooms();
+
+        // Check out a guest
+        system.checkOut(101);
+
+        // List available rooms after check-out
+        system.listAvailableRooms();
+    }
+}
+</code></pre>
+
+    <b>Sample Input and Output:</b>
+    <pre>
+Input: 
+    Add rooms: [101-SINGLE, 102-DOUBLE, 103-DELUXE, 104-SUITE]
+    Book Room: Alice (RoomType: SINGLE)
+    Check Out: Room 101
+
+Output:
+    Available Rooms:
+    Room 101 - SINGLE
+    Room 102 - DOUBLE
+    Room 103 - DELUXE
+    Room 104 - SUITE
+    Room 101 booked for Alice
+    Available Rooms:
+    Room 102 - DOUBLE
+    Room 103 - DELUXE
+    Room 104 - SUITE
+    Checked out guest: Alice from room 101
+    Available Rooms:
+    Room 101 - SINGLE
+    Room 102 - DOUBLE
+    Room 103 - DELUXE
+    Room 104 - SUITE
+    </pre>
+    <hr>
+
+    <b>Design Considerations:</b>
+    <ul>
+        <li>Used enums for RoomType to ensure predefined types for rooms.</li>
+        <li>Implemented separation of concerns: Each class handles a specific responsibility (e.g., Room, Guest, Reservation).</li>
+        <li>Ensured scalability by using lists and maps for dynamic data storage.</li>
+        <li>Focused on data consistency by maintaining a single source of truth for reservations and guest details.</li>
+    </ul>
+    <hr>
+
+    <b>Improvements & Extensions:</b>
+    <ul>
+        <li>Add a billing module to calculate charges based on stay duration and services used.</li>
+        <li>Include concurrent access management for real-time updates (e.g., synchronized methods or database transactions).</li>
+        <li>Implement support for additional features such as room cleaning status and maintenance schedules.</li>
+        <li>Introduce advanced search options for room availability based on filters like date, room type, and price range.</li>
+        <li>Integrate an external payment gateway for online payments.</li>
+    </ul>
+    <hr>
+</div>

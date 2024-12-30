@@ -1,0 +1,258 @@
+<div>
+    <h2 style="text-align: center;">Designing a Logging Framework in Java</h2>
+    <hr>
+
+    <b>Requirements:</b>
+    <ul>
+        <li>The logging framework should support different log levels, such as DEBUG, INFO, WARNING, ERROR, and FATAL.</li>
+        <li>It should allow logging messages with a timestamp, log level, and message content.</li>
+        <li>The framework should support multiple output destinations, such as console, file, and database.</li>
+        <li>It should provide a configuration mechanism to set the log level and output destination.</li>
+        <li>The logging framework should be thread-safe to handle concurrent logging from multiple threads.</li>
+        <li>It should be extensible to accommodate new log levels and output destinations in the future.</li>
+    </ul>
+    <hr>
+
+    <b>Design componenets:</b>
+    <ul>
+        <li>The LogLevel enum defines the different log levels supported by the logging framework.</li>
+        <li>The LogMessage class represents a log message with a timestamp, log level, and message content.</li>
+        <li>The LogAppender interface defines the contract for appending log messages to different output destinations.</li>
+        <li>The ConsoleAppender, FileAppender, and DatabaseAppender classes are concrete implementations of the LogAppender interface, supporting logging to the console, file, and database, respectively.</li>
+        <li>The LoggerConfig class holds the configuration settings for the logger, including the log level and the selected log appender.</li>
+        <li>The Logger class is a singleton that provides the main logging functionality. It allows setting the configuration, logging messages at different levels, and provides convenience methods for each log level.</li>
+        <li>The LoggingExample class demonstrates the usage of the logging framework, showcasing different log levels, changing the configuration, and logging from multiple threads.</li>
+    </ul>
+    <hr>
+
+    <b>Code Implementation:</b>
+<pre><code>
+// Enum representing log levels
+enum LogLevel {
+    DEBUG, INFO, WARNING, ERROR, FATAL
+}
+</code></pre>
+
+<pre><code>
+// Class representing a log message
+class LogMessage {
+    private LocalDateTime timestamp;
+    private LogLevel level;
+    private String message;
+
+    public LogMessage(LogLevel level, String message) {
+        this.timestamp = LocalDateTime.now();
+        this.level = level;
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + timestamp + "] [" + level + "] " + message;
+    }
+}
+</code></pre>
+
+<pre><code>
+// Interface for log appenders
+interface LogAppender {
+    void append(LogMessage message);
+}
+</code></pre>
+
+<pre><code>
+// Console Appender
+class ConsoleAppender implements LogAppender {
+    @Override
+    public void append(LogMessage message) {
+        System.out.println(message.toString());
+    }
+}
+</code></pre>
+
+<pre><code>
+// File Appender
+class FileAppender implements LogAppender {
+    private String filePath;
+
+    public FileAppender(String filePath) {
+        this.filePath = filePath;
+    }
+
+    @Override
+    public void append(LogMessage message) {
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            writer.write(message.toString() + "\n");
+        } catch (IOException e) {
+            System.err.println("Failed to write to log file: " + e.getMessage());
+        }
+    }
+}
+</code></pre>
+
+<pre><code>
+// Database Appender
+class DatabaseAppender implements LogAppender {
+    private String connectionString;
+    private String insertQuery = "INSERT INTO logs (timestamp, level, message) VALUES (?, ?, ?)";
+
+    public DatabaseAppender(String connectionString) {
+        this.connectionString = connectionString;
+    }
+
+    @Override
+    public void append(LogMessage message) {
+        try (Connection conn = DriverManager.getConnection(connectionString);
+             PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
+            stmt.setString(1, message.toString());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.err.println("Failed to write to database: " + e.getMessage());
+        }
+    }
+}
+</code></pre>
+
+<pre><code>
+// Logger Configuration
+class LoggerConfig {
+    private LogLevel logLevel;
+    private LogAppender appender;
+
+    public LoggerConfig(LogLevel logLevel, LogAppender appender) {
+        this.logLevel = logLevel;
+        this.appender = appender;
+    }
+
+    public LogLevel getLogLevel() {
+        return logLevel;
+    }
+
+    public LogAppender getAppender() {
+        return appender;
+    }
+}
+</code></pre>
+
+<pre><code>
+// Logger Singleton
+class Logger {
+    private static Logger instance;
+    private LoggerConfig config;
+    private final Lock lock = new ReentrantLock();
+
+    private Logger() {}
+
+    public static Logger getInstance() {
+        if (instance == null) {
+            synchronized (Logger.class) {
+                if (instance == null) {
+                    instance = new Logger();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void setConfig(LoggerConfig config) {
+        lock.lock();
+        try {
+            this.config = config;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void log(LogLevel level, String message) {
+        lock.lock();
+        try {
+            if (config != null && level.ordinal() >= config.getLogLevel().ordinal()) {
+                LogMessage logMessage = new LogMessage(level, message);
+                config.getAppender().append(logMessage);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void debug(String message) { log(LogLevel.DEBUG, message); }
+    public void info(String message) { log(LogLevel.INFO, message); }
+    public void warning(String message) { log(LogLevel.WARNING, message); }
+    public void error(String message) { log(LogLevel.ERROR, message); }
+    public void fatal(String message) { log(LogLevel.FATAL, message); }
+}
+</code></pre>
+
+<pre><code>
+// Example Usage
+public class LoggingExample {
+    public static void main(String[] args) {
+        Logger logger = Logger.getInstance();
+
+        // Set Console Appender
+        logger.setConfig(new LoggerConfig(LogLevel.INFO, new ConsoleAppender()));
+
+        // Log messages
+        logger.debug("This is a DEBUG message");
+        logger.info("This is an INFO message");
+        logger.error("This is an ERROR message");
+
+        // Change to File Appender
+        logger.setConfig(new LoggerConfig(LogLevel.DEBUG, new FileAppender("logs.txt")));
+        logger.warning("This is a WARNING message");
+        logger.fatal("This is a FATAL message");
+    }
+}
+</code></pre>
+
+    
+    <p>Input:</p>
+    <ul>
+        <li>Set log level to INFO</li>
+        <li>Log messages with DEBUG, INFO, and ERROR levels</li>
+        <li>Change configuration to log to a file</li>
+        <li>Log messages with WARNING and FATAL levels</li>
+    </ul>
+
+    <p>Output:</p>
+    <ul>
+        <li>Console Output:</li>
+        <code>[2024-12-30T14:20:00] [INFO] This is an INFO message</code><br>
+        <code>[2024-12-30T14:20:01] [ERROR] This is an ERROR message</code>
+        <li>File logs:</li>
+        <code>[2024-12-30T14:20:02] [WARNING] This is a WARNING message</code><br>
+        <code>[2024-12-30T14:20:03] [FATAL] This is a FATAL message</code>
+    </ul>
+    <hr>
+
+    <b>Explanation of the Code:</b>
+    <ul>
+        <li><strong>LogLevel:</strong> Enum defines the supported log levels.</li>
+        <li><strong>LogMessage:</strong> Encapsulates the log message details with a timestamp.</li>
+        <li><strong>LogAppender:</strong> Interface defines a contract for appenders.</li>
+        <li><strong>ConsoleAppender:</strong> Outputs logs to the console.</li>
+        <li><strong>FileAppender:</strong> Appends logs to a file.</li>
+        <li><strong>DatabaseAppender:</strong> Writes logs to a database.</li>
+        <li><strong>LoggerConfig:</strong> Holds the current log level and appender settings.</li>
+        <li><strong>Logger:</strong> Singleton class managing thread-safe logging and configuration.</li>
+    </ul>
+    <hr>
+
+    <b>Design Considerations:</b>
+    <ul>
+        <li>Thread-safe implementation ensures safe logging from multiple threads.</li>
+        <li>Flexibility for multiple output destinations using the strategy pattern.</li>
+        <li>Singleton Logger ensures a single instance for global logging access.</li>
+        <li>Separation of concerns with dedicated classes for each functionality.</li>
+    </ul>
+    <hr>
+
+    <b>Improvements & Extensions:</b>
+    <ul>
+        <li>Implement asynchronous logging for improved performance.</li>
+        <li>Add support for more complex configurations, such as multiple appenders.</li>
+        <li>Provide a log rotation mechanism for file-based logging.</li>
+        <li>Enhance database appender to include connection pooling.</li>
+    </ul>
+    <hr>
+</div>

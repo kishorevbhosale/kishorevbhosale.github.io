@@ -1,0 +1,261 @@
+<div>
+    <h2 style="text-align: center;">Design for Stack Overflow</h2>
+    <hr>
+
+    <b>Requirements</b>
+    <ul>
+        <li>Users can post questions, answer questions, and comment on questions and answers.</li>
+        <li>Users can vote on questions and answers.</li>
+        <li>Questions should have tags associated with them.</li>
+        <li>Users can search for questions based on keywords, tags, or user profiles.</li>
+        <li>The system should assign reputation score to users based on their activity and the quality of their contributions.</li>
+        <li>The system should handle concurrent access and ensure data consistency.</li>
+    </ul>
+    <hr>
+    
+    
+    <b>Code Implementation</b>
+    <pre><code>
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+// User Class
+class User {
+    private static final AtomicInteger idGenerator = new AtomicInteger(1);
+    private int id;
+    private String username;
+    private String email;
+    private int reputation;
+
+    public User(String username, String email) {
+        this.id = idGenerator.getAndIncrement();
+        this.username = username;
+        this.email = email;
+        this.reputation = 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public int getReputation() {
+        return reputation;
+    }
+
+    public void incrementReputation(int points) {
+        this.reputation += points;
+    }
+}
+
+// Tag Class
+class Tag {
+    private static final AtomicInteger idGenerator = new AtomicInteger(1);
+    private int id;
+    private String name;
+
+    public Tag(String name) {
+        this.id = idGenerator.getAndIncrement();
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+// Comment Class
+class Comment {
+    private static final AtomicInteger idGenerator = new AtomicInteger(1);
+    private int id;
+    private String content;
+    private User author;
+    private LocalDateTime creationDate;
+
+    public Comment(String content, User author) {
+        this.id = idGenerator.getAndIncrement();
+        this.content = content;
+        this.author = author;
+        this.creationDate = LocalDateTime.now();
+    }
+}
+
+// Vote Class
+class Vote {
+    private User voter;
+    private int value; // +1 for upvote, -1 for downvote
+
+    public Vote(User voter, int value) {
+        this.voter = voter;
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
+// Answer Class
+class Answer {
+    private static final AtomicInteger idGenerator = new AtomicInteger(1);
+    private int id;
+    private String content;
+    private User author;
+    private List<Comment> comments;
+    private int votes;
+    private LocalDateTime creationDate;
+
+    public Answer(String content, User author) {
+        this.id = idGenerator.getAndIncrement();
+        this.content = content;
+        this.author = author;
+        this.comments = new ArrayList<>();
+        this.votes = 0;
+        this.creationDate = LocalDateTime.now();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void addVote(Vote vote) {
+        votes += vote.getValue();
+    }
+}
+
+// Question Class
+class Question {
+    private static final AtomicInteger idGenerator = new AtomicInteger(1);
+    private int id;
+    private String title;
+    private String content;
+    private User author;
+    private List<Answer> answers;
+    private List<Comment> comments;
+    private List<Tag> tags;
+    private int votes;
+    private LocalDateTime creationDate;
+
+    public Question(String title, String content, User author) {
+        this.id = idGenerator.getAndIncrement();
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.answers = new ArrayList<>();
+        this.comments = new ArrayList<>();
+        this.tags = new ArrayList<>();
+        this.votes = 0;
+        this.creationDate = LocalDateTime.now();
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void addVote(Vote vote) {
+        votes += vote.getValue();
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+}
+
+// StackOverflow Class
+class StackOverflow {
+    private List<User> users;
+    private List<Question> questions;
+
+    public StackOverflow() {
+        this.users = new ArrayList<>();
+        this.questions = new ArrayList<>();
+    }
+
+    public User createUser(String username, String email) {
+        User user = new User(username, email);
+        users.add(user);
+        return user;
+    }
+
+    public Question postQuestion(String title, String content, User author) {
+        Question question = new Question(title, content, author);
+        questions.add(question);
+        return question;
+    }
+
+    public Answer postAnswer(String content, Question question, User author) {
+        Answer answer = new Answer(content, author);
+        question.addAnswer(answer);
+        return answer;
+    }
+
+    public List<Question> searchQuestionsByKeyword(String keyword) {
+        List<Question> result = new ArrayList<>();
+        for (Question q : questions) {
+            if (q.title.contains(keyword) || q.content.contains(keyword)) {
+                result.add(q);
+            }
+        }
+        return result;
+    }
+}
+
+// Demonstration Class
+public class StackOverflowDemo {
+    public static void main(String[] args) {
+        StackOverflow stackOverflow = new StackOverflow();
+
+        User user1 = stackOverflow.createUser("JohnDoe", "john@example.com");
+        User user2 = stackOverflow.createUser("JaneDoe", "jane@example.com");
+
+        Question question = stackOverflow.postQuestion("How to learn Java?", "Can someone guide me on how to learn Java?", user1);
+
+        stackOverflow.postAnswer("Start with the basics and practice daily.", question, user2);
+
+        System.out.println("Question: " + question.title);
+        for (Answer answer : question.getAnswers()) {
+            System.out.println("Answer: " + answer.content);
+        }
+    }
+}
+    </code></pre>
+
+    <b>Sample Input and Output</b>
+    <p>Input:</p>
+    <ul>
+        <li>Create users: JohnDoe and JaneDoe</li>
+        <li>JohnDoe posts a question</li>
+        <li>JaneDoe answers the question</li>
+    </ul>
+    <p>Output:</p>
+    <code>
+    Question: How to learn Java?<br>
+    Answer: Start with the basics and practice daily.
+    </code>
+
+    <b>Explanation</b>
+    <ul>
+        <li>User creates questions and answers.</li>
+        <li>Answers and comments are tied to specific questions.</li>
+        <li>Search functionality allows filtering by keywords.</li>
+    </ul>
+
+    <b>Design Considerations</b>
+    <ul>
+        <li>Thread-safe ID generation using AtomicInteger.</li>
+        <li>Separate classes for clear responsibility and modularity.</li>
+        <li>Expandable for more features, e.g., voting, tags.</li>
+    </ul>
+</div>
