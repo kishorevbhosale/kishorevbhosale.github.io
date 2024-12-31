@@ -1,0 +1,209 @@
+<div>
+    <h2 style="text-align: center;">Designing an LRU Cache in Java</h2>
+    <hr>
+
+    <h5>Requirements:</h5>
+    <ul>
+        <li><strong>put(key, value):</strong> Inserts a key-value pair, removing the least recently used item if at capacity.</li>
+        <li><strong>get(key):</strong> Retrieves the value by key, marks it as most recently used, or returns -1 if the key does not exist.</li>
+        <li>The cache should be thread-safe and efficient with O(1) for both operations.</li>
+    </ul>
+    <hr>
+
+    <h5>Low-Level Design:</h5>
+    <ul>
+        <li><strong>Data Structures:</strong>
+            <ul>
+                <li>HashMap for fast access by key.</li>
+                <li>Doubly Linked List for maintaining order of usage.</li>
+            </ul>
+        </li>
+        <li><strong>Classes:</strong>
+            <ul>
+                <li><strong>Node:</strong> Represents a single entry in the cache with key and value.</li>
+                <li><strong>LRUCache:</strong> Manages the cache with put and get operations.</li>
+            </ul>
+        </li>
+        <li><strong>Thread Safety:</strong> Use a ReentrantLock for synchronization.</li>
+    </ul>
+    <hr>
+
+    <h5>Sequnece Diagram</h5>
+    <img src="../../../images/cache_lld.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+
+    <h5>Code Implementation:</h5>
+<pre><code>
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+// Node for doubly linked list
+class Node {
+    int key;
+    int value;
+    Node prev;
+    Node next;
+
+    public Node(int key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+</code></pre>
+
+<pre><code>
+// LRU Cache implementation
+class LRUCache {
+    private final int capacity;
+    private final Map&lt;Integer, Node&gt; cache;
+    private final Node head, tail;
+    private final Lock lock;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.cache = new HashMap<>();
+        this.lock = new ReentrantLock();
+
+        // Dummy head and tail nodes
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    // Get value from cache
+    public int get(int key) {
+        lock.lock();
+        try {
+            if (!cache.containsKey(key)) {
+                return -1;
+            }
+            Node node = cache.get(key);
+            moveToHead(node);
+            return node.value;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // Put key-value pair in cache
+    public void put(int key, int value) {
+        lock.lock();
+        try {
+            if (cache.containsKey(key)) {
+                Node node = cache.get(key);
+                node.value = value;
+                moveToHead(node);
+            } else {
+                Node newNode = new Node(key, value);
+                cache.put(key, newNode);
+                addNode(newNode);
+                if (cache.size() > capacity) {
+                    Node tailNode = popTail();
+                    cache.remove(tailNode.key);
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // Add a new node right after the head
+    private void addNode(Node node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    // Remove a node from the doubly linked list
+    private void removeNode(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+        prev.next = next;
+        next.prev = prev;
+    }
+
+    // Move a node to the head (most recently used)
+    private void moveToHead(Node node) {
+        removeNode(node);
+        addNode(node);
+    }
+
+    // Pop the least recently used node (from the tail)
+    private Node popTail() {
+        Node tailNode = tail.prev;
+        removeNode(tailNode);
+        return tailNode;
+    }
+}
+</code></pre>
+
+<pre><code>
+// Example usage
+public class LRUCacheExample {
+    public static void main(String[] args) {
+        LRUCache cache = new LRUCache(3);
+
+        // Put values
+        cache.put(1, 10);
+        cache.put(2, 20);
+        cache.put(3, 30);
+        System.out.println("Get key 2: " + cache.get(2)); // Output: 20
+
+        // Add a new value and evict the least recently used
+        cache.put(4, 40);
+        System.out.println("Get key 1: " + cache.get(1)); // Output: -1 (evicted)
+
+        // Access key 3 and add another value
+        System.out.println("Get key 3: " + cache.get(3)); // Output: 30
+        cache.put(5, 50);
+        System.out.println("Get key 2: " + cache.get(2)); // Output: -1 (evicted)
+    }
+}
+</code></pre>
+
+    <h5>Sample Input and Output:</h5>
+    <p>Input:</p>
+    <ul>
+        <li>Put: (1, 10), (2, 20), (3, 30)</li>
+        <li>Get: (2)</li>
+        <li>Put: (4, 40)</li>
+        <li>Get: (1), (3), (5)</li>
+    </ul>
+    <p>Output:</p>
+    <ul>
+        <li><code>Get key 2: 20</code></li>
+        <li><code>Get key 1: -1</code></li>
+        <li><code>Get key 3: 30</code></li>
+        <li><code>Get key 5: 50</code></li>
+    </ul>
+    <hr>
+
+    <h5>Explanation of the Code:</h5>
+    <ul>
+        <li>The <code>Node</code> class represents an entry in the cache with pointers for the doubly linked list.</li>
+        <li>The <code>LRUCache</code> class maintains the cache using a HashMap for quick lookups and a doubly linked list to track usage order.</li>
+        <li>The <code>put()</code> method handles insertion and eviction of least recently used items.</li>
+        <li>The <code>get()</code> method retrieves the value and updates the usage order.</li>
+        <li>Thread safety is ensured using a <code>ReentrantLock</code>.</li>
+    </ul>
+    <hr>
+
+    <h5>Design Considerations:</h5>
+    <ul>
+        <li>Used a combination of HashMap and Doubly Linked List for O(1) operations.</li>
+        <li>Ensured thread safety for concurrent access.</li>
+        <li>Separated responsibilities for data management and usage tracking.</li>
+    </ul>
+    <hr>
+
+    <h5>Improvements & Extensions:</h5>
+    <ul>
+        <li>Support for bulk operations (e.g., bulk put or get).</li>
+        <li>Instrumentation to track cache hit/miss rates.</li>
+        <li>Custom eviction policies (e.g., MRU, LFU).</li>
+    </ul>
+    <hr>
+</div>

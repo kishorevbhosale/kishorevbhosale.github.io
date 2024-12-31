@@ -12,10 +12,26 @@
         <li>The system should handle concurrent access and ensure data consistency.</li>
     </ul>
     <hr>
-    
+
+    <h5>Sequnece Diagram</h5>
+    <img src="../../../images/stackoverflow.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+
+    <b>Design Components:</b>
+    <ul>
+        <li>The User class represents a user of the Stack Overflow system, with properties such as id, username, email, and reputation.</li>
+        <li>The Question class represents a question posted by a user, with properties such as id, title, content, author, answers, comments, tags, votes and creation date.</li>
+        <li>The Answer class represents an answer to a question, with properties such as id, content, author, associated question, comments, votes and creation date.</li>
+        <li>The Comment class represents a comment on a question or an answer, with properties such as id, content, author, and creation date.</li>
+        <li>The Tag class represents a tag associated with a question, with properties such as id and name.</li>
+        <li>The Vote class represents vote associated with a question/answer.</li>
+        <li>The StackOverflow class is the main class that manages the Stack Overflow system. It provides methods for creating user, posting questions, answers, and comments, voting on questions and answers, searching for questions, and retrieving questions by tags and users.</li>
+        <li>The StackOverflowDemo class demonstrates the usage of the Stack Overflow system by creating users, posting questions and answers, voting, searching for questions, and retrieving questions by tags and users.</li>
+    </ul>
+    <hr>
     
     <b>Code Implementation</b>
-    <pre><code>
+<pre><code>
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -51,7 +67,9 @@ class User {
         this.reputation += points;
     }
 }
+</code></pre>
 
+<pre><code>
 // Tag Class
 class Tag {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -67,7 +85,9 @@ class Tag {
         return name;
     }
 }
+</code></pre>
 
+<pre><code>
 // Comment Class
 class Comment {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -83,7 +103,9 @@ class Comment {
         this.creationDate = LocalDateTime.now();
     }
 }
+</code></pre>
 
+<pre><code>
 // Vote Class
 class Vote {
     private User voter;
@@ -98,14 +120,16 @@ class Vote {
         return value;
     }
 }
+</code></pre>
 
+<pre><code>
 // Answer Class
 class Answer {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
     private int id;
     private String content;
     private User author;
-    private List<Comment> comments;
+    private List&lt;Comment&gt; comments;
     private int votes;
     private LocalDateTime creationDate;
 
@@ -126,7 +150,9 @@ class Answer {
         votes += vote.getValue();
     }
 }
+</code></pre>
 
+<pre><code>
 // Question Class
 class Question {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -134,9 +160,9 @@ class Question {
     private String title;
     private String content;
     private User author;
-    private List<Answer> answers;
-    private List<Comment> comments;
-    private List<Tag> tags;
+    private List&lt;Answer&gt; answers;
+    private List&lt;Comment&gt; comments;
+    private List&lt;Tag&gt; tags;
     private int votes;
     private LocalDateTime creationDate;
 
@@ -168,15 +194,17 @@ class Question {
         tags.add(tag);
     }
 
-    public List<Answer> getAnswers() {
+    public List&lt;Answer&gt; getAnswers() {
         return answers;
     }
 }
+</code></pre>
 
+<pre><code>
 // StackOverflow Class
 class StackOverflow {
-    private List<User> users;
-    private List<Question> questions;
+    private List&lt;User&gt; users;
+    private List&lt;Question&gt; questions;
 
     public StackOverflow() {
         this.users = new ArrayList<>();
@@ -201,8 +229,8 @@ class StackOverflow {
         return answer;
     }
 
-    public List<Question> searchQuestionsByKeyword(String keyword) {
-        List<Question> result = new ArrayList<>();
+    public List&lt;Question&gt; searchQuestionsByKeyword(String keyword) {
+        List&lt;Question&gt; result = new ArrayList<>();
         for (Question q : questions) {
             if (q.title.contains(keyword) || q.content.contains(keyword)) {
                 result.add(q);
@@ -211,7 +239,9 @@ class StackOverflow {
         return result;
     }
 }
+</code></pre>
 
+<pre><code>
 // Demonstration Class
 public class StackOverflowDemo {
     public static void main(String[] args) {
@@ -228,9 +258,19 @@ public class StackOverflowDemo {
         for (Answer answer : question.getAnswers()) {
             System.out.println("Answer: " + answer.content);
         }
+
+        System.out.println("User1 Questions:");
+        for (Question q : user1.getQuestions()) {
+            System.out.println(q.title);
+        }
+
+        System.out.println("User2 Answers:");
+        for (Answer a : user2.getAnswers()) {
+            System.out.println(a.content);
+        }
     }
 }
-    </code></pre>
+</code></pre>
 
     <b>Sample Input and Output</b>
     <p>Input:</p>
@@ -244,6 +284,7 @@ public class StackOverflowDemo {
     Question: How to learn Java?<br>
     Answer: Start with the basics and practice daily.
     </code>
+    <hr>
 
     <b>Explanation</b>
     <ul>
@@ -251,6 +292,7 @@ public class StackOverflowDemo {
         <li>Answers and comments are tied to specific questions.</li>
         <li>Search functionality allows filtering by keywords.</li>
     </ul>
+    <hr>
 
     <b>Design Considerations</b>
     <ul>
@@ -258,4 +300,5 @@ public class StackOverflowDemo {
         <li>Separate classes for clear responsibility and modularity.</li>
         <li>Expandable for more features, e.g., voting, tags.</li>
     </ul>
+    <hr>
 </div>

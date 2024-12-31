@@ -1,0 +1,165 @@
+<div>
+    <h2 style="text-align: center;">Designing a URL Shortener Service</h2>
+    <hr>
+
+    <p>A URL shortener service converts long URLs into shorter, unique aliases that redirect to the original URLs. This is particularly useful for sharing links on platforms with character limits or for creating cleaner, more manageable links.</p>
+    
+    <hr>
+    <h5>1. Requirements Gathering</h5>
+    <b>Functional Requirements:</b>
+    <ul>
+      <li>Generate a unique short URL for a given long URL.</li>
+      <li>Redirect users to the original URL when the short URL is accessed.</li>
+      <li>Allow users to customize their short URLs (optional).</li>
+      <li>Support link expiration where URLs are inaccessible after a certain period.</li>
+      <li>Provide analytics on link usage (optional).</li>
+    </ul>
+  
+    <b>Non-Functional Requirements:</b>
+    <ul>
+      <li>High availability (99.9% uptime).</li>
+      <li>Low latency (operations should complete in milliseconds).</li>
+      <li>Scalability (handle millions of requests per day).</li>
+      <li>Durability (shortened URLs should remain functional for years).</li>
+      <li>Security to prevent malicious use, such as phishing.</li>
+    </ul>
+    
+    <hr>
+    <h5>2. Capacity Estimation</h5>
+    <b>Assumptions:</b>
+    <ul>
+      <li>Daily URL Shortening Requests: 1 million.</li>
+      <li>Read:Write ratio: 100:1 (for every URL creation, 100 redirects).</li>
+      <li>Peak Traffic: 10x the average load.</li>
+      <li>Average original URL length: 100 characters.</li>
+    </ul>
+  
+    <b>Throughput Requirements:</b>
+    <ul>
+      <li>Average Writes Per Second (WPS): ~12.</li>
+      <li>Peak WPS: ~120.</li>
+      <li>Average Redirects per second (RPS): ~1,200.</li>
+      <li>Peak RPS: ~12,000.</li>
+    </ul>
+  
+    <b>Storage Estimation:</b>
+    <ul>
+      <li>Storage per URL: ~127 bytes.</li>
+      <li>Total Storage per Year: ~46.4 GB.</li>
+    </ul>
+  
+    <b>Bandwidth Estimation:</b>
+    <ul>
+      <li>Total Read Bandwidth per Day: ~50 GB.</li>
+      <li>Peak Bandwidth: ~6 MB/s.</li>
+    </ul>
+  
+    <b>Caching Estimation:</b>
+    <ul>
+      <li>Cache Memory Required for Hot URLs: ~25.4 MB.</li>
+      <li>Requests hitting the DB: ~120 RPS.</li>
+    </ul>
+  
+    <b>Infrastructure Sizing:</b>
+    <ul>
+      <li>API Servers: 4-6 instances behind a load balancer.</li>
+      <li>Database: A distributed database with 10-20 nodes.</li>
+      <li>Cache Layer: A distributed cache with 3-4 nodes.</li>
+    </ul>
+    
+    <hr>
+    <h5>3. High-Level Design</h5>
+    <p>The system comprises several components:</p>
+    <ul>
+      <li><strong>API Gateway:</strong> Handles incoming requests for URL shortening and redirection.</li>
+      <li><strong>Application Servers:</strong> Process business logic for creating and retrieving URLs.</li>
+      <li><strong>Database:</strong> Stores mappings between short URLs and original URLs.</li>
+      <li><strong>Cache:</strong> Speeds up retrieval of frequently accessed URLs.</li>
+      <li><strong>Analytics Service:</strong> Collects data on link usage (if implemented).</li>
+    </ul>
+    
+    <img src="../../../images/hld_url_shortner.png" alt="cache" style="display: block; margin: auto; width: 80%;">
+    
+    
+    <hr>
+    <h5>4. Detailed Component Design</h5>
+    <b>4.1 API Gateway:</b>
+    <ul>
+      <li>Manages rate limiting and authentication.</li>
+      <li>Routes requests to appropriate services.</li>
+    </ul>
+  
+    <b>4.2 Application Servers:</b>
+    <ul>
+      <li>Handle URL validation and processing.</li>
+      <li>Generate unique short URLs using Base62 encoding.</li>
+      <li>Check for custom alias conflicts.</li>
+      <li>Interact with the database and cache.</li>
+    </ul>
+  
+    <b>4.3 Database:</b>
+    <ul>
+      <li>Stores URL mappings, creation dates, expiration dates, and click counts.</li>
+      <li>Employs sharding and replication for scalability and reliability.</li>
+      <li>For storing billions of records with mostly key-value lookups, a NoSQL database is ideal.</li>
+      <li>Read operations dominate write operations, requiring efficient query handling.</li>
+      <li>No need for table joins, simplifying the data model.</li>
+      <li>High scalability and availability are crucial.</li>
+      <li>DynamoDB or Cassandra are well-suited for these requirements.</li>
+    </ul>
+  
+    <b>4.4 Cache:</b>
+    <ul>
+      <li>Stores frequently accessed URL mappings to reduce database load.</li>
+      <li>Uses an LRU eviction policy.</li>
+    </ul>
+  
+    <b>4.5 Analytics Service (Optional):</b>
+    <ul>
+      <li>Tracks metrics like click counts and geographic data.</li>
+      <li>Stores aggregated data in a separate analytics database.</li>
+    </ul>
+    
+    <hr>
+    <h5>5. URL Generation Strategy</h5>
+    <p>To generate unique short URLs:</p>
+    <ul>
+      <li>Use a Base62 encoding scheme (characters a-z, A-Z, 0-9).</li>
+      <li>Maintain a global counter or utilize a distributed unique ID generator.</li>
+      <li>Convert the counter value to a Base62 string to create the short URL.</li>
+    </ul>
+    
+    <hr>
+    <h5>6. Handling Expiration and Deletion</h5>
+    <p>For URLs with expiration:</p>
+    <ul>
+      <li>Store expiration dates in the database.</li>
+      <li>Implement a background job to remove expired URLs periodically.</li>
+      <li>Return appropriate responses for expired URLs.</li>
+    </ul>
+    
+    <hr>
+    <h5>7. Security Considerations</h5>
+    <ul>
+      <li>Implement rate limiting to prevent abuse.</li>
+      <li>Validate input URLs to prevent malicious content.</li>
+      <li>Use HTTPS to secure data in transit.</li>
+      <li>Monitor for phishing attempts and misuse.</li>
+    </ul>
+    
+    <hr>
+    <h5>8. Scalability and Fault Tolerance</h5>
+    <ul>
+      <li>Employ load balancers to distribute traffic.</li>
+      <li>Use distributed databases and caching systems.</li>
+      <li>Implement replication and failover mechanisms.</li>
+      <li>Design stateless application servers to allow horizontal scaling.</li>
+    </ul>
+    
+    <hr>
+    <h5>9. Conclusion</h5>
+    <p>Designing a URL shortener involves careful consideration of scalability, performance, and security. 
+        By addressing these aspects, the service can efficiently handle high traffic volumes while providing a reliable user experience.
+    </p>
+   
+  
