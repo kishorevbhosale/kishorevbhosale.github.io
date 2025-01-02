@@ -1,0 +1,529 @@
+<div>
+    <h2 style="text-align: center;">Payment Gateway API Design</h2>
+    <hr>
+    <p>
+        A payment gateway enables customers to transfer funds to merchants using various payment methods, such as credit or debit cards, facilitating seamless online transactions. 
+        Despite its simplicity for users, it offers complex services through APIs, connecting millions of customers and merchants.
+    </p>
+    <hr>
+    
+    <h5>Requirements:</h5>
+    <p>
+        A payment gateway offers numerous services, but for this discussion, we will focus on the following functional and non-functional requirements.
+    </p>
+    <b>Functional Requirements:</b>
+    <ul>
+        <li>Payments: The Stripe API should enable merchants to charge customers for their purchases.</li>
+        <li>Customer Data: The API should securely manage customer data, including creation, updates, deletion, and storage of sensitive information.</li>
+        <li>Invoices: The API should generate invoices for customers before completing a transaction.</li>
+        <li>Transaction Details: The API should provide detailed records of all transactions, including purchases, refunds, payouts, and support for one-time and recurring payments.</li>
+        <li>Account Balance: The API should allow merchants to view account details, such as current balance and statements.</li>
+    </ul>
+    <b>NonFunctional Requirements:</b>
+    <ul>
+        <li>Strong Consistency: The API must ensure all sources of truth are updated consistently during transactions, even at the cost of performance, to avoid discrepancies.</li>
+        <li>Security: The API should implement advanced security measures to protect sensitive data, secure transactions, and enforce robust authentication and authorization.</li>
+        <li>Reliability: The API must remain functional and deliver services even when some components encounter errors.</li>
+        <li>Availability: The API should provide uninterrupted service, ensuring high availability for both customers and merchants.</li>
+        <li>Scalability: The API must efficiently handle a growing number of users, merchants, and transactions.</li>
+    </ul>
+    <hr>
+
+    <h5>How Payment System Works?</h5>
+    <b>Payment authorization:</b>
+    <div>
+        <ol>
+            <li>The customer selects the goods or services they wish to purchase online, proceeds to the checkout page, and enters their credit card information. A transaction is created, which includes details about the customer, their credit card, and the purchased items.</li>
+            <li>The transaction information is sent to Stripe for further processing. Stripe stores these details to facilitate the transfer of funds in the later stages.</li>
+            <li>Stripe forwards the customer’s credit/debit card details and transaction information to the cards network for processing.</li>
+            <li>The cards network authenticates the credit card and passes the transaction information to the issuer bank to verify the validity of the customer's account details.</li>
+            <li>The issuer bank checks the customer’s account status and verifies the availability of funds. Once confirmed, the bank places a hold on the required amount of funds.</li>
+            <li>The issuer bank responds with a successful authorization code, which is sent back to the cards network, and then passed to Stripe.</li>
+            <li>Stripe sends the authorization code to the acquiring bank for approval.</li>
+            <li>The acquiring bank provides approval to the merchant’s terminal, which may issue a receipt to the customer upon completion of the transaction.</li>
+            <li>Meanwhile, Stripe updates the transaction details in its database based on the authorization code received from the issuer bank via the cards network.</li>
+        </ol>
+    </div>
+      
+    <img src="../../../images/stripe_auth_phase.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+    <b>How does Stripe pass the card information to the cards network in the authorization phase?</b>
+    <p>
+        When a customer enters their credit card information on a checkout form, Stripe captures and tokenizes the data. 
+        This means the card details are replaced with a unique identifier, or "token," that represents the customer's payment information. 
+        Stripe then securely transmits the token to the card network in a manner that complies with PCI standards.
+    </p>
+    <hr>
+
+    <b>Settlement Process:</b>
+    <div>
+    <ol>   
+       <li>At the end of the day, Stripe gathers all transactions and authorization codes from the database and sends them to the acquiring bank to withdraw the corresponding amount from the issuer's bank.</li>
+       <li>The acquiring bank forwards all the data to the card network to verify each transaction and its associated authorization codes.</li>
+       <li>The cards network routes all transaction information to the issuer bank for verification.</li>
+       <li>After successful verification, the issuer bank transfers the funds to the merchant's account in Stripe, with the verification conducted against each authorization code provided during the authorization phase.</li>
+       <li>The issuer bank provides a bill to the customer or the cardholder for every successful transaction.</li>
+       <li>The merchant can later transfer the funds from the Stripe account to their bank account in the acquiring bank.</li>
+    </ol>
+    </div>
+
+    <img src="../../../images/stripe_settlement_process.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <hr>
+
+    <h5>How Payment Gateway Services works</h5>
+    <p>
+        Stripe offers a wide range of services to its customers, each managing a different aspect of the payment process. 
+        In this discussion, we will focus on key services, including customer, session, invoices, charges, refunds, balance, and payout services, as illustrated in the figure below:
+    </p>
+    <p>  
+        When a customer makes a purchase using a credit or debit card, the session service initiates and maintains the session throughout the payment process. 
+        To complete the transaction, the invoices service generates a bill for the customer, which is then paid using the charges service. 
+        If the customer requests a refund, the refunds service handles the process.
+        The balance service tracks and manages the merchant’s balance. For example, the balance increases when a customer makes a purchase and decreases when a refund is issued. 
+        Additionally, the merchant can transfer a specified balance amount to their bank account through the payouts service.
+        Having reviewed the design and workflow of Stripe, let’s now shift our focus to the key technical considerations needed to design the Stripe API.
+    </p>
+    <img src="../../../images/stripe_service.png" alt="cache" style="display: block; margin: auto; width: 80%;">
+    <hr>
+
+    <h5>Client-to-API gateway:</h5>
+    <p>
+        When we examine the core usage of Stripe, we see that it is integrated into third-party applications. 
+        Customers begin the payment process by entering their card details. Both customers and merchants interact with Stripe through an API gateway, requesting access to various resources, 
+        such as checking account balances, retrieving invoices, or viewing transaction details.
+        This interaction follows a request-response model, where each API call retrieves or modifies specific resources, allowing for the execution of CRUD (Create, Read, Update, Delete) operations. 
+        Given this pattern, the REST API architecture style is chosen as it aligns naturally with these use cases, providing an efficient and scalable solution for managing these interactions.
+    </p>
+    <hr>
+
+    <h5>API gateway-to-backend services:</h5>
+    <p>
+        When the API gateway receives a request, it is parsed and converted into the appropriate format to either fetch or post data to the backend servers. 
+        A single request may require data from multiple endpoints, as it targets several interdependent services through the API gateway. 
+        For instance, the charges service handles the fund transfer after a transaction is successfully completed, while the customer service updates the merchant's account. 
+        Simultaneously, the session service continues to manage the user session. To streamline data from these multiple sources, a data federation strategy is needed. 
+        This can be effectively achieved by implementing GraphQL between the API gateway and backend servers, allowing seamless data unification.
+    </p>
+
+    <h5>Summary of design</h5>
+    <table border="1">
+        <thead>
+          <tr>
+            <th>Design Considerations</th>
+            <th>Client-to-API Gateway</th>
+            <th>API Gateway-to-Backend Services</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Architecture Style</td>
+            <td>REST</td>
+            <td>GraphQL</td>
+          </tr>
+          <tr>
+            <td>Data Format</td>
+            <td>URL encoded form data</td>
+            <td>JSON</td>
+          </tr>
+          <tr>
+            <td>Protocol</td>
+            <td>HTTP/2.0</td>
+            <td>HTTP/2.0</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+
+    <h5>How to secure the data?</h5>
+    <p>
+        To create a payment API like Stripe, it's important to consider both functional and non-functional requirements. 
+        Strategies and methods to improve security and ensure data accuracy include:<br>
+        <b>Consistency:</b>
+        <ul>
+            <li>Idempotency ensures that making the same API request multiple times will produce the same result each time, keeping the outcomes consistent.</li>
+            <li>Reconciliation: Services in the system regularly check and compare their statuses to make sure they match. 
+                This is important for financial transactions to ensure accuracy, including handling cancellations and reversals.</li>
+        </ul>
+        <b>Security:</b>
+        <ul>
+            <li>HTTP Strict Transport Security helps protect against man-in-the-middle attacks by ensuring that only secure connections are used.</li>
+            <li>Encryption algorithms: Using strong encryption methods like AES-256 to store sensitive data, such as debit or credit card numbers, helps protect financial information.</li>
+        </ul>
+        These measures are essential for maintaining a secure and reliable payment processing system.
+    </p>
+    <hr>
+
+    <h5>REST API Details</h5>
+    <b>Customer: </b>
+    <p>
+        This object represents a customer of your business. 
+        Use it to create recurring charges, save payment and contact information, and track payments that belong to the same customer.
+    </p>
+    <pre><code>
+        POST /v1/customers
+        POST /v1/customers/:id
+        GET /v1/customers/:id
+        GET /v1/customers
+        DELETE /v1/customers/:id
+        GET /v1/customers/search
+    </code></pre>
+    <b>Session: </b>
+    <p>
+        A **Checkout Session** is a temporary setup for your customer to complete their payment for one-time purchases or subscriptions. 
+        Each time a customer tries to pay, you create a new session to keep things organized. Once the payment is successful, the session saves the customer’s info and payment details. 
+        You simply create the session on your server and redirect the customer to its URL to start the checkout process.
+    </p>
+    <pre><code>
+        POST /v1/checkout/sessions
+        POST /v1/checkout/sessions/:id
+        GET /v1/checkout/sessions/:id
+        GET /v1/checkout/sessions/:id/line_items
+        GET /v1/checkout/sessions
+        POST /v1/checkout/sessions/:id/expire
+    </code></pre>
+    <b>Invoices: </b>
+    <p>
+        Invoices are bills for amounts owed by a customer, generated either as one-time or recurring from a subscription. 
+        Stripe can automatically charge the customer or send the invoice via email for manual payment. Before charging, Stripe applies any customer credits and adjusts the amount. 
+        If the amount is too small to charge, it’s added as credit for the next invoice.
+    </p>
+    <pre><code>
+        POST /v1/invoices
+        POST /v1/invoices/:id
+        GET /v1/invoices/:id
+        GET /v1/invoices
+        DELETE /v1/invoices/:id
+        POST /v1/invoices/:id/pay
+        GET /v1/invoices/search
+    </code></pre>
+    <b>Charges: </b>
+    <p>
+        The Charge object represents a single attempt to move money into your Stripe account. 
+        PaymentIntent confirmation is the most common way to create Charges, but transferring money to a different Stripe account through Connect also creates Charges.
+    </p>
+    <pre><code>
+        POST /v1/charges
+        POST /v1/charges/:id
+        GET /v1/charges/:id
+        GET /v1/charges
+        GET /v1/charges/search
+    </code></pre>
+    <b>Refunds:</b>
+    <p>
+        Refund objects allow you to refund a previously created charge that isn’t refunded yet. 
+        Funds are refunded to the credit or debit card that’s initially charged.
+    </p>
+    <pre><code>
+        POST /v1/payouts
+        POST /v1/payouts/:id
+        GET /v1/payouts/:id
+        GET /v1/payouts
+        POST /v1/payouts/:id/cancel
+        POST /v1/payouts/:id/reverse
+    </code></pre>
+    
+    <h5>Balance:</h5>
+    <p>
+        This is an object representing your Stripe balance. You can retrieve it to see the balance currently on your Stripe account.
+    </p>
+    <pre><code>
+        GET /v1/balance
+    </code></pre>
+
+    <h5>Payouts:</h5>
+    <p>
+        A Payout object is created when you receive funds from Stripe or initiate a payout to a connected bank account or debit card. 
+        You can view individual payouts or list all payouts. Payout schedules vary based on your country and industry.
+    </p>
+    <pre><code>
+        POST /v1/payouts
+        POST /v1/payouts/:id/reverse
+        POST /v1/payouts/:id
+        GET /v1/payouts/:id
+        GET /v1/payouts
+        POST /v1/payouts/:id/cancel
+    </code></pre>
+    <hr>
+    <h5>GraphQL Queries</h5>
+    <b>Customer</b>
+    <pre>
+        # Create a customer
+mutation {
+  createCustomer(input: { name: "John Doe", email: "john.doe@example.com", address: "123 Street" }) {
+    id
+    name
+    email
+    address
+  }
+}
+
+# Retrieve a specific customer by ID
+query {
+  customer(id: "customer_id") {
+    id
+    name
+    email
+    address
+  }
+}
+
+# Retrieve all customers
+query {
+  customers {
+    id
+    name
+    email
+  }
+}
+
+# Update a customer's information
+mutation {
+  updateCustomer(id: "customer_id", input: { name: "Jane Doe", address: "456 New Street" }) {
+    id
+    name
+    email
+    address
+  }
+}
+
+# Delete a customer
+mutation {
+  deleteCustomer(id: "customer_id") {
+    success
+  }
+}
+
+# Search for customers based on criteria
+query {
+  searchCustomers(query: "John") {
+    id
+    name
+    email
+  }
+}
+    </pre>
+
+    <b>Session</b>
+    <pre>
+        # Create a session
+        mutation {
+          createSession(input: { paymentMode: "card", shippingInfo: "456 Shipping St." }) {
+            sessionId
+            paymentMode
+            shippingInfo
+          }
+        }
+        
+        # Retrieve a session by ID
+        query {
+          session(id: "session_id") {
+            sessionId
+            paymentMode
+            shippingInfo
+          }
+        }
+        
+        # Retrieve line items from a session
+        query {
+          sessionLineItems(sessionId: "session_id") {
+            itemId
+            description
+            quantity
+            price
+          }
+        }
+        
+        # Retrieve all sessions
+        query {
+          sessions {
+            sessionId
+            paymentMode
+            shippingInfo
+          }
+        }
+        
+        # Expire a session
+        mutation {
+          expireSession(id: "session_id") {
+            success
+          }
+        }
+        
+    </pre>
+
+    <b>Invoice:</b>
+    <pre>
+        # Create an invoice
+mutation {
+  createInvoice(input: { applicationCharges: 100, tax: 10, dueAmount: 110 }) {
+    id
+    applicationCharges
+    tax
+    dueAmount
+  }
+}
+
+# Retrieve a specific invoice by ID
+query {
+  invoice(id: "invoice_id") {
+    id
+    applicationCharges
+    tax
+    dueAmount
+    status
+  }
+}
+
+# Retrieve all invoices
+query {
+  invoices {
+    id
+    applicationCharges
+    dueAmount
+    status
+  }
+}
+
+# Update an invoice
+mutation {
+  updateInvoice(id: "invoice_id", input: { tax: 15, dueAmount: 120 }) {
+    id
+    tax
+    dueAmount
+  }
+}
+
+# Delete an invoice
+mutation {
+  deleteInvoice(id: "invoice_id") {
+    success
+  }
+}
+
+# Pay an invoice
+mutation {
+  payInvoice(id: "invoice_id") {
+    id
+    status
+  }
+}
+
+# Search invoices
+query {
+  searchInvoices(query: "overdue") {
+    id
+    applicationCharges
+    dueAmount
+    status
+  }
+}
+
+    </pre>
+
+    <b>Charge:</b>
+    <pre>
+        # Create a charge
+mutation {
+  createCharge(input: { amount: 100, billingDetails: { name: "John Doe" }, customerId: "customer_id" }) {
+    id
+    amount
+    billingDetails {
+      name
+    }
+    status
+  }
+}
+
+# Retrieve a specific charge by ID
+query {
+  charge(id: "charge_id") {
+    id
+    amount
+    status
+  }
+}
+
+# Retrieve all charges
+query {
+  charges {
+    id
+    amount
+    status
+  }
+}
+
+# Search charges
+query {
+  searchCharges(query: "pending") {
+    id
+    amount
+    status
+  }
+}
+
+    </pre>
+
+    <b>Refunds:</b>
+    <pre>
+        # Create a refund
+mutation {
+  createRefund(input: { amount: 50, chargeId: "charge_id" }) {
+    id
+    amount
+    status
+  }
+}
+
+# Retrieve a specific refund by ID
+query {
+  refund(id: "refund_id") {
+    id
+    amount
+    status
+  }
+}
+
+# Retrieve all refunds
+query {
+  refunds {
+    id
+    amount
+    status
+  }
+}
+
+    </pre>
+
+    <b>Balance:</b>
+    <pre>
+        # Retrieve balance
+query {
+  balance {
+    available
+    currency
+  }
+}
+
+# Retrieve a specific transaction from balance
+query {
+  balanceTransaction(id: "transaction_id") {
+    id
+    amount
+    currency
+  }
+}
+
+# Retrieve a list of transactions from balance
+query {
+  balanceTransactions(limit: 10) {
+    id
+    amount
+    status
+  }
+}
+
+    </pre>
+<hr>
+<b>
+    For more details refer : https://docs.stripe.com/api?lang=java
+</b>      
