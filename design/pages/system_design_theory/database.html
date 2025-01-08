@@ -1,7 +1,7 @@
 <div class="container">
 
         <div class="content">
-            <h3 class="section-title">Why Choose Databases Over File Storage?</h3>
+            <h3>Why Choose Databases Over File Storage?</h3>
             <p>Yes, it's possible to create a software application without using databases by storing data in files.<br> 
                 <BR>
                 <img src="../../images/db2.PNG" alt="SS" style="display: block; margin: auto; width: 30%;">
@@ -19,9 +19,9 @@
                     <li>SQL (relational databases)</li>
                     <li>NoSQL (non-relational databases)</li>
                 </ul>
-            <br>
+            <hr>
 
-            <h3 class="section-title">Why Databases Are Essential for Businesses?</h3>
+            <h3>Why Databases Are Essential for Businesses?</h3>
             
             <p><ol>
                 <li><b>Handling Large Data: </b>Databases manage large volumes of data effectively, which is challenging with other tools.</li>
@@ -34,11 +34,11 @@
             </ol>
             </p>
            
-            <br>
+            <hr>
 
-            <h3 class="section-title">What is a Relational Database?</h3>
+            <h3>What is a Relational Database?</h3>
             <p>A relational database is a type of database that organizes data into tables (relations) which can be linked—or related—based on common data attributes. Each table consists of rows (records) and columns (attributes), and relationships between tables are established using keys.</p>
-                <hr>
+                
                 <h5>Why Relational Databases?</h5>
                 
                 <ul>
@@ -46,7 +46,7 @@
                     <li><strong>Data Integrity:</strong> Relationships between tables ensure data accuracy and reduce redundancy.</li>
                     <li><strong>Efficient Querying:</strong> SQL (Structured Query Language) is used for complex queries, allowing for efficient data retrieval and manipulation.</li>
                 </ul>
-                <hr>
+                
             
                 <h5>ACID Properties</h5>
                 
@@ -57,7 +57,7 @@
                     <li><strong>Isolation:</strong> Concurrent transactions do not interfere with each other, ensuring data integrity.</li>
                     <li><strong>Durability:</strong> Once a transaction is committed, it remains permanent, even in case of system failures.</li>
                 </ul>
-                <hr>    
+                
             
                 <h5>Examples</h5>
                 <div class="example">
@@ -78,11 +78,11 @@
                 
             <br>
             <img src="../../images/db.PNG" alt="SS" style="display: block; margin: auto; width: 30%;">
-            <br>
+            <hr>
            
-            <h3 class="section-title">What is a Non-Relational Database?</h3>
+            <h3>What is a Non-Relational Database?</h3>
                 <p>A non-relational database, often referred to as NoSQL (Not Only SQL), is a type of database that stores and manages data in formats other than the traditional tabular structure used in relational databases. Non-relational databases are designed to handle large volumes of unstructured, semi-structured, or rapidly changing data, providing more flexibility and scalability compared to traditional relational databases.</p>
-                <hr>
+                
                 <h5>Key Characteristics of Non-Relational Databases:</h5>
                 
                     <ul>    
@@ -92,7 +92,7 @@
                                     <li>This flexibility allows for the storage of data in various formats, such as documents, key-value pairs, graphs, or wide-column stores.</li>
                                 </ul>
                             </li>
-                            <br>
+                            
                         <li><strong>Data Models:</strong>
                             <ul>
                                 <li><strong>Document Stores:</strong> Store data as JSON, BSON, or XML documents. Each document can have a unique structure.
@@ -105,21 +105,21 @@
                                     <br><em>Example:</em> Neo4j, ArangoDB.</li>
                             </ul>
                         </li>
-                        <br>
+                       
                         <li><strong>Horizontal Scalability:</strong>
                             <ul>
                                 <li>Non-relational databases are designed to scale out horizontally by distributing data across multiple servers or nodes.</li>
                                 <li>This is particularly useful for applications that require handling massive amounts of data or high traffic, as additional nodes can be added to the cluster to manage the load.</li>
                             </ul>
                         </li>
-                        <br>
+                        
                         <li><strong>High Performance and Availability:</strong>
                             <ul>
                                 <li>Non-relational databases often prioritize performance and availability, making them suitable for real-time applications.</li>
                                 <li>Many NoSQL databases offer features like replication and sharding to ensure data is highly available and resilient to failures.</li>
                             </ul>
                         </li>
-                        <br>
+                        
                         <li><strong>Handling Unstructured Data:</strong>
                             <ul>
                                 <li>These databases excel in managing unstructured or semi-structured data, such as logs, social media posts, IoT data, or multimedia files, which do not fit neatly into a relational table.</li>
@@ -144,7 +144,7 @@
                 <li><strong>Cost-Effective:</strong> Many NoSQL databases are open-source and can be run on commodity hardware, reducing infrastructure costs.</li>
             </ul>
             
-            <hr>
+            
             <h5>Drawbacks of Non-Relational Databases:</h5>
             
             <ul>
@@ -154,7 +154,7 @@
                 <li><strong>Eventual Consistency:</strong> In distributed systems, non-relational databases may offer eventual consistency, meaning that data might not be immediately consistent across all nodes after an update.</li>
             </ul>
         
-        <br>
+        <hr>
         <h3 class="section-title">Clustered and Non-Clustered Indexes</h3>
 
         <p>Indexes in relational databases improve the speed of data retrieval. The two most common types of indexes are <strong>Clustered Indexes</strong> and <strong>Non-Clustered Indexes</strong>. Let's explore the differences between them with examples.</p>
