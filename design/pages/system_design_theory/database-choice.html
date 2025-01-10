@@ -1,0 +1,218 @@
+<div>
+    <h3 class="section-title">Understanding Database Choices</h3>
+   
+  <div>
+    <h5>Key Factors for Database Choice</h5>
+    <ul>
+      <li><b>Structure of Data</b>: Whether the data is structured or unstructured.</li>
+      <li><b>Query Patterns</b>: Type of queries performed, such as random reads, bulk reads, or sequential writes.</li>
+      <li><b>Scale Requirements</b>: The scale of data and query loads the system needs to handle.</li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>1. Caching Solutions</h5>
+    <ul>
+      <li><b>Purpose</b>: Reduce latency and prevent frequent database or remote service calls.</li>
+      <li><b>Common Use Cases</b>:
+        <ul>
+          <li>Storing database query results.</li>
+          <li>Caching responses from remote services with high latency.</li>
+        </ul>
+      </li>
+      <li><b>How it Works</b>: Key-Value storage where the key represents the query/request and the value is the response.</li>
+      <li><b>Popular Choices</b>: 
+        <ul>
+          <li>Redis: Battle-tested, widely used, and stable.</li>
+          <li>Memcached: Lightweight and fast.</li>
+          <li>etcd and Hazelcast: Alternative modern options.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>2. File Storage Options</h5>
+    <ul>
+      <li><b>Purpose</b>: Store large binary files like images, videos, and documents.</li>
+      <li><b>Common Use Cases</b>:
+        <ul>
+          <li>E-commerce product images/videos.</li>
+          <li>Streaming services like Netflix storing videos.</li>
+        </ul>
+      </li>
+      <li><b>Solution</b>: Blob Storage (e.g., Amazon S3).</li>
+      <li><b>Key Considerations</b>:
+        <ul>
+          <li>Not a database; no complex queries on stored files.</li>
+          <li>Use with a CDN to distribute content geographically for lower latency.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>3. Text Search</h5>
+    <ul>
+      <li><b>Purpose</b>: Provide efficient text-based search capabilities.</li>
+      <li><b>Common Use Cases</b>:
+        <ul>
+          <li>E-commerce platforms: Search by product title/description.</li>
+          <li>Streaming platforms: Search by movie name, genres, or cast.</li>
+          <li>Location services: Search by address or names with fuzzy search.</li>
+        </ul>
+      </li>
+      <li><b>Solution</b>: 
+        <ul>
+          <li>ElasticSearch: Distributed search engine with full-text search.</li>
+          <li>Apache Solr: Similar search engine with Lucene as the core.</li>
+        </ul>
+      </li>
+      <li><b>Fuzzy Search</b>: Handles minor spelling mistakes using edit distance (e.g., "AIRPROT" -> "AIRPORT").</li>
+      <li><b>Key Consideration</b>: 
+        <ul>
+          <li>Not a primary database; no guarantees of durability.</li>
+          <li>Primary data should reside in a different reliable data store.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>4. Metrics Storage</h5>
+    <ul>
+      <li><b>Purpose</b>: Store and analyze application metrics like latency, CPU usage, etc.</li>
+      <li><b>Characteristics</b>: 
+        <ul>
+          <li>Append-only sequential writes.</li>
+          <li>Bulk reads for specific time ranges (e.g., last few hours).</li>
+        </ul>
+      </li>
+      <li><b>Solution</b>: Time Series Databases.
+        <ul>
+          <li>InfluxDB</li>
+          <li>OpenTSDB (Open Time Series Database)</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>5. Analytics Storage</h5>
+    <ul>
+      <li><b>Purpose</b>: Perform analytics on large datasets for insights and reporting.</li>
+      <li><b>Common Use Cases</b>:
+        <ul>
+          <li>E-commerce: Analyze transaction trends, product performance.</li>
+          <li>Revenue analysis by geography.</li>
+        </ul>
+      </li>
+      <li><b>Solution</b>: Data Warehouses or Hadoop for large-scale analytics.</li>
+      <li><b>Key Consideration</b>: 
+        <ul>
+          <li>Not for real-time transactional systems.</li>
+          <li>Primarily used for offline reporting and insights.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+<hr>
+
+<div>
+    <h3 class="section-title">Database Choice Based on Scenarios</h3>
+  
+  <div>
+    <h5>1. Structured vs. Unstructured Data</h5>
+    <ul>
+      <li><b>Structured Data</b>: Relational databases are suitable when data can be modeled in tables with rows and columns (e.g., user profiles).</li>
+      <li><b>Unstructured Data</b>: Non-relational databases are suitable for data that doesn’t fit into a tabular structure (e.g., catalog systems with varying attributes).</li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>2. Relational Database (RDBMS) Scenarios</h5>
+    <ul>
+      <li><b>ACID Guarantees</b>: Required for applications like:
+        <ul>
+          <li>Payment systems: Ensure atomicity and consistency in transactions (e.g., money transfer).</li>
+          <li>Inventory management: Prevent overselling of products.</li>
+        </ul>
+      </li>
+      <li><b>Common Choices</b>: MySQL, PostgreSQL, Oracle, SQL Server.</li>
+      <li><b>No ACID Requirements</b>: Can still use relational or non-relational databases (e.g., storing simple user information).</li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>3. Document Database (NoSQL) Scenarios</h5>
+    <ul>
+      <li><b>Purpose</b>: Handles wide variety of attributes and queries efficiently.</li>
+      <li><b>Example Use Cases</b>:
+        <ul>
+          <li>E-commerce catalogs: Products with varying attributes (e.g., size, color, volume).</li>
+          <li>Random attribute queries: Optimized querying for JSON-like data structures.</li>
+        </ul>
+      </li>
+      <li><b>Common Choices</b>: MongoDB, Couchbase.</li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>4. Columnar Database Scenarios</h5>
+    <ul>
+      <li><b>Purpose</b>: Manages ever-increasing data with few query types but high volume.</li>
+      <li><b>Example Use Case</b>: Uber driver location pings (large data growth with fixed query patterns).</li>
+      <li><b>Common Choices</b>: Cassandra, HBase.</li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>5. Combination of Databases</h5>
+    <ul>
+      <li><b>Real-World Scenarios</b>: Often require multiple databases for specific needs:
+        <ul>
+          <li><b>Inventory Management</b>: Use RDBMS for active inventory and transition completed orders to Cassandra for permanent storage.</li>
+          <li><b>Analytics and Reporting</b>: Use Document DB (e.g., MongoDB) for queryable data and combine it with RDBMS and Columnar DB for specific use cases.</li>
+        </ul>
+      </li>
+      <li><b>Example</b>: E-commerce system:
+        <ul>
+          <li>Use RDBMS for transactional data.</li>
+          <li>Use Cassandra for ever-growing historical orders.</li>
+          <li>Use MongoDB for complex querying (e.g., products bought in the last 5 days).</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>6. Low-Scale Systems</h5>
+    <ul>
+      <li>If the system has a small dataset, few attributes, and limited queries, any database can be used.</li>
+      <li>Such cases are rare in system design interviews but could appear in simpler applications.</li>
+    </ul>
+  </div>
+<hr>
+
+  <div>
+    <h5>7. Key Takeaways</h5>
+    <ul>
+      <li>Understand the structure of data (structured vs. unstructured).</li>
+      <li>Identify if ACID guarantees are required for transactions.</li>
+      <li>Choose databases based on the type and volume of queries.</li>
+      <li>Real-world systems often require a combination of databases to meet functional and non-functional requirements.</li>
+    </ul>
+  </div>
+<hr>
+</div>
