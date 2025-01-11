@@ -25,109 +25,269 @@
     </ul>
     
     <hr>
-    <h5>2. Capacity Estimation</h5>
-    <b>Assumptions:</b>
-    <ul>
-      <li>Daily URL Shortening Requests: 1 million.</li>
-      <li>Read:Write ratio: 100:1 (for every URL creation, 100 redirects).</li>
-      <li>Peak Traffic: 10x the average load.</li>
-      <li>Average original URL length: 100 characters.</li>
-    </ul>
-  
-    <b>Throughput Requirements:</b>
-    <ul>
-      <li>Average Writes Per Second (WPS): ~12.</li>
-      <li>Peak WPS: ~120.</li>
-      <li>Average Redirects per second (RPS): ~1,200.</li>
-      <li>Peak RPS: ~12,000.</li>
-    </ul>
-  
-    <b>Storage Estimation:</b>
-    <ul>
-      <li>Storage per URL: ~127 bytes.</li>
-      <li>Total Storage per Year: ~46.4 GB.</li>
-    </ul>
-  
-    <b>Bandwidth Estimation:</b>
-    <ul>
-      <li>Total Read Bandwidth per Day: ~50 GB.</li>
-      <li>Peak Bandwidth: ~6 MB/s.</li>
-    </ul>
-  
-    <b>Caching Estimation:</b>
-    <ul>
-      <li>Cache Memory Required for Hot URLs: ~25.4 MB.</li>
-      <li>Requests hitting the DB: ~120 RPS.</li>
-    </ul>
-  
-    <b>Infrastructure Sizing:</b>
-    <ul>
-      <li>API Servers: 4-6 instances behind a load balancer.</li>
-      <li>Database: A distributed database with 10-20 nodes.</li>
-      <li>Cache Layer: A distributed cache with 3-4 nodes.</li>
-    </ul>
+    <div class="capacity-estimation">
+      <h5>2. Capacity Estimation</h5>
+        <b>A. Assumptions:</b>
+          <ul>
+            <li><i>Daily URL Shortening Requests:</i> 1 million new URLs are shortened daily.</li>
+            <li><i>Read:Write Ratio:</i> For every URL creation (write operation), there are 100 redirects (read operations). This indicates a system with significantly more read traffic than write traffic.</li>
+            <li><i>Peak Traffic:</i> Peak traffic is assumed to be 10 times the average traffic load.</li>
+            <li><i>Average Original URL Length:</i> Each original URL is approximately 100 characters long.</li>
+          </ul>
+      
+        <b>B. Throughput Requirements</b><br>
+        <ul>
+          <b>1. Writes Per Second (WPS):</b>
+          <ul>
+            <li><i>Average WPS:</i> 
+              Total daily write operations = 1 million URLs.  
+              Seconds in a day = 86,400.  
+              Average WPS = 1,000,000 / 86,400 ≈ 12.
+            </li>
+            <li><i>Peak WPS:</i> Peak traffic is 10x average load.  
+              Peak WPS = 10 × 12 = 120.
+            </li>
+          </ul>
+        
+          <b>2. Redirects Per Second (RPS):</b>
+          <ul>
+            <li><i>Average RPS:</i>  
+              Average RPS = 12 × 100 = 1,200.
+            </li>
+            <li><i>Peak RPS:</i>  
+              Peak RPS = 10 × 1,200 = 12,000.
+            </li>
+          </ul>
+        </ul>
+        
     
+      <h5>C. Storage Estimation</h5>
+      <ul>
+        <li><i>Storage per URL:</i>  
+          Short URL (7 characters, base 62) = 7 bytes.  
+          Original URL = 100 bytes.  
+          Metadata (timestamps, user info, etc.) = ~20 bytes.  
+          Total per URL = 127 bytes.
+        </li>
+        <li><i>Storage per Year:</i>  
+          URLs per year = 1,000,000 × 365 = 365,000,000.  
+          Total storage per year = 365,000,000 × 127 bytes = 46,355,000,000 bytes ≈ 46.4 GB.
+        </li>
+      </ul>
+    
+      <h5>D. Bandwidth Estimation</h5>
+      <ul>
+        <li><i>Daily Read Bandwidth:</i>  
+          Data transferred per redirect = 100 bytes.  
+          Daily redirects = 1,000,000 × 100 = 100,000,000.  
+          Total daily read bandwidth = 100,000,000 × 100 bytes = 10,000,000,000 bytes ≈ 50 GB/day.
+        </li>
+        <li><i>Peak Bandwidth:</i>  
+          Peak RPS = 12,000.  
+          Bandwidth per second = 12,000 × 100 bytes = 1,200,000 bytes ≈ 6 MB/s.
+        </li>
+      </ul>
+    
+      <h5>E. Caching Estimation</h5>
+      <ul>
+        <li><i>Cache Memory for Hot URLs:</i>  
+          Assume 20% of daily traffic are "hot" URLs.  
+          Hot URLs per day = 1,000,000 × 0.2 = 200,000.  
+          Memory required per URL = 127 bytes.  
+          Cache memory for hot URLs = 200,000 × 127 bytes = 25,400,000 bytes ≈ 25.4 MB.
+        </li>
+        <li><i>Requests Hitting the DB:</i>  
+          Cache hit ratio = 90%.  
+          Requests hitting the database = 10% of total RPS.  
+          Average DB requests per second = 1,200 × 0.1 = 120 RPS.
+        </li>
+      </ul>
+    
+      <h5>F. Infrastructure Sizing</h5>
+      <ul>
+        <li><i>API Servers:</i>  
+          To handle WPS and RPS, deploy 4-6 instances behind a load balancer.  
+          Adjust the number of instances based on peak traffic and scaling requirements.
+        </li>
+        <li><i>Database:</i>  
+          Use a distributed database to manage the load and ensure high availability.  
+          Estimated size: 10-20 nodes, depending on peak traffic and data replication requirements.
+        </li>
+        <li><i>Cache Layer:</i>  
+          Use a distributed caching system (e.g., Redis or Memcached).  
+          Estimated size: 3-4 nodes to handle hot URLs and peak RPS.
+        </li>
+      </ul>
+
+      <h5>Summary Table</h5>
+      <div style="width: 50%; margin: 0 auto;">
+        <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+          <tr>
+            <th style="padding: 8px; border: 1px solid #ddd;">Category</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Value</th>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Daily Writes</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">1 million</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Read:Write Ratio</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">100:1</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Peak WPS</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">120</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Peak RPS</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">12,000</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Storage per URL</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">127 bytes</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Yearly Storage</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">46.4 GB</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Daily Read Bandwidth</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">50 GB</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Peak Bandwidth</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">6 MB/s</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Cache Memory Needed</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">25.4 MB</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">DB Requests (Peak)</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">120 RPS</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">API Servers</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">4-6 instances</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Database Nodes</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">10-20</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">Cache Nodes</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">3-4</td>
+          </tr>
+        </table>
+      </div>     
+    </div>
     <hr>
+    
     <h5>3. High-Level Design</h5>
     <p>The system comprises several components:</p>
     <ul>
-      <li><strong>API Gateway:</strong> Handles incoming requests for URL shortening and redirection.</li>
-      <li><strong>Application Servers:</strong> Process business logic for creating and retrieving URLs.</li>
-      <li><strong>Database:</strong> Stores mappings between short URLs and original URLs.</li>
-      <li><strong>Cache:</strong> Speeds up retrieval of frequently accessed URLs.</li>
-      <li><strong>Analytics Service:</strong> Collects data on link usage (if implemented).</li>
+      <li><i>Load Balancer:</i> Handles incoming requests for URL shortening and redirection.</li>
+      <li><i>Application Servers:</i> Process business logic for creating and retrieving URLs.</li>
+      <li><i>Database:</i> Stores mappings between short URLs and original URLs.</li>
+      <li><i>Cache:</i> Speeds up retrieval of frequently accessed URLs.</li>
+      <li><i>Analytics Service:</i> Collects data on link usage (if implemented).</li>
     </ul>
     
-    <img src="../../../images/hld_url_shortner.png" alt="cache" style="display: block; margin: auto; width: 80%;">
-    
-    
+    <img src="../../../images/url_shortning.png" alt="cache" style="display: block; margin: auto; width: 80%;">
     <hr>
-    <h5>4. Detailed Component Design</h5>
-    <b>4.1 API Gateway:</b>
-    <ul>
-      <li>Manages rate limiting and authentication.</li>
-      <li>Routes requests to appropriate services.</li>
-    </ul>
-  
-    <b>4.2 Application Servers:</b>
-    <ul>
-      <li>Handle URL validation and processing.</li>
-      <li>Generate unique short URLs using Base62 encoding.</li>
-      <li>Check for custom alias conflicts.</li>
-      <li>Interact with the database and cache.</li>
-    </ul>
-  
-    <b>4.3 Database:</b>
-    <ul>
-      <li>Stores URL mappings, creation dates, expiration dates, and click counts.</li>
-      <li>Employs sharding and replication for scalability and reliability.</li>
-      <li>For storing billions of records with mostly key-value lookups, a NoSQL database is ideal.</li>
-      <li>Read operations dominate write operations, requiring efficient query handling.</li>
-      <li>No need for table joins, simplifying the data model.</li>
-      <li>High scalability and availability are crucial.</li>
-      <li>DynamoDB or Cassandra are well-suited for these requirements.</li>
-    </ul>
-  
-    <b>4.4 Cache:</b>
-    <ul>
-      <li>Stores frequently accessed URL mappings to reduce database load.</li>
-      <li>Uses an LRU eviction policy.</li>
-    </ul>
-  
-    <b>4.5 Analytics Service (Optional):</b>
-    <ul>
-      <li>Tracks metrics like click counts and geographic data.</li>
-      <li>Stores aggregated data in a separate analytics database.</li>
-    </ul>
     
+    <h5>4. Database Design</h5>
+    
+      We Need to consider following points for database design: 
+      <ul>
+        <li>We need to store billions of records.</li>
+        <li>Most database operations are simple key-value lookups.</li>
+        <li>Read queries are much higher than write queries.</li>
+        <li>We don’t need joins between tables.</li>
+        <li>Database needs to be highly scalable and available.</li>
+      </ul>
+      <p>
+        A <b>NoSQL database</b> like <b>DynamoDB or Cassandra</b> is ideal because it efficiently handles billions of key-value lookups while offering high scalability and availability.
+      </p>
+
+    <hr>
+    <h5>5. API Design</h5>
+    <p>We will use REST API</p>
+    <ol>
+      <li><b>Endpoint: POST /api/v1/shorten</b></li>
+      This endpoint generates a shortened URL for a provided long URL.
+      <div>
+        <ul>
+          <li>Sample Request:</li>
+          <pre><code>
+  {
+    "long_url": "https://example.com/very/long/url/that/needs/shortening",
+    "custom_alias": "",
+    "expiry_date": "2024-12-31T23:59:59Z", // optional
+    "user_id": "user123"
+  }            
+          </code></pre>
+          <li>Sample Response:</li>
+          <pre><code>
+  {
+    "short_url": "http://short.url/abC123",
+    "long_url": "https://example.com/very/long/url/that/needs/shortening",
+    "expiry_date": "2024-12-31T23:59:59Z",
+    "created_at": "2024-08-10T10:30:00Z"
+  }            
+          </code></pre>
+        </ul>
+      </div>
+      <li><b>Endpoint: GET /{short_url_key}</b></li>
+        This endpoint redirects the user to the original long URL.jhmng    
+    </ol>
+
     <hr>
     <h5>5. URL Generation Strategy</h5>
-    <p>To generate unique short URLs:</p>
-    <ul>
-      <li>Use a Base62 encoding scheme (characters a-z, A-Z, 0-9).</li>
-      <li>Maintain a global counter or utilize a distributed unique ID generator.</li>
-      <li>Convert the counter value to a Base62 string to create the short URL.</li>
-    </ul>
+    <p>
+      We'll consider the original long URL:<br>
+      Original URL: <code>https://www.example.com/some/very/long/url/that/needs/to/be/shortened</code>
+    </p>
+    <ol>
+      <li><b>Generate a Hash for the Original URL</b></li>
+      <p>
+        We'll use SHA-256 to hash the original URL, which produces a 64-character hexadecimal string.<br>
+        original_url = <code>"https://www.example.com/some/very/long/url/that/needs/to/be/shortened"</code><br>
+        hash of URL = <code>b7e23e62ec2ac4db238b3955f8bdb9e7dbe2cfd5c430f2c56f47020e54cd93b9</code>
+      </p>
+      <li><b>Truncate the Hash to a Shorter Length</b></li>
+      <p>
+        Since the hashed value is long (64 characters), we truncate it to a shorter length (let's say 8 characters) to create a compact short URL.<br>
+        shortened hash : <code>b7e23e62</code>
+      </p>
+      <li><b>Convert the Truncated Hash to Base 10 (Decimal)</b></li>
+      <p>
+        The truncated hash (b7e23e62) is in hexadecimal (Base 16), so we need to convert it into Base 10 (decimal).<br>
+        base 10 decimal value = <code>30642050937830457017007473131008547234</code>
+      </p>
+      <li><b>Convert the Base 10 Number to Base 62</b></li>
+      <p>
+        Now that we have the decimal (Base 10) number, we will convert it to Base 62. <br>
+        Base 62 encoding uses 62 characters: A-Z, a-z, 0-9. <br>
+        The encoding process involves repeatedly dividing the number by 62 and recording the remainders to build the Base 62 string.<br>
+        Base62-encoded short value = <code>BfJ3HrsV</code>
+      </p>
+      <li><b>Store the Mapping in a Key-Value Database</b></li>
+      <p>
+        Now, we store the mapping of the generated short URL (BfJ3HrsV) to the original URL in a key-value database.
+        Original url : <code>https://www.example.com/some/very/long/url/that/needs/to/be/shortened</code>
+        Short url : <code>http://short.ly/BfJ3HrsV</code>
+      </p>
+      <li><b>Redirect to the Original URL</b></li>
+      <ul>
+        <li>When a user accesses a short URL, this service is responsible for redirecting the user to the original URL.</li>
+        <li>The Service Layer queries the database to retrieve the original URL associated with the short URL.</li>
+        <li>Once the long URL is retrieved, the service issues an HTTP redirect response, sending the user to the original URL.</li>
+        <li>To reduce database load and improve latency, frequently accessed short URLs can be cached in an in-memory store like Redis.</li>
+        <li>The Redirection Service should first check the <b>cache</b> before querying the database.</li>
+      </ul>
+    </ol>
+    <b>Note:</b> If a collision occurs, we can handle it by rehashing or appending random strings or timestamp during hasing, ensuring no two URLs map to the same short URL.
     
     <hr>
     <h5>6. Handling Expiration and Deletion</h5>
