@@ -1,0 +1,97 @@
+<div>
+    <h2 style="text-align: center;">Chat Application : WhatsApp</h2>
+    <hr>
+
+    <h5>Functional Requirements</h5>
+    <ul>
+        <li>Should support one-on-one chats</li>
+        <li>Should support group chats</li>
+        <li>Should have image, video and file-sharing capabilities</li>
+        <li>Should indicate read/receipt of messages</li>
+        <li>Show indicate last seen time of users</li>
+    </ul>
+    <hr>
+
+    <h5>Non-Functional Requirements:</h5>
+    <ul>
+        <li>Should have very very low latency</li>
+        <li>Should be always available</li>
+        <li>There shouldn’t be any lags</li>
+        <li>Should be highly scalable</li>
+    </ul>
+    <hr>
+    <h5>Estimation:</h5>
+    <p>
+        As of early 2025, WhatsApp reportedly handles 100 billion messages per day.This figure includes text messages, media, and voice/video calls.
+    </p>
+    <b>Storage Estimation:</b>
+    <ul>
+        <li>100 billion messages are shared through WhatsApp per day and each message takes 100 bytes on average</li>
+        <li>100 billion/day∗100 Bytes = 10 TB/day</li>
+        <li>For 30 days, the storage capacity would become the following:</li>
+        <li>30∗10 TB/day = 300 TB/month</li>
+    </ul>
+    <b>Number of server assumption:</b>
+    <ul>
+        <li>Lets assume whatsApp handles around 10 million connections on a single server, which seems quite high for a server.</li>
+        <li>No. of servers = Total connections per day/No. of connections per server = 2 billion/10 million = 200 servers</li>
+        <li>So, according to the above estimates, we require 200 chat servers.</li>
+    </ul>
+    <hr>
+
+    <h3> High level design:</h3>
+    <img src="../../../images/whatsapp.png" alt="cache" style="display: block; margin: auto; width: 80%;">
+    <br>
+    <ol>
+        <li><b>User Connection (WebSocket Setup):</b></li>
+        <ul>
+            <li>User A initiates a WebSocket connection through the load balancer.</li>
+            <li>The load balancer forwards the connection to one of the WebSocket servers.</li>
+            <li>websocket check the details in cache if it not there then the WebSocket server notifies the WebSocket Manager</li>
+            <li>WebSocket Manager, which records the user's session details (e.g., which WebSocket server they are connected to) in Redis.</li>
+        </ul>
+        <li><b>Role of WebSocket Manager:</b></li>
+        <ul>
+            <li>Keeps track of which WebSocket server each user is connected to.</li>
+            <li>Helps identify the appropriate WebSocket server when delivering messages.</li>
+            <li>Tracks the state of user connections (e.g., online, offline, idle) and updates this information in the Redis cluster for real-time availability.</li>
+            <li>Handles reconnection logic when users disconnect and reconnect (e.g., due to network issues).</li>
+        </ul>
+        <li><b>Message Sending (Single):</b></li>
+        <ul>
+            <li>User A sends a message through their WebSocket connection.</li>
+            <li>The WebSocket server receives the message and forwards it to the WebSocket Manager.</li>
+            <li><b>For Single Chat:</b></li>
+            <ul>
+                <li>The WebSocket Manager identifies the recipient (e.g., User B) and checks which WebSocket server User B is connected to.</li>
+                <li>The message is routed through the appropriate WebSocket server and delivered to User B in real-time.</li>
+            </ul>
+        </ul>
+        <li><b>Support for group messages:</b></li>
+        <ul>
+            <li><b>WebSocket Server Limitations:</b> WebSocket servers only track active users, not groups. Some users in a group may be online, while others may be offline.</li>
+            <li>Key Components for Group Messages: </li>
+            <ul>
+                <li>Group Message Handler</li>
+                <li>Kafka</li>
+                <li>Group Message Service</li>
+                
+            </ul>
+            <li>Let’s assume that <b>user A</b> wants to send a message to a group with some unique ID—for example, <b>Group/A</b>.</li>
+            <li>Since user A is connected to a WebSocket server, it sends a message to the message service intended for Group/A.</li>
+            <li>The message service sends the message to Kafka with other specific information about the group. The message is saved there for further processing. In Kafka terminology, a group can be a topic, and the senders and receivers can be producers and consumers, respectively.</li>
+            <li>Now, here comes the responsibility of the group service. The group service keeps all information about users in each group in the system. It has all the information about each group, including user IDs, group ID, status, group icon, number of users, and so on. 
+                This service resides on top of the MySQL database cluster, with multiple secondary replicas distributed geographically. A Redis cache server also exists to cache data from the MySQL servers. Both geographically distributed replicas and Redis cache aid in reducing latency.</li>
+            <li>The group message handler communicates with the group service to retrieve data of Group/A users.</li>
+            <li>In the last step, the group message handler follows the same process as a WebSocket server and delivers the message to each user.</li>
+        </ul>
+        <li><b>Asset Service : Send or receive media files:</b></li>
+        <ul>
+            Steps involved in sending and receiving media files:
+            <li><b>1.Compression and Encryption</b> :The media file is compressed and encrypted on the sender's device before being sent.</b>            
+            <li><b>2.File Upload to Asset Service</b> :The compressed and encrypted file is sent to the asset service, which stores it in blob storage. The asset service then generates a unique ID for the file and communicates this ID to the sender.</b>            
+            <li><b>3.Avoiding Duplicate Uploads</b> :The asset service checks for duplicate content by maintaining a hash for each file. If the same file already exists in the blob storage, it isn’t uploaded again. Instead, the existing file’s ID is shared with the receiver.</b>            
+            <li><b>4.Sending Media ID to Receiver</b> :The asset service sends the generated file ID to the receiver through the message service.</b>            
+            <li><b>5.File Download</b> :The receiver uses the ID to download the media file from the blob storage.</b>            
+            <li><b>6.CDN Usage for Popular Content</b> :If a particular file receives a high number of requests, the asset service will host the content on a Content Delivery Network (CDN) to improve performance and availability.</b>        </ul>
+    </ol>
