@@ -1,5 +1,5 @@
 <div>
-    <h2 style="text-align: center;">Notification Service</h2>
+    <b style="text-align: center;">Notification Service</b>
     <hr>
     <p>
         A notification system is designed to deliver timely and relevant information to users through multiple channels, including SMS, email, push notifications, and in-app messages. 
@@ -43,105 +43,135 @@
         <li><b>Yearly Storage Requirement:</b> 250B/day x 365 days = 91TB/year.</li>
       </ul>
     <hr>
+    <h3> High level design:</h3>
+    <img src="../../../images/notification.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    <br>
+    <div>
+      <h5>Notification Service</h5>
+        <p>The Notification Service serves as the primary interface for initiating notifications, catering to requests from both external applications and internal systems.</p>
+    
+        <b>Notification Types</b>
+        <ul>
+          <li><b>Transactional Notifications:</b> e.g., password reset emails.</li>
+          <li><b>Promotional Notifications:</b> e.g., discount offers.</li>
+          <li><b>System Alerts:</b> e.g., downtime warnings.</li>
+        </ul>
+      
+        <b>Request Validation</b>
+        <p>
+          Each notification request is validated to ensure completeness, requiring details such as:<br>
+          Recipient’s ID, Notification type, Message content, Delivery channels (e.g., email, SMS)
+        </p>
+        <b>Scheduling Integration</b>
+        <p>Notifications intended for future delivery are coordinated through the Scheduler Service.</p>
+      
+      
+      
+        <b>Message Queuing</b>
+        <p>After processing the request, the Notification Service pushes the notifications to a Notification Queue (e.g., Kafka or RabbitMQ).</p>
+    </div>
+    <hr>
+    <div>
+      <h5>User Preference Service</h5>
+        <p>The User Preference Service enables users to manage their notification preferences, determining how and through which channels they receive notifications.</p>
+      
+        <b>Preference Management</b>
+        <p>The service stores and retrieves individual user preferences, allowing users to opt into or out of specific types of notifications.</p>
+        <p><b>Example:</b> Users can choose to opt out of receiving marketing or promotional content.</p>
+      
+        <b>Frequency Control</b>
+        <p>To avoid overwhelming users with notifications, the service enforces limits on the frequency of certain types of notifications, particularly promotional messages.</p>
+        <p><b>Example:</b> A user may receive a maximum of 2 promotional notifications per day.</p>
+    </div>
+    <hr>   
+    
+    <div>
+      <h5>Scheduler Service</h5>
+      <p>The Scheduler Service manages notifications that need to be sent at a specific future time. These include reminders, promotional campaigns, or other notifications that are time-sensitive and not sent immediately.</p>
+      <p>For example, a promotional message could be scheduled for delivery next week.</p>
+      <p>When the scheduled time arrives, the Scheduler Service retrieves the notification from its storage and sends it to the Notification Queue for delivery.</p>
+    </div>
+    <hr>
 
     <div>
-        <p>The Notification Service is used to send notifications to clients. There are two types of requests clients can make:</p>
-        <ul>
-          <li>Type 1: The request includes both the content and the channel (e.g., email) over which the notification will be sent.</li>
-          <li>Type 2: The request includes the content and the user ID, and the system will decide the channel based on conditions like user preferences or system rules.</li>
-        </ul>
-        <p>For external systems, typically the request will be of the first type, where the channel is fixed. For internal systems, the request will include a user ID, and the system determines the best channel to use.</p>
+      <h5>Notification Queue</h5>
+      <p>
+        The Notification Queue, built using Kafka, acts as a buffer between the Notification Service and the Channel Processors. 
+        It decouples the submission of notification requests from their delivery, improving scalability and efficiency during high-traffic periods.
+      </p>
       
-        <p>Here's how the Notification Service works:</p>
+      <b>Message Categories and create topics:</b>
+      <ul>
+        <li><b>Email Notifications: Email Topic</b> Includes messages like password resets, promotional offers, and system updates sent via email.</li>
+        <li><b>SMS Notifications: SMS Topic</b> Short, urgent messages such as alerts or transactional updates delivered directly to mobile devices.</li>
+        <li><b>Push Notifications: Push Topic</b> Real-time updates or promotional messages sent to users' mobile or desktop devices.</li>
+        <li><b>In-App Notifications: In-App Topic</b> Notifications displayed within the application, such as user-specific alerts, updates, or promotional content.</li>
+      </ul>
+      <p>
+        These topics allow each Channel Processor to focus on consuming messages relevant to its channel, reducing complexity and improving processing efficiency.
+      </p>
+    
+      <b>Key Features:</b>
+      <ul>
+        <li><b>Scalability:</b> Handles large volumes of notifications seamlessly, especially during peak traffic.</li>
+        <li><b>Message Delivery Guarantees:</b> Kafka offers configurable delivery options:</li>
         <ul>
-          <li>When a request is sent, it's forwarded to Kafka (a messaging system).</li>
-          <li>Kafkas passes the request to a <b>Notification Validator</b> and <b>Prioritizer</b> which checks if the content is valid (e.g., makes sure emails aren't missing or incorrect) and assigns a priority to the message based on its type (e.g., OTP messages are high priority, while promotional messages are low priority).</li>
-          <li>The message is then forwarded to Kafka topics based on priority. High priority messages are handled first, followed by medium and low priority messages. This ensures that urgent notifications (like OTPs) are sent without delay.</li>
+          <li><b>At-Least-Once Delivery:</b> Ensures each notification is sent at least once, with rare chances of duplicates.</li>
+          <li><b>Exactly-Once Delivery:</b> Ensures each notification is sent exactly once, eliminating duplicates and maintaining reliability.</li>
         </ul>
-      
-        <p>Next is the <b>Rate Limiter</b>, which does two things:</p>
-        <ul>
-          <li>It checks if a client is allowed to send the number of requests they've sent, based on their subscription plan. For example, an external system might have a limit on how many requests they can send per day.</li>
-          <li>It checks how many notifications a user can receive. For instance, a user may be limited to only receiving a certain number of promotional messages per month.</li>
-        </ul>
-        <p>To track these limits, the system uses Redis (a fast memory database) to store a key that tracks requests for a certain period. If the limit is exceeded, the request is rejected.</p>
-      
-        <p>The Rate Limiter also helps with <b>Request Counting</b>. For clients who pay based on usage (pay-per-use model), instead of limiting their requests, the system counts the number of requests and generates reports to calculate their bill. This allows the system to track and charge clients based on how much they use the service.</p>
-            <p>
-              The Notification Handler and User Preferences Service are responsible for managing how users receive notifications. Users may choose to unsubscribe from promotional messages or prefer a certain channel for notifications. This is handled by the User Preferences Service, which interacts with a Preferences DB to store user settings and a User Service to fetch user information.
-            </p>
-            <ul>
-              <li>
-                <b>User Preferences:</b> Users can set limits on how many promotional messages they receive. For example, a user may only want to receive one promotional message per week.
-              </li>
-              <li>
-                <b>Interaction with Rate Limiter:</b> If users set limits, the User Preferences Service will be placed before the Rate Limiter. This ensures users don’t get too many messages, and the rate of messages sent follows their preferences.
-              </li>
-              <li>
-                <b>Notification Information:</b> Once we know the user’s contact info, preferred channels (like SMS, email, or push notifications), and content, we can send the notification.
-              </li>
-            </ul>
-            
-            <p>
-              The information is sent as an event to Kafka. Kafka handles the routing to different message handlers based on the notification type, such as SMS, email, in-app notifications, etc.
-            </p>
-            <ul>
-              <li>
-                <b>Kafka:</b> Kafka is used to direct events (like a notification request) to the correct handler based on the type of message.
-              </li>
-              <li>
-                <b>SMS Handler:</b> The SMS handler sends messages using different SMS vendors depending on the region (e.g., India, US, Europe). It decides which vendor to use based on the request priority.
-              </li>
-              <li>
-                <b>Email Handler:</b> Similarly, the email handler interacts with email vendors to send out emails to users.
-              </li>
-              <li>
-                <b>In-App Handler:</b> For in-app notifications, services like Firebase are used to send push notifications to users’ devices.
-              </li>
-              <li>
-                <b>IVRS Handler:</b> For interactive voice responses, the IVRS handler sends confirmation or feedback calls to users.
-              </li>
-            </ul>
-          
-            <p>
-              To ensure flexibility, if we need to add a new notification type (like WhatsApp), we can simply add a WhatsApp handler. Requests for WhatsApp notifications will automatically be directed to the WhatsApp handler without affecting other components.
-            </p>
-            
-            <p>
-              The final component is the Notification Tracker, which logs all sent notifications for auditing purposes. It stores this information in a database like Cassandra.
-            </p>
-            <ul>
-              <li>
-                <b>Notification Tracker:</b> Tracks all notifications for audit and record-keeping.
-              </li>
-              <li>
-                <b>Cassandra:</b> A database that stores the history of all sent notifications permanently.
-              </li>
-            </ul>
-            
-            <p>
-              Some components could be combined to simplify the system, and this can be decided during discussions with your interviewer.
-            </p>
-           
-                <p>When you want to send out bulk notifications, a bulk notification service comes in handy. This service will have a user-friendly interface (UI) where you can specify who should receive the notification and what the message will be. The service will then take this information and send out notifications to the users who match your criteria.</p>
-                
-                <p>Here’s how it works:</p>
-                
-                <ul>
-                  <li><b>User Transaction Data Service:</b> This is like a middleman that stores all the information about user transactions into various Kafka topics. Each transaction is recorded, such as purchases, logins, etc.</li>
-                  <li><b>Search Functionality:</b> On top of these Kafka topics, we can build a search system that allows you to look up users based on specific filters, like finding users who made a purchase above a certain amount.</li>
-                  <li><b>Transaction Data Parser:</b> A parser listens to the transactions happening in Kafka. It reads and understands these transactions, and then stores the data in a format like Elasticsearch or another data store.</li>
-                  <li><b>Query Engine:</b> A system sits on top of the data store (like Elasticsearch). It allows you to filter users based on criteria such as location, purchase history, or account status.</li>
-                </ul>
-                
-                <p>Once the query engine filters out users, the bulk notification service receives this list of filtered users and the content for the notifications. It then calls the notification service to send out the notifications to these users.</p>
-                
-                <p>The query engine may also have other consumers:</p>
-                
-                <ul>
-                  <li><b>Rule Engines:</b> These perform certain actions based on conditions. For example, it might trigger an action if a user makes a large purchase.</li>
-                  <li><b>Fraud Engines:</b> These systems check for suspicious activity, like multiple failed logins or unusual spending patterns.</li>
-                  <li><b>Search Platforms:</b> Other services that allow searching or reporting based on user data.</li>
-                </ul>
-              </div>
-            
+      </ul>
+    </div>
+    <hr>
+    <div>
+      <h5>Channel Processors:</h5>
+      <p>Channel Processors handle the delivery of notifications by pulling them from the Notification Queue and sending them to users through specific channels like email, SMS, push notifications, or in-app messages.</p>
+      <p>Each channel processor acts as a consumer to the queue and responsible for consuming its own messages:</p>
+      <ul>
+        <li>Email Processor pulls from the Email Topic and send mail using email provider (e.g., SendGrid, Mailgun, Amazon SES).</li>
+        <li>SMS Processor pulls from the SMS Topic and send SMS using SMS provider (e.g., Twilio, Nexmo).</li>
+        <li>Push Processor pulls from the Push Topic and send push notification using Uses services like Firebase Cloud Messaging (FCM) for Android or Apple Push Notification Service (APNs) for iOS.</li>
+        <li>In-app Processor pulls from the In-app Topic and sends the in-app notification via WebSockets or long polling to the user’s active session.</li>
+      </ul>
+      <p>They work independently from the Notification Service, allowing notifications to be processed asynchronously and scaled separately. 
+        Each processor is dedicated to its channel, ensuring reliable delivery with features like retry mechanisms and efficient error handling.</p>
+    </div>
+    <hr>
+    <div>
+      <h5>Database/Storage Layer</h5>
+      <p>The Database/Storage layer handles and organizes large amounts of data related to notifications. This includes notification content, user preferences, scheduled notifications, delivery logs, and metadata.</p>
+      <p>The system uses different types of storage to meet specific needs:</p>
+      <ul>
+        <li><b>Transactional Data:</b> Structured data like notification logs and delivery status is stored in relational databases such as PostgreSQL or MySQL.</li>
+        <li><b>User Preferences:</b> Large-scale user-specific data, such as preferences and rate limits, is stored in NoSQL databases like DynamoDB or MongoDB.</li>
+        <li><b>Blob Storage:</b> Notifications with large attachments (e.g., emails containing images or PDFs) are stored in services like Amazon S3.</li>
+      </ul>
+    </div>
+    <hr>
+    <div>
+      <h5>Monitoring and Delivery Confirmation:</h5>
+      <p>Each Channel Processor waits for a response from the external provider:</p>
+      <ul>
+        <li><b>Success:</b> The message was successfully delivered.</li>
+        <li><b>Failure:</b> The message could not be delivered (e.g., due to network issues or incorrect addresses).</li>
+      </ul>
+      <p>The Channel Processor records the status of each notification in the <b>notification_logs</b> table for future reference, auditing, and reporting.</p>
+      <ul>
+        <li>Centralized Logging: Use tools like ELK Stack or Prometheus/Grafana to collect logs from various components and monitor the health of the system.</li>
+        <li>Alerting: Set up alerts for failures (e.g., notification delivery failure rates exceed a threshold).</li>
+        <li>Metrics: Track metrics like success rate, failure rate, delivery latency, and throughput for each channel.</li>
+      </ul>
+    
+        <p>If a notification fails to be delivered due to a temporary issue (e.g., third-party service downtime), the system will try to send it again.</p>
+        <p>The retries are done using an <b>exponential backoff</b> approach, meaning each retry is delayed by a longer time than the previous one.</p>
+        <p>If the notification still can't be delivered after several retries, it will be moved to a <b>Dead Letter Queue (DLQ)</b> for further action.</p>
+        <p>Administrators can then check the messages in the DLQ and decide whether to manually reprocess them.</p>
+    </div>
+    <hr>
+    <div>
+      <h5>Caching:</h5>
+      <p>
+        Implement caching with solutions like Redis or Memcached to store frequently accessed data, such as user preferences.<br>
+        Caching reduces the load on the database and improves response times for real-time notifications by avoiding repeated database lookups.
+      </p>
+    </div>
+    <hr>
