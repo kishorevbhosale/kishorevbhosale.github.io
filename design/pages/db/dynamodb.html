@@ -1,0 +1,1491 @@
+<h1 style="text-align: center;">DynamoDB</h1>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">What is SQL and NoSQL Databases</h2>
+<div>
+    <h5>1. Significance of Databases</h5>
+    <ul>
+      <li>Modern applications rely heavily on data.</li>
+      <li>Databases store data safely, even if the application or server crashes.</li>
+      <li>They help organize and store data in cost-effective ways.</li>
+      <li>Critical for creating reliable and smart applications.</li>
+    </ul>
+
+    <h5>2. Types of Databases</h5>
+    <ul>
+      <li><strong>Relational Databases</strong></li>
+      <li><strong>NoSQL Databases</strong></li>
+    </ul>
+
+    <h5>3. Relational Databases</h5>
+    <ul>
+      <li>Invented in the 1970s, examples include PostgreSQL, MySQL, and Oracle.</li>
+      <li>Data is stored in tables, and tables are connected by primary and foreign keys.</li>
+      <li>CRUD operations are performed using SQL.</li>
+      <li>Best for applications with structured data, like banking systems.</li>
+    </ul>
+    
+    <b>Advantages of Relational Databases</b>
+    <ul>
+      <li>Great for naturally structured data.</li>
+      <li>Provide consistency, ensuring multiple applications get the same data.</li>
+      <li>SQL is widely known, making it easier for developers to learn and use.</li>
+    </ul>
+    
+    <b>Limitations of Relational Databases</b>
+    <ul>
+      <li>Not ideal for unstructured or frequently changing data.</li>
+      <li>Strict consistency slows down horizontal scaling for large datasets.</li>
+      <li>Changing the schema frequently can be cumbersome in Agile development.</li>
+      <li>Impedance mismatch occurs when application data doesn't fit well with the relational schema.</li>
+    </ul>
+
+    <h5>4. NoSQL Databases</h5>
+    <ul>
+      <li>Designed to address limitations of relational databases.</li>
+      <li>Offer speed, scalability, and flexibility with schema-less designs.</li>
+      <li>Examples include MongoDB and DynamoDB, widely used in social media and e-commerce platforms.</li>
+      <li>The term "NoSQL" means "Not Only SQL."</li>
+    </ul>
+    
+    <b>Types of NoSQL Databases</b>
+    <ul>
+      <li><strong>Key-Value:</strong> Simple key-value pairs (e.g., Redis).</li>
+      <li><strong>Document-Based:</strong> Stores JSON-like documents (e.g., MongoDB).</li>
+      <li><strong>Graph-Based:</strong> Stores data as nodes and relationships (e.g., Neo4j).</li>
+      <li><strong>Column-Based:</strong> Stores data in columns (e.g., Cassandra).</li>
+    </ul>
+    
+    <b>Advantages of NoSQL Databases</b>
+    <ul>
+      <li>Fast at large scales due to horizontal scaling across machines.</li>
+      <li>Flexible data modeling closer to real-world use cases.</li>
+      <li>Easy to learn, making it suitable for small teams.</li>
+      <li>Many managed services available, reducing maintenance effort.</li>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">What is DynamoDB</h2>
+<div>
+    <h5>What is DynamoDB?</h5>
+    <p>
+        Amazon DynamoDB is a key-value and document database, which delivers single-digit millisecond performance at any scale. 
+        It’s a fully managed, multi-region, multi-active, durable database with built-in security, 
+        backup and restoration, and in-memory caching for internet-scale applications. - AWS<br>
+        <li>White paper published - 2007</li>
+        <li>First release - 2012</li>
+    </p>
+    <hr>
+    <h5>DynamoDB Features</h5>
+    <ul>
+      <li><b>Fully Managed:</b>
+        <ul>
+          <li>No need to manage servers or software updates.</li>
+          <li>Focus only on managing and using your data.</li>
+          <li>Example: You don’t worry about server failures; AWS handles it.</li>
+        </ul>
+      </li>
+      <li><b>Fast:</b>
+        <ul>
+          <li>Delivers responses in single-digit milliseconds.</li>
+          <li>Ideal for high-speed applications like real-time gaming leaderboards.</li>
+        </ul>
+      </li>
+      <li><b>Scalable:</b>
+        <ul>
+          <li>Works better as data and traffic increase.</li>
+          <li>Can handle millions of requests per second without delays.</li>
+          <li>Example: Social media apps that serve a growing user base.</li>
+        </ul>
+      </li>
+      <li><b>Durable and Highly Available:</b>
+        <ul>
+          <li>Data is automatically replicated across multiple servers for safety.</li>
+          <li>Always available for writing new data.</li>
+          <li>Eventual consistency ensures data is up-to-date within milliseconds.</li>
+          <li>Example: Shopping cart updates in an e-commerce app.</li>
+        </ul>
+      </li>
+      <li><b>Cost-Effective:</b>
+        <ul>
+          <li>You only pay for the reads and writes you use.</li>
+          <li>No extra charges for storage size.</li>
+          <li>Example: Small-scale apps with low traffic will incur low costs.</li>
+        </ul>
+      </li>
+      <li><b>Flexible and Schema-less:</b>
+        <ul>
+          <li>Only need to specify a unique primary key.</li>
+          <li>Insert different types of data without worrying about rigid schemas.</li>
+          <li>Can only retrieve data using primary keys or indices (scanning is slow).</li>
+          <li>Example: A user profile table where some users have a "location" field while others don't.</li>
+        </ul>
+      </li>
+    </ul>
+    <hr>
+    <h5>AWS Value-added Services</h5>
+    <ul>
+        <li>
+            <strong>Provisioning of Hardware:</strong>
+            <ul>
+            <li>DynamoDB is serverless. You don’t need to manage any physical servers or hardware.</li>
+            <li>Example: You don’t worry about where the database runs; AWS handles it.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Partitioning and Repartitioning:</strong>
+            <ul>
+            <li>Data is automatically split (partitioned) across multiple servers for scalability.</li>
+            <li>If servers are added or removed, DynamoDB re-partitions the data without downtime.</li>
+            <li>Example: A large "Orders" table with 1 million entries will be split across multiple partitions.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Replication:</strong>
+            <ul>
+            <li>DynamoDB automatically creates copies of your data to ensure it is safe and durable.</li>
+            <li>No need to manually set up or think about replication.</li>
+            <li>Example: If a server in one data center fails, your data is still available from another replica.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Scaling of Table and Throughput:</strong>
+            <ul>
+            <li>DynamoDB supports auto-scaling by default, so it adjusts based on traffic volume.</li>
+            <li>Tables grow or shrink automatically to meet demand without downtime.</li>
+            <li>Example: During a flash sale, your "Products" table automatically scales to handle thousands of requests.</li>
+            </ul>
+        </li>
+    </ul>
+    <hr>
+    <h5>DynamoDB: When to Use and When to Avoid</h5>
+    <ul>
+        <li><b>When to Use DynamoDB</b>
+            <ul>
+            <li>DynamoDB is great for applications that need <b>simple and fast reads/writes</b> on a large scale.</li>
+            <li>It works well for use cases where <b>access patterns are clear</b> in advance.</li>
+            <li>Suitable for storing data with a <b>known primary key</b> for efficient retrieval.</li>
+            </ul>
+        </li>
+        
+        <li><b>When to Avoid DynamoDB</b>
+            <ul>
+            <li><b>Not for Complex Queries:</b>
+                <ul>
+                <li>DynamoDB is not ideal for <b>OLAP (Online Analytical Processing)</b> applications that need complex queries.</li>
+                <li>For example, in a <b>banking database</b> analyzing customer behavior, where query types may evolve, DynamoDB is not a good fit.</li>
+                <li>Reason: It doesn't support flexible queries on <b>non-key attributes</b>.</li>
+                </ul>
+            </li>
+            
+            <li><b>Not for Large File Storage:</b>
+                <ul>
+                <li>Items are limited to <b>400 KB</b> in size, so it’s not suitable for storing large files.</li>
+                <li>Use <b>AWS S3</b> to store files and save their links in DynamoDB instead.</li>
+                <li>Example: For storing <b>videos or images</b>, upload them to S3 and keep their URLs in DynamoDB.</li>
+                </ul>
+            </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">DynamoDB Basic Concepts</h2>
+<div>
+    <ul>
+        <li><b>Tables:</b>
+          <ul>
+            <li>Tables are where data is stored in DynamoDB.</li>
+            <li>Multiple tables can exist in a DynamoDB database.</li>
+            <li>Similar to relational databases, but DynamoDB tables are schema-less.</li>
+            <li>No fixed column structure is required, and data can vary from one row to another.</li>
+            <li>Each table has a primary key to ensure unique data entries.</li>
+          </ul>
+        </li>
+
+        <li><b>Items:</b>
+          <ul>
+            <li>Items in DynamoDB are like rows in relational databases.</li>
+            <li>Each item belongs to a table and contains multiple attributes.</li>
+            <li>Items are represented as JSON objects (key-value pairs).</li>
+            <li>Example: 
+              <pre>{"order_id": "12345", "customer_name": "Alice", "total_amount": 150}</pre>
+            </li>
+          </ul>
+        </li>
+      
+        <li><b>Attributes:</b>
+          <ul>
+            <li>Attributes are the individual key-value pairs within an item.</li>
+            <li>Attributes are similar to columns in relational databases, but flexible in DynamoDB.</li>
+            <li>Each attribute has a name (key) and a value, and the value can be of different types (string, number, etc.).</li>
+            <li>Example: <pre>"customer_name": "Alice"</pre> is an attribute with key "customer_name" and value "Alice".</li>
+          </ul>
+        </li>
+      
+        <li><b>Primary Key:</b>
+          <ul>
+            <li>A primary key is used to uniquely identify each item in a table.</li>
+            <li>The primary key is made up of one or two keys:</li>
+            <ul>
+              <li><b>Partition Key:</b> A single unique key (e.g., order_id) that determines the storage partition.</li>
+              <li><b>Partition Key + Sort Key:</b> A combination of two keys (e.g., user_id and order_date). The partition key determines storage, and the sort key determines order within the partition.</li>
+            </ul>
+            <li>Primary keys must be unique for each item, especially when using partition + sort key combination.</li>
+            <li>Example of Partition Key: <pre>{"order_id": "12345"}</pre></li>
+            <li>Example of Partition Key + Sort Key: <pre>{"user_id": "abc123", "order_date": "2025-01-18"}</pre></li>
+          </ul>
+        </li>
+        
+        <li><b>Example - Orders Table:</b>
+          <ul>
+            <li>Let's assume we have a table called "Orders" with the primary key as "order_id".</li>
+            <li>Example item 1: <pre>{"order_id": "12345", "customer_name": "Alice", "total_amount": 150}</pre></li>
+            <li>Example item 2: <pre>{"order_id": "12346", "customer_name": "Bob", "total_amount": 200, "items": ["item1", "item2"]}</pre></li>
+            <li>In this example, the items in the table can have different attributes. One may have an "items" list, while another may have "service" information.</li>
+          </ul>
+        </li>
+      </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">Data Types</h2>
+<div>
+    <ul>
+        <li><b>Scalar Types:</b>
+          <ul>
+            <li><b>String:</b> Stores a string of any length (within 400KB item size limit). If used as primary key, it should be less than 2048 bytes for single key, 1024 bytes for composite key.
+              <ul>
+                <li>Examples: "Manager", "Artist", "Read-only"</li>
+              </ul>
+            </li>
+            <li><b>Number:</b> Stores any kind of number: positive, negative, integer, or decimal.
+              <ul>
+                <li>Examples: 124, 42.34, -5634</li>
+              </ul>
+            </li>
+            <li><b>Boolean:</b> Stores either <code>true</code> or <code>false</code>.
+              <ul>
+                <li>Examples: true, false</li>
+              </ul>
+            </li>
+            <li><b>Null:</b> Represents a null value (unknown or undefined).
+              <ul>
+                <li>Example: <code>null</code></li>
+              </ul>
+            </li>
+            <li><b>Binary:</b> Used to store binary data like images, files, or encrypted messages.
+              <ul>
+                <li>Examples: Encrypted files, images (JPEG, PNG)</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><b>Document Types:</b>
+          <ul>
+            <li><b>Map:</b> A collection of key-value pairs (similar to JSON objects). The pairs are not ordered.
+              <ul>
+                <li>Example: <code>{"name": "John", "age": 30}</code></li>
+              </ul>
+            </li>
+            <li><b>List:</b> A collection of ordered values, which can be of different types. You can access elements by their index.
+              <ul>
+                <li>Example: <code>[1, "apple", 3.14]</code></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      
+        <li><b>Set Types:</b>
+          <ul>
+            <li><b>NumberSet:</b> A set of unique numbers (no duplicates). Elements are of type Number.
+              <ul>
+                <li>Example: <code>{1, 2, 3}</code></li>
+              </ul>
+            </li>
+            <li><b>StringSet:</b> A set of unique strings (no duplicates).
+              <ul>
+                <li>Example: <code>{"apple", "banana", "orange"}</code></li>
+              </ul>
+            </li>
+            <li><b>BinarySet:</b> A set of unique binary objects (no duplicates).
+              <ul>
+                <li>Example: <code>{<binary_data1>, <binary_data2>}</code></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      
+        <li><b>Size Limitations:</b>
+          <ul>
+            <li>The maximum item size in DynamoDB is 400 KB (for all data types combined).</li>
+            <li>For primary keys, the limit is 2048 bytes for a single key, and 1024 bytes for a composite key.</li>
+          </ul>
+        </li>
+      </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">Understanding DynamoDB Partitions</h2>
+<div>
+    <ul>
+        <li><strong>How DynamoDB Distributes Data:</strong>
+          <ul>
+            <li>DynamoDB uses consistent hashing to distribute data across multiple servers.</li>
+            <li>The partition key determines how items are assigned to different servers.</li>
+            <li>Balanced partition keys ensure even data distribution, avoiding overload on specific servers.</li>
+          </ul>
+        </li>
+      
+        <li><strong>Importance of Good Partition Keys:</strong>
+          <ul>
+            <li>Partition keys must be uniformly random for efficient data distribution.</li>
+            <li>If not evenly distributed, some servers may get overloaded while others remain underutilized.</li>
+            <li>This imbalance slows down database performance and increases costs.</li>
+          </ul>
+        </li>
+    </ul>
+</div>    
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">Primary Key and Range Key</h2>
+<div>
+    <h5>Why Do We Need a Primary Key?</h5>
+        <ul>
+        <li>A primary key is like the key in a key-value store (like a hash map).</li>
+        <li>It helps to uniquely identify and retrieve items from a database.</li>
+        <li>The primary key decides where the data is saved and how it is retrieved.</li>
+        </ul>
+
+        <h5>Types of Primary Keys</h5>
+        <ul>
+        <li><b>Single Key:</b> Partition key (unique identifier for an item).</li>
+        <li><b>Composite Key:</b> Combination of partition key and sort key.</li>
+        <li>In a composite key, the combination of both keys must be unique.</li>
+        </ul>
+
+        <h5>Why Use a Sort Key (Range Key)?</h5>
+        <ul>
+        <li>A range key is optional but useful when:</li>
+        <li>
+            <ul>
+            <li>The partition key alone is not unique.</li>
+            <li>It allows for more flexible access patterns, like querying a range of data.</li>
+            </ul>
+        </li>
+        </ul>
+
+        <h5>Example Table: Library Books</h5>
+        <ul>
+        <li><b>Primary Key:</b>
+            <ul>
+            <li>Partition Key: genre</li>
+            <li>Sort Key: author_year_published</li>
+            </ul>
+        </li>
+        <li><b>Items:</b>
+            <ul>
+            <li>
+                {
+                genre: "Science Fiction",
+                author_year_published: "Asimov_1950",
+                title: "I, Robot",
+                copies_sold: 500000
+                }
+            </li>
+            <li>
+                {
+                genre: "Fantasy",
+                author_year_published: "Tolkien_1954",
+                title: "The Lord of the Rings",
+                copies_sold: 150000000
+                }
+            </li>
+            </ul>
+        </li>
+        </ul>
+
+        <h5>What Can You Do with This Model?</h5>
+        <ul>
+        <li>Get all books in a specific genre.</li>
+        <li>Get all books in a genre by a specific author.</li>
+        <li>Get all books in a genre by an author in a specific year.</li>
+        </ul>
+
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">DynamoDB Capacity Units - Charges</h2>
+<div>
+    <h5>How DynamoDB Charges</h5>
+    <ul>
+      <li>DynamoDB charges based on the frequency of <b>reads</b> and <b>writes</b>, not the storage used.</li>
+      <li>Two options for managing table capacity:</li>
+      <ul>
+        <li><b>On-demand provisioning:</b>
+          <ul>
+            <li>Automatically scales capacity up or down based on usage.</li>
+            <li>No need to define read/write throughput upfront.</li>
+          </ul>
+        </li>
+        <li><b>Provisioned capacity:</b>
+          <ul>
+            <li>You specify the expected number of reads and writes per second.</li>
+            <li>Useful for predictable workloads.</li>
+          </ul>
+        </li>
+      </ul>
+    </ul>
+    
+    <h5>Write Capacity</h5>
+    <ul>
+      <li><b>1 Write Capacity Unit (WCU):</b> Supports one write per second for an item of size 1KB.</li>
+      <li>Items larger than 1KB:
+        <ul>
+          <li>Divide item size by 1KB and round up. Example: 10KB item = 10 WCUs.</li>
+        </ul>
+      </li>
+      <li><b>strongly consistent writes:</b>
+        <ul>
+          <li>Requires 2 WCUs for a 1KB item written in one second.</li>
+        </ul>
+      </li>
+    </ul>
+    
+    <h5>Read Capacity</h5>
+    <ul>
+      <li><b>1 Read Capacity Unit (RCU):</b>
+        <ul>
+          <li>Supports one <b>bly consistent read</b> per second for an item of size 4KB.</li>
+          <li>Or two <b>eventually consistent reads</b> per second for an item of size 4KB.</li>
+        </ul>
+      </li>
+      <li>Items larger than 4KB:
+        <ul>
+          <li>Divide item size by 4KB and round up. Example: 15KB item = 4 RCUs for a bly consistent read.</li>
+          <li>For eventually consistent reads, it will need half the RCUs. Example: 15KB item = 2 RCUs.</li>
+        </ul>
+      </li>
+    </ul>
+    
+    <h5>Key Recommendations</h5>
+    <ul>
+      <li>Use <b>eventually consistent reads</b> for lower costs if minor data delays are acceptable.</li>
+      <li>Writes are distributed within milliseconds across replicas in eventually consistent mode.</li>
+    </ul>
+    
+    <h5>Examples</h5>
+    <ul>
+      <li><b>Write Example:</b>
+        <ul>
+          <li>Item size = 6KB → Needs 6 WCUs for one write per second.</li>
+          <li>For b consistency: Needs 12 WCUs.</li>
+        </ul>
+      </li>
+      <li><b>Read Example:</b>
+        <ul>
+          <li>Item size = 9KB → Needs 3 RCUs for a bly consistent read.</li>
+          <li>For eventually consistent read: Needs 1.5 RCUs (round up = 2).</li>
+        </ul>
+      </li>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">Querying and Scanning in DynamoDB</h2>
+<div>
+    <h5>Options for Reading Data</h5>
+    <ul>
+      <li><b>Querying:</b> Faster and more efficient way to retrieve data.</li>
+      <li><b>Scanning:</b> Slower but useful for specific use cases like copying entire tables.</li>
+    </ul>
+
+    <h5>Querying</h5>
+    <ul>
+      <li><b>When the Table Has Only a Partition Key:</b>
+        <ul>
+          <li>Query one item at a time using the partition key.</li>
+          <li>DynamoDB fetches the data by directly accessing the partition linked to the key.</li>
+          <li><b>Example:</b> Table with "userId" as the partition key. Query for a specific "userId" to get the user's details.</li>
+        </ul>
+      </li>
+      <li><b>When the Table Has a Partition Key and Sort Key:</b>
+        <ul>
+          <li>Query multiple items by specifying the partition key and a range for the sort key.</li>
+          <li>Returns all items from the same partition that fall within the specified range.</li>
+          <li>Results are returned in sorted order.</li>
+          <li><b>Example:</b> Table with "userId" (partition key) and "createdAt" (sort key). Query all items for a "userId" within a date range.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h5>Scanning</h5>
+    <ul>
+      <li>Reads data from the entire table, fetching up to 1 MB of data per scan.</li>
+      <li>Filters can be applied to narrow down results (filters are processed after data is read).</li>
+      <li>Useful for small tables or copying all data.</li>
+      <li><b>Example:</b> Scan a "Products" table and filter items where "price" is greater than 100.</li>
+    </ul>
+
+    <h5>Difference Between Query and Scan</h5>
+    <ul>
+      <li><b>Query:</b>
+        <ul>
+          <li>Fetches items from the same partition.</li>
+          <li>Faster and uses fewer read capacity units.</li>
+          <li>Limited access patterns (requires partition key).</li>
+        </ul>
+      </li>
+      <li><b>Scan:</b>
+        <ul>
+          <li>Can fetch items from multiple partitions.</li>
+          <li>Slower and consumes more read capacity units.</li>
+          <li>Supports flexible access patterns (does not require partition key).</li>
+        </ul>
+      </li>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">Perform DynamoDB Tasks in AWS</h2>
+<div>
+        <b>1. Find DynamoDB Service</b>
+        <ul>
+          <li>Log in to your AWS Management Console.</li>
+          <li>In the AWS Management Console, search for "DynamoDB" in the search bar at the top of the page.</li>
+          <li>Click on the DynamoDB service from the search results to open the DynamoDB Dashboard.</li>
+        </ul>
+        
+        <b>2. Create a Table</b>
+        <ul>
+          <li>In the DynamoDB Dashboard, click on the "Create table" button.</li>
+          <li>Provide a table name, e.g., <code>ExampleTable</code>.</li>
+        </ul>
+        
+        <b>3. Add the Primary Key</b>
+        <ul>
+          <li>Under the "Primary key" section:
+            <ul>
+              <li>Select the key type. For example, if you need a simple primary key, choose "Partition key".</li>
+              <li>Enter the key name, e.g., <code>UserID</code>, and choose its data type (String, Number, or Binary).</li>
+              <li>If you need a composite key, click "Add sort key" and provide the sort key name, e.g., <code>OrderID</code>, with its data type.</li>
+            </ul>
+          </li>
+        </ul>
+        
+        <b>4. Set the Read/Write Capacity</b>
+        <ul>
+          <li>Choose the capacity mode:
+            <ul>
+              <li>On-demand: Best for unpredictable workloads.</li>
+              <li>Provisioned: Best for predictable workloads.</li>
+            </ul>
+          </li>
+          <li>If you choose provisioned capacity, set the "Read capacity units" and "Write capacity units". For example:
+            <ul>
+              <li>Read capacity units: <code>5</code></li>
+              <li>Write capacity units: <code>5</code></li>
+            </ul>
+          </li>
+        </ul>
+        
+        <b>5. Clean Up</b>
+        <ul>
+          <li>Go to the DynamoDB Dashboard.</li>
+          <li>Select the table you want to delete.</li>
+          <li>Click on the "Actions" dropdown menu and choose "Delete table".</li>
+          <li>Confirm the deletion by typing the table name when prompted.</li>
+        </ul>        
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">Creating Table in DynamoDB</h2>
+<div>
+    
+    <ul>
+        <li> Using AWS command Line</li>
+            <pre>
+aws dynamodb create-table \
+--table-name UserDetails \
+--attribute-definitions \
+AttributeName=userId,AttributeType=S \
+--key-schema \
+AttributeName=userId,KeyType=HASH \
+--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+            </pre>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">Creating Items in DynamoDB</h2>
+<div>
+    <ul>
+        <li>
+          <b>1. Using the PutItem API</b>
+          <ul>
+            <li>Most commonly used method to insert items into DynamoDB.</li>
+            <li>Requires the primary key to be specified for the item.</li>
+            <li>If the primary key matches an existing item, the old item is replaced.</li>
+            <li><strong>Example:</strong>
+              <pre>
+      {
+        "TableName": "UserDetails",
+        "Item": {
+          "userId": {"S": "12345"},
+          "name": {"S": "John Doe"},
+          "email": {"S": "johndoe@example.com"}
+        }
+      }
+              </pre>
+            </li>
+          </ul>
+        </li>
+        <hr>
+
+        <li>
+          <b>2. Creating Items from AWS Console</b>
+          <ul>
+            <li>Simple and manual way to add items using the AWS Management Console.</li>
+            <li>Steps:
+              <ul>
+                <li>Go to the AWS DynamoDB Console.</li>
+                <li>Select the table where you want to insert the item.</li>
+                <li>Click on the <strong>Create Item</strong> button.</li>
+              </ul>
+            </li>
+            <li>Not suitable for inserting large volumes of data.</li>
+          </ul>
+        </li>
+        <hr>
+
+        <li>
+          <b>3. Using the BatchWriteItem API</b>
+          <ul>
+            <li>Allows writing up to 25 items in a single batch request.</li>
+            <li>Total size of the batch request should not exceed 16 MB.</li>
+            <li>Each individual item should be smaller than 400 KB.</li>
+            <li>Leverages parallel processing for faster data insertion.</li>
+            <li>Useful for handling large datasets efficiently.</li>
+            <li><strong>Example:</strong>
+              <pre>
+      {
+        "RequestItems": {
+          "UserDetails": [
+            {
+              "PutRequest": {
+                "Item": {
+                  "userId": {"S": "12345"},
+                  "name": {"S": "Alice"}
+                }
+              }
+            },
+            {
+              "PutRequest": {
+                "Item": {
+                  "userId": {"S": "67890"},
+                  "name": {"S": "Bob"}
+                }
+              }
+            }
+          ]
+        }
+      }
+              </pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">Python Script to access DynamoDB</h2>
+<div>
+    <p>
+        Perform following task using python:
+        <ul>
+            <li>Create a table.</li>
+            <li>Add data to the table.</li>
+            <li>Query the table.</li>
+            <li>Scan the table.</li>
+            <li>Clean up.</li>
+        </ul>
+    </p>
+    <h5>1. Create a Table</h5>
+    <ul>
+      <li>Use the <strong>boto3</strong> library to create a DynamoDB table.</li>
+      <li>Define table attributes such as partition key and sort key.</li>
+      <li>Example:
+        <pre>
+    import boto3
+    
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.create_table(
+        TableName='Products',
+        KeySchema=[
+            {'AttributeName': 'productId', 'KeyType': 'HASH'}  # Partition key
+        ],
+        AttributeDefinitions=[
+            {'AttributeName': 'productId', 'AttributeType': 'S'}
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 5,
+            'WriteCapacityUnits': 5
+        }
+    )
+    table.wait_until_exists()
+    print("Table created successfully!")
+        </pre>
+      </li>
+      <li><strong>Response:</strong> "Table created successfully!"</li>
+    </ul>
+    
+    <h5>2. Add Data to the Table</h5>
+    <ul>
+      <li>Use the <code>put_item</code> method to add items.</li>
+      <li>Example:
+        <pre>
+    table.put_item(
+        Item={
+            'productId': '101',
+            'name': 'Laptop',
+            'price': 1500,
+            'stock': 10
+        }
+    )
+    print("Item added successfully!")
+        </pre>
+      </li>
+      <li><strong>Response:</strong> "Item added successfully!"</li>
+    </ul>
+    
+    <h5>3. Query the Table</h5>
+    <ul>
+      <li>Use the <code>query</code> method to retrieve specific data using the partition key.</li>
+      <li>Example:
+        <pre>
+    response = table.query(
+        KeyConditionExpression=Key('productId').eq('101')
+    )
+    print("Query Result:", response['Items'])
+        </pre>
+      </li>
+      <li><strong>Response:</strong> The item matching the <code>productId</code> is returned.</li>
+    </ul>
+    
+    <h5>4. Scan the Table</h5>
+    <ul>
+      <li>Use the <code>scan</code> method to retrieve all data from the table.</li>
+      <li>Example:
+        <pre>
+    response = table.scan()
+    print("Scan Result:", response['Items'])
+        </pre>
+      </li>
+      <li><strong>Response:</strong> All items in the table are returned.</li>
+    </ul>
+    
+    <h5>5. Clean Up</h5>
+    <ul>
+      <li>Use the <code>delete_table</code> method to delete the table.</li>
+      <li>Example:
+        <pre>
+    table.delete()
+    print("Table deleted successfully!")
+        </pre>
+      </li>
+      <li><strong>Response:</strong> "Table deleted successfully!"</li>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">Python Script to insert bulk data into DynamoDB</h2>
+<div>
+    <ul>
+        <li>DynamoDB has a limit of 25 items per batch, and each batch cannot exceed 16 MB in size.</li>
+    </ul>
+<pre>
+    import boto3
+    import math
+
+    # Initialize DynamoDB resource
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('Products')  # Replace 'Products' with your table name
+
+    # Generate bulk data
+    bulk_data = [
+        {'productId': str(i), 'name': f'Product-{i}', 'price': 100 + i, 'stock': 50 + i}
+        for i in range(1, 501)  # Example: Insert 500 items
+    ]
+
+    # Function to insert bulk data
+    def insert_bulk_data(items, table, batch_size=25):
+        total_items = len(items)
+        num_batches = math.ceil(total_items / batch_size)
+        print(f"Total items: {total_items}, Batch size: {batch_size}, Total batches: {num_batches}")
+
+        for i in range(0, total_items, batch_size):
+            batch = items[i:i + batch_size]
+            with table.batch_writer() as batch_writer:
+                for item in batch:
+                    batch_writer.put_item(Item=item)
+            print(f"Batch {i // batch_size + 1}/{num_batches} inserted successfully!")
+
+    # Call the function to insert data
+    insert_bulk_data(bulk_data, table)
+
+</pre>
+<h5>Sample Input:</h5>
+<pre>
+    [
+    {"productId": "1", "name": "Product-1", "price": 101, "stock": 51},
+    {"productId": "2", "name": "Product-2", "price": 102, "stock": 52},
+    ...
+    {"productId": "500", "name": "Product-500", "price": 600, "stock": 550}
+]
+</pre>
+<h5>Sample Output Logs in CloudWatch</h5>
+<pre>
+    Total items: 500, Batch size: 25, Total batches: 20
+    Batch 1/20 inserted successfully!
+    Batch 2/20 inserted successfully!
+    ...
+    Batch 20/20 inserted successfully!    
+</pre>
+<h5>Verification</h5>
+<b>Scan the table</b>
+<pre>
+    response = table.scan()
+    print(f"Total items in the table: {len(response['Items'])}")
+</pre>
+<b>Expected Output</b>
+<pre>
+    Total items in the table: 500
+</pre>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">Secondary Index</h2>
+<div>
+<p>
+    Querying on the primary key is fast, but it can only give us a limited set of access patterns. <br>
+    The scan can give us any access pattern, but it is slow and costly.<br>
+    There is a third option, using a secondary index, which is relatively cheap and provides us with more access patterns.
+</p>
+<table border="1">
+    <thead>
+      <tr>
+        <th>Reading Option</th>
+        <th>Access Patterns</th>
+        <th>Cost</th>
+        <th>Speed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Query on primary key</td>
+        <td>Limited</td>
+        <td>Low</td>
+        <td>High</td>
+      </tr>
+      <tr>
+        <td>Scan on table</td>
+        <td>Many (virtually all)</td>
+        <td>Very high</td>
+        <td>Slow</td>
+      </tr>
+      <tr>
+        <td>Query on secondary indexes</td>
+        <td>Moderate</td>
+        <td>Moderate</td>
+        <td>High</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <ul>
+    <li>Secondary indexes allow additional ways to query data efficiently.</li>
+    <li>Two types of secondary indexes:
+      <ul>
+        <li><strong>Global Secondary Index (GSI):</strong> Defines a new partition key and optional sort key.</li>
+        <li><strong>Local Secondary Index (LSI):</strong> Adds a new sort key but keeps the same partition key as the table.</li>
+      </ul>
+    </li>
+  </ul>
+  <h5>Considerations for Secondary Indexes</h5>
+  <ul>
+    <li>Secondary indexes increase read and write costs.</li>
+    <li><strong>Local Secondary Index (LSI):</strong>
+      <ul>
+        <li>It provides strongly consistent reads. </li>
+        <li>Must be created when the table is created i.e. we can’t add or delete a LSI from an existing table.</li>
+        <li>Uses the same read/write capacity units as the table.</li>
+        <li>We have to use the same partition key, we can not choose an alternate partition key while creating LSIs</li>
+        <li>The size of an item collection is the total size of all the items in the table and the LSI.</li>
+        <li><b>The item collection size for any given partition key should be less than 10 GB.</b></li>
+      </ul>
+    </li>
+    <li><strong>Global Secondary Index (GSI):</strong>
+      <ul>
+        <li>Can be created or deleted after the table is created.</li>
+        <li>Requires separate provisioned throughput units.</li>
+        <li>Has its own partition key.</li>
+        <li>The index key is similar to the primary key. It contains a partition key and a sort key.</li>
+        <li>The sort key is optional, while the partition key is compulsory</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h5>Sample Data</h5>
+  <ul>
+    <li><strong>Table Name:</strong> MusicCollection</li>
+    <li><strong>Attributes:</strong>
+      <ul>
+        <li><strong>Artist:</strong> Partition Key</li>
+        <li><strong>Song:</strong> Sort Key</li>
+        <li><strong>Album:</strong> String</li>
+        <li><strong>Genre:</strong> String</li>
+        <li><strong>Year:</strong> Number</li>
+      </ul>
+    </li>
+    <li><strong>Example Records:</strong>
+      <ul>
+        <li>{ "Artist": "The Beatles", "Song": "Hey Jude", "Album": "The White Album", "Genre": "Rock", "Year": 1968 }</li>
+        <li>{ "Artist": "The Beatles", "Song": "Let It Be", "Album": "Let It Be", "Genre": "Rock", "Year": 1970 }</li>
+        <li>{ "Artist": "Taylor Swift", "Song": "Shake It Off", "Album": "1989", "Genre": "Pop", "Year": 2014 }</li>
+        <li>{ "Artist": "Adele", "Song": "Hello", "Album": "25", "Genre": "Soul", "Year": 2015 }</li>
+      </ul>
+    </li>
+  </ul>
+
+
+  <h5>1. Primary Index</h5>
+  <ul>
+    <li><strong>Partition Key:</strong> Artist</li>
+    <li><strong>Sort Key:</strong> Song</li>
+    <li><strong>Query Example:</strong>
+      <ul>
+        <li>Query all songs by "The Beatles":
+          <pre>
+            {
+              "KeyConditionExpression": "Artist = :artist",
+              "ExpressionAttributeValues": {
+                ":artist": "The Beatles"
+              }
+            }
+          </pre>
+        </li>
+        <li><strong>Output:</strong>
+          <ul>
+            <li>{ "Artist": "The Beatles", "Song": "Hey Jude", "Album": "The White Album", "Genre": "Rock", "Year": 1968 }</li>
+            <li>{ "Artist": "The Beatles", "Song": "Let It Be", "Album": "Let It Be", "Genre": "Rock", "Year": 1970 }</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <h5>2. Global Secondary Index (GSI)</h5>
+  <ul>
+    <li><strong>GSI Partition Key:</strong> Genre</li>
+    <li><strong>GSI Sort Key:</strong> Year</li>
+    <li><strong>Query Example:</strong>
+      <ul>
+        <li>Query all Rock songs sorted by year:
+          <pre>
+            {
+              "IndexName": "GenreYearIndex",
+              "KeyConditionExpression": "Genre = :genre",
+              "ExpressionAttributeValues": {
+                ":genre": "Rock"
+              }
+            }
+          </pre>
+        </li>
+        <li><strong>Output:</strong>
+          <ul>
+            <li>{ "Artist": "The Beatles", "Song": "Hey Jude", "Album": "The White Album", "Genre": "Rock", "Year": 1968 }</li>
+            <li>{ "Artist": "The Beatles", "Song": "Let It Be", "Album": "Let It Be", "Genre": "Rock", "Year": 1970 }</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <h5>3. Local Secondary Index (LSI)</h5>
+  <ul>
+    <li><strong>LSI Partition Key:</strong> Artist</li>
+    <li><strong>LSI Sort Key:</strong> Year</li>
+    <li><strong>Query Example:</strong>
+      <ul>
+        <li>Query all songs by "The Beatles" sorted by year:
+          <pre>
+            {
+              "IndexName": "ArtistYearIndex",
+              "KeyConditionExpression": "Artist = :artist",
+              "ExpressionAttributeValues": {
+                ":artist": "The Beatles"
+              }
+            }
+          </pre>
+        </li>
+        <li><strong>Output:</strong>
+          <ul>
+            <li>{ "Artist": "The Beatles", "Song": "Hey Jude", "Album": "The White Album", "Genre": "Rock", "Year": 1968 }</li>
+            <li>{ "Artist": "The Beatles", "Song": "Let It Be", "Album": "Let It Be", "Genre": "Rock", "Year": 1970 }</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <h5>4. Scan</h5>
+  <ul>
+    <li><strong>Use Case:</strong> Retrieve all songs released after 2010.</li>
+    <li><strong>Query Example:</strong>
+      <pre>
+        {
+          "FilterExpression": "Year > :year",
+          "ExpressionAttributeValues": {
+            ":year": 2010
+          }
+        }
+      </pre>
+    </li>
+    <li><strong>Output:</strong>
+      <ul>
+        <li>{ "Artist": "Taylor Swift", "Song": "Shake It Off", "Album": "1989", "Genre": "Pop", "Year": 2014 }</li>
+        <li>{ "Artist": "Adele", "Song": "Hello", "Album": "25", "Genre": "Soul", "Year": 2015 }</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+
+<h2 style="text-align: center;">Python Script for Secondary Index</h2>
+<div>
+    Write script for following tasks:
+    <ul>
+        <li>Create a table.</li>
+        <li>Add items to the table.</li>
+        <li>Check indexes and run a query.</li>
+        <li>Run the global secondary index.</li>
+        <li>Run the local secondary index.</li>
+        <li>Clean up.</li>
+    </ul>
+    <h5>1. Create a Table</h5>
+  <b>Python Script:</b>
+  <pre>
+    import boto3
+
+    dynamodb = boto3.client('dynamodb', region_name='us-east-1')
+
+    def create_table():
+        try:
+            response = dynamodb.create_table(
+                TableName='MusicCollection',
+                KeySchema=[
+                    {'AttributeName': 'Artist', 'KeyType': 'HASH'},  # Partition key
+                    {'AttributeName': 'Song', 'KeyType': 'RANGE'}   # Sort key
+                ],
+                AttributeDefinitions=[
+                    {'AttributeName': 'Artist', 'AttributeType': 'S'},
+                    {'AttributeName': 'Song', 'AttributeType': 'S'},
+                    {'AttributeName': 'Genre', 'AttributeType': 'S'},
+                    {'AttributeName': 'Year', 'AttributeType': 'N'}
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 5,
+                    'WriteCapacityUnits': 5
+                },
+                GlobalSecondaryIndexes=[
+                    {
+                        'IndexName': 'GenreYearIndex',
+                        'KeySchema': [
+                            {'AttributeName': 'Genre', 'KeyType': 'HASH'},  # GSI Partition key
+                            {'AttributeName': 'Year', 'KeyType': 'RANGE'}   # GSI Sort key
+                        ],
+                        'Projection': {
+                            'ProjectionType': 'ALL'
+                        },
+                        'ProvisionedThroughput': {
+                            'ReadCapacityUnits': 5,
+                            'WriteCapacityUnits': 5
+                        }
+                    }
+                ]
+            )
+            print("Table created successfully.")
+        except Exception as e:
+            print(f"Error creating table: {e}")
+
+    create_table()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    Table created successfully.
+  </pre>
+
+  <h5>2. Add Items to the Table</h5>
+  <b>Python Script:</b>
+  <pre>
+    def add_item():
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        table = dynamodb.Table('MusicCollection')
+        response = table.put_item(
+            Item={
+                'Artist': 'The Beatles',
+                'Song': 'Hey Jude',
+                'Album': 'The White Album',
+                'Genre': 'Rock',
+                'Year': 1968
+            }
+        )
+        print("Item added:", response)
+
+    add_item()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    Item added: { 'ResponseMetadata': { 'HTTPStatusCode': 200 } }
+  </pre>
+
+  <h5>3. Add Bulk Items with Batch Size = 25</h5>
+  <b>Python Script:</b>
+  <pre>
+    def add_bulk_items():
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        table = dynamodb.Table('MusicCollection')
+
+        items = [
+            {'Artist': 'The Beatles', 'Song': f'Song {i}', 'Album': 'Album 1', 'Genre': 'Rock', 'Year': 1968 + i}
+            for i in range(1, 26)
+        ]
+
+        with table.batch_writer() as batch:
+            for item in items:
+                batch.put_item(Item=item)
+        print("Bulk items added.")
+
+    add_bulk_items()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    Bulk items added.
+  </pre>
+
+  <h5>4. Check Indexes and Run a Query</h5>
+  <b>Python Script:</b>
+  <pre>
+    def query_table():
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        table = dynamodb.Table('MusicCollection')
+        response = table.query(
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('Artist').eq('The Beatles')
+        )
+        print("Query result:", response['Items'])
+
+    query_table()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    Query result: [
+      {'Artist': 'The Beatles', 'Song': 'Hey Jude', 'Album': 'The White Album', 'Genre': 'Rock', 'Year': 1968},
+      ...
+    ]
+  </pre>
+
+  <h5>5. Run the Global Secondary Index (GSI)</h5>
+  <b>Python Script:</b>
+  <pre>
+    def query_gsi():
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        table = dynamodb.Table('MusicCollection')
+        response = table.query(
+            IndexName='GenreYearIndex',
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('Genre').eq('Rock')
+        )
+        print("GSI Query result:", response['Items'])
+
+    query_gsi()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    GSI Query result: [
+      {'Artist': 'The Beatles', 'Song': 'Hey Jude', 'Album': 'The White Album', 'Genre': 'Rock', 'Year': 1968},
+      ...
+    ]
+  </pre>
+
+  <h5>6. Run the Local Secondary Index (LSI)</h5>
+  <b>Python Script:</b>
+  <pre>
+    def query_lsi():
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        table = dynamodb.Table('MusicCollection')
+        response = table.query(
+            IndexName='ArtistYearIndex',
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('Artist').eq('The Beatles') &
+                                    boto3.dynamodb.conditions.Key('Year').gte(1968)
+        )
+        print("LSI Query result:", response['Items'])
+
+    query_lsi()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    LSI Query result: [
+      {'Artist': 'The Beatles', 'Song': 'Hey Jude', 'Album': 'The White Album', 'Genre': 'Rock', 'Year': 1968},
+      ...
+    ]
+  </pre>
+
+  <h5>7. Clean Up</h5>
+  <b>Python Script:</b>
+  <pre>
+    def delete_table():
+        try:
+            response = dynamodb.delete_table(TableName='MusicCollection')
+            print("Table deleted successfully.")
+        except Exception as e:
+            print(f"Error deleting table: {e}")
+
+    delete_table()
+  </pre>
+
+  <b>Sample Output:</b>
+  <pre>
+    Table deleted successfully.
+  </pre>
+
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">CloudWatch Monitoring for DynamoDB</h2>
+<div>
+    The following technologies are available for logging and monitoring AWS services:
+    <ul>
+        <li>CloudWatch alarms</li>
+        <li>CloudWatch logs</li>
+        <li>CloudWatch events</li>
+        <li>Manual monitoring</li>
+    </ul>
+    <br>
+    <h4>Steps to Create a CloudWatch Alarm for DynamoDB Table</h4>
+  
+    <h5>1. Choose the Metric</h5>
+    <ul>
+      <li>Go to the <strong>AWS Management Console</strong>.</li>
+      <li>Navigate to <strong>CloudWatch</strong>.</li>
+      <li>In the CloudWatch Dashboard, click on <strong>Alarms</strong> in the left menu.</li>
+      <li>Click on <strong>Create Alarm</strong>.</li>
+      <li>Click on <strong>Select Metric</strong>.</li>
+      <li>Choose <strong>DynamoDB</strong> from the list of AWS services.</li>
+      <li>Select the metric you want to monitor, e.g., <strong>ConsumedReadCapacityUnits</strong> or <strong>ConsumedWriteCapacityUnits</strong>.</li>
+    </ul>
+  
+    <h5>2. Define the Alarm Condition</h5>
+    <ul>
+      <li>Set the <strong>threshold type</strong> (e.g., Static or Anomaly Detection).</li>
+      <li>For example, you can monitor if the <strong>ConsumedReadCapacityUnits</strong> exceed a certain value, such as <strong>1000</strong>.</li>
+      <li>Choose a period for evaluation, e.g., <strong>1 minute</strong>.</li>
+    </ul>
+  
+    <h5>3. Configure Actions</h5>
+    <ul>
+      <li>Choose the action to take when the alarm is triggered, such as sending a notification to an <strong>Amazon SNS topic</strong>.</li>
+      <li>If you don't have an SNS topic, create one by entering a name and email address to receive alerts.</li>
+      <li>Confirm the email subscription by checking your inbox and clicking on the confirmation link.</li>
+    </ul>
+  
+    <h5>4. Add a Name and Review</h5>
+    <ul>
+      <li>Enter a name for the alarm, e.g., <strong>DynamoDBReadCapacityAlarm</strong>.</li>
+      <li>Review the details of the alarm configuration.</li>
+      <li>Click <strong>Create Alarm</strong>.</li>
+    </ul>
+  
+    <h4>Example: CloudWatch Alarm for DynamoDB Table</h4>
+  
+    <h5>Use Case:</h5>
+    <ul>
+      <li>Monitor the <strong>ConsumedReadCapacityUnits</strong> of a DynamoDB table named <strong>MusicCollection</strong>.</li>
+      <li>Trigger an alarm if the read capacity exceeds <strong>500 units</strong> in a <strong>1-minute interval</strong>.</li>
+    </ul>
+  
+    <h5>Sample Alarm Configuration:</h5>
+    <ul>
+      <li><strong>Metric:</strong> DynamoDB > By Table Name > MusicCollection > ConsumedReadCapacityUnits</li>
+      <li><strong>Threshold:</strong> Greater than 500 units</li>
+      <li><strong>Evaluation Period:</strong> 1 minute</li>
+      <li><strong>Actions:</strong> Notify via SNS topic <strong>DynamoDBAlarms</strong></li>
+      <li><strong>Alarm Name:</strong> HighReadCapacityAlarm</li>
+    </ul>
+  
+    <h5>Expected Notification:</h5>
+    <pre>
+      Subject: AWS Notification - Alarm "HighReadCapacityAlarm" in ALARM
+      Body:
+      Alarm Name: HighReadCapacityAlarm
+      State: ALARM
+      Metric: ConsumedReadCapacityUnits
+      Threshold: Greater than 500 units
+      DynamoDB Table: MusicCollection
+    </pre>
+  
+    <h4>Verifying the Alarm</h4>
+    <ul>
+      <li>Perform operations on the DynamoDB table to simulate a high read capacity.</li>
+      <li>Monitor the alarm state in the <strong>CloudWatch Alarms</strong> console.</li>
+      <li>When the condition is met, check your email for the notification.</li>
+      <li>View logs in the <strong>CloudWatch Logs</strong> to analyze the DynamoDB table activity.</li>
+    </ul>
+  
+    <h4>Cleaning Up</h4>
+    <ul>
+      <li>Delete the CloudWatch alarm from the <strong>Alarms</strong> section in CloudWatch.</li>
+      <li>Unsubscribe or delete the SNS topic if it's no longer needed.</li>
+    </ul>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+
+<h2 style="text-align: center;">Use Case - Instagram Stories using DynamoDB</h2>
+<div>
+    <p>To create a DynamoDB database for the Instagram Stories feature, follow these steps:</p>
+    <p>
+        We will design a DynamoDB database to store and manage Instagram stories. The project involves three primary steps:
+        <ul>
+            <li>Creating the DynamoDB Database</li>
+            <li>Populating the Database</li>
+            <li>Retrieving and Managing Data</li>
+        </ul>
+    </p>
+    <h5>Create Dynamodb table</h5>
+    <pre>
+        import boto3
+
+# Initialize DynamoDB client
+dynamodb = boto3.resource('dynamodb')
+
+# Create the DynamoDB table
+table = dynamodb.create_table(
+    TableName='InstagramStories',
+    KeySchema=[
+        {
+            'AttributeName': 'user_id',  # Partition Key
+            'KeyType': 'HASH'
+        },
+        {
+            'AttributeName': 'story_id',  # Sort Key
+            'KeyType': 'RANGE'
+        }
+    ],
+    AttributeDefinitions=[
+        {
+            'AttributeName': 'user_id',
+            'AttributeType': 'S'
+        },
+        {
+            'AttributeName': 'story_id',
+            'AttributeType': 'S'
+        },
+        {
+            'AttributeName': 'story_type',
+            'AttributeType': 'S'
+        },
+        {
+            'AttributeName': 'timestamp',
+            'AttributeType': 'S'
+        },
+        {
+            'AttributeName': 'is_memory',
+            'AttributeType': 'BOOL'
+        },
+        {
+            'AttributeName': 'likes_count',
+            'AttributeType': 'N'
+        }
+    ],
+    ProvisionedThroughput={
+        'ReadCapacityUnits': 5,
+        'WriteCapacityUnits': 5
+    }
+)
+
+print(f"Table {table.table_name} is being created...")
+
+    </pre>
+    <h5>Populate the Table with Sample Data</h5>
+    <pre>
+        # Add sample story data
+def add_sample_story(user_id, story_id, story_type, title, description, is_memory, likes_count):
+    table.put_item(
+        Item={
+            'user_id': user_id,
+            'story_id': story_id,
+            'story_type': story_type,
+            'title': title,
+            'description': description,
+            'timestamp': str(datetime.now()),
+            'is_memory': is_memory,
+            'likes_count': likes_count
+        }
+    )
+
+# Sample data for User U1 and U2
+add_sample_story('U1', 'S1', 'image', 'Sunset at the beach', 'A beautiful sunset I captured while at the beach.', False, 0)
+add_sample_story('U2', 'S2', 'video', 'Morning run', 'A short video of my morning run through the park.', True, 10)
+
+    </pre>
+    <h5>Query the Data</h5>
+    <pre>
+        def get_user_stories(user_id):
+    response = table.query(
+        KeyConditionExpression=boto3.dynamodb.conditions.Key('user_id').eq(user_id)
+    )
+    return response['Items']
+
+# Get stories for User U1
+user_stories = get_user_stories('U1')
+print(user_stories)
+    </pre>
+    <h5>Automatic Cleanup for Expired Stories</h5>
+    <pre>
+        import time
+
+def remove_expired_stories():
+    current_time = time.time()
+    response = table.scan()
+    for item in response['Items']:
+        story_time = time.mktime(datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S.%f').timetuple())
+        if current_time - story_time > 86400 and not item['is_memory']:  # 86400 seconds = 24 hours
+            table.delete_item(
+                Key={
+                    'user_id': item['user_id'],
+                    'story_id': item['story_id']
+                }
+            )
+            print(f"Deleted expired story: {item['story_id']}")
+
+# Remove expired stories
+remove_expired_stories()
+
+    </pre>
+</div>
+<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
