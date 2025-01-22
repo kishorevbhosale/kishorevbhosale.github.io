@@ -222,3 +222,10 @@ h5.stylish {
     margin-bottom: 10px;
     font-weight: bold;
 }
+
+.thin-line {
+    height: 0.5px; /* Set the height to a very small value */
+    background-color: black; /* Line color */
+    border: none; /* Remove default borders */
+    margin: 10px 0; /* Add some spacing around the line */
+}

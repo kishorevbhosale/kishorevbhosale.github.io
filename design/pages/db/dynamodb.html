@@ -10,13 +10,13 @@
       <li>They help organize and store data in cost-effective ways.</li>
       <li>Critical for creating reliable and smart applications.</li>
     </ul>
-
+    <hr class="thin-line">
     <h5>2. Types of Databases</h5>
     <ul>
       <li><strong>Relational Databases</strong></li>
       <li><strong>NoSQL Databases</strong></li>
     </ul>
-
+    <hr class="thin-line">
     <h5>3. Relational Databases</h5>
     <ul>
       <li>Invented in the 1970s, examples include PostgreSQL, MySQL, and Oracle.</li>
@@ -24,14 +24,12 @@
       <li>CRUD operations are performed using SQL.</li>
       <li>Best for applications with structured data, like banking systems.</li>
     </ul>
-    
     <b>Advantages of Relational Databases</b>
     <ul>
       <li>Great for naturally structured data.</li>
       <li>Provide consistency, ensuring multiple applications get the same data.</li>
       <li>SQL is widely known, making it easier for developers to learn and use.</li>
     </ul>
-    
     <b>Limitations of Relational Databases</b>
     <ul>
       <li>Not ideal for unstructured or frequently changing data.</li>
@@ -39,7 +37,7 @@
       <li>Changing the schema frequently can be cumbersome in Agile development.</li>
       <li>Impedance mismatch occurs when application data doesn't fit well with the relational schema.</li>
     </ul>
-
+    <hr class="thin-line">
     <h5>4. NoSQL Databases</h5>
     <ul>
       <li>Designed to address limitations of relational databases.</li>
@@ -77,7 +75,7 @@
         <li>White paper published - 2007</li>
         <li>First release - 2012</li>
     </p>
-    <hr>
+    <hr class="thin-line">
     <h5>DynamoDB Features</h5>
     <ul>
       <li><b>Fully Managed:</b>
@@ -124,7 +122,7 @@
         </ul>
       </li>
     </ul>
-    <hr>
+    <hr class="thin-line">
     <h5>AWS Value-added Services</h5>
     <ul>
         <li>
@@ -159,7 +157,7 @@
             </ul>
         </li>
     </ul>
-    <hr>
+    <hr class="thin-line">
     <h5>DynamoDB: When to Use and When to Avoid</h5>
     <ul>
         <li><b>When to Use DynamoDB</b>
@@ -206,7 +204,7 @@
             <li>Each table has a primary key to ensure unique data entries.</li>
           </ul>
         </li>
-
+        <hr class="thin-line">
         <li><b>Items:</b>
           <ul>
             <li>Items in DynamoDB are like rows in relational databases.</li>
@@ -217,7 +215,7 @@
             </li>
           </ul>
         </li>
-      
+        <hr class="thin-line">
         <li><b>Attributes:</b>
           <ul>
             <li>Attributes are the individual key-value pairs within an item.</li>
@@ -226,7 +224,7 @@
             <li>Example: <pre>"customer_name": "Alice"</pre> is an attribute with key "customer_name" and value "Alice".</li>
           </ul>
         </li>
-      
+        <hr class="thin-line">
         <li><b>Primary Key:</b>
           <ul>
             <li>A primary key is used to uniquely identify each item in a table.</li>
@@ -240,7 +238,7 @@
             <li>Example of Partition Key + Sort Key: <pre>{"user_id": "abc123", "order_date": "2025-01-18"}</pre></li>
           </ul>
         </li>
-        
+        <hr class="thin-line">
         <li><b>Example - Orders Table:</b>
           <ul>
             <li>Let's assume we have a table called "Orders" with the primary key as "order_id".</li>
@@ -286,7 +284,7 @@
             </li>
           </ul>
         </li>
-
+        <hr class="thin-line">
         <li><b>Document Types:</b>
           <ul>
             <li><b>Map:</b> A collection of key-value pairs (similar to JSON objects). The pairs are not ordered.
@@ -301,7 +299,7 @@
             </li>
           </ul>
         </li>
-      
+        <hr class="thin-line">
         <li><b>Set Types:</b>
           <ul>
             <li><b>NumberSet:</b> A set of unique numbers (no duplicates). Elements are of type Number.
@@ -321,7 +319,7 @@
             </li>
           </ul>
         </li>
-      
+        <hr class="thin-line">
         <li><b>Size Limitations:</b>
           <ul>
             <li>The maximum item size in DynamoDB is 400 KB (for all data types combined).</li>

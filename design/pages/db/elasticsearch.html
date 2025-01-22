@@ -1,0 +1,1331 @@
+<h1 style="text-align: center;">Elasticsearch</h1>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+<div>
+    <h4>What is Elasticsearch?</h4>
+    <ul>
+    <li><b>Open-source Search Engine:</b> Elasticsearch is a free and open-source tool designed for storing, searching, and analyzing various types of data.</li>
+    <li><b>Handles Diverse Data Types:</b> It works with textual, numerical, geospatial, structured, and unstructured data.</li>
+    <li><b>NoSQL Database:</b> Although it's a NoSQL database, it specializes in search capabilities and advanced data analysis rather than just data storage.</li>
+    <li><b>JSON-based Storage:</b> Data in Elasticsearch is stored in an unstructured format using JSON, making it flexible and adaptable.</li>
+    <li><b>Built with Java:</b> Developed in the Java programming language, Elasticsearch uses the powerful Lucene library under the hood.</li>
+    <li><b>RESTful APIs:</b> It comes with built-in RESTful APIs to easily send and receive requests for data operations.</li>
+    </ul>
+    <hr class="thin-line">
+    <h4>Why use Elasticsearch?</h4>
+    <ul> 
+            <li><b>Efficient Full-Text Search:</b> Elasticsearch is excellent for performing full-text searches on large datasets. 
+                Unlike relational or non-relational databases, it provides a faster and more efficient way to search and retrieve results based on relevance.</li>
+                <li><b>What is Full-Text Search?</b>  
+                    Full-text search looks for matches not only in titles but also in the content of documents. It scores each result based on relevance. For example:
+                    <ul>
+                      <li>If you search for "science," it will return documents that contain the word "science," similar words, or closely related terms.</li>
+                    </ul>
+                </li>
+                  
+                <li><b>High Performance and Scalability:</b>  
+                    Elasticsearch is designed with a distributed and scalable architecture, enabling quick searches across massive datasets.</li>
+                  
+                <li><b>Support for Multiple Data Types:</b>  
+                    It can handle various types of data, such as:
+                    <ul>
+                      <li>Textual data (e.g., articles, descriptions).</li>
+                      <li>Numerical data (e.g., metrics, statistics).</li>
+                      <li>Geospatial data (e.g., locations, maps).</li>
+                      <li>Structured and unstructured data.</li>
+                    </ul>
+                </li>
+                  
+                <li><b>Aggregation Requests:</b>  
+                    Elasticsearch provides features to analyze data, spot trends, and uncover patterns, making it great for business insights.</li>
+                  
+                <li><b>Handles Typos:</b>  
+                    It accounts for small errors or typos in search queries, ensuring relevant results are still returned.</li>
+        </ul>  
+    <hr class="thin-line">
+    <h4></h4>
+    <div>
+        <h4>Elasticsearch Architecture Explained with Example</h4>
+        <p>Elasticsearch is a distributed system designed for storing, searching, and analyzing large volumes of data efficiently.</p>
+        <img src="../../images/es-cluster.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
+        
+          <h5>1. Cluster</h5>
+          <ul>
+            <li>A cluster is a collection of one or more nodes that work together as a single system.</li>
+            <li>Nodes in each cluster are assigned to one or various roles, e.g., holding data.</li>
+          </ul>
+        
+          <h5>2. Node</h5>
+          <ul>
+              <li>A node is an individual server in a cluster</li>
+              <li>Each node has its unique ID and name</li>
+              <li>Each node has a specific role</li>
+              <li>node belongs to only one cluster.</li>
+          </ul>
+        
+          <h5>3. Index</h5>
+          <ul>
+            <li>An index is a collection of documents that have similar characteristics.</li>
+            <li>Each index is identified by a name.</li>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+              <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+                <b>Dish 1</b>
+                <pre>
+            {
+              "_id": "1",
+              "name": "Pizza",
+              "price": 12.99,
+              "category": "Entree",
+              "ingredients": [
+                "dough",
+                "sauce",
+                "cheese"
+              ]
+            }
+                </pre>
+              </div>
+            
+              <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+                <b>Dish 2</b>
+                <pre>
+            {
+              "_id": "2",
+              "name": "Spaghetti",
+              "price": 10.99,
+              "category": "Entree",
+              "ingredients": [
+                "eggs",
+                "bacon",
+                "parmesan cheese",
+                "pepper"
+              ]
+            }
+                </pre>
+              </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between;">
+             
+              <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+                <b>Actor 1</b>
+                <pre>
+            {
+              "_id": "1",
+              "name": "leonardo dicaprio",
+              "age": 48,
+              "nationality": "American",
+              "Occupations": [
+                "actor",
+                "film producer"
+              ],
+              "height": 1.83
+            }
+                </pre>
+              </div>
+              
+              <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+                <b>Actor 2</b>
+                <pre>
+            {
+              "_id": "2",
+              "name": "John Smith",
+              "age": 54,
+              "nationality": "American",
+              "Occupations": [
+                "actor",
+                "rapper",
+                "film producer"
+              ],
+              "height": 1.88
+            }
+                </pre>
+              </div>
+            </div>
+            
+          </ul>
+        
+          <h5>4. Document</h5>
+          <ul>
+            The document is a JSON format object stored in the Elasticsearch index under a unique ID.<br>
+            <b>Example : Pizza Document</b>
+            <pre>
+{
+  "_id": "1",
+  "name": "Pizza",
+  "price": 12.99,
+  "category": "Emtree",
+  "ingredients": [
+    "dough",
+    "sauce",
+    "cheese",
+    "toppings"
+  ]
+}
+            </pre>
+          </ul>
+        
+          <h5>5. Shards</h5>
+          <ul>
+            <li>Sharding is the process of dividing an index into smaller parts (shards) and distributing them across nodes in the cluster.</li>
+            <li>This enables Elasticsearch to scale horizontally by adding more nodes to the cluster and allows for parallel processing of search requests across multiple shards.</li>
+            <li>Each shard contains a subset of the index’s documents and is stored on a single node in the cluster.</li>
+            <li>When we create an index, it is created with one shard by default, but we can configure it to have multiple shards that are distributed across different nodes.</li>
+            <li><b>Improved performance:</b> By distributing data across multiple shards, search and indexing operations can be parallelized, resulting in improved performance.</li>
+            <li><b>Increased capacity:</b> Sharding allows Elasticsearch to scale horizontally, allowing it to handle larger volumes of data.</li>
+            <li><b>Improved flexibility:</b> Sharding allows Elasticsearch to distribute data across different hardware or infrastructure, providing flexibility in terms of resource allocation.</li>
+          </ul>
+        
+        
+          <h5>6. Replicas</h5>
+          <ul>
+            Replicas are copies of shards, ensuring high availability and fault tolerance.
+            <ul>
+              <li>Replicas ensure data is accessible even if a node fails.</li>
+              <li>They also improve search performance by balancing requests across replicas.</li>
+            </ul>
+          </ul>
+        
+       
+          <h5>7. Query and Analysis Layer</h5>
+          <ul>
+            <p>Elasticsearch provides a powerful query language for searching and analyzing data in real time.</br>
+            <b>Example:</b> A librarian wants to find all books published in 2023 with "Elasticsearch" in the title. Elasticsearch quickly retrieves and ranks the results based on relevance.</p>
+          </ul>        
+    </div>
+    <hr>                
+</div>
+
+<h2 style="text-align: center;">CRUD operation in ElasticSearch</h2>
+<div>
+  <h4>Creating (indexing) a document</h4>
+  The create operation in Elasticsearch is commonly known as indexing a document, and it refers to adding a new document to an index.
+    <ul>
+    Index a document in Elasticsearch:
+      <li>Indexing a document with a specified ID</li>
+      <li>Indexing a document with an autogenerated ID</li>
+    </ul>
+
+  <b>Indexing a Document with a specified ID</b>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Using python script</b>
+      <pre>
+        from elasticsearch import Elasticsearch
+
+        # Connect to Elasticsearch
+        es = Elasticsearch("http://localhost:9200")
+        
+        # Movie index name
+        index_name = "movies"
+        
+        # Movie document to index
+        movie_doc = {
+            "title": "Inception",
+            "director": "Christopher Nolan",
+            "year": 2010,
+            "genre": ["Sci-Fi", "Thriller"],
+            "rating": 8.8,
+            "cast": [
+                {"name": "Leonardo DiCaprio", "role": "Dom Cobb"},
+                {"name": "Joseph Gordon-Levitt", "role": "Arthur"},
+                {"name": "Ellen Page", "role": "Ariadne"}
+            ]
+        }
+        
+        # Index the document
+        response = es.index(index=index_name, id=1, document=movie_doc)
+        
+        # Print response
+        print(response)
+        
+      </pre>
+    </div>
+  
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Elasticsearch Console : Using HTTP request</b>
+      <pre>
+        PUT /movies/_doc/1
+        {
+          "title": "Inception",
+          "director": "Christopher Nolan",
+          "year": 2010,
+          "genre": ["Sci-Fi", "Thriller"],
+          "rating": 8.8,
+          "cast": [
+            {
+              "name": "Leonardo DiCaprio",
+              "role": "Dom Cobb"
+            },
+            {
+              "name": "Joseph Gordon-Levitt",
+              "role": "Arthur"
+            },
+            {
+              "name": "Ellen Page",
+              "role": "Ariadne"
+            }
+          ]
+        }
+        
+      </pre>
+    </div>
+
+  </div>
+  
+  <b>Indexing a document with an autogenerated ID</b><br>
+  When no id is provided, Elasticsearch generates a <b>unique _id</b> for the document
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Using python script</b>
+      <pre>
+        from elasticsearch import Elasticsearch
+
+        # Connect to Elasticsearch
+        es = Elasticsearch("http://localhost:9200")
+        
+        # Movie index name
+        index_name = "movies"
+        
+        # Movie document to index
+        movie_doc = {
+            "title": "Interstellar",
+            "director": "Christopher Nolan",
+            "year": 2014,
+            "genre": ["Sci-Fi", "Adventure"],
+            "rating": 8.6,
+            "cast": [
+                {"name": "Matthew McConaughey", "role": "Cooper"},
+                {"name": "Anne Hathaway", "role": "Brand"},
+                {"name": "Jessica Chastain", "role": "Murph"}
+            ]
+        }
+        
+        # Index the document without providing an ID
+        response = es.index(index=index_name, document=movie_doc)
+        
+        # Print the response
+        print("Document Indexed:", response)
+                
+      </pre>
+    </div>
+  
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Elasticsearch Console : Using HTTP request</b>
+      <pre>
+        POST /movies/_doc
+        {
+          "title": "Interstellar",
+          "director": "Christopher Nolan",
+          "year": 2014,
+          "genre": ["Sci-Fi", "Adventure"],
+          "rating": 8.6,
+          "cast": [
+            {
+              "name": "Matthew McConaughey",
+              "role": "Cooper"
+            },
+            {
+              "name": "Anne Hathaway",
+              "role": "Brand"
+            },
+            {
+              "name": "Jessica Chastain",
+              "role": "Murph"
+            }
+          ]
+        }
+                
+      </pre>
+    </div>
+    
+  </div>
+  
+</div>
+<hr>
+
+<div>
+  <h4>Reading a document</h4>
+  You can retrieve the document using Elasticsearch's REST API with the GET method:
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Using python script</b>
+      <pre>
+        from elasticsearch import Elasticsearch
+
+        # Connect to Elasticsearch
+        es = Elasticsearch("http://localhost:9200")
+        
+        # Index name
+        index_name = "movies"
+        
+        # Document ID
+        document_id = "Ht5qkoUBceh9VYVhszY2"  # Replace with the actual ID of your document
+        
+        # Retrieve the document
+        response = es.get(index=index_name, id=document_id)
+        
+        # Print the retrieved document
+        print("Document Retrieved:", response["_source"])                
+      </pre>
+    </div>
+  
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Elasticsearch Console : Using HTTP request</b>
+      <pre>
+        GET /movies/_doc/Ht5qkoUBceh9VYVhszY2  # Replace with the actual ID of your document
+      </pre>
+    </div>
+
+  </div>
+</div>
+<hr>
+
+<div>
+  <h4>updating the document</h4>
+  To update documents, Elasticsearch provides the <code><b>_update</b></code> endpoint that allows us to modify specific fields in a document without reindexing the entire document.
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Using python script</b>
+      <pre>
+        from elasticsearch import Elasticsearch
+
+        # Connect to Elasticsearch
+        es = Elasticsearch("http://localhost:9200")
+        
+        # Index name
+        index_name = "movies"
+        
+        # Document ID
+        document_id = "Ht5qkoUBceh9VYVhszY2"
+        
+        # Update data (fields to modify or add)
+        update_body = {
+            "doc": {
+                "rating": 9.0,  # Updating the rating
+                "genre": ["Sci-Fi", "Adventure", "Drama"]  # Adding a new genre
+            }
+        }
+        
+        # Update the document
+        response = es.update(index=index_name, id=document_id, body=update_body)
+        
+        # Print the response
+        print("Update Response:", response)                  
+      </pre>
+    </div>
+  
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Elasticsearch Console : Using HTTP request</b>
+      <pre>
+        POST /movies/_update/Ht5qkoUBceh9VYVhszY2
+        {
+          "doc": {
+            "rating": 9.0,  // Updating the rating
+            "genre": ["Sci-Fi", "Adventure", "Drama"]  // Adding a new genre
+          }
+        }        
+      </pre>
+    </div>
+
+  </div>
+</div>
+<hr>
+
+<div>
+  <h4>Deleting the document</h4>
+  To delete a document in Elasticsearch, we can send a <code><b>DELETE</b></code> request method and specify the document ID.
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Using python script</b>
+      <pre>
+        from elasticsearch import Elasticsearch
+
+        # Connect to Elasticsearch
+        es = Elasticsearch("http://localhost:9200")
+        
+        # Index name
+        index_name = "movies"
+        
+        # Document ID
+        document_id = "Ht5qkoUBceh9VYVhszY2"
+        
+        # Delete the document
+        response = es.delete(index=index_name, id=document_id)
+        
+        # Print the response
+        print("Delete Response:", response)                             
+      </pre>
+    </div>
+  
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Elasticsearch Console : Using HTTP request</b>
+      <pre>
+        DELETE /movies/_doc/Ht5qkoUBceh9VYVhszY2
+      </pre>
+    </div>
+
+  </div>
+</div>
+<hr>
+
+<div>
+  <h4>Bulk CRUD operation</h4>
+  The bulk data format requires one action metadata line followed by the document data for create, index, or update operations. For delete, only the action metadata line is required.
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Using python script</b>
+      <pre>
+        from elasticsearch import Elasticsearch, helpers
+
+        # Connect to Elasticsearch
+        es = Elasticsearch("http://localhost:9200")
+        
+        # Index name
+        index_name = "movies"
+        
+        # Bulk operations
+        actions = [
+            # Create operation
+            {"create": {"_index": index_name, "_id": "1"}},
+            {"title": "Inception", "director": "Christopher Nolan", "year": 2010, "genre": "Sci-Fi"},
+            
+            # Index (insert or replace) operation
+            {"index": {"_index": index_name, "_id": "2"}},
+            {"title": "The Matrix", "director": "The Wachowskis", "year": 1999, "genre": "Sci-Fi"},
+            
+            # Update operation
+            {"update": {"_index": index_name, "_id": "1"}},
+            {"doc": {"genre": "Science Fiction"}},  # Only update specified fields
+            
+            # Delete operation
+            {"delete": {"_index": index_name, "_id": "2"}}
+        ]
+        
+        # Perform the bulk operation
+        response = helpers.bulk(es, actions)
+        
+        # Print the response
+        print("Bulk operation response:", response)                                    
+      </pre>
+    </div>
+  
+    <div style="width: 48%; border: 1px solid #ccc; padding: 10px;">
+      <b>Elasticsearch Console : Using HTTP request</b>
+      <pre>
+        POST /_bulk
+Content-Type: application/json
+
+{ "create": { "_index": "movies", "_id": "1" } }
+{ "title": "Inception", "director": "Christopher Nolan", "year": 2010, "genre": "Sci-Fi" }
+{ "index": { "_index": "movies", "_id": "2" } }
+{ "title": "The Matrix", "director": "The Wachowskis", "year": 1999, "genre": "Sci-Fi" }
+{ "update": { "_index": "movies", "_id": "1" } }
+{ "doc": { "genre": "Science Fiction" } }
+{ "delete": { "_index": "movies", "_id": "2" } }
+      </pre>
+    </div>
+
+  </div>
+</div>
+<hr>
+
+<h2 style="text-align: center;">Mapping in ElasticSearch</h2>
+<div>
+  In ElasticSearch, mapping is the process of defining how a document and its fields are indexed and stored.
+  <ul>
+    <li>Dynamic Mapping</li>
+    <li>Explicit mapping</li>
+  </ul>
+  <hr class="thin-line">
+  <h4>Dynamic Mapping</h4>
+  <div>
+    <ul>
+      <li>Dynamic mapping automatically detects and indexes the structure and data types of documents.</li>
+      <li>When you index a document without explicitly defining a mapping, Elasticsearch dynamically creates the mapping based on the document's fields and their data types.</li>
+      <li>Dynamic mapping is helpful when you are working with unknown or rapidly changing schemas, as it allows you to index new data without prior setup.</li>
+    </ul>
+    <br>
+    <h5>How Dynamic Mapping Works</h5>
+    <ul>
+      <li><b>Detects New Fields: </b>When a new field is encountered during indexing, Elasticsearch assigns a type to the field based on the data provided.</li>
+      <li><b>Adds the Field to the Mapping: </b>The new field and its detected type are added to the index mapping.</li>
+      <li><b>Field Type Guessing: </b>The data type is inferred from the field’s content (e.g., a string becomes a text field, a number becomes an integer or float, etc.).</li>
+    </ul>
+    <br>
+    <h5>Default Data Type Mapping</h5>
+    <div style="display: flex; justify-content: left; margin-top: 20px;">
+      <table border="1" style="border-collapse: collapse; width: 60%; text-align: center; font-size: 14px;">
+        <thead>
+          <tr>
+            <th style="padding: 5px;">Data in Document</th>
+            <th style="padding: 5px;">Inferred Data Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 5px;">"text" (string)</td>
+            <td style="padding: 5px;">text and keyword</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">123 (integer)</td>
+            <td style="padding: 5px;">long or integer</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">12.34 (float)</td>
+            <td style="padding: 5px;">float or double</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">true or false</td>
+            <td style="padding: 5px;">boolean</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">2025-01-22T10:00:00Z</td>
+            <td style="padding: 5px;">date</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">{ "key": "value" }</td>
+            <td style="padding: 5px;">object</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">[1, 2, 3] (array)</td>
+            <td style="padding: 5px;">array of numbers</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <h4>Dynamic Mapping in Action</h4>
+    <ul>
+      <li>Step 1: Index a Document Without Explicit Mapping</li>
+        <p>
+          When you index a document in a new index without pre-defining a mapping, Elasticsearch applies dynamic mapping.
+        </p>
+        <pre>
+<b>PUT /my_dynamic_index/_doc/1</b>
+{
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "city": "New York",
+    "zip": 10001
+  },
+  "tags": ["developer", "writer"],
+  "created_at": "2025-01-22T10:00:00Z"
+}
+
+        </pre>
+      <li>Step 2: Elasticsearch Creates the Mapping Automatically</li>
+        <p>You can view the generated mapping by querying:</p>
+        <pre>
+GET /my_dynamic_index/_mapping
+        </pre>
+        <b>Response of dynamically created mapping</b>
+        <pre>
+          {
+            "my_dynamic_index": {
+              "mappings": {
+                "properties": {
+                  "name": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "age": {
+                    "type": "integer"
+                  },
+                  "address": {
+                    "properties": {
+                      "city": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword"
+                          }
+                        }
+                      },
+                      "zip": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "tags": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "created_at": {
+                    "type": "date"
+                  }
+                }
+              }
+            }
+          }
+          
+        </pre>
+
+    </ul>
+    <br>
+    <b>Note:Automatically adding too many fields or incorrect types can impact search performance.</b>
+    <b>Prevent Elasticsearch from dynamically mapping fields you don’t want to index.</b>
+  </div>
+
+  <hr class="thin-line">
+  <h4>Explicit Mapping</h4>
+  <div>
+    <ul>
+      <li>Explicit mapping is where you define the structure, field types, and other attributes of the fields in your index before indexing documents.</li>
+      <li>This gives you more control over how Elasticsearch handles your data.</li>
+    </ul>
+    <b>Example of Explicit Mapping for a "Movies" Index</b>
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <table border="1" style="border-collapse: collapse; width: 80%; text-align: center; font-size: 14px;">
+        <thead>
+          <tr>
+            <th style="padding: 5px;">Field Name</th>
+            <th style="padding: 5px;">Type</th>
+            <th style="padding: 5px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 5px;">title</td>
+            <td style="padding: 5px;">text</td>
+            <td style="padding: 5px;">Stores the movie title; supports full-text search.</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">genre</td>
+            <td style="padding: 5px;">keyword</td>
+            <td style="padding: 5px;">Stores the genre; exact match searches only.</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">release_date</td>
+            <td style="padding: 5px;">date</td>
+            <td style="padding: 5px;">Stores the release date of the movie in a standard date format.</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">rating</td>
+            <td style="padding: 5px;">float</td>
+            <td style="padding: 5px;">Stores the rating (e.g., IMDb score).</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px;">cast</td>
+            <td style="padding: 5px;">nested</td>
+            <td style="padding: 5px;">Stores information about the cast members (e.g., name, role).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <b>Define the Mapping in Elasticsearch</b>
+    <pre>
+      PUT /movies
+      {
+        "mappings": {
+          "properties": {
+            "title": {
+              "type": "text"
+            },
+            "genre": {
+              "type": "keyword"
+            },
+            "release_date": {
+              "type": "date"
+            },
+            "rating": {
+              "type": "float"
+            },
+            "cast": {
+              "type": "nested",
+              "properties": {
+                "name": {
+                  "type": "text"
+                },
+                "role": {
+                  "type": "text"
+                }
+              }
+            }
+          }
+        }
+      }
+      
+    </pre>
+    
+  </div>
+  
+
+  <hr class="thin-line">
+  <h4>keyword and text</h4>
+  <div>
+    <p>
+      In Elasticsearch, the main difference between keyword and text field types lies in <b>how they are analyzed and used for searching</b>. 
+      Both are used to store string data but are optimized for different use cases:</p>
+      <b>keyword Field Type:</b>
+      <ul>
+        <li><b>Purpose: </b>Suitable for exact matches, aggregations, and sorting.</li>
+        <li>Useful for scenarios where you need exact matching or aggregation queries like terms, term, or match.</li>
+        <li>Searching for a tag ["sports"] or ["technology"] in a blog post.</li>
+        <li>Stores the entire string as a single value (not tokenized).</li>
+      </ul>
+      
+      <b>text Field Type:</b>
+      <ul>
+        <li><b>Purpose: </b>Suitable for full-text search..</li>
+        <li>Good for large, unstructured data like: Blog content, Product descriptions, Comments or reviews.</li>
+        <li>Supports search queries like match, match_phrase, and full-text relevance scoring.</li>
+        <li><b>Example:</b> Searching for "Elasticsearch tutorial" in an article's content.</li>
+      </ul>
+      
+     <b>Combining Both in a Single Field:</b>
+     <p>Elasticsearch allows you to use multi-fields to index a single field as both text and keyword. <br>
+      This is common when you need both exact matches and full-text search on the same field:</p>
+  </div>
+</div>
+<hr>
+
+<h2 style="text-align: center;">Search Categories in Elasticsearch</h2>
+<div>
+  <p>
+    Elasticsearch provides a flexible and powerful search engine that supports a wide range of search types. These search types are commonly classified into three categories:
+    <ul>
+      <li>Full-text queries</li>
+      <li>Term-level queries</li>
+      <li>Compound queries</li>
+    </ul>
+  </p>
+  <b>Example</b>: we will create a book index with the following fields:
+      <ul>
+        <li>title: It is stored as a text type with the english analyzer.</li>
+        <li>author: It is stored as a keyword type.</li>
+        <li>publisher: It is stored as a keyword type.</li>
+        <li>year: It is stored as an integer type.</li>
+      </ul>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%;">
+        <!-- Row 1 -->
+        <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+          <b>Document 1</b>
+          <pre>
+PUT /book/_create/1
+{
+  "title": "The Indexing Companion",
+  "author": "Glenda Browne",
+  "publisher": "Information Today, Inc.",
+  "year": 2007,
+  "description": "A classic novel depicting the glamorous and decadent life of the Roaring Twenties."
+}
+          </pre>
+        </div>
+        <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+          <b>Document 2</b>
+          <pre>
+PUT /book/_create/2
+{
+  "title": "Indexing Books",
+  "author": "Nancy C. Mulvany",
+  "publisher": "University of Chicago Press",
+  "year": 1994,
+  "description": "A masterpiece of classic novel fiction, it explores themes of love, societal norms, and personal growth."
+}
+        </pre>
+        </div>
+        <!-- Row 2 -->
+        <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+          <b>Document 3</b>
+          <pre>
+PUT /book/_create/3
+{
+  "title": "The Catcher in the Rye",
+  "author": "J.D. Salinger",
+  "publisher": "Brown and Company",
+  "year": 1951,
+  "description": "Explore a collection of classic tales and novels from various literary periods."
+}
+          </pre>
+        </div>
+        <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+          <b>Document 4</b>
+          <pre>
+PUT /book/_create/4
+{
+  "title": "The Complete Book of Indexing",
+  "author": "Nancy C. Mulvany",
+  "publisher": "Information Today, Inc.",
+  "year": 1991,
+  "description": "Embark on an extraordinary journey through the pages of this book."
+}
+          </pre>
+        </div>
+      </div>
+
+  <br>
+  <hr class="thin-line">
+
+  <h5>1. Full-Text Queries</h5>
+  <p>Designed for searching unstructured or large text fields. They analyze the input and field data before searching.</p>
+  <ul>
+    <li><b>Match Query:</b> This is the standard query for performing full-text searches and supporting fuzzy matching, phrase, and proximity queries.
+      <br> It searches for documents that contain the specified term or terms.<br>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%;">
+        <!-- Row 1 -->
+        <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+          <b>Syntax</b>
+          <pre>
+GET my_index_name/_search
+{
+  "query": {
+    "match": {
+      "my_field_name": "my_search_query"
+    }
+  }
+}
+        </pre>
+        </div>
+        <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+          <b>Query</b>
+          <pre>
+GET book/_search
+{
+  "query": {
+    "match": {
+      "title": "Indexing books"
+    }
+  }
+}
+          </pre>
+        </div>
+      </div>
+
+      <b>Response</b>
+      <pre>
+{
+  "took": 19,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 3,
+      "relation": "eq"
+    },
+    "max_score": 1.0998136,
+    "hits": [
+      {
+        "_index": "book",
+        "_id": "2",
+        "_score": 1.0998136,
+        "_source": {
+          "title": "Indexing Books",
+          "author": "Nancy C. Mulvany",
+          "publisher": "University of Chicago Press",
+          "year": 1994
+        }
+      },
+      {
+        "_index": "book",
+        "_id": "4",
+        "_score": 0.9238435,
+        "_source": {
+          "title": "The Complete Book of Indexing",
+          "author": "Nancy C. Mulvany",
+          "publisher": "Information Today, Inc.",
+          "year": 1991
+        }
+      },
+      {
+        "_index": "book",
+        "_id": "1",
+        "_score": 0.37365946,
+        "_source": {
+          "title": "The Indexing Companion",
+          "author": "Glenda Browne",
+          "publisher": "Information Today, Inc.",
+          "year": 2007
+        }
+      }
+    ]
+  }
+}
+      </pre>      
+    </li>
+    <li><b>Match Phrase Query:</b> This query specifically looks for an exact phrase within a field, preserving the order of the terms.
+      <pre>
+GET book/_search
+{
+  "query": {
+    "match_phrase": {
+      "description": "classic novel"
+    }
+  }
+}
+      </pre>
+    </li>
+    <li><b>Multi-Match Query:</b> Searches across multiple fields.
+      <br>Example : Retrieving products with the term "novel" present in either their title or description fields
+      <pre>
+GET book/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "novel",
+      "fields": ["title", "description"]
+    }
+  }
+}
+      </pre>
+    </li>
+    <li><b>Common Terms Query:</b> Excludes high-frequency terms for efficiency.
+      <br>Example: <code>{ "common": { "content": { "query": "common terms in text" } } }</code>
+    </li>
+  </ul>
+  
+  <h5>2. Term-Level Queries</h5>
+  <p>Used for structured data or exact matches. They don’t analyze input or field data.</p>
+  <ul>
+    <li><b>Term Query:</b> Searches for an exact value in a field.
+      <pre>
+GET product/_search
+{
+   "query": {
+    "term": {
+      "publisher": "Information Today, Inc."
+    }
+  }
+}
+      </pre>
+      <br>Example: <code>{ "term": { "status": "active" } }</code>
+    </li>
+    <li><b>Terms Query:</b> Matches any value in a list.
+      <br>Example: <code>{ "terms": { "tags": ["sports", "technology"] } }</code>
+    </li>
+    <li><b>Range Query:</b> Finds documents within a range.
+      <br>Example: <code>{ "range": { "price": { "gte": 10, "lte": 100 } } }</code>
+    </li>
+    <li><b>Exists Query:</b> Finds documents where a field is present.
+      <br>Example: <code>{ "exists": { "field": "email" } }</code>
+    </li>
+    <li><b>Prefix Query:</b> Matches documents with fields starting with a prefix.
+      <br>Example: <code>{ "prefix": { "name": "ela" } }</code>
+    </li>
+  </ul>
+  
+  <h5>3. Compound Queries</h5>
+  <p>Combine multiple queries or apply logic to queries (e.g., AND, OR).</p>
+  <ul>
+    <li><b>Bool Query:</b> Combines queries using <code>must</code>, <code>should</code>, <code>must_not</code>, and <code>filter</code>.
+      <br>Example: 
+      <pre><code>{
+  "bool": {
+    "must": { "match": { "content": "search" } },
+    "filter": { "term": { "status": "published" } }
+  }
+}</code></pre>
+    </li>
+    <li><b>Constant Score Query:</b> Wraps another query and assigns a constant score to all matching documents.
+      <br>Example: <code>{ "constant_score": { "filter": { "term": { "status": "active" } } } }</code>
+    </li>
+    <li><b>DisMax Query:</b> Combines subqueries, returning the highest score from any subquery.
+      <br>Example: 
+      <pre><code>{
+  "dis_max": {
+    "queries": [
+      { "match": { "title": "quick" } },
+      { "match": { "description": "quick" } }
+    ]
+  }
+}</code></pre>
+    </li>
+    <li><b>Function Score Query:</b> Modifies scores of matching documents using functions (e.g., decay, weight).
+      <br>Example: 
+      <pre><code>{
+  "function_score": {
+    "query": { "match": { "content": "Elasticsearch" } },
+    "functions": [
+      { "weight": 2, "field_value_factor": { "field": "popularity" } }
+    ]
+  }
+}</code></pre>
+    </li>
+  </ul>
+  
+  <h5>Quick Revision Notes</h5>
+  <ul>
+    <li><b>Full-Text Queries:</b> Use for unstructured text. Analyze input before searching (e.g., <code>match</code>, <code>multi_match</code>, <code>common</code>).</li>
+    <li><b>Term-Level Queries:</b> Use for exact matches or structured data (e.g., <code>term</code>, <code>range</code>, <code>prefix</code>, <code>exists</code>).</li>
+    <li><b>Compound Queries:</b> Combine queries or modify scoring (e.g., <code>bool</code>, <code>constant_score</code>, <code>dis_max</code>, <code>function_score</code>).</li>
+  </ul>
+
+  <hr class="thin-line">
+  <h5>Some other queries:</h5>
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%;">
+    <!-- Row 1 -->
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Fuzzy Query : Match query with fuzziness</b>
+      <pre>
+GET /book/_search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "indexig book",
+        "fuzziness": "2"
+      }
+    }
+  }
+}
+      </pre>
+    </div>
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Products with the terms "smartphone" and "android" in the description field</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "match": {
+      "description": {
+        "query": "smartphone android",
+        "operator": "and"
+      }
+    }
+  }
+}
+      </pre>
+    </div>
+    <!-- Row 2 -->
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>"Apple" products in the $500–$1000 price range</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "price": {
+              "gte": 500,
+              "lte": 1000
+            }
+          }
+        },
+        {
+          "term": {
+            "brand": "Apple"
+          }
+        }
+      ]
+    }
+  }
+}
+      </pre>
+    </div>
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Products in the "Electronics" category with a price range of $500–$1000 and a minimum rating of 4.5</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "rating": {
+              "gte": 4.5
+            }
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "gte": 500,
+              "lte": 1000
+            }
+          }
+        },
+        {
+          "term": {
+            "category": "Electronics"
+          }
+        }
+      ]
+    }
+  }
+}
+      </pre>
+    </div>
+
+    <!-- Row 3 -->
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Products with the description field containing the exact phrase "premium ultrabook"</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "match_phrase": {
+      "description": "premium ultrabook"
+    }
+  }
+}
+      </pre>
+    </div>
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Products with the name field containing "Samsung</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "match": {
+      "name": "Samsung"
+    }
+  }
+}    </pre>
+    </div>
+
+    <!-- Row 4 -->
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Products containing the seller field that starts with the prefix "Apple"</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "prefix": {
+      "seller": "Apple"
+    }
+  }
+}
+      </pre>
+    </div>
+    <div style="border: 1px solid #ccc; padding: 20px; width: 45%; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+      <b>Products in the "Electronics" category with a $500–$1000 price range and an approximate match for "applle air"</b>
+      <pre>
+GET /products/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "name": {
+              "query": "applle air",
+              "fuzziness": "2"
+            }
+          }
+        },
+        {
+          "term": {
+            "category": "Electronics"
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "gte": 500,
+              "lte": 1000
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+      </pre>
+    </div>
+  </div>
+</div>
+<hr>
+
+<h2 style="text-align: center;">Elasticsearch Aggregation</h2>
+<div>
+  <p>Aggregations in Elasticsearch are used to analyze and summarize data. Here's a detailed explanation of the key terms with examples:</p>
+  
+  <h5>1. <b>Aggregation</b></h5>
+  <p>A framework for performing data analysis on Elasticsearch documents.</p>
+  <ul>
+    <li>Example: Calculate the average price of products or group users by country.</li>
+  </ul>
+  
+  <h5>2. <b>Bucket</b></h5>
+  <p>Represents a group of documents based on certain criteria.</p>
+  <ul>
+    <li>Example: Group users by country (e.g., <code>bucket: { "USA": 100, "India": 200 }</code>).</li>
+    <li>Types of Bucket Aggregations:
+      <ul>
+        <li><b>Terms:</b> Groups documents by unique terms in a field.</li>
+        <li><b>Date Histogram:</b> Groups documents by date intervals.</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h5>3. <b>Metric</b></h5>
+  <p>Used to calculate numerical values from document fields.</p>
+  <ul>
+    <li>Example: Average price of products, total sales, or maximum salary.</li>
+    <li>Types of Metric Aggregations:
+      <ul>
+        <li><b>Avg:</b> Calculates the average value of a field.</li>
+        <li><b>Sum:</b> Calculates the total value.</li>
+        <li><b>Min/Max:</b> Finds the minimum or maximum value.</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h5>4. <b>Pipeline</b></h5>
+  <p>Aggregations that take the output of other aggregations as input.</p>
+  <ul>
+    <li>Example: Calculate the percentage of sales from different regions based on the total sales.</li>
+    <li>Common Pipeline Aggregations:
+      <ul>
+        <li><b>Moving Average:</b> Calculates trends over time.</li>
+        <li><b>Bucket Script:</b> Perform custom calculations on bucket data.</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h5>5. <b>Compound Aggregation</b></h5>
+  <p>Nests multiple aggregations together.</p>
+  <ul>
+    <li>Example: Group by country (bucket) and then calculate the average salary (metric) for each country.</li>
+  </ul>
+
+  <h5>6. <b>Global Aggregation</b></h5>
+  <p>Performs aggregations across all documents, regardless of filters.</p>
+  <ul>
+    <li>Example: Calculate the total number of users, ignoring country-specific filters.</li>
+  </ul>
+  
+  <h5>Quick Revision Notes for System Design Interview:</h5>
+  <ul>
+    <li>Aggregations are used for real-time data analysis in Elasticsearch.</li>
+    <li>Focus on <b>bucket</b> (grouping) and <b>metric</b> (calculations).</li>
+    <li>Popular use cases:
+      <ul>
+        <li>Terms Aggregation for top N categories (e.g., top 5 products by sales).</li>
+        <li>Date Histogram for time-series analysis (e.g., user activity per day).</li>
+        <li>Metrics like avg, sum, min, max for numerical insights.</li>
+      </ul>
+    </li>
+    <li>Combining buckets and metrics (compound) is key for deeper insights.</li>
+    <li>Use pipeline aggregations for advanced scenarios like trend analysis or percentages.</li>
+  </ul>
+</div>
+
+
+
+
+
