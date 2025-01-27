@@ -28,9 +28,18 @@ function loadPage(event) {
 }
 
 
-
 // Search functionality
 const links = [
+    // DATABASE
+    { text: "Database Concepts", url: "design/pages/db/database.html" },
+    { text: "Database Types", url: "design/pages/db/different_types_db.html" },
+    { text: "Right Database Choice", url: "design/pages/db/database-choice.html" },
+    { text: "DynamoDB", url: "design/pages/db/dynamodb.html" },
+    { text: "ElasticSearch", url: "design/pages/db/elasticsearch.html" },
+    { text: "Redis", url: "design/pages/under_construction.html" },
+    { text: "Cassendra", url: "design/pages/under_construction.html" },
+    { text: "MySQL Queries", url: "design/pages/under_construction.html" },
+
     // OOPs
     { text: "Basic of OOPs", url: "design/pages/oops/basic_oops.html" },
     { text: "Data Hiding - Encapsulation", url: "design/pages/oops/encapsulation.html" },
