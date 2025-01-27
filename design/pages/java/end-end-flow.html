@@ -1,0 +1,166 @@
+<div>Introduction</div>
+<div>
+    You have an e-commerce application with multiple microservices built using Spring Boot, deployed in AWS EKS. Each country has a separate website, but the core codebase remains the same, and configurations are dynamically managed using a Config Server backed by DynamoDB.
+</div>
+
+<div>Environment Management (Dev, QA, Prod)</div>
+<div>
+    <ul>
+        <li><b>Environment Segregation:</b> Each environment (Dev, QA, Prod) is managed by defining namespaces in EKS. For example:
+            <ul>
+                <li><code>dev-ecommerce</code></li>
+                <li><code>qa-ecommerce</code></li>
+                <li><code>prod-ecommerce</code></li>
+            </ul>
+        </li>
+        <li><b>Configurations:</b> Different configuration profiles for each environment are maintained in the Config Server. These profiles are stored in DynamoDB under separate keys for each environment:
+            <ul>
+                <li>Key pattern: <code>serviceName-environment-country</code>. Example: <code>cartservice-prod-US</code>.</li>
+            </ul>
+        </li>
+        <li><b>Isolation:</b> Separate AWS accounts or IAM roles are used for Dev, QA, and Prod environments to ensure security and avoid conflicts.</li>
+    </ul>
+</div>
+
+<div>Code Management in GitHub</div>
+<div>
+    <ul>
+        <li><b>Monorepo vs Multirepo:</b>
+            <ul>
+                <li>Monorepo: All services are in one repository for better coordination.</li>
+                <li>Multirepo: Each service has a separate repository for independent development and deployment.</li>
+            </ul>
+        </li>
+        <li><b>Branching Strategy:</b>
+            <ul>
+                <li><code>main</code>: Production-ready code.</li>
+                <li><code>develop</code>: Latest changes ready for QA.</li>
+                <li><code>feature/*</code>: For new features.</li>
+                <li><code>hotfix/*</code>: For urgent fixes on production.</li>
+            </ul>
+        </li>
+        <li><b>Versioning:</b> Semantic versioning (<code>v1.2.3</code>) is used to track changes across releases.</li>
+        <li><b>Country-Specific Overrides:</b> A <code>country-config</code> folder in the repository holds country-specific overrides for properties.</li>
+    </ul>
+</div>
+
+<div>Build and Deployment Using Jenkins CICD</div>
+<div>
+    <ul>
+        <li><b>Pipeline Setup:</b>
+            <ul>
+                <li>Jenkins pipeline is configured for each service with stages:
+                    <ol>
+                        <li>Code Checkout: Pull code from the appropriate branch.</li>
+                        <li>Build: Compile and package using Maven or Gradle.</li>
+                        <li>Test: Run unit and integration tests.</li>
+                        <li>Docker Build: Build Docker images and push them to ECR.</li>
+                        <li>Deploy: Use Helm charts for deployment in EKS.</li>
+                    </ol>
+                </li>
+            </ul>
+        </li>
+        <li><b>Artifact Storage:</b> Artifacts are stored in AWS S3 or a container registry (ECR) after a successful build.</li>
+        <li><b>Country-Specific Builds:</b> Jenkins pipelines dynamically fetch the country-specific configuration based on the branch or environment.</li>
+    </ul>
+</div>
+
+<div>Kubernetes Configuration for EKS</div>
+<div>
+    <ul>
+        <li><b>Service Configuration:</b>
+            <ul>
+                <li>Each service has its own Kubernetes Deployment YAML and Service YAML.</li>
+                <li>Example: <code>cartservice-deployment.yaml</code>, <code>cartservice-service.yaml</code>.</li>
+            </ul>
+        </li>
+        <li><b>Namespace Segregation:</b>
+            <ul>
+                <li>Dev: <code>dev-namespace</code></li>
+                <li>QA: <code>qa-namespace</code></li>
+                <li>Prod: <code>prod-namespace</code></li>
+            </ul>
+        </li>
+        <li><b>ConfigMaps and Secrets:</b>
+            <ul>
+                <li>ConfigMaps store non-sensitive configuration.</li>
+                <li>Secrets store sensitive data like API keys and credentials.</li>
+            </ul>
+        </li>
+        <li><b>Helm Charts:</b> Helm charts are used to manage complex deployments with templates for all services.</li>
+    </ul>
+</div>
+
+<div>Managing High Load with Kubernetes</div>
+<div>
+    <ul>
+        <li><b>Horizontal Pod Autoscaler (HPA):</b>
+            <ul>
+                <li>Automatically scales pods based on CPU or memory usage.</li>
+                <li>Example: <code>minReplicas: 2</code>, <code>maxReplicas: 20</code>, <code>targetCPUUtilizationPercentage: 70</code>.</li>
+            </ul>
+        </li>
+        <li><b>Cluster Autoscaler:</b> Scales worker nodes in the EKS cluster based on demand.</li>
+        <li><b>Load Balancing:</b> Kubernetes Services are configured with an AWS Application Load Balancer (ALB) to distribute traffic.</li>
+        <li><b>Node Affinity and Taints:</b> Assign critical services to specific nodes with better resources.</li>
+    </ul>
+</div>
+
+<div>Scalability, Availability, and Performance</div>
+<div>
+    <ul>
+        <li><b>Scalability:</b> HPA and Cluster Autoscaler dynamically adjust resources.</li>
+        <li><b>Availability:</b>
+            <ul>
+                <li>Deployments use rolling updates to ensure zero downtime.</li>
+                <li>Multi-AZ deployment of the EKS cluster for fault tolerance.</li>
+            </ul>
+        </li>
+        <li><b>Performance:</b>
+            <ul>
+                <li>Use of In-Memory Caching (e.g., Redis or Memcached).</li>
+                <li>Database connection pooling.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div>Traffic Management with AWS Gateway</div>
+<div>
+    <ul>
+        <li><b>Routing:</b> AWS Gateway routes traffic to appropriate backend services based on HTTP methods or URLs.</li>
+        <li><b>Configuration:</b>
+            <ul>
+                <li>Define REST APIs in the AWS Gateway Console.</li>
+                <li>Integrate APIs with the ALB or specific EKS services.</li>
+            </ul>
+        </li>
+        <li><b>Monitoring:</b> Use AWS CloudWatch for real-time API traffic and error monitoring.</li>
+    </ul>
+</div>
+
+<div>Log Monitoring for Services</div>
+<div>
+    <ul>
+        <li><b>Centralized Logging:</b> All application logs are forwarded to Amazon CloudWatch or Elasticsearch.</li>
+        <li><b>Log Streams:</b> Each pod generates a separate log stream for easier debugging.</li>
+        <li><b>Alerting:</b> Set up alerts in CloudWatch for error thresholds.</li>
+    </ul>
+</div>
+
+<div>Performance Optimization Using Cache</div>
+<div>
+    <ul>
+        <li><b>Caching Layer:</b> Use Redis or Memcached to cache frequently accessed data.</li>
+        <li><b>Integration:</b> Cache is integrated at the service level to reduce database load.</li>
+    </ul>
+</div>
+
+<div>Distributed Database</div>
+<div>
+    <ul>
+        <li><b>Global Tables:</b> DynamoDB Global Tables are used for cross-region replication.</li>
+        <li><b>Sharding:</b> DynamoDB uses partition keys for sharding data across multiple nodes.</li>
+        <li><b>High Availability:</b> DynamoDB ensures high availability with multi-AZ replication.</li>
+    </ul>
+</div>
