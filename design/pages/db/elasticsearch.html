@@ -550,14 +550,14 @@ Content-Type: application/json
       <li>When you index a document without explicitly defining a mapping, Elasticsearch dynamically creates the mapping based on the document's fields and their data types.</li>
       <li>Dynamic mapping is helpful when you are working with unknown or rapidly changing schemas, as it allows you to index new data without prior setup.</li>
     </ul>
-    <br>
+    <hr class="thin-line">
     <h5>How Dynamic Mapping Works</h5>
     <ul>
       <li><b>Detects New Fields: </b>When a new field is encountered during indexing, Elasticsearch assigns a type to the field based on the data provided.</li>
       <li><b>Adds the Field to the Mapping: </b>The new field and its detected type are added to the index mapping.</li>
       <li><b>Field Type Guessing: </b>The data type is inferred from the field’s content (e.g., a string becomes a text field, a number becomes an integer or float, etc.).</li>
     </ul>
-    <br>
+    <hr class="thin-line">
     <h5>Default Data Type Mapping</h5>
     <div style="display: flex; justify-content: left; margin-top: 20px;">
       <table border="1" style="border-collapse: collapse; width: 60%; text-align: center; font-size: 14px;">
@@ -599,7 +599,7 @@ Content-Type: application/json
         </tbody>
       </table>
     </div>
-    <br>
+    <hr class="thin-line">
     <h4>Dynamic Mapping in Action</h4>
     <ul>
       <li>Step 1: Index a Document Without Explicit Mapping</li>
@@ -676,7 +676,7 @@ GET /my_dynamic_index/_mapping
         </pre>
 
     </ul>
-    <br>
+    <hr class="thin-line">
     <b>Note:Automatically adding too many fields or incorrect types can impact search performance.</b>
     <b>Prevent Elasticsearch from dynamically mapping fields you don’t want to index.</b>
   </div>

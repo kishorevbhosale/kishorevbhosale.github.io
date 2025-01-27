@@ -360,14 +360,14 @@
         <li>It helps to uniquely identify and retrieve items from a database.</li>
         <li>The primary key decides where the data is saved and how it is retrieved.</li>
         </ul>
-
+        <hr class="thin-line">
         <h5>Types of Primary Keys</h5>
         <ul>
         <li><b>Single Key:</b> Partition key (unique identifier for an item).</li>
         <li><b>Composite Key:</b> Combination of partition key and sort key.</li>
         <li>In a composite key, the combination of both keys must be unique.</li>
         </ul>
-
+        <hr class="thin-line">
         <h5>Why Use a Sort Key (Range Key)?</h5>
         <ul>
         <li>A range key is optional but useful when:</li>
@@ -378,7 +378,7 @@
             </ul>
         </li>
         </ul>
-
+        <hr class="thin-line">
         <h5>Example Table: Library Books</h5>
         <ul>
         <li><b>Primary Key:</b>
@@ -408,7 +408,7 @@
             </ul>
         </li>
         </ul>
-
+        <hr class="thin-line">
         <h5>What Can You Do with This Model?</h5>
         <ul>
         <li>Get all books in a specific genre.</li>
@@ -440,7 +440,7 @@
         </li>
       </ul>
     </ul>
-    
+    <hr class="thin-line">
     <h5>Write Capacity</h5>
     <ul>
       <li><b>1 Write Capacity Unit (WCU):</b> Supports one write per second for an item of size 1KB.</li>
@@ -455,7 +455,7 @@
         </ul>
       </li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>Read Capacity</h5>
     <ul>
       <li><b>1 Read Capacity Unit (RCU):</b>
@@ -471,13 +471,13 @@
         </ul>
       </li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>Key Recommendations</h5>
     <ul>
       <li>Use <b>eventually consistent reads</b> for lower costs if minor data delays are acceptable.</li>
       <li>Writes are distributed within milliseconds across replicas in eventually consistent mode.</li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>Examples</h5>
     <ul>
       <li><b>Write Example:</b>
@@ -503,7 +503,7 @@
       <li><b>Querying:</b> Faster and more efficient way to retrieve data.</li>
       <li><b>Scanning:</b> Slower but useful for specific use cases like copying entire tables.</li>
     </ul>
-
+    <hr class="thin-line">
     <h5>Querying</h5>
     <ul>
       <li><b>When the Table Has Only a Partition Key:</b>
@@ -522,7 +522,7 @@
         </ul>
       </li>
     </ul>
-
+    <hr class="thin-line">
     <h5>Scanning</h5>
     <ul>
       <li>Reads data from the entire table, fetching up to 1 MB of data per scan.</li>
@@ -530,7 +530,7 @@
       <li>Useful for small tables or copying all data.</li>
       <li><b>Example:</b> Scan a "Products" table and filter items where "price" is greater than 100.</li>
     </ul>
-
+    <hr class="thin-line">
     <h5>Difference Between Query and Scan</h5>
     <ul>
       <li><b>Query:</b>
@@ -560,13 +560,13 @@
           <li>In the AWS Management Console, search for "DynamoDB" in the search bar at the top of the page.</li>
           <li>Click on the DynamoDB service from the search results to open the DynamoDB Dashboard.</li>
         </ul>
-        
+        <hr class="thin-line">
         <b>2. Create a Table</b>
         <ul>
           <li>In the DynamoDB Dashboard, click on the "Create table" button.</li>
           <li>Provide a table name, e.g., <code>ExampleTable</code>.</li>
         </ul>
-        
+        <hr class="thin-line">
         <b>3. Add the Primary Key</b>
         <ul>
           <li>Under the "Primary key" section:
@@ -577,7 +577,7 @@
             </ul>
           </li>
         </ul>
-        
+        <hr class="thin-line">
         <b>4. Set the Read/Write Capacity</b>
         <ul>
           <li>Choose the capacity mode:
@@ -593,7 +593,7 @@
             </ul>
           </li>
         </ul>
-        
+        <hr class="thin-line">
         <b>5. Clean Up</b>
         <ul>
           <li>Go to the DynamoDB Dashboard.</li>
@@ -647,7 +647,7 @@ AttributeName=userId,KeyType=HASH \
             </li>
           </ul>
         </li>
-        <hr>
+        <hr class="thin-line">
 
         <li>
           <b>2. Creating Items from AWS Console</b>
@@ -663,7 +663,7 @@ AttributeName=userId,KeyType=HASH \
             <li>Not suitable for inserting large volumes of data.</li>
           </ul>
         </li>
-        <hr>
+        <hr class="thin-line">
 
         <li>
           <b>3. Using the BatchWriteItem API</b>
@@ -746,7 +746,7 @@ AttributeName=userId,KeyType=HASH \
       </li>
       <li><strong>Response:</strong> "Table created successfully!"</li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>2. Add Data to the Table</h5>
     <ul>
       <li>Use the <code>put_item</code> method to add items.</li>
@@ -765,7 +765,7 @@ AttributeName=userId,KeyType=HASH \
       </li>
       <li><strong>Response:</strong> "Item added successfully!"</li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>3. Query the Table</h5>
     <ul>
       <li>Use the <code>query</code> method to retrieve specific data using the partition key.</li>
@@ -779,7 +779,7 @@ AttributeName=userId,KeyType=HASH \
       </li>
       <li><strong>Response:</strong> The item matching the <code>productId</code> is returned.</li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>4. Scan the Table</h5>
     <ul>
       <li>Use the <code>scan</code> method to retrieve all data from the table.</li>
@@ -791,7 +791,7 @@ AttributeName=userId,KeyType=HASH \
       </li>
       <li><strong>Response:</strong> All items in the table are returned.</li>
     </ul>
-    
+    <hr class="thin-line">
     <h5>5. Clean Up</h5>
     <ul>
       <li>Use the <code>delete_table</code> method to delete the table.</li>
@@ -851,6 +851,7 @@ AttributeName=userId,KeyType=HASH \
     {"productId": "500", "name": "Product-500", "price": 600, "stock": 550}
 ]
 </pre>
+<hr class="thin-line">
 <h5>Sample Output Logs in CloudWatch</h5>
 <pre>
     Total items: 500, Batch size: 25, Total batches: 20
@@ -859,6 +860,7 @@ AttributeName=userId,KeyType=HASH \
     ...
     Batch 20/20 inserted successfully!    
 </pre>
+<hr class="thin-line">
 <h5>Verification</h5>
 <b>Scan the table</b>
 <pre>
@@ -942,7 +944,7 @@ AttributeName=userId,KeyType=HASH \
       </ul>
     </li>
   </ul>
-
+  <hr class="thin-line">
   <h5>Sample Data</h5>
   <ul>
     <li><strong>Table Name:</strong> MusicCollection</li>
@@ -964,8 +966,7 @@ AttributeName=userId,KeyType=HASH \
       </ul>
     </li>
   </ul>
-
-
+  <hr class="thin-line">
   <h5>1. Primary Index</h5>
   <ul>
     <li><strong>Partition Key:</strong> Artist</li>
@@ -991,7 +992,7 @@ AttributeName=userId,KeyType=HASH \
       </ul>
     </li>
   </ul>
-
+  <hr class="thin-line">
   <h5>2. Global Secondary Index (GSI)</h5>
   <ul>
     <li><strong>GSI Partition Key:</strong> Genre</li>
@@ -1018,7 +1019,7 @@ AttributeName=userId,KeyType=HASH \
       </ul>
     </li>
   </ul>
-
+  <hr class="thin-line">
   <h5>3. Local Secondary Index (LSI)</h5>
   <ul>
     <li><strong>LSI Partition Key:</strong> Artist</li>
@@ -1045,7 +1046,7 @@ AttributeName=userId,KeyType=HASH \
       </ul>
     </li>
   </ul>
-
+  <hr class="thin-line">
   <h5>4. Scan</h5>
   <ul>
     <li><strong>Use Case:</strong> Retrieve all songs released after 2010.</li>
@@ -1134,7 +1135,7 @@ AttributeName=userId,KeyType=HASH \
   <pre>
     Table created successfully.
   </pre>
-
+  <hr class="thin-line">
   <h5>2. Add Items to the Table</h5>
   <b>Python Script:</b>
   <pre>
@@ -1159,7 +1160,7 @@ AttributeName=userId,KeyType=HASH \
   <pre>
     Item added: { 'ResponseMetadata': { 'HTTPStatusCode': 200 } }
   </pre>
-
+  <hr class="thin-line">
   <h5>3. Add Bulk Items with Batch Size = 25</h5>
   <b>Python Script:</b>
   <pre>
@@ -1184,7 +1185,7 @@ AttributeName=userId,KeyType=HASH \
   <pre>
     Bulk items added.
   </pre>
-
+  <hr class="thin-line">
   <h5>4. Check Indexes and Run a Query</h5>
   <b>Python Script:</b>
   <pre>
@@ -1206,7 +1207,7 @@ AttributeName=userId,KeyType=HASH \
       ...
     ]
   </pre>
-
+  <hr class="thin-line">
   <h5>5. Run the Global Secondary Index (GSI)</h5>
   <b>Python Script:</b>
   <pre>
@@ -1229,7 +1230,7 @@ AttributeName=userId,KeyType=HASH \
       ...
     ]
   </pre>
-
+  <hr class="thin-line">
   <h5>6. Run the Local Secondary Index (LSI)</h5>
   <b>Python Script:</b>
   <pre>
@@ -1253,7 +1254,7 @@ AttributeName=userId,KeyType=HASH \
       ...
     ]
   </pre>
-
+  <hr class="thin-line">
   <h5>7. Clean Up</h5>
   <b>Python Script:</b>
   <pre>
@@ -1284,7 +1285,8 @@ AttributeName=userId,KeyType=HASH \
         <li>CloudWatch events</li>
         <li>Manual monitoring</li>
     </ul>
-    <br>
+
+    <hr class="thin-line">
     <h4>Steps to Create a CloudWatch Alarm for DynamoDB Table</h4>
   
     <h5>1. Choose the Metric</h5>
@@ -1297,28 +1299,28 @@ AttributeName=userId,KeyType=HASH \
       <li>Choose <strong>DynamoDB</strong> from the list of AWS services.</li>
       <li>Select the metric you want to monitor, e.g., <strong>ConsumedReadCapacityUnits</strong> or <strong>ConsumedWriteCapacityUnits</strong>.</li>
     </ul>
-  
+    <hr class="thin-line">
     <h5>2. Define the Alarm Condition</h5>
     <ul>
       <li>Set the <strong>threshold type</strong> (e.g., Static or Anomaly Detection).</li>
       <li>For example, you can monitor if the <strong>ConsumedReadCapacityUnits</strong> exceed a certain value, such as <strong>1000</strong>.</li>
       <li>Choose a period for evaluation, e.g., <strong>1 minute</strong>.</li>
     </ul>
-  
+    <hr class="thin-line">
     <h5>3. Configure Actions</h5>
     <ul>
       <li>Choose the action to take when the alarm is triggered, such as sending a notification to an <strong>Amazon SNS topic</strong>.</li>
       <li>If you don't have an SNS topic, create one by entering a name and email address to receive alerts.</li>
       <li>Confirm the email subscription by checking your inbox and clicking on the confirmation link.</li>
     </ul>
-  
+    <hr class="thin-line">
     <h5>4. Add a Name and Review</h5>
     <ul>
       <li>Enter a name for the alarm, e.g., <strong>DynamoDBReadCapacityAlarm</strong>.</li>
       <li>Review the details of the alarm configuration.</li>
       <li>Click <strong>Create Alarm</strong>.</li>
     </ul>
-  
+    <hr class="thin-line">
     <h4>Example: CloudWatch Alarm for DynamoDB Table</h4>
   
     <h5>Use Case:</h5>
@@ -1326,7 +1328,7 @@ AttributeName=userId,KeyType=HASH \
       <li>Monitor the <strong>ConsumedReadCapacityUnits</strong> of a DynamoDB table named <strong>MusicCollection</strong>.</li>
       <li>Trigger an alarm if the read capacity exceeds <strong>500 units</strong> in a <strong>1-minute interval</strong>.</li>
     </ul>
-  
+    <hr class="thin-line">
     <h5>Sample Alarm Configuration:</h5>
     <ul>
       <li><strong>Metric:</strong> DynamoDB > By Table Name > MusicCollection > ConsumedReadCapacityUnits</li>
@@ -1335,7 +1337,7 @@ AttributeName=userId,KeyType=HASH \
       <li><strong>Actions:</strong> Notify via SNS topic <strong>DynamoDBAlarms</strong></li>
       <li><strong>Alarm Name:</strong> HighReadCapacityAlarm</li>
     </ul>
-  
+    <hr class="thin-line">
     <h5>Expected Notification:</h5>
     <pre>
       Subject: AWS Notification - Alarm "HighReadCapacityAlarm" in ALARM
@@ -1346,7 +1348,7 @@ AttributeName=userId,KeyType=HASH \
       Threshold: Greater than 500 units
       DynamoDB Table: MusicCollection
     </pre>
-  
+    <hr class="thin-line">
     <h4>Verifying the Alarm</h4>
     <ul>
       <li>Perform operations on the DynamoDB table to simulate a high read capacity.</li>
@@ -1354,7 +1356,7 @@ AttributeName=userId,KeyType=HASH \
       <li>When the condition is met, check your email for the notification.</li>
       <li>View logs in the <strong>CloudWatch Logs</strong> to analyze the DynamoDB table activity.</li>
     </ul>
-  
+    <hr class="thin-line">
     <h4>Cleaning Up</h4>
     <ul>
       <li>Delete the CloudWatch alarm from the <strong>Alarms</strong> section in CloudWatch.</li>
@@ -1429,6 +1431,7 @@ table = dynamodb.create_table(
 print(f"Table {table.table_name} is being created...")
 
     </pre>
+    <hr class="thin-line">
     <h5>Populate the Table with Sample Data</h5>
     <pre>
         # Add sample story data
@@ -1451,6 +1454,7 @@ add_sample_story('U1', 'S1', 'image', 'Sunset at the beach', 'A beautiful sunset
 add_sample_story('U2', 'S2', 'video', 'Morning run', 'A short video of my morning run through the park.', True, 10)
 
     </pre>
+    <hr class="thin-line">
     <h5>Query the Data</h5>
     <pre>
         def get_user_stories(user_id):
@@ -1463,6 +1467,7 @@ add_sample_story('U2', 'S2', 'video', 'Morning run', 'A short video of my mornin
 user_stories = get_user_stories('U1')
 print(user_stories)
     </pre>
+    <hr class="thin-line">
     <h5>Automatic Cleanup for Expired Stories</h5>
     <pre>
         import time
