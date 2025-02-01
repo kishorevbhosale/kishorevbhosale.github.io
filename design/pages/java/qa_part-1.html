@@ -1,24 +1,137 @@
 <!-- Platform Independence and JVM -->
 <div>
-    <h5>Q. Is Java platform-independent? How?</h5>
-    <p><strong>Answer:</strong> Java is platform-independent because it uses the concept of bytecode. Java code is compiled into bytecode by the Java compiler, which can then run on any platform with a compatible Java Virtual Machine (JVM). This "Write Once, Run Anywhere" feature is the core of Java's platform independence.</p>
-  </div>
+    <h5>Q. Is Java platform-independent? How? Explain execution Flow</h5>
+    <p><b>Answer:</b> Java is platform-independent because it uses the concept of bytecode. Java code is compiled into bytecode by the Java compiler, which can then run on any platform with a compatible Java Virtual Machine (JVM). This "Write Once, Run Anywhere" feature is the core of Java's platform independence.</p>
+    <img src="../../images/java-flow.PNG" style="display: block; margin: auto; width: 100%;" class="img-fluid">
+</div>
   <hr>
   <div>
     <h5>Q. Explain JVM, JRE and JDK</h5>
-    <p><b>Java Virtual Machine (JVM): </b>The Java Virtual Machine (JVM) is a runtime environment that executes Java bytecode. It abstracts the underlying hardware and operating system, allowing Java programs to run on any device or platform. JVM handles key tasks like memory management, garbage collection, and security. It ensures that Java code written once can run anywhere (platform independence), provided a compatible JVM exists.</p>
+    <img src="../../images/jvm_jre_jdk.PNG" style="display: block; margin: auto; width: 35%;" class="img-fluid"><br>
+    
+    <b>Java Virtual Machine (JVM): </b>
+    <div>
+            <ul>
+                <li><b>Java Virtual Machine (JVM)</b> is a runtime environment that executes Java bytecode.</li>
+                <li><b>Platform Independence:</b> It abstracts the underlying hardware and operating system, allowing Java programs to run on any device or platform.</li>
+                <li><b>Key Responsibilities:</b>
+                    <ul>
+                        <li><b>Memory Management:</b> Allocates and deallocates memory dynamically.</li>
+                        <li><b>Garbage Collection:</b> Automatically removes unused objects to free up memory.</li>
+                        <li><b>Security:</b> Ensures safe execution by verifying bytecode and restricting unauthorized access.</li>
+                    </ul>
+                </li>
+                <li><b>Execution Process:</b>
+                    <ul>
+                        <li>Loads Java bytecode (.class files) into memory.</li>
+                        <li>Verifies bytecode for correctness and security.</li>
+                        <li>Uses <b>Just-In-Time (JIT) Compilation</b> to optimize performance.</li>
+                        <li>Converts bytecode into machine code for execution.</li>
+                    </ul>
+                </li>
+                <li><b>"Write Once, Run Anywhere":</b> Ensures Java programs run on any system with a compatible JVM.</li>
+            </ul>
+    </div>        
     <img src="../../images/jvm.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
-    <img src="../../images/jvm_1.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
-    <p><b>Java Runtime Environment (JRE): </b>The Java Runtime Environment (JRE) is a software package that provides libraries, JVM, and other components needed to run Java applications. It is the runtime portion of Java, enabling users to execute pre-compiled Java programs. The JRE does not include development tools like compilers or debuggers, making it ideal for users who only need to run Java applications.</p>
-    <p><b>Java Development Kit (JDK): </b>The Java Development Kit (JDK) is a complete development environment for building Java applications. It includes the JRE, development tools like javac (compiler), jdb (debugger), and additional utilities. Developers use the JDK to write, compile, and debug Java code, making it essential for Java application development. Multiple versions of JDK are available, including Standard Edition (SE), Enterprise Edition (EE), and more.</p>
-    <img src="../../images/jvm_jre_jdk.PNG" style="display: block; margin: auto; width: 35%;" class="img-fluid">
+    <br>
+
+    <b>Java Runtime Environment (JRE): </b>
+    <div>  
+        <ul>  
+          <li><b>Java Runtime Environment (JRE):</b> A software package that provides the necessary components to run Java applications.</li>  
+          <li><b>Includes:</b>  
+            <ul>  
+              <li>Java Virtual Machine (JVM)</li>  
+              <li>Core libraries (Java API)</li>  
+              <li>Supporting runtime components</li>  
+            </ul>  
+          </li>  
+          <li><b>Purpose:</b> Enables users to execute pre-compiled Java programs.</li>  
+          <li><b>Does Not Include:</b> Development tools like compilers or debuggers.</li>  
+          <li><b>Best For:</b> Users who only need to run Java applications, not develop them.</li>  
+        </ul>  
+    </div>
+    <br>
+
+    <b>Java Development Kit (JDK): </b>
+    <div>
+        <ul>
+          <li><b>Java Development Kit (JDK):</b> A complete development environment for building Java applications.</li>
+          <li><b>Includes:</b> 
+            <ul>
+              <li>Java Runtime Environment (JRE) – Required for running Java applications.</li>
+              <li><code>javac</code> – Java compiler to convert source code into bytecode.</li>
+              <li><code>jdb</code> – Java debugger for debugging applications.</li>
+              <li>Additional development tools and utilities.</li>
+            </ul>
+          </li>
+          <li><b>Purpose:</b> Used to write, compile, and debug Java code.</li>
+          <li><b>Essential for:</b> Java application development.</li>
+          <li><b>JDK Versions:</b>
+            <ul>
+              <li>Standard Edition (SE) – General-purpose Java development.</li>
+              <li>Enterprise Edition (EE) – For enterprise-level applications.</li>
+              <li>Other variants based on specific needs.</li>
+            </ul>
+          </li>
+        </ul>
+    </div>
+
   </div>
   <hr>
+
   <div>
     <h5>Q. What is JIT?</h5>
-    <p><strong>Answer:</strong> JIT (Just-In-Time) Compiler is a component of the JVM that optimizes bytecode execution by compiling frequently used bytecode into native machine code during runtime, improving performance.</p>
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <img src="../../images/jvm_arch.PNG" style="width: 40%;" class="img-fluid">
+        <img src="../../images/jit.PNG" style="width: 40%;" class="img-fluid">
+    </div>
+    <div>
+        <pre>
+    public class Main {
+        static void myMethod() {
+          System.out.println("Hello World!");
+        }
+      public static void main(String[] args) {
+              do{
+                   myMethod();
+                }while(true);    
+        }
+      }
+        </pre>
+        <ul>
+          <li><b>Profiler:</b> Identifies recurring code blocks by maintaining a counter to track method calls. 
+              <ul>
+                <li><b>Example:</b> In the given code, <code>myMethod()</code> is called repeatedly, and the profiler tracks these calls.</li>
+              </ul>
+          </li>
+          <li><b>JIT Compilation:</b> Once a method call exceeds a predefined threshold, the JIT compiler converts it into native code for faster execution.
+              <ul>
+                <li><b>Example:</b> After multiple calls to <code>myMethod()</code>, the JIT compiler compiles it into native code to speed up execution.</li>
+              </ul>
+          </li>
+          <li><b>C1 and C2 Compilers:</b> 
+              <ul>
+                <li>C1 (client) compiler handles levels 1-3 optimizations.</li>
+                <li>C2 (server) compiler handles level 4 optimization for more intensive tasks.</li>
+              </ul>
+              <b>Example:</b> C1 optimizes the frequent calls in <code>myMethod()</code>, while C2 handles more complex tasks if the method is used intensively.
+          </li>
+          <li><b>Code Cache:</b> Frequently called methods are stored in a limited memory section called the code cache for quicker access.
+              <ul>
+                <li><b>Example:</b> After JIT compiles <code>myMethod()</code>, the code is stored in the cache for faster subsequent execution.</li>
+              </ul>
+          </li>
+          <li><b>Efficiency:</b> The JIT compiler optimizes code to balance performance, only caching methods that provide significant performance gains.
+              <ul>
+                <li><b>Example:</b> Only <code>myMethod()</code> will be cached if it’s called frequently, avoiding unnecessary caching of less used methods.</li>
+              </ul>
+          </li>
+        </ul>
+    </div>      
   </div>
   <hr>
+
   <div>
     <h5>Q. What is GraalVM, and how is it different from the JIT compiler?</h5>
     <p>GraalVM is a high-performance runtime that enhances the execution of Java applications and supports multiple programming languages beyond Java, such as JavaScript, Python, Ruby, R, and even languages like C and C++. It is designed to integrate and optimize applications written in a variety of languages within a single runtime environment.</p>
@@ -54,17 +167,18 @@
         <li>Lower Memory Usage: By pre-compiling code into native images, GraalVM reduces memory overhead compared to traditional JVMs.</li>
         <li>Improved Application Performance: Advanced optimizations make Java applications run faster, especially in long-running scenarios.</li>
     </ul>
-    Faster startup times and low memory consumption make GraalVM a strong choice for microservices in containerized environments.
+    Faster startup times and low memory consumption make GraalVM a b choice for microservices in containerized environments.
   </div>
   <hr>
+
   <div>
     <h5>Q. What is a classloader?</h5>
-    <p><strong>Answer:</strong> A classloader is a subsystem of JVM responsible for loading class files. It converts bytecode into JVM-readable formats. Java has three types of classloaders:
+    <p><b>Answer:</b> A classloader is a subsystem of JVM responsible for loading class files. It converts bytecode into JVM-readable formats. Java has three types of classloaders:
     <p>When a request reaches the JVM, it first checks if the class is already loaded. If the class is not loaded, the JVM searches for it using class loaders. If the class cannot be found after all searches, a `ClassNotFoundException` is thrown.</p>
     <ul>
-        <li><strong>Bootstrap ClassLoader:</strong> Loads core Java classes.(jdk/jre/lib/*)</li>
-        <li><strong>Extension ClassLoader:</strong> Loads classes from the extension directory.(jdk/jre/ext/*)</li>
-        <li><strong>Application ClassLoader:</strong> Loads classes from the application's classpath.</li>
+        <li><b>Bootstrap ClassLoader:</b> Loads core Java classes.(jdk/jre/lib/*)</li>
+        <li><b>Extension ClassLoader:</b> Loads classes from the extension directory.(jdk/jre/ext/*)</li>
+        <li><b>Application ClassLoader:</b> Loads classes from the application's classpath.</li>
         <img src="../../images/classloader.PNG" style="display: block; margin: auto; width: 50%;" class="img-fluid">
 
       </ul>
@@ -72,17 +186,48 @@
   </div>
   <hr>
 
+  <div>
+    <h5>Q. Difference between JDK JRE and JVM</h5>
+    <table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+        <tr>
+        <th><strong>Component</strong></th>
+        <th><strong>Description</strong></th>
+        <th><strong>Includes</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td><strong>JDK (Java Development Kit)</strong></td>
+        <td>A complete development environment for building Java applications.</td>
+        <td>Includes JRE, development tools (javac, jdb), libraries, and other utilities for Java programming.</td>
+        </tr>
+        <tr>
+        <td><strong>JRE (Java Runtime Environment)</strong></td>
+        <td>Provides libraries, Java Virtual Machine (JVM), and other components required to run Java programs.</td>
+        <td>Includes JVM and core libraries required to run Java applications.</td>
+        </tr>
+        <tr>
+        <td><strong>JVM (Java Virtual Machine)</strong></td>
+        <td>A virtual machine that executes Java bytecode and provides runtime environment for Java applications.</td>
+        <td>Includes the bytecode interpreter, garbage collection, and memory management components.</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  <hr>
+
   
   <!-- Memory Management -->
   <div>
     <h5>Q. What are the memory storages available with JVM?</h5>
-    <p><strong>Answer:</strong> JVM memory is divided into the following areas:
+    <p><b>Answer:</b> JVM memory is divided into the following areas:
       <ul>
-        <li><strong>Heap:</strong> For storing objects and class instances.</li>
-        <li><strong>Stack:</strong> For storing method calls, local variables, and partial results.</li>
-        <li><strong>Method Area:</strong> For storing class metadata and static variables.</li>
-        <li><strong>Program Counter (PC) Register:</strong> For tracking the current instruction.</li>
-        <li><strong>Native Method Stack:</strong> For native method executions.</li>
+        <li><b>Heap:</b> For storing objects and class instances.</li>
+        <li><b>Stack:</b> For storing method calls, local variables, and partial results.</li>
+        <li><b>Method Area:</b> For storing class metadata and static variables.</li>
+        <li><b>Program Counter (PC) Register:</b> For tracking the current instruction.</li>
+        <li><b>Native Method Stack:</b> For native method executions.</li>
       </ul>
     </p>
   </div>
@@ -91,16 +236,16 @@
   <!-- Main Method -->
   <div>
     <h5>Q. What will happen if we don’t declare the main method as static?</h5>
-    <p><strong>Answer:</strong> The program will fail to run because the JVM requires the <code>main</code> method to be static to invoke it without creating an object.</p>
+    <p><b>Answer:</b> The program will fail to run because the JVM requires the <code>main</code> method to be static to invoke it without creating an object.</p>
   </div>
   <hr>
   <!-- Data Types -->
   <div>
     <h5>Q. Explain different data types in Java and its default value.</h5>
-    <p><strong>Answer:</strong> Java provides two categories of data types:
+    <p><b>Answer:</b> Java provides two categories of data types:
       <ul>
-        <li><strong>Primitive:</strong> byte, short, int, long, float, double, char, boolean.</li>
-        <li><strong>Non-Primitive:</strong> String, arrays, classes, interfaces, etc.</li>
+        <li><b>Primitive:</b> byte, short, int, long, float, double, char, boolean.</li>
+        <li><b>Non-Primitive:</b> String, arrays, classes, interfaces, etc.</li>
       </ul>
     </p>     
 
@@ -936,7 +1081,7 @@ public class CommandLineExample {
   <!-- Operators -->
   <div>
     <h5>Q. Explain the difference between <code>&gt;&gt;</code> and <code>&gt;&gt;&gt;</code> operators.</h5>
-    <p><strong>Answer:</strong> 
+    <p><b>Answer:</b> 
       <ul>
         <li><code>&gt;&gt;</code>: Arithmetic right shift operator that retains the sign bit.</li>
         <li><code>&gt;&gt;&gt;</code>: Logical right shift operator that does not retain the sign bit, filling it with zero.</li>
@@ -1448,7 +1593,7 @@ public class CustomSerializationExample {
 </div>
 <hr>
 <div>
-    <h5>q. eXPLAIN Shallow Copy vs. Deep Copy in Java</h5>
+    <h5>Q. Explain Shallow Copy vs. Deep Copy in Java</h5>
 
     <b>What is a Shallow Copy?</b>
     <p>
@@ -1992,7 +2137,7 @@ public class CustomSerializationExample {
   <!-- Arrays -->
   <div>
     <h5>Q. How to copy an array in Java?</h5>
-    <p><strong>Answer:</strong> Arrays can be copied using methods like <code>System.arraycopy()</code>, <code>Arrays.copyOf()</code>, or <code>clone()</code>.</p>
+    <p><b>Answer:</b> Arrays can be copied using methods like <code>System.arraycopy()</code>, <code>Arrays.copyOf()</code>, or <code>clone()</code>.</p>
     <pre><code>int[] original = {1, 2, 3};
   int[] copy = Arrays.copyOf(original, original.length);
   </code></pre>
@@ -2000,7 +2145,7 @@ public class CustomSerializationExample {
   <hr>
   <div>
     <h5>Q. What do you understand by the jagged array?</h5>
-    <p><strong>Answer:</strong> A jagged array is a multi-dimensional array where each row can have a different length.</p>
+    <p><b>Answer:</b> A jagged array is a multi-dimensional array where each row can have a different length.</p>
     <pre><code>int[][] jagged = {
       {1, 2},
       {3, 4, 5},
@@ -2225,7 +2370,7 @@ class Example {
 <hr>
 <div>
     <h5>Q. Contiguous memory locations are usually used for storing actual values in an array but not in ArrayList. Explain.</h5>
-    <p><strong>Answer:</strong> 
+    <p><b>Answer:</b> 
       <ul>
         <li>Arrays use contiguous memory locations to store values, ensuring efficient random access.</li>
         <li>ArrayLists store objects (not primitives) and use dynamic memory allocation. The elements themselves are references to objects, not contiguous memory locations.</li>
@@ -2233,28 +2378,14 @@ class Example {
     </p>
   </div>
   <hr>
-  <!-- Jagged Arrays -->
-  <div>
-    <h5>Q. What do you understand by the jagged array?</h5>
-    <p><strong>Answer:</strong> A jagged array is a multi-dimensional array where each row can have a different number of columns.</p>
-    <pre><code>int[][] jaggedArray = {
-      {1, 2, 3},
-      {4, 5},
-      {6}
-  };
-  
-  System.out.println(jaggedArray[1][1]); // Outputs 5
-  </code></pre>
-  </div>
-  <hr>
   <div>
     <h5>Q. What happens if the main method is not declared static?</h5>
-    <p><strong>Answer:</strong> If the main method is not static, the JVM cannot invoke it without creating an instance of the class, leading to a runtime error.</p>
+    <p><b>Answer:</b> If the main method is not static, the JVM cannot invoke it without creating an instance of the class, leading to a runtime error.</p>
   </div>
   <hr>
   <div>
     <h5>Q. Can a constructor call another constructor in the same class?</h5>
-    <p><strong>Answer:</strong> Yes, using the <code>this()</code> keyword, one constructor can call another in the same class.</p>
+    <p><b>Answer:</b> Yes, using the <code>this()</code> keyword, one constructor can call another in the same class.</p>
     <pre><code>class Example {
       Example() {
           this(42); // Calls parameterized constructor
@@ -2265,6 +2396,54 @@ class Example {
       }
   }
   </code></pre>
+  </div>
+  <hr>
+  <div>
+    <h5>Explain `==` vs `.equals()` in Java. </h5>
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+          <tr>
+            <th><strong>Comparison</strong></th>
+            <th><strong>== (Equality Operator)</strong></th>
+            <th><strong>.equals() Method</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Purpose</strong></td>
+            <td>Compares memory addresses (reference comparison).</td>
+            <td>Compares the actual content (value comparison).</td>
+          </tr>
+          <tr>
+            <td><strong>Usage</strong></td>
+            <td>Used for comparing primitive data types and object references.</td>
+            <td>Used for comparing values of objects, especially in custom classes.</td>
+          </tr>
+          <tr>
+            <td><strong>Example with Strings</strong></td>
+            <td>
+              <pre>
+      String s1 = "Hello";
+      String s2 = "Hello";
+      System.out.println(s1 == s2); // true (same memory reference)
+              </pre>
+            </td>
+            <td>
+              <pre>
+      String s1 = new String("Hello");
+      String s2 = new String("Hello");
+      System.out.println(s1.equals(s2)); // true (same value)
+              </pre>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Custom Objects</strong></td>
+            <td>Compares memory locations of objects.</td>
+            <td>Can be overridden in a class to define custom equality logic.</td>
+          </tr>
+        </tbody>
+      </table>
+      
   </div>
   <hr>
   <div>
@@ -2409,8 +2588,140 @@ class Example {
     </table>
   </div>
   <hr>
-  
+  <div>
+    <h5>Java Memory Management: Heap vs Stack</h5>
+    <div>  
+        <h6>1. Heap Memory</h6>
+        <ul>
+          <li>Used for dynamic memory allocation where objects and class instances are stored.</li>
+          <li>Stores:
+            <ul>
+              <li>Objects</li>
+              <li>Instance variables</li>
+            </ul>
+          </li>
+          <li>Managed by the Garbage Collector, which automatically removes unused objects.</li>
+          <li>Access to heap memory is slower compared to stack memory.</li>
+          <li><strong>Example:</strong> 
+            <pre>
+      class Person {
+          String name; // Stored in heap
+      }
+      Person p1 = new Person(); // Allocated in heap memory
+            </pre>
+          </li>
+        </ul>
+      
+        <h6>2. Stack Memory</h6>
+        <ul>
+          <li>Used for storing method calls, local variables, and function parameters.</li>
+          <li>Stores:
+            <ul>
+              <li>Method call stack (LIFO order)</li>
+              <li>Local variables</li>
+            </ul>
+          </li>
+          <li>Faster access as it follows LIFO (Last-In-First-Out) order.</li>
+          <li>Memory is automatically deallocated when a method execution is complete.</li>
+          <li><strong>Example:</strong> 
+            <pre>
+      void method() {
+          int x = 10; // Stored in stack memory
+      }
+            </pre>
+          </li>
+        </ul>
+      
+        <h6>Key Differences:</h6>
+        <ul>
+          <li>Heap memory is used for object storage, while stack memory is used for method execution and local variables.</li>
+          <li>Heap memory is managed by the garbage collector, whereas stack memory is automatically deallocated after method execution.</li>
+          <li>Stack memory is faster than heap memory in terms of access and execution.</li>
+        </ul>
+      </div>
+      
+  </div>
+  <hr>
   <div>
     <h5>Q. How does Java handle memory management for objects?</h5>
-    <p><strong>Answer:</strong> Java uses automatic garbage collection to manage memory. Objects no longer referenced are eligible for collection by the garbage collector.</p>
+    <p><b>Answer:</b> Java uses automatic garbage collection to manage memory. Objects no longer referenced are eligible for collection by the garbage collector.</p>
+  </div>
+  <hr>
+  <div>
+    <h5>Explain `final`, `finally`, and `finalize()`</h5>
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+          <tr>
+            <th><strong>Keyword/Method</strong></th>
+            <th><strong>Definition</strong></th>
+            <th><strong>Usage</strong></th>
+            <th><strong>Example</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>final</strong> (Keyword)</td>
+            <td>Used to declare constants, prevent method overriding, or inheritance of a class.</td>
+            <td>
+              <ul>
+                <li>Applied to variables → Makes them constant.</li>
+                <li>Applied to methods → Prevents method overriding.</li>
+                <li>Applied to classes → Prevents inheritance.</li>
+              </ul>
+            </td>
+            <td>
+              <pre>
+      final int x = 10; // Constant variable
+      final class A {}  // Cannot be extended
+      class B {
+         final void show() {} // Cannot be overridden
+      }
+              </pre>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>finally</strong> (Block)</td>
+            <td>A block in exception handling that executes whether an exception occurs or not.</td>
+            <td>
+              <ul>
+                <li>Used with try-catch to ensure cleanup operations (e.g., closing resources).</li>
+              </ul>
+            </td>
+            <td>
+              <pre>
+      try {
+          int a = 5 / 0; 
+      } catch (Exception e) {
+          System.out.println("Exception caught");
+      } finally {
+          System.out.println("Finally block executed");
+      }
+              </pre>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>finalize()</strong> (Method)</td>
+            <td>A method in the Object class used for garbage collection before an object is destroyed.</td>
+            <td>
+              <ul>
+                <li>Called by the garbage collector before object removal.</li>
+                <li>Can be overridden for cleanup tasks (e.g., closing files).</li>
+              </ul>
+            </td>
+            <td>
+              <pre>
+      class Test {
+          protected void finalize() {
+              System.out.println("Finalize method called");
+          }
+      }
+      Test obj = new Test();
+      obj = null; // Eligible for GC
+      System.gc(); // Requests garbage collection
+              </pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
   </div>

@@ -48,7 +48,7 @@
                         <a href="design/pages/db/database-choice.html" class="nav-link" onclick="loadPage(event)">Right Database Choice</a>
                         <a href="design/pages/db/dynamodb.html" class="nav-link" onclick="loadPage(event)">DynamoDB</a>
                         <a href="design/pages/db/elasticsearch.html" class="nav-link" onclick="loadPage(event)">ElasticSearch</a>
-                        <a href="design/pages/under_construction.html" class="nav-link" onclick="loadPage(event)">Redis</a>
+                        <a href="design/pages/db/redis.html" class="nav-link" onclick="loadPage(event)">Redis</a>
                         <a href="design/pages/under_construction.html" class="nav-link" onclick="loadPage(event)">Cassandra</a>
                         <a href="design/pages/under_construction.html" class="nav-link" onclick="loadPage(event)">MySQL Queries</a>
                     </div>
@@ -282,6 +282,25 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    // Disable right-click context menu
+    document.addEventListener("contextmenu", function (event) {
+        event.preventDefault();
+    });
+
+    // Disable Shift + Click, Ctrl + Click, Middle Mouse Click (to prevent opening in new tab)
+    document.addEventListener("click", function (event) {
+        if (event.button === 1 || event.ctrlKey || event.shiftKey || event.metaKey) {
+            event.preventDefault();
+        }
+    });
+
+    // Handle internal link clicks to load content dynamically
+    const links = document.querySelectorAll(".nav-link");
+});
+
+    </script>
     <script src="script.js"></script>
 </body>
 

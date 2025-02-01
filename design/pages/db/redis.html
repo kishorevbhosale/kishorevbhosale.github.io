@@ -1,0 +1,1080 @@
+<h1 style="text-align: center;">Redis</h1>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">What is Redis?</h2>
+<div>
+    <b>Definition & Basics</b>
+    <ul>
+        <li><b>Full Name</b>: REmote DIctionary Server (Redis).</li>
+        <li><b>Creator</b>: Salvatore Sanfilippo (2006).</li>
+        <li><b>Type</b>: Advanced NoSQL key-value data store.</li>
+        <li><b>Language</b>: Written in C.</li>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Data Storage & Performance</b>
+    <ul>
+        <li><b>In-Memory Storage</b>: Primary data storage in RAM → enables ultra-fast read/write operations.</li>
+        <li><b>Persistence</b>: Optional disk storage for durability; data reloaded to memory on restart.</li>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Data Structures</b>
+    <ul>
+        <li>Supports: Strings, Hashes, Lists, Sets, Sorted Sets, Bitmaps, HyperLogLogs.</li>
+        <li>Unique Feature Acts as a <b>data structure server</b> due to versatile storage options.</li>
+    </ul>
+    <hr class="thin-line">
+
+    <b>NoSQL Characteristics</b>
+    <ul>
+        <li>Not Only SQL No rigid schemas (e.g., tables) or SQL-like queries (e.g., `SELECT`).</li>
+        <li>Flexible Storage Data stored as key-value pairs or JSON-like objects.</li>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Use Cases</b>
+    <ul>
+        <li>Primary Role Caching layer (due to in-memory speed).</li>
+        <li>Secondary Use Session management, real-time analytics, message brokering.</li>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Real-World Adoption</b>
+    <ul>
+        <li>Used by Twitter, GitHub, Instagram, Pinterest, Snapchat and so many...</li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Redis Data Types</h2>
+<div>
+    <p>
+      <li><b>Key Structure</b>: Binary-safe strings (max 512 MB), but shorter keys are recommended for efficiency.</li>
+    </p>
+    <hr class="thin-line">
+  
+    <h5>1. Strings</h5>
+    <ul>
+      <li><b>Description</b>: Simplest type, stores text/binary data (up to 512 MB).</li>
+      <li><b>Use Cases</b>:
+        <ul>
+          <li>Session IDs, HTML/XML/JSON content, counters (integers/floats).</li>
+          <li>Supports text, integers, videos, images, etc.</li>
+        </ul>
+      </li>
+      <li><b>Comparison</b>: Unlike Memcached (strings only), Redis supports complex data structures.</li>
+    </ul>
+    <hr class="thin-line">
+    
+    <h5>2. Lists</h5>
+    <ul>
+      <li><b>Structure</b>: Linked list of strings.</li>
+      <li><b>Operations</b>:
+        <ul>
+          <li>Fast insertion/removal at head/tail (O(1)).</li>
+          <li>Slow element access (O(n) scan time).</li>
+        </ul>
+      </li>
+      <li><b>Use Cases</b>: Logs, ordered data where insertion speed &gt; read speed.</li>
+    </ul>
+    <hr class="thin-line">
+  
+    <h5>3. Sets</h5>
+    <ul>
+      <li><b>Structure</b>: Unordered collection of unique strings.</li>
+      <li><b>Operations</b>: O(1) add/remove; no duplicates allowed.</li>
+      <li><b>Use Cases</b>: Unique visitor tracking, tags, membership checks.</li>
+    </ul>
+    <hr class="thin-line">
+  
+    <h5>4. Sorted Sets</h5>
+    <ul>
+      <li><b>Structure</b>: Unique elements sorted by a <em>score</em> (numeric value).</li>
+      <li><b>Ordering Rules</b>:
+        <ul>
+          <li>Elements ordered by score (ascending/descending).</li>
+          <li>Lexicographical order used for ties (uppercase &gt; lowercase).</li>
+        </ul>
+      </li>
+      <li><b>Use Cases</b>: Leaderboards, priority queues.</li>
+    </ul>
+    <hr class="thin-line">
+  
+    <h5>5. Hashes</h5>
+    <ul>
+      <li><b>Structure</b>: Field-value pairs (e.g., <code>{student: "marks"}</code>).</li>
+      <li><b>Use Cases</b>: Storing object attributes (e.g., user profiles, product details).</li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Strings in Redis: Insertion and Retrieval</h2>
+<div>
+    <ul>
+      <li><b>SET Command</b>
+        <ul>
+          <li>Syntax: <code>SET key value</code></li>
+          <li>Example: <code>SET Meta 300</code> → Stores "Meta" with value "300".</li>
+          <li>Overwrites existing keys if reused.</li>
+        </ul>
+      </li>
+  
+      <li><b>GET Command</b>
+        <ul>
+          <li>Syntax: <code>GET key</code></li>
+          <li>Example: <code>GET Meta</code> → Returns "300".</li>
+          <li>Returns <code>nil</code> if key is missing.</li>
+        </ul>
+      </li>
+  
+      <li><b>SETEX Command</b>
+        <ul>
+          <li>Syntax: <code>SETEX key seconds value</code></li>
+          <li>Example: <code>SETEX Microsoft 40 145</code> → Key expires after 40 seconds.</li>
+          <li>Alternative: <code>SET key value EX seconds</code>.</li>
+        </ul>
+      </li>
+  
+      <li><b>PSETEX Command</b>
+        <ul>
+          <li>Syntax: <code>PSETEX key milliseconds value</code></li>
+          <li>Example: <code>PSETEX Amazon 20000 245</code> → Key expires after 20,000 ms.</li>
+          <li>Alternative: <code>SET key value PX milliseconds</code>.</li>
+        </ul>
+      </li>
+  
+      <li><b>SETNX Command</b>
+        <ul>
+          <li>Syntax: <code>SETNX key value</code></li>
+          <li>Sets value <b>only if the key doesn’t exist</b>.</li>
+          <li>Example: <code>SETNX Meta 240</code> → Fails if "Meta" already exists.</li>
+          <li>Alternative: <code>SET key value NX</code>.</li>
+        </ul>
+      </li>
+  
+      <li><b>STRLEN Command</b>
+        <ul>
+          <li>Syntax: <code>STRLEN key</code></li>
+          <li>Example: <code>STRLEN Meta</code> → Returns length of the value (e.g., 3 for "300").</li>
+        </ul>
+      </li>
+  
+      <li><b>MSET Command</b>
+        <ul>
+          <li>Syntax: <code>MSET key1 value1 key2 value2 ...</code></li>
+          <li>Example: <code>MSET Google 450 Fiserv 230</code> → Sets multiple keys at once.</li>
+        </ul>
+      </li>
+  
+      <li><b>MGET Command</b>
+        <ul>
+          <li>Syntax: <code>MGET key1 key2 ...</code></li>
+          <li>Example: <code>MGET Google Fiserv</code> → Returns values for both keys.</li>
+        </ul>
+      </li>
+    </ul>
+</div>
+  
+<div>
+    <h5>Practice Commands</h5>
+    <ul>
+      <li><code>SET Meta 300</code></li>
+      <li><code>GET Meta</code></li>
+      <li><code>SETEX Microsoft 40 145</code></li>
+      <li><code>PSETEX Amazon 2000 245</code></li>
+      <li><code>SETNX Meta 240</code> (fails if Meta exists)</li>
+      <li><code>STRLEN Meta</code></li>
+      <li><code>MSET Google 450 Fiserv 230</code></li>
+      <li><code>MGET Google Fiserv</code></li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+
+<h2 style="text-align: center;">Strings in Redis: Utility Commands</h2>
+<div>
+    <ul>
+      <li>
+        <h5>KEYS Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Lists all keys stored in Redis.</li>
+          <li><b>Syntax</b>: <code>KEYS *</code></li>
+          <li><b>Caution</b>: Avoid in production due to performance issues with large datasets.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>INCR Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Increments a key's integer value by 1.</li>
+          <li><b>Syntax</b>: <code>INCR key</code></li>
+          <li><b>Edge Cases</b>:
+            <ul>
+              <li>Creates a new key with value <code>1</code> if the key doesn’t exist.</li>
+              <li>Throws <code>ERR value is not an integer</code> for non-integer values.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>INCRBY Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Increments a key's value by a specified integer.</li>
+          <li><b>Syntax</b>: <code>INCRBY key count</code></li>
+          <li><b>Example</b>: <code>INCRBY Oracle 5</code> adds 5 to the key's value.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>INCRBYFLOAT Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Increments a key's value by a floating-point number.</li>
+          <li><b>Syntax</b>: <code>INCRBYFLOAT key floatValue</code></li>
+          <li><b>Example</b>: <code>INCRBYFLOAT Oracle 3.5</code> adds 3.5 to the value.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>Terminal Example 1</h5>
+        <ul>
+          <li><code>SET Apple 300</code> → Sets Apple’s value to 300.</li>
+          <li><code>GET Apple</code> → Returns 300.</li>
+          <li><code>INCR Apple</code> → Value becomes 301.</li>
+          <li><code>INCRBY Apple 5</code> → Value becomes 306.</li>
+          <li><code>INCRBYFLOAT Apple 3.4</code> → Value becomes 309.4.</li>
+          <li><code>KEYS *</code> → Lists all keys (e.g., Apple).</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>DECR Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Decrements a key's integer value by 1.</li>
+          <li><b>Syntax</b>: <code>DECR key</code></li>
+          <li><b>Edge Case</b>: Creates a new key with value <code>-1</code> if the key doesn’t exist.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>DECRBY Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Decrements a key's value by a specified integer.</li>
+          <li><b>Syntax</b>: <code>DECRBY key count</code></li>
+          <li><b>Example</b>: <code>DECRBY Oracle 5</code> subtracts 5 from the value.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>DEL Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Deletes one or more keys.</li>
+          <li><b>Syntax</b>: <code>DEL key</code></li>
+          <li><b>Example</b>: <code>DEL Oracle</code> removes the Oracle key.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>FLUSHALL Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Deletes all keys in all Redis databases.</li>
+          <li><b>Syntax</b>: <code>FLUSHALL</code></li>
+          <li><b>Caution</b>: Irreversible action.</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>APPEND Command</h5>
+        <ul>
+          <li><b>Purpose</b>: Appends a string to a key's value.</li>
+          <li><b>Syntax</b>: <code>APPEND key stringToBeAppended</code></li>
+          <li><b>Example</b>: <code>APPEND msg "world"</code> appends "world" to the value of "msg".</li>
+        </ul>
+      </li>
+      <br>
+      <li>
+        <h5>Terminal Example 2</h5>
+        <ul>
+          <li><code>SET google 250</code> → Sets google’s value to 250.</li>
+          <li><code>DECR google</code> → Value becomes 249.</li>
+          <li><code>DECRBY google 5</code> → Value becomes 244.</li>
+          <li><code>DEL google</code> → Deletes the key.</li>
+          <li><code>FLUSHALL</code> → Clears all keys.</li>
+        </ul>
+      </li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Lists in Redis: Insertion Commands</h2>
+<div>
+    <br>
+    <li><b>Data Structure</b>: Redis lists are stored as linked lists with a <em>head</em> (left) and <em>tail</em> (right).</li>
+    <br>  
+    <h5>1. LPUSH Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Inserts one or more values at the <em>head</em> (left) of the list.</li>
+      <li><b>Syntax</b>: <code>LPUSH key value1 value2 ...</code></li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>LPUSH cars toyota ford honda</code></li>
+          <li><b>Resulting Order</b>: [honda, ford, toyota] (inserts in reverse order).</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>2. LRANGE Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Retrieves elements between a start and end index.</li>
+      <li><b>Syntax</b>: <code>LRANGE key start end</code></li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>LRANGE cars 0 -1</code> → Returns all elements.</li>
+          <li><code>LRANGE cars 0 1</code> → Returns first two elements.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>3. LPOP Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Removes and returns the element at the <em>head</em> (left) of the list.</li>
+      <li><b>Syntax</b>: <code>LPOP key</code></li>
+      <li><b>Example</b>:
+        <ul>
+          <li>After <code>LPOP cars</code>, list [honda, ford, toyota] becomes [ford, toyota].</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>4. RPUSH Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Inserts one or more values at the <em>tail</em> (right) of the list.</li>
+      <li><b>Syntax</b>: <code>RPUSH key value1 value2 ...</code></li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>RPUSH cars mercedes bmw</code></li>
+          <li><b>Resulting Order</b>: [toyota, ford, mercedes, bmw] (inserts in same order).</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>5. RPOP Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Removes and returns the element at the <em>tail</em> (right) of the list.</li>
+      <li><b>Syntax</b>: <code>RPOP key</code></li>
+      <li><b>Example</b>:
+        <ul>
+          <li>After <code>RPOP cars</code>, list [toyota, ford, mercedes, bmw] becomes [toyota, ford, mercedes].</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>6. DEL Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Deletes the entire list associated with a key.</li>
+      <li><b>Syntax</b>: <code>DEL key</code></li>
+      <li><b>Example</b>: <code>DEL cars</code> → Removes the "cars" list.</li>
+    </ul>
+  
+    <h5>Summary Workflow Example</h5>
+    <ul>
+      <li><code>LPUSH cars toyota ford</code> → List: [ford, toyota]</li>
+      <li><code>RPUSH cars honda</code> → List: [ford, toyota, honda]</li>
+      <li><code>LPOP cars</code> → Removes "ford"; List: [toyota, honda]</li>
+      <li><code>RPOP cars</code> → Removes "honda"; List: [toyota]</li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Lists in Redis: Modification Commands</h2> 
+<div>
+    <h5>LLEN Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Get the length of a list.</li>
+      <li><b>Syntax</b>: <code>LLEN key</code></li>
+      <li><b>Example</b>: 
+        <ul>
+          <li><code>LPUSH cars bmw audi honda tesla</code> → Creates list ["tesla", "honda", "audi", "bmw"]</li>
+          <li><code>LLEN cars</code> → Returns <b>4</b></li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>LINDEX Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Fetch an element at a specific index (0-based).</li>
+      <li><b>Syntax</b>: <code>LINDEX key index</code></li>
+      <li><b>Example</b>: 
+        <ul>
+          <li><code>LINDEX cars 1</code> → Returns <b>"honda"</b></li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>LSET Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Update the value at a specific index.</li>
+      <li><b>Syntax</b>: <code>LSET key index value</code></li>
+      <li><b>Example</b>: 
+        <ul>
+          <li><code>LSET cars 0 maruti</code> → Updates the list to ["maruti", "honda", "audi", "bmw"]</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>LPUSHX Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Add an element to the head <em>only if the list exists</em>.</li>
+      <li><b>Syntax</b>: <code>LPUSHX key value</code></li>
+      <li><b>Example</b>: 
+        <ul>
+          <li><code>LPUSHX cars toyota</code> → Adds "toyota" to the head → ["toyota", "maruti", "honda", "audi", "bmw"]</li>
+          <li><code>LPUSHX bikes ducati</code> → No action (if "bikes" list doesn’t exist).</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>LINSERT Command</h5>
+    <ul>
+      <li><b>Purpose</b>: Insert an element before/after a specific pivot value.</li>
+      <li><b>Syntax</b>: <code>LINSERT key BEFORE|AFTER pivot value</code></li>
+      <li><b>Example</b>: 
+        <ul>
+          <li>Original list: ["maruti", "honda", "audi", "bmw"]</li>
+          <li><code>LINSERT cars BEFORE audi mercedes</code> → Inserts "mercedes" before "audi"</li>
+          <li>Updated list: ["maruti", "honda", "mercedes", "audi", "bmw"]</li>
+        </ul>
+      </li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+
+<h2 style="text-align: center;">Set in Redis: Insertion Commands</h2> 
+<div>
+  <div>
+    <h5>Redis Sets: Overview</h5>
+    <ul>
+      <li><b>Purpose</b>: Store <em>unique</em> elements (no duplicates) with unordered storage.</li>
+      <li><b>Internal Structure</b>: Uses hash tables for fast lookups.</li>
+      <li><b>Use Case</b>: Track unique items (e.g., grocery store fruits).</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h5>Key Commands for Sets</h5>
+    <ul>
+      <li>
+        <b>SADD (Add Elements)</b>:
+        <ul>
+          <li><code>SADD [key] [value]</code></li>
+          <li>Example: <code>SADD fruits apple mango</code> → adds "apple" and "mango".</li>
+          <li>Returns <code>0</code> if element already exists.</li>
+        </ul>
+      </li>
+  
+      <li>
+        <b>SMEMBERS (List Elements)</b>:
+        <ul>
+          <li><code>SMEMBERS [key]</code></li>
+          <li>Example: <code>SMEMBERS fruits</code> → returns all elements (e.g., apple, mango).</li>
+        </ul>
+      </li>
+  
+      <li>
+        <b>SISMEMBER (Check Existence)</b>:
+        <ul>
+          <li><code>SISMEMBER [key] [value]</code></li>
+          <li>Example: <code>SISMEMBER fruits apple</code> → returns <code>1</code> (exists) or <code>0</code> (doesn’t exist).</li>
+        </ul>
+      </li>
+  
+      <li>
+        <b>SCARD (Count Elements)</b>:
+        <ul>
+          <li><code>SCARD [key]</code></li>
+          <li>Example: <code>SCARD fruits</code> → returns total elements (e.g., 2).</li>
+        </ul>
+      </li>
+  
+      <li>
+        <b>SDIFF (Set Difference)</b>:
+        <ul>
+          <li><code>SDIFF [key1] [key2]</code></li>
+          <li>Example: <code>SDIFF set1 set2</code> → returns elements in <code>set1</code> not in <code>set2</code>.</li>
+          <li>Scenario: Compare "fruits" (apple, banana) vs. "fruits1" (apple, mango) → returns "banana".</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  
+  <div>
+    <h5>Example Workflow</h5>
+    <ul>
+      <li><code>SADD set1 apple banana orange</code> → adds 3 elements.</li>
+      <li><code>SMEMBERS set1</code> → returns [apple, banana, orange].</li>
+      <li><code>SADD set1 apple</code> → returns <code>0</code> (duplicate).</li>
+      <li><code>SDIFF set1 set2</code> → finds unique elements in <code>set1</code>.</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h5>Edge Cases</h5>
+    <ul>
+      <li><b>Duplicate Insertion</b>: <code>SADD</code> ignores duplicates (returns <code>0</code>).</li>
+      <li><b>Empty Sets</b>: <code>SMEMBERS</code> returns empty list if key doesn’t exist.</li>
+      <li><b>Non-Existent Keys</b>: <code>SDIFF</code> treats missing keys as empty sets.</li>
+    </ul>
+  </div>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Set in Redis: Modification Commands</h2> 
+<div>  
+    <h5>SUNION Command</h5>  
+    <ul>  
+      <li><b>Purpose</b>: Computes the union of two or more sets.</li>  
+      <li><b>Syntax</b>: <code>SUNION key1 key2 ...</code></li>  
+      <li><b>Example</b>:  
+        <ul>  
+          <li>Create sets:  
+            <code>SADD colors1 red blue green</code>,  
+            <code>SADD colors2 yellow blue</code>  
+          </li>  
+          <li>Union: <code>SUNION colors1 colors2</code> → Returns <code>red, blue, green, yellow</code></li>  
+        </ul>  
+      </li>  
+    </ul>  
+  
+    <h5>SREM Command</h5>  
+    <ul>  
+      <li><b>Purpose</b>: Removes specified elements from a set.</li>  
+      <li><b>Syntax</b>: <code>SREM key value1 value2 ...</code></li>  
+      <li><b>Example</b>:  
+        <ul>  
+          <li>Remove elements: <code>SREM colors1 red green</code></li>  
+          <li>Result: <code>SMEMBERS colors1</code> → Returns <code>blue</code></li>  
+        </ul>  
+      </li>  
+    </ul>  
+  
+    <h5>SPOP Command</h5>  
+    <ul>  
+      <li><b>Purpose</b>: Removes and returns random element(s) from a set.</li>  
+      <li><b>Syntax</b>: <code>SPOP key [count]</code></li>  
+      <li><b>Example</b>:  
+        <ul>  
+          <li>Remove 1 random element: <code>SPOP colors2 1</code> → Returns <code>yellow</code></li>  
+          <li>Remaining set: <code>SMEMBERS colors2</code> → <code>blue</code></li>  
+        </ul>  
+      </li>  
+    </ul>  
+  
+    <h5>SMOVE Command</h5>  
+    <ul>  
+      <li><b>Purpose</b>: Moves an element from one set to another.</li>  
+      <li><b>Syntax</b>: <code>SMOVE source_set dest_set member</code></li>  
+      <li><b>Example</b>:  
+        <ul>  
+          <li>Move element: <code>SMOVE colors1 colors2 blue</code></li>  
+          <li>Updated sets:  
+            <ul>  
+              <li><code>colors1</code>: Empty</li>  
+              <li><code>colors2</code>: <code>blue</code></li>  
+            </ul>  
+          </li>  
+        </ul>  
+      </li>  
+    </ul>  
+  
+    <h5>Terminal Example Walkthrough</h5>  
+    <ul>  
+      <li>Create sets:  
+        <code>SADD berries strawberry blueberry</code>,  
+        <code>SADD dry_fruits almond</code>  
+      </li>  
+      <li>Union: <code>SUNION berries dry_fruits</code> → <code>strawberry, blueberry, almond</code></li>  
+      <li>Remove element: <code>SREM berries strawberry</code> → Removes 1 item</li>  
+      <li>Pop random element: <code>SPOP berries 1</code> → Returns <code>blueberry</code></li>  
+    </ul>  
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+
+<h2 style="text-align: center;">Sorted Set in Redis: Insertion Commands</h2> 
+<div>
+    <h5>Redis Sorted Sets (ZSets)</h5>
+    <ul>
+      <li><b>Purpose</b>: Store elements in ascending order based on a numeric <b>score</b>.</li>
+      <li><b>Uniqueness</b>: Elements are unique, but multiple elements can share the same score (sorted lexicographically in such cases).</li>
+    </ul>
+  
+    <h5>1. ZADD Command</h5>
+    <ul>
+      <li><b>Syntax</b>: <code>ZADD key score value ...</code></li>
+      <li><b>Use Case</b>: Add elements with scores to a sorted set.</li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>ZADD products 150 Laptop 80 Mouse 200 Monitor</code></li>
+          <li>Adds products with prices (scores) to the "products" ZSet.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>2. ZRANGE Command</h5>
+    <ul>
+      <li><b>Syntax</b>: <code>ZRANGE key start end</code></li>
+      <li><b>Use Case</b>: Fetch elements within a positional range (ascending order).</li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>ZRANGE products 0 -1</code> → Returns all elements: ["Mouse", "Laptop", "Monitor"].</li>
+          <li>Omits scores by default.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>3. ZRANGEBYSCORE Command</h5>
+    <ul>
+      <li><b>Syntax</b>: <code>ZRANGEBYSCORE key min max</code></li>
+      <li><b>Use Case</b>: Fetch elements within a <b>score range</b>.</li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>ZRANGEBYSCORE products 100 250</code> → Returns ["Laptop", "Monitor"].</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>4. ZCARD Command</h5>
+    <ul>
+      <li><b>Syntax</b>: <code>ZCARD key</code></li>
+      <li><b>Use Case</b>: Get the total number of elements in a ZSet.</li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>ZCARD products</code> → Returns 3.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>5. ZCOUNT Command</h5>
+    <ul>
+      <li><b>Syntax</b>: <code>ZCOUNT key min max</code></li>
+      <li><b>Use Case</b>: Count elements within a score range.</li>
+      <li><b>Example</b>:
+        <ul>
+          <li><code>ZCOUNT products 0 100</code> → Returns 1 ("Mouse").</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Key Notes</h5>
+    <ul>
+      <li><b>Lexicographic Order</b>: Elements with the same score are sorted alphabetically (e.g., "Apple" before "Banana").</li>
+      <li><b>Range Limits</b>: Use <code>-inf</code> and <code>+inf</code> for unbounded score ranges.</li>
+    </ul>
+
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+
+<h2 style="text-align: center;">Sorted Set in Redis: Modification Commands</h2>
+<div>
+<div>
+    <h5>Redis Sorted Set Utility Commands</h5>
+    <ul>
+      <li>
+        <h5>ZREM (Remove Member)</h5>
+        <ul>
+          <li><b>Syntax</b>: <code>ZREM key member</code></li>
+          <li><b>Description</b>: Removes a specific member from the sorted set.</li>
+          <li><b>Example</b>: 
+            <code>ZREM players Alice</code> → Removes "Alice" from the "players" set.
+          </li>
+        </ul>
+      </li>
+  
+      <li>
+        <h5>ZRANK (Get Member Index)</h5>
+        <ul>
+          <li><b>Syntax</b>: <code>ZRANK key member</code></li>
+          <li><b>Description</b>: Returns the ascending rank (0-based index) of a member. Lower score = lower rank.</li>
+          <li><b>Example</b>: 
+            <code>ZRANK players Bob</code> → Returns rank of "Bob" based on ascending scores.
+          </li>
+        </ul>
+      </li>
+  
+      <li>
+        <h5>ZREVRANK (Get Reverse Index)</h5>
+        <ul>
+          <li><b>Syntax</b>: <code>ZREVRANK key member</code></li>
+          <li><b>Description</b>: Returns the descending rank (0-based index). Higher score = lower rank.</li>
+          <li><b>Example</b>: 
+            <code>ZREVRANK players Bob</code> → Returns rank of "Bob" in reverse order (highest score first).
+          </li>
+        </ul>
+      </li>
+  
+      <li>
+        <h5>ZSCORE (Get Member Score)</h5>
+        <ul>
+          <li><b>Syntax</b>: <code>ZSCORE key member</code></li>
+          <li><b>Description</b>: Fetches the score associated with a member.</li>
+          <li><b>Example</b>: 
+            <code>ZSCORE players Bob</code> → Returns the score of "Bob".
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  
+  <div>
+    <h5>Terminal Workflow Example</h5>
+    <ul>
+      <li><code>ZADD players 150 Alice 90 Bob 80 Charlie</code> → Creates a sorted set "players" with members and scores.</li>
+      <li><code>ZREM players Alice</code> → Removes "Alice" from the set.</li>
+      <li><code>ZRANK players Bob</code> → Returns <b>1</b> (remaining members: Charlie=80, Bob=90).</li>
+      <li><code>ZREVRANK players Bob</code> → Returns <b>0</b> (reverse order: Bob=90, Charlie=80).</li>
+      <li><code>ZSCORE players Bob</code> → Returns <b>90</b>.</li>
+    </ul>
+  </div>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+
+<h2 style="text-align: center;">Storing Hashes in Redis</h2>
+<div>
+    <div>
+        <h5>Redis Hash Commands: Key Concepts & Examples</h5>
+        <ul>
+          <li>
+            <b>Hash Data Structure</b>
+            <ul>
+              <li>Stores nested key-value pairs: <code>{key → {field: value}}</code></li>
+              <li>Ideal for grouping related data (e.g., user profiles, department records)</li>
+            </ul>
+          </li>
+      
+          <li>
+            <b>HMSET / HSET Command</b>
+            <ul>
+              <li><code>HSET {key} {field} {value}</code> (Modern replacement for deprecated HMSET)</li>
+              <li>Example: 
+                <pre><code>HSET user:1001 name "Alice" email "alice@example.com"</code></pre>
+              </li>
+            </ul>
+          </li>
+      
+          <li>
+            <b>HGETALL Command</b>
+            <ul>
+              <li><code>HGETALL {key}</code> → Returns all field-value pairs</li>
+              <li>Example: 
+                <pre><code>HGETALL user:1001</code></pre>
+                Output: <code>name → "Alice", email → "alice@example.com"</code>
+              </li>
+            </ul>
+          </li>
+      
+          <li>
+            <b>HGET Command</b>
+            <ul>
+              <li><code>HGET {key} {field}</code> → Returns specific field value</li>
+              <li>Example: 
+                <pre><code>HGET user:1001 email</code></pre>
+                Output: <code>"alice@example.com"</code>
+              </li>
+            </ul>
+          </li>
+      
+          <li>
+            <b>HEXISTS Command</b>
+            <ul>
+              <li><code>HEXISTS {key} {field}</code> → Returns 1 (exists) or 0 (not found)</li>
+              <li>Example: 
+                <pre><code>HEXISTS user:1001 age</code></pre>
+                Output: <code>0</code>
+              </li>
+            </ul>
+          </li>
+      
+          <li>
+            <b>HDEL Command</b>
+            <ul>
+              <li><code>HDEL {key} {field}</code> → Deletes specified field</li>
+              <li>Example: 
+                <pre><code>HDEL user:1001 email</code></pre>
+                Output: Removes email field from user:1001
+              </li>
+            </ul>
+          </li>
+      
+          <li>
+            <b>HSETNX Command</b>
+            <ul>
+              <li><code>HSETNX {key} {field} {value}</code> → Sets value only if field doesn't exist</li>
+              <li>Example: 
+                <pre><code>HSETNX user:1001 age 30</code></pre>
+                Output: Adds age field since it doesn't exist
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      
+      <div>
+        <h5>Important Notes</h5>
+        <ul>
+          <li>All commands are case-sensitive</li>
+          <li>Use <code>HSET</code> instead of deprecated <code>HMSET</code> in Redis ≥4.0.0</li>
+          <li>Nested hashes are not supported natively (use JSON serialization for complex objects)</li>
+        </ul>
+      </div>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Redis Publisher/Subscriber (Pub/Sub) Model</h2>
+<div>
+    <ul>
+      <li><b>Purpose</b>: Enables asynchronous messaging between applications using a message queue pattern.</li>
+      <li><b>Core Components</b>:
+        <ul>
+          <li><b>Publisher</b>: Sends messages to channels.</li>
+          <li><b>Subscriber</b>: Receives messages from subscribed channels.</li>
+          <li><b>Channel</b>: A named queue for message transmission.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Message Queue Basics</h5>
+    <ul>
+      <li><b>Definition</b>: Temporary storage for messages where publishers send data and subscribers process it later.</li>
+      <li><b>Use Case</b>:
+        <ul>
+          <li>Decouple time-consuming tasks (e.g., sending confirmation emails after seat booking).</li>
+          <li>Process jobs asynchronously to avoid blocking critical operations.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Redis as a Message Queue</h5>
+    <ul>
+      <li><b>Channel Subscription</b>:
+        <ul>
+          <li>A publisher sends messages to <b>one channel</b>.</li>
+          <li>A subscriber can listen to <b>one or multiple channels</b>.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Commands & Workflow</h5>
+    <ul>
+      <li><b>Subscribe to a Channel</b>:
+        <ul>
+          <li>Syntax: <code>SUBSCRIBE &lt;channel&gt;</code></li>
+          <li>Example: <code>SUBSCRIBE order_updates</code></li>
+        </ul>
+      </li>
+      <li><b>Publish to a Channel</b>:
+        <ul>
+          <li>Syntax: <code>PUBLISH &lt;channel&gt; &lt;message&gt;</code></li>
+          <li>Example: <code>PUBLISH order_updates "Order #1234 confirmed"</code></li>
+        </ul>
+      </li>
+      <li><b>Unsubscribe from a Channel</b>:
+        <ul>
+          <li>Syntax: <code>UNSUBSCRIBE &lt;channel&gt;</code></li>
+          <li>Example: <code>UNSUBSCRIBE order_updates</code></li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Advanced Features</h5>
+    <ul>
+      <li><b>Multiple Subscribers</b>:
+        <ul>
+          <li>All subscribers to a channel receive the same message simultaneously.</li>
+          <li>Example: 10 users subscribed to <code>notifications</code> get alerts when a message is published.</li>
+        </ul>
+      </li>
+      <li><b>Pattern-Based Subscriptions</b>:
+        <ul>
+          <li>Subscribe to channels using wildcards: <code>PSUBSCRIBE &lt;pattern&gt;</code></li>
+          <li>Example: <code>PSUBSCRIBE logs_*</code> matches <code>logs_errors</code>, <code>logs_info</code>, etc.</li>
+          <li>Unsubscribe: <code>PUNSUBSCRIBE &lt;pattern&gt;</code></li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Key Scenarios & Edge Cases</h5>
+    <ul>
+      <li><b>Message Persistence</b>: Redis Pub/Sub does <b>not store messages</b> if no subscribers are active.</li>
+      <li><b>Scalability</b>: Suitable for real-time systems but lacks built-in retries or acknowledgment mechanisms.</li>
+      <li><b>Use Case Example</b>:
+        <ul>
+          <li>Immediate action: Process payment during ticket booking.</li>
+          <li>Queue task: Send email confirmation via Redis Pub/Sub.</li>
+        </ul>
+      </li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+
+<h2 style="text-align: center;">Redis Security</h2>
+<div>
+    
+    <ul>
+      <li>Purpose: Protect Redis instances from unauthorized access and harmful commands (e.g., <code>FLUSHALL</code>).</li>
+      <li>Security Limitation: Basic authentication with a single password; no user-level permissions.</li>
+    </ul>
+  
+    <h5>Authentication Setup</h5>
+    <ul>
+      <li><b>Default State</b>: Authentication disabled.</li>
+      <li><b>Enable Password</b>:
+        <ul>
+          <li>Check status: <code>config get requirepass</code></li>
+          <li>Set password: <code>config set requirepass your_password</code></li>
+        </ul>
+      </li>
+      <li><b>Authentication Process</b>:
+        <ul>
+          <li>Client must use <code>AUTH your_password</code> after connecting.</li>
+          <li>Unauthenticated users get <code>NOAUTH</code> error on data access attempts.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Command Restriction</h5>
+    <ul>
+      <li><b>Why Restrict</b>: Prevent misuse of destructive commands (e.g., <code>FLUSHALL</code>).</li>
+      <li><b>Method</b>: Rename commands in <code>redis.conf</code>:
+        <ul>
+          <li>Example: <code>rename-command FLUSHALL PURGEALL</code></li>
+          <li>Restart Redis with updated config: <code>redis-server.exe redis.conf</code></li>
+        </ul>
+      </li>
+      <li><b>Effect</b>:
+        <ul>
+          <li>Original command (e.g., <code>FLUSHALL</code>) becomes unavailable.</li>
+          <li>Only users with the new command name (e.g., <code>PURGEALL</code>) can execute it.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Example Scenario</h5>
+    <ul>
+      <li><b>Goal</b>: Allow data reads but block deletions.</li>
+      <li><b>Steps</b>:
+        <ul>
+          <li>Rename <code>FLUSHALL</code> to a secret name in config file.</li>
+          <li>Restart Redis to apply changes.</li>
+          <li>Unauthorized users see <code>unknown command</code> error for restricted commands.</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h5>Key Security Limitations</h5>
+    <ul>
+      <li>No granular user roles/permissions.</li>
+      <li>Password is plain-text in config file.</li>
+      <li>All authenticated users have full access.</li>
+    </ul>
+</div>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+
+<h2 style="text-align: center;">Python code for Redis</h2>
+<pre>
+import redis
+
+def main():
+    # Connect to the Redis server
+    client = redis.StrictRedis(host='localhost', port=6379, decode_responses=True, password='your_redis_password')
+
+    # String operations
+    print("\n--- String Operations ---")
+    client.set("string_key", "Hello, Redis!")
+    print("Inserted string_key:", client.get("string_key"))
+
+    client.set("string_key", "Updated Redis!")
+    print("Updated string_key:", client.get("string_key"))
+
+    client.delete("string_key")
+    print("Deleted string_key:", client.get("string_key"))  # Should print None
+
+    # Hash operations
+    print("\n--- Hash Operations ---")
+    client.hset("hash_key", mapping={"field1": "value1", "field2": "value2"})
+    print("Inserted hash_key:", client.hgetall("hash_key"))
+
+    client.hset("hash_key", "field1", "new_value1")
+    print("Updated hash_key field1:", client.hget("hash_key", "field1"))
+
+    client.hdel("hash_key", "field2")
+    print("Deleted field2 from hash_key:", client.hgetall("hash_key"))
+
+    # List operations
+    print("\n--- List Operations ---")
+    client.rpush("list_key", "item1", "item2", "item3")
+    print("Inserted list_key:", client.lrange("list_key", 0, -1))
+
+    client.lset("list_key", 1, "new_item2")
+    print("Updated list_key index 1:", client.lrange("list_key", 0, -1))
+
+    client.lpop("list_key")
+    print("Deleted first element from list_key:", client.lrange("list_key", 0, -1))
+
+    # Set operations
+    print("\n--- Set Operations ---")
+    client.sadd("set_key", "item1", "item2", "item3")
+    print("Inserted set_key:", client.smembers("set_key"))
+
+    client.srem("set_key", "item2")
+    print("Deleted item2 from set_key:", client.smembers("set_key"))
+
+    # Sorted Set operations
+    print("\n--- Sorted Set Operations ---")
+    client.zadd("sorted_set_key", {"item1": 1, "item2": 2, "item3": 3})
+    print("Inserted sorted_set_key:", client.zrange("sorted_set_key", 0, -1, withscores=True))
+
+    client.zincrby("sorted_set_key", 2, "item1")
+    print("Updated score of item1 in sorted_set_key:", client.zrange("sorted_set_key", 0, -1, withscores=True))
+
+    client.zrem("sorted_set_key", "item2")
+    print("Deleted item2 from sorted_set_key:", client.zrange("sorted_set_key", 0, -1, withscores=True))
+
+    # Redis Pub/Sub operations
+    print("\n--- Pub/Sub Operations ---")
+    def publisher():
+        pub_client = redis.StrictRedis(host='localhost', port=6379, decode_responses=True, password='your_redis_password')
+        pub_client.publish("my_channel", "Hello, Subscribers!")
+
+    def subscriber():
+        sub_client = redis.StrictRedis(host='localhost', port=6379, decode_responses=True, password='your_redis_password')
+        pubsub = sub_client.pubsub()
+        pubsub.subscribe("my_channel")
+        print("Subscribed to my_channel")
+        for message in pubsub.listen():
+            if message['type'] == 'message':
+                print("Received message:", message['data'])
+                break
+
+    # Uncomment the following lines to test Pub/Sub
+    # import threading
+    # threading.Thread(target=subscriber).start()
+    # publisher()
+
+    # Redis Security Best Practices
+    print("\n--- Redis Security Best Practices ---")
+    print("1. Use strong passwords for Redis authentication.")
+    print("2. Enable Redis SSL for secure communication.")
+    print("3. Use firewalls to restrict access to Redis ports.")
+    print("4. Bind Redis to localhost or specific IP addresses.")
+    print("5. Disable dangerous commands using the Redis configuration file (e.g., rename-command).")
+
+if __name__ == "__main__":
+    main()
+
+</pre>
+<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">

@@ -810,15 +810,7 @@ Animal makes a sound
   </p>
 </div>
 <hr>
-<div>
-  <h5>What is the difference between <code>final</code>, <code>finally</code>, and <code>finalize()</code> in Java?</h5>
-  <ul>
-      <li><strong><code>final</code>:</strong> A keyword used to define constants, prevent method overriding, and prevent class inheritance.</li>
-      <li><strong><code>finally</code>:</strong> A block used in exception handling, guaranteed to execute after the try-catch block, regardless of whether an exception is thrown.</li>
-      <li><strong><code>finalize()</code>:</strong> A method in the <code>Object</code> class that is called by the garbage collector before an object is destroyed, but it is deprecated and not recommended for use in modern Java.</li>
-  </ul>
-</div>
-<hr>
+
 <div>
   <h5>Can we call a constructor from a static method in Java?</h5>
   <p>
@@ -827,28 +819,6 @@ Animal makes a sound
   </p>
 </div>
 <hr>
-<div>
-  <h5>What is the difference between <code>String</code>, <code>StringBuilder</code>, and <code>StringBuffer</code>?</h5>
-  <ul>
-      <li><strong><code>String</code>:</strong> Immutable. Once created, the value of a String object cannot be changed. Every modification results in a new object.</li>
-      <li><strong><code>StringBuilder</code>:</strong> Mutable, but not thread-safe. It is more efficient for single-threaded use cases where string manipulation is required.</li>
-      <li><strong><code>StringBuffer</code>:</strong> Mutable and thread-safe. It is slower than StringBuilder due to synchronization but useful when thread safety is needed.</li>
-  </ul>
-</div>
-<hr>
-<div>
-  <h5>What is the difference between shallow copy and deep copy?</h5>
-  <p>
-      A <strong>shallow copy</strong> copies the references of objects, meaning the new object references the same memory as the original. Any changes made to nested objects will affect both the original and the copy.
-      A <strong>deep copy</strong> creates a new instance of the object and recursively copies the values of all objects within it, ensuring that changes to the copy do not affect the original object.
-  </p>
-</div>
-<hr>
-</div>
-  <h5>11. What is the use of the <code>transient</code> keyword in Java?</h5>
-  <p>
-      The <code>transient</code> keyword is used in Java to indicate that a field should not be serialized. When an object is serialized, all non-transient fields are serialized by default, but transient fields are ignored. This is useful for excluding sensitive data or fields that do not need to be persisted.
-  </p>
 
 </div>
 
