@@ -3,25 +3,16 @@ Here is a comprehensive list of **100+ Core Java interview questions** ranging f
 ---
 
 ### **Core Java Fundamentals & OOP**
-1. Explain the four principles of OOP with examples.
-2. Difference between abstract classes and interfaces (Java 8+). Provide use cases.
-3. Write code demonstrating polymorphism (method overriding vs. overloading).
-4. Why is Java "pass-by-value"? Explain with object examples.
 5. When would you use composition over inheritance? Provide a scenario.
-6. Can you override a static method? What happens if you try?
-7. What is the `final` keyword? How does it apply to variables, methods, and classes?
-8. Explain the `static` keyword. How is it used in variables, methods, and blocks?
 9. What is a singleton pattern? Write a thread-safe implementation.
 10. Scenario: Design a class hierarchy for a zoo management system. Justify your design.
 
 ---
 
 ### **Data Types, Variables, and Memory**
-13. Explain autoboxing/unboxing. What are the performance implications?
 14. What is the Integer cache? Why does `Integer.valueOf(127) == Integer.valueOf(127)` return `true`?
 15. Coding: Reverse a string without using built-in methods.
 16. Scenario: You have a method that modifies an object’s state. How does this affect the caller?
-19. Explain stack vs. heap memory. How are objects stored?
 20. Coding: Swap two integers without a temporary variable.
 
 ---
@@ -41,27 +32,15 @@ Here is a comprehensive list of **100+ Core Java interview questions** ranging f
 ---
 
 ### **Exception Handling**
-31. Differences between checked and unchecked exceptions. When to use each?
-32. What is try-with-resources? How does it improve exception handling?
-33. Scenario: Handle multiple exceptions in a single catch block (Java 7+).
-34. Coding: Write a method that throws a custom exception.
 35. What happens if an exception is thrown in a `finally` block?
-36. Why is catching `Throwable` or `Exception` discouraged?
-37. Explain exception chaining. Provide a code example.
 
 ---
 
 ### **Multithreading & Concurrency**
-38. Explain the thread lifecycle and states.
-39. Coding: Write a deadlock example and fix it.
-40. Difference between `Runnable` and `Callable`. When to use each?
 41. How does the `volatile` keyword work? Compare it with `synchronized`.
-42. Coding: Implement the producer-consumer problem using `BlockingQueue`.
 43. What is the `ThreadLocal` class? Provide a use case.
 44. How does `ReentrantLock` differ from intrinsic locks?
 45. Scenario: Debug a race condition in a multithreaded application.
-46. Explain the `ExecutorService` framework. How to choose thread pool size?
-47. Coding: Use `CompletableFuture` to chain asynchronous tasks.
 48. What is the fork/join framework? How does it optimize parallel processing?
 
 ---
@@ -70,8 +49,6 @@ Here is a comprehensive list of **100+ Core Java interview questions** ranging f
 49. Explain the generational heap model (Young/Old Gen).
 50. What triggers a `OutOfMemoryError`? How to diagnose it?
 51. How does the Garbage Collector identify unreachable objects?
-52. Scenario: Your application has a memory leak. How to detect it using tools?
-53. What are strong, weak, soft, and phantom references? Provide use cases.
 54. Coding: Create a memory leak by misusing static collections.
 55. How to tune JVM parameters for a high-throughput application?
 
@@ -117,7 +94,6 @@ Here is a comprehensive list of **100+ Core Java interview questions** ranging f
 ---
 
 ### **JVM Internals & Performance**
-79. Explain JVM memory areas (heap, stack, method area).
 82. Scenario: Tune garbage collection for low-latency applications.
 83. What are common JVM flags for heap sizing (`-Xmx`, `-Xms`)?
 
@@ -176,17 +152,13 @@ Here’s a structured list of **100 Core Java Interview Problems**, progressing 
 
 ### **1. Core Java Fundamentals (Beginner)**
     
-7. How does Java achieve platform independence?  
 8. What is the difference between `ArrayList` and `LinkedList`?  
 9. How does HashMap work internally?  
 
 ---
 
 ### **2. Object-Oriented Programming & Design (Intermediate)**
-16. What are the four pillars of OOP in Java?  
 17. How does Java implement multiple inheritance?  
-18. Explain Method Overloading vs Method Overriding.  
-19. What is the difference between `interface` and `abstract class`?  
 20. How can we achieve immutability in Java?  
 22. What is a Singleton pattern, and how do you implement it?  
 23. Explain the Factory Design Pattern with an example.  
@@ -315,15 +287,12 @@ Here is a **comprehensive list of 200+ Java and Object-Oriented Programming (OOP
 ## **1. Core Java Fundamentals**
 ### **Easy**
 1. What are the key features of Java?
-4. Explain primitive vs reference data types.
 6. What is type promotion in Java?
 8. How do you declare constants in Java?
-9. What is the default value of an uninitialized variable?
 10. How does garbage collection work?
 
 ### **Medium**
 15. How does Java handle memory allocation?
-17. Explain method overloading with examples.
 19. Explain object cloning and `Cloneable` interface.
 20. How does `toString()` method work?
 
@@ -338,14 +307,9 @@ Here is a **comprehensive list of 200+ Java and Object-Oriented Programming (OOP
 
 ## **2. Object-Oriented Programming (OOP)**
 ### **Easy**
-26. What are the four pillars of OOP?
-27. Explain encapsulation with an example.
-28. What is the difference between abstraction and encapsulation?
 29. How do constructors work in Java?
-30. What is method overriding?
 
 ### **Medium**
-31. Explain inheritance and its types.
 32. What is multiple inheritance? Why is it not supported?
 33. What is the `super` keyword used for?
 34. How does constructor chaining work?

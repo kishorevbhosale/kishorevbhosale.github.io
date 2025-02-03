@@ -1,4 +1,103 @@
 <div>
+    <ol>
+      <b>Collection Interface:</b>
+      <li><a href="#limitation of object Arrays">What are limitation of object Arrays?</a></li>
+      <li><a href="#arrays and collections">What are differences between arrays and collections?</a></li>
+      <li><a href="#Arrays and ArrayList">What are differences between Arrays and ArrayList?</a></li>
+      <li><a href="#Collection API">What is Collection API?</a></li>
+      <li><a href="#Collection framework">What is Collection framework?</a></li>
+      <li><a href="#Collections and Collection">What is difference between Collections and Collection?</a></li>
+      <li><a href="#interfaces Collection Framework">What are the key interfaces in the Java Collection Framework?</a></li>
+      <li><a href="#CI Cloneable Serializable">Why is the Collection interface not extended from the Cloneable and Serializable interfaces?</a></li>
+      <li><a href="#Collection, List, Set, and Queue">What are the differences between Collection, List, Set, and Queue? </a></li>
+    </ol>
+    <hr class="thin-line">
+
+    <ol>
+      <b>List:</b>
+      <li><a href="#LI">Explain about List Interface</a></li>
+      <li><a href="#ArrayList">Explain about ArrayList Class</a></li>
+      <li><a href="#ALSize">What is the default size of an ArrayList?</a></li>
+      <li><a href="#ensureCapacity">How does ensureCapacity() work in ArrayList?</a></li>
+      <li><a href="#ALImpl">What is the internal implementation of ArrayList in Java?</a></li>
+      <li><a href="#ALInsert">What happens when an element is inserted into the middle of an ArrayList?</a></li>
+      <li><a href="#ALScenario">A bank transaction history feature requires fast access by index but also frequent updates. Which list implementation will you use?</a></li>
+      <li><a href="#LLClass">Explain about LinkedList Class</a></li>
+      <li><a href="#SynchAL">How to Get a Synchronized Version of ArrayList</a></li>
+      <li><a href="#LLAL">Difference Between ArrayList and LinkedList</a></li>
+      <li><a href="#EnumItr">Difference Between Enumeration and Iterator</a></li>
+      <li><a href="#FFastFSafe">What is the difference between fail-fast and fail-safe iterators?</a></li>
+      <li><a href="#ItrLItr">Difference Between Iterator and ListIterator</a></li>
+    </ol>
+    <hr class="thin-line">
+
+    <ol>
+      <b>Set:</b>
+      <li><a href="#SI">Explain Set Interface</a></li>
+      <li><a href="#SSI">Explain SortedSet Interface</a></li>
+      <li><a href="#NI">Explain NavigableSet Interface</a></li>
+      <li><a href="#HS">Explain HashSet Class</a></li>
+      <li><a href="#DHSLHSTS">What is the difference between <b>HashSet</b>, <b>LinkedHashSet</b>, and <b>TreeSet</b>?</a></li>
+      <li><a href="#HSNull">Why does HashSet allow only one null value?</a></li>
+      <li><a href="#HSUniq">How does HashSet maintain uniqueness?</a></li>
+      <li><a href="#HSDup">What Happens When You Try to Insert Duplicate Values in a Set?</a></li>
+      <li><a href="#LHS">LinkedHashSet Class</a></li>
+      <li><a href="#TS">Explain TreeSet Class</a></li>
+      <li><a href="#TSO">How does TreeSet maintain sorting order?</a></li>
+      <li><a href="#HSVSTS">Why is HashSet faster than TreeSet?</a></li>
+      <li><a href="#HSScenario">In an authentication system, you need to store unique user session tokens efficiently. Which Set implementation is best?</a></li>
+    </ol>
+    <hr class="thin-line">
+
+    <ol>
+      <b>Map:</b>
+      <li><a href="#MI">Map Interface:</a></li>
+      <li><a href="#SMI">Explain SortedMap Interface</a></li>
+      <li><a href="#NMI">Eplain NavigableMap Interface</a></li>
+      <li><a href="#RAI">Explain RandomAccess Interface</a></li>
+      <li><a href="#DHMLHM">What are the differences between <b>HashMap</b>, <b>LinkedHashMap</b>, and <b>TreeMap</b>?</a></li>
+      <li><a href="#HMImpl">What is the <b>internal structure of HashMap</b> in Java 17?</a></li>
+      <li><a href="#HMColl">How does <b>HashMap</b> handle collisions?</a></li>
+      <li><a href="#HMLF">What is the <b>load factor in HashMap</b>, and how does it impact performance?</a></li>
+      <li><a href="#CHM">Why should you use <b>ConcurrentHashMap</b> instead of <b>HashMap</b> in a multi-threaded environment?</a></li>
+      <li><a href="#HMCHM">What is the difference between <b>HashMap</b> and <b>ConcurrentHashMap</b>?</a></li>
+      <li><a href="#WHM">How does <b>WeakHashMap</b> work, and when should it be used?</a></li>
+      <li><a href="#HMNull">Why does <b>HashMap</b> allow one null key but multiple null values?</a></li>
+      <li><a href="#HMSize">Explain the <b>resize()</b> operation in HashMap</a></li>
+      <li><a href="#HMScenario">You need to implement a <b>caching mechanism</b> for a high-traffic website. Which Map implementation will you use?</a></li>
+      <li><a href="#HMLRU">You are designing an <b>LRU Cache</b> for an e-commerce platform. Which Map implementation is suitable?</a></li>
+      <li><a href="#HMScenario1">In a <b>trading system</b>, you need to store <b>orders with unique IDs sorted by timestamp</b>. Which Map will you use?</a></li>
+      <li><a href="#CustomHM">How would you <b>implement your own custom HashMap</b>?</a></li>
+    </ol>
+    <hr class="thin-line">
+
+    <ol>
+      <b>Queue</b>
+      <li><a href="#QI">Queue Interface</a></li>
+      <li><a href="#QS">What is the difference between <b>Queue and Stack</b>?</a></li>
+      <li><a href="#PQ">How does <b>PriorityQueue</b> work internally?</a></li>
+      <li><a href="#ADQLDQ">How does <b>ArrayDeque</b> differ from <b>LinkedList-based Deque</b>?</a></li>
+      <li><a href="#TSQ">How would you implement a <b>Task Scheduler</b> using a Queue?</a></li>
+    </ol>
+    <hr class="thin-line">
+
+    <ol>
+      <b>Thread-Safe Collection</b>
+      <li><a href="#SyncConcu">What are <b>synchronized collections vs concurrent collections?</b> </a></li>
+      <li><a href="#COWA">How does <b>CopyOnWriteArrayList</b> differ from a synchronized list?</a></li>
+      <li><a href="#CHMHT">How does <b>ConcurrentHashMap</b> handle concurrency differently than <b>HashTable</b>?</a></li>
+      <li><a href="#CSLM">Why is <b>ConcurrentSkipListMap</b> useful in multi-threaded applications?</a></li>
+      <li><a href="#TSScenraio">In a <b>multi-threaded data processing system</b>, how would you handle concurrent updates to a shared collection?</a></li>
+    </ol>
+    <hr class="thin-line">
+
+
+
+    <li>Differences Between Comparable and Comparator</li>
+    
+</div>
+<hr>
+<div id="limitation of object Arrays">
     <h5>What are limitation of object Arrays?</h5>
     <p>The limitations of object arrays:</p>
         <ul>
@@ -42,7 +141,8 @@
             which are dynamic, type-safe (using generics), and provide built-in methods for efficient operations.</p>  
 </div>
 <hr>
-<div>
+
+<div id="arrays and collections">
     <h5>What are differences between arrays and collections?</h5>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
@@ -97,7 +197,8 @@
     </table>
 </div>
 <hr>
-<div>
+
+<div id="Arrays and ArrayList">
     <h5>What are differences between arrays and ArrayList?</h5>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
@@ -155,9 +256,10 @@
         </tr>
       </tbody>
     </table>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="Collection API">
     <h5>What is Collection API?</h5>
     <p>The Collection API in Java is a framework provided in the <code>java.util</code> package to handle groups of objects, known as collections. 
         It provides a set of classes and interfaces to store, manipulate, and retrieve data efficiently. 
@@ -181,37 +283,62 @@
       <li><code>Queue</code>: Collections that follow the FIFO (First In, First Out) principle (e.g., <code>PriorityQueue</code>).</li>
       <li><code>Map</code>: Key-value pair collections (e.g., <code>HashMap</code>, <code>TreeMap</code>).</li>
     </ul>
-  </div>
-  <hr>
-  <div>
-    <h5>What is Collection framework?</h5>
-    <p>The Collection Framework in Java is a unified architecture for representing and manipulating collections of objects. 
-        It is part of the <code>java.util</code> package and provides interfaces, classes, and algorithms to work with collections efficiently. 
-        The framework simplifies the process of managing dynamic data structures like lists, sets, queues, and maps.</p>
-  
-    <p><strong>Components of the Collection Framework:</strong></p>
-    <ul>
-      <li><strong>Interfaces:</strong> Define the core structure and behavior of collections. Examples include:
-        <ul>
-          <li><code>Collection</code>: The root interface for most collections.</li>
-          <li><code>List</code>: Represents an ordered collection (e.g., <code>ArrayList</code>, <code>LinkedList</code>).</li>
-          <li><code>Set</code>: Represents a collection that does not allow duplicate elements (e.g., <code>HashSet</code>, <code>TreeSet</code>).</li>
-          <li><code>Queue</code>: Represents a collection designed for holding elements before processing (e.g., <code>PriorityQueue</code>).</li>
-          <li><code>Map</code>: Represents a collection of key-value pairs (e.g., <code>HashMap</code>, <code>TreeMap</code>).</li>
-        </ul>
-      </li>
-      <li><strong>Classes:</strong> Provide concrete implementations of the interfaces. Examples include:
-        <ul>
-          <li><code>ArrayList</code>, <code>LinkedList</code> (implement <code>List</code>).</li>
-          <li><code>HashSet</code>, <code>TreeSet</code> (implement <code>Set</code>).</li>
-          <li><code>HashMap</code>, <code>TreeMap</code> (implement <code>Map</code>).</li>
-        </ul>
-      </li>
-      <li><strong>Algorithms:</strong> A set of utility methods provided by the <code>Collections</code> class to perform tasks like sorting, searching, and shuffling.</li>
-    </ul>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="Collection framework">
+    <h5>What are the key interfaces in the Java Collection Framework? </h5>
+        <b>1. Collection Interfac</b><br>        
+            <p>The root interface of the collection hierarchy, providing basic operations like adding, removing, and checking the size of a collection.</p>
+        
+        <b>2. List Interface</b><br>
+            <p>An ordered collection (sequence) that allows duplicate elements. Provides indexed access to elements.</p>
+            <ul>
+                <li>Implementations: <strong>ArrayList, LinkedList, Vector, Stack</strong></li>
+            </ul>
+        
+        <b>3. Set Interface</b><br>
+            <p>A collection that does not allow duplicate elements. It models the mathematical set abstraction.</p>
+            <ul>
+                <li>Implementations: <strong>HashSet, LinkedHashSet, TreeSet</strong></li>
+            </ul>
+        
+        <b>4. Queue Interface</b><br>
+            <p>Designed for holding elements before processing them. Follows FIFO (First In, First Out) principle.</p>
+            <ul>
+                <li>Implementations: <strong>PriorityQueue, LinkedList (as Queue), ArrayDeque</strong></li>
+            </ul>
+        
+        <b>5. Deque Interface</b><br>
+            <p>Extends Queue and allows insertion and removal from both ends.</p>
+            <ul>
+                <li>Implementations: <strong>ArrayDeque, LinkedList (as Deque)</strong></li>
+            </ul>
+        
+        <b>6. Map Interface (Not Extending Collection)</b><br>
+            <p>A key-value pair-based collection that does not allow duplicate keys.</p>
+            <ul>
+                <li>Implementations: <strong>HashMap, LinkedHashMap, TreeMap, Hashtable</strong></li>
+            </ul>
+        
+        <b>7. SortedSet Interface</b><br>
+            <p>Extends Set and maintains elements in a sorted order.</p>
+            <ul>
+                <li>Implementation: <strong>TreeSet</strong></li>
+            </ul>
+        
+        <b>8. SortedMap Interface</b><br>
+            <p>Extends Map and maintains keys in a sorted order.</p>
+            <ul>
+                <li>Implementation: <strong>TreeMap</strong></li>
+            </ul>
+        
+        <b>Conclusion</b><br>
+            <p>The Java Collection Framework provides a variety of interfaces to handle different data structures efficiently. Understanding these interfaces and their implementations helps in choosing the right collection type for specific use cases.</p>
+</div>
+<hr>
+
+<div id="Collections and Collection">
     <h5>What is difference between Collections and Collection?</h5>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
@@ -251,10 +378,11 @@
         </tr>
       </tbody>
     </table>
-  </div>
+</div>
 <hr>
-<div>
-    <h5>Explain about Collection interface?</h5>
+
+<div id="interfaces Collection Framework">
+    <h5>What are the key interfaces in the Java Collection Framework?</h5>
     <p>The <code>Collection</code> interface is a root-level interface in the <code>java.util</code> package and is part of the Java Collection Framework. It defines a group of methods that are common to all collection types such as <code>List</code>, <code>Set</code>, and <code>Queue</code>. It provides a unified way to work with different types of collections in Java.</p>
     
     <p><strong>Hierarchy:</strong></p>
@@ -300,9 +428,64 @@
       }
   }
     </code></pre>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="CI Cloneable Serializable">
+  <h5>Why is the Collection interface not extended from the Cloneable and Serializable interfaces?</h5>
+      <b>1. Flexibility in Implementation</b><br>
+          <p>The Collection interface is a high-level abstraction, and its implementing classes may have different ways of handling cloning and serialization. Enforcing all collection implementations to be Cloneable and Serializable would restrict their flexibility.</p><br>
+      <b>2. Not All Collections Need Cloning</b><br>
+          <p>Some collections, such as live views (e.g., subList in List), do not support cloning because they are directly linked to the original collection. Extending Cloneable in the Collection interface would force all implementations to support cloning, which may not always be feasible.</p><br>
+      <b>3. Not All Collections Should Be Serializable</b><br>
+          <p>Serialization is not required for all collections. For example, some collections may store transient data (such as caching structures) that should not be persisted. If Collection extended Serializable, every implementation would be forced to support serialization, which is unnecessary for many use cases.</p><br>
+      <b>4. Separation of Concerns</b><br>
+          <p>By keeping Cloneable and Serializable separate, Java allows developers to decide whether their specific collection implementation should support these features. Implementing classes like ArrayList, HashSet, and HashMap explicitly implement Serializable when needed.</p><br>
+      <b>5. Deep vs. Shallow Cloning Complexity</b><br>
+          <p>Cloning a collection is not straightforward since it involves either a shallow copy (copying references) or a deep copy (copying objects inside the collection). Since the Collection interface does not define how elements should be cloned, it is left to individual implementations.</p><br>
+      <b>Conclusion</b><br>
+          <p>The decision to not extend Cloneable and Serializable in the Collection interface was made to ensure flexibility, maintain separation of concerns, and avoid unnecessary constraints on implementing classes. Instead, individual collection implementations can choose to support cloning and serialization based on their requirements.</p><br>
+</div>
+<hr>
+
+<div id="Collection, List, Set, and Queue">
+  <h5>What are the differences between Collection, List, Set, and Queue?</h5>
+  <ul>
+    <li><strong>Collection:</strong></li>
+    <ul>
+        <li>Root interface of the Java Collection Framework.</li>
+        <li>Defines common methods like <code>add()</code>, <code>remove()</code>, and <code>size()</code>.</li>
+        <li>Extended by <code>List</code>, <code>Set</code>, and <code>Queue</code>.</li>
+        <li>Does not include <code>Map</code>, as it operates on key-value pairs.</li>
+    </ul>
+
+    <li><strong>List:</strong></li>
+    <ul>
+        <li>Ordered collection (sequence) of elements.</li>
+        <li>Allows duplicate elements.</li>
+        <li>Provides positional access via an index.</li>
+        <li>Implementations: <code>ArrayList</code>, <code>LinkedList</code>, <code>Vector</code>, <code>Stack</code>.</li>
+    </ul>
+
+    <li><strong>Set:</strong></li>
+    <ul>
+        <li>Unordered collection that does not allow duplicate elements.</li>
+        <li>Elements must be unique and may be sorted (depending on implementation).</li>
+        <li>Implementations: <code>HashSet</code> (unordered), <code>LinkedHashSet</code> (insertion order), <code>TreeSet</code> (sorted).</li>
+    </ul>
+
+    <li><strong>Queue:</strong></li>
+    <ul>
+        <li>Follows FIFO (First-In-First-Out) ordering.</li>
+        <li>Used for holding elements before processing.</li>
+        <li>Variations like PriorityQueue allow elements to be processed in a specific order.</li>
+        <li>Implementations: <code>PriorityQueue</code>, <code>LinkedList</code> (as Queue), <code>ArrayDeque</code>.</li>
+    </ul>
+</ul>
+</div>
+<hr>
+
+<div id="LI">
     <h5>Explain about List Interface</h5>
         <p>The <code>List</code> interface is a subinterface of the <code>Collection</code> interface in the <code>java.util</code> package. It represents an ordered collection (also known as a sequence) that allows duplicate elements. Elements in a <code>List</code> can be accessed by their index, and insertion order is maintained.</p>
         
@@ -337,322 +520,65 @@
           <li><code>E set(int index, E element)</code>: Replaces the element at the specified position with the specified element.</li>
           <li><code>List<E> subList(int fromIndex, int toIndex)</code>: Returns a view of the portion of the list between the specified <code>fromIndex</code> (inclusive) and <code>toIndex</code> (exclusive).</li>
         </ul>
-      </div>
-<hr>
-<div>
-    <h5>Explain Set Interface</h5>
-    <p>The <code>Set</code> interface is a subinterface of the <code>Collection</code> interface in the <code>java.util</code> package. It represents a collection that does not allow duplicate elements. A <code>Set</code> is primarily used when uniqueness is required, and it does not maintain any specific order of elements unless explicitly stated by its implementation.</p>
-  
-    <p><strong>Hierarchy:</strong></p>
-    <ul>
-      <li>The <code>Set</code> interface extends the <code>Collection</code> interface.</li>
-      <li>Some common implementations of the <code>Set</code> interface are:
-        <ul>
-          <li><code>HashSet</code>: Implements a hash table to store elements and does not guarantee the order of elements.</li>
-          <li><code>LinkedHashSet</code>: Extends <code>HashSet</code> and maintains the insertion order of elements.</li>
-          <li><code>TreeSet</code>: Implements a balanced tree structure and maintains elements in their natural order or a custom order defined by a comparator.</li>
-        </ul>
-      </li>
-    </ul>
-  
-    <p><strong>Key Features of the Set Interface:</strong></p>
-    <ul>
-      <li><strong>No Duplicates:</strong> Ensures that all elements in the collection are unique.</li>
-      <li><strong>Unordered:</strong> Does not guarantee any specific order of elements (except for implementations like <code>LinkedHashSet</code> or <code>TreeSet</code>).</li>
-    </ul>
-  
-    <p><strong>Key Methods of the Set Interface:</strong></p>
-    <ul>
-      <li><code>boolean add(E e)</code>: Adds the specified element to the set if it is not already present.</li>
-      <li><code>boolean contains(Object o)</code>: Checks if the set contains the specified element.</li>
-      <li><code>boolean remove(Object o)</code>: Removes the specified element from the set if it is present.</li>
-      <li><code>int size()</code>: Returns the number of elements in the set.</li>
-      <li><code>Iterator<E> iterator()</code>: Returns an iterator over the elements in the set.</li>
-      <li><code>boolean isEmpty()</code>: Checks if the set is empty.</li>
-      <li><code>void clear()</code>: Removes all elements from the set.</li>
-    </ul>
-  </div>
-<hr>
-<div>
-    <h5>SortedSet Interface:</h5>
-    <p>The <code>SortedSet</code> interface is a subinterface of the <code>Set</code> interface in the <code>java.util</code> package. It represents a set that maintains its elements in a sorted order. The sorting can be based on the natural order of elements (if the elements implement the <code>Comparable</code> interface) or a custom order defined by a <code>Comparator</code>.</p>
-  
-    <p><strong>Hierarchy:</strong></p>
-    <ul>
-      <li>The <code>SortedSet</code> interface extends the <code>Set</code> interface.</li>
-      <li>The <code>TreeSet</code> class is a common implementation of the <code>SortedSet</code> interface.</li>
-    </ul>
-  
-    <p><strong>Key Features of the SortedSet Interface:</strong></p>
-    <ul>
-      <li><strong>Sorted Order:</strong> Ensures that elements are sorted either in their natural order or based on a custom comparator.</li>
-      <li><strong>No Duplicates:</strong> Ensures that all elements in the set are unique.</li>
-    </ul>
-  
-    <p><strong>Key Methods of the SortedSet Interface:</strong></p>
-    <ul>
-      <li><code>E first()</code>: Returns the first (lowest) element in the set.</li>
-      <li><code>E last()</code>: Returns the last (highest) element in the set.</li>
-      <li><code>SortedSet<E> headSet(E toElement)</code>: Returns a view of the portion of the set whose elements are strictly less than the specified element.</li>
-      <li><code>SortedSet<E> tailSet(E fromElement)</code>: Returns a view of the portion of the set whose elements are greater than or equal to the specified element.</li>
-      <li><code>SortedSet<E> subSet(E fromElement, E toElement)</code>: Returns a view of the portion of the set whose elements range from <code>fromElement</code>, inclusive, to <code>toElement</code>, exclusive.</li>
-      <li><code>Comparator<? super E> comparator()</code>: Returns the comparator used to order the elements, or <code>null</code> if the set uses natural ordering.</li>
-    </ul>
-  
-    <p><strong>Common Implementation of the SortedSet Interface:</strong></p>
-    <ul>
-      <li><code>TreeSet</code>: A balanced tree implementation of the <code>SortedSet</code> interface. It maintains the elements in a sorted order.</li>
-    </ul>
-  </div>
-<hr>
-<div>
-    <h5>NavigableSet Interface:</h5>
-    <p>The <code>NavigableSet</code> interface, a subinterface of <code>SortedSet</code>, extends the functionality of sorted collections by adding navigation methods. 
-        It allows retrieval of elements based on proximity to a given value, such as the closest lower or higher element, and supports bidirectional traversal using <code>descendingSet()</code> and <code>descendingIterator()</code>.
-        Methods like <code>lower()</code>, <code>floor()</code>, <code>ceiling()</code>, and <code>higher()</code> offer precise control over element access. 
-        The <code>TreeSet</code> class is the most common implementation, maintaining elements in sorted order and supporting range views and polling operations like <code>pollFirst()</code> and <code>pollLast()</code>.</p>
-  </div>
-<hr>
-<div>
-    <h5>Queue Interface:</h5>
-    <p>The <code>Queue</code> interface is part of the <code>java.util</code> package and represents a collection designed for holding elements prior to processing. It is used to model data structures like queues where elements are processed in a First-In-First-Out (FIFO) order. The <code>Queue</code> interface extends the <code>Collection</code> interface and provides methods to add, remove, and examine elements in the queue.</p>
-  
-    <p><strong>Key Features of the Queue Interface:</strong></p>
-    <ul>
-      <li><strong>FIFO Order:</strong> Elements are processed in the order they are added (first-in, first-out).</li>
-      <li><strong>Operations:</strong> Common operations include <code>offer()</code> to add, <code>poll()</code> to remove, and <code>peek()</code> to view the front element.</li>
-      <li><strong>Blocking and Non-blocking Methods:</strong> Some implementations support blocking methods like <code>take()</code> and <code>put()</code> for thread-safe operations.</li>
-    </ul>
-  
-    <p><strong>Common Implementations of the Queue Interface:</strong></p>
-    <ul>
-      <li><code>LinkedList</code>: A general-purpose implementation of the <code>Queue</code> interface.</li>
-      <li><code>PriorityQueue</code>: A queue where elements are ordered based on their priority (not strictly FIFO).</li>
-      <li><code>ArrayBlockingQueue</code>: A thread-safe, bounded queue implementation for concurrent programming.</li>
-    </ul>
-  </div>
-  <hr>
-  <div>
-    <h5>Map Interface:</h5>
-    <p>The <code>Map</code> interface is part of the <code>java.util</code> package and represents a collection of key-value pairs, where each key is unique, and each key maps to exactly one value. It is not a subtype of <code>Collection</code> but provides methods to store, retrieve, and manipulate key-value mappings.</p>
-  
-    <p><strong>Key Features of the Map Interface:</strong></p>
-    <ul>
-      <li><strong>Key-Value Pairs:</strong> A <code>Map</code> stores entries, where each entry consists of a key and a value.</li>
-      <li><strong>Unique Keys:</strong> Every key in the map is unique, but the values associated with keys can be duplicate.</li>
-      <li><strong>Methods:</strong> Common methods include <code>put()</code> to add mappings, <code>get()</code> to retrieve values, and <code>remove()</code> to delete mappings.</li>
-    </ul>
-    <pre><code>
-        import java.util.*;
-        
-        public class MapExample {
-            public static void main(String[] args) {
-                Map<String, Integer> map = new HashMap<>();
-        
-                // Adding key-value pairs
-                map.put("Java", 10);
-                map.put("Python", 15);
-                map.put("C++", 12);
-        
-                // Retrieving a value using a key
-                System.out.println("Java: " + map.get("Java"));
-        
-                // Checking if a key exists
-                System.out.println("Contains 'Python': " + map.containsKey("Python"));
-        
-                // Iterating over keys and values
-                for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                    System.out.println(entry.getKey() + ": " + entry.getValue());
-                }
-            }
-        }
-          </code></pre>
-  
-    <p><strong>Common Implementations of the Map Interface:</strong></p>
-    <ul>
-      <li><code>HashMap</code>: A widely used implementation that stores elements based on the hash of the keys, offering constant time performance for basic operations.</li>
-      <li><code>TreeMap</code>: A sorted map implementation that orders the keys according to their natural order or a custom comparator.</li>
-      <li><code>LinkedHashMap</code>: An implementation that maintains the order of insertion of the keys.</li>
-      <li><code>Hashtable</code>: An older, synchronized implementation (replaced by <code>ConcurrentHashMap</code> in modern applications for thread-safety).</li>
-    </ul>
-  </div>
-<hr>
-<div>
-    <h5>Explain SortedMap Interface</h5>
-    <p>The <code>SortedMap</code> interface is a subinterface of the <code>Map</code> interface in the <code>java.util</code> package. It represents a map that maintains its keys in a sorted order, either in their natural order or according to a custom comparator provided at the time of map creation. The elements in a <code>SortedMap</code> are ordered based on the keys, and it provides additional methods to deal with ranges of keys.</p>
-  
-    <p><strong>Key Features of the SortedMap Interface:</strong></p>
-    <ul>
-      <li><strong>Sorted Keys:</strong> The keys are always stored in a sorted order (either natural or based on a <code>Comparator</code>).</li>
-      <li><strong>Additional Range Methods:</strong> It provides methods to view submaps, headmaps, and tailmaps based on a specific key range.</li>
-      <li><strong>Methods:</strong> Methods like <code>firstKey()</code>, <code>lastKey()</code>, <code>headMap()</code>, and <code>tailMap()</code> help with navigating through the map's sorted keys.</li>
-    </ul>
-  
-    <p><strong>Common Implementation of the SortedMap Interface:</strong></p>
-    <ul>
-      <li><code>TreeMap</code>: The most common implementation of the <code>SortedMap</code> interface, which stores key-value pairs in a red-black tree structure and ensures that keys are kept in sorted order.</li>
-    </ul>
-  
-    <p><strong>Key Methods of the SortedMap Interface:</strong></p>
-    <ul>
-      <li><code>K firstKey()</code>: Returns the first (lowest) key in the map.</li>
-      <li><code>K lastKey()</code>: Returns the last (highest) key in the map.</li>
-      <li><code>SortedMap<K,V> headMap(K toKey)</code>: Returns a view of the portion of the map whose keys are less than the specified key.</li>
-      <li><code>SortedMap<K,V> tailMap(K fromKey)</code>: Returns a view of the portion of the map whose keys are greater than or equal to the specified key.</li>
-      <li><code>SortedMap<K,V> subMap(K fromKey, K toKey)</code>: Returns a view of the portion of the map whose keys are between <code>fromKey</code> (inclusive) and <code>toKey</code> (exclusive).</li>
-    </ul>
-    <p><strong>Example Usage:</strong></p>
-  <pre><code>
-import java.util.*;
-
-public class SortedMapExample {
-    public static void main(String[] args) {
-        SortedMap<String, Integer> sortedMap = new TreeMap<>();
-
-        // Adding key-value pairs
-        sortedMap.put("Java", 10);
-        sortedMap.put("Python", 15);
-        sortedMap.put("C++", 12);
-        sortedMap.put("JavaScript", 18);
-
-        // Displaying the sorted map
-        System.out.println("SortedMap: " + sortedMap);
-
-        // Accessing the first and last keys
-        System.out.println("First Key: " + sortedMap.firstKey());
-        System.out.println("Last Key: " + sortedMap.lastKey());
-
-        // Submaps
-        System.out.println("HeadMap (less than 'JavaScript'): " + sortedMap.headMap("JavaScript"));
-        System.out.println("TailMap (greater than or equal to 'C++'): " + sortedMap.tailMap("C++"));
-        System.out.println("SubMap (from 'Java' to 'Python'): " + sortedMap.subMap("Java", "Python"));
-    }
-}
-  </code></pre>
-  </div>
-<hr>
-<div>
-    <h5>Eplain NavigableMap Interface</h5>
-    <p>The <code>NavigableMap</code> interface is a subinterface of <code>SortedMap</code> in the <code>java.util</code> package. It extends the functionality of <code>SortedMap</code> by providing navigation methods for retrieving entries based on their proximity to a given key. It supports bidirectional traversal and allows precise control over subsets of the map.</p>
-  
-    <p><strong>Key Features of NavigableMap:</strong></p>
-    <ul>
-      <li><strong>Proximity Navigation:</strong> Methods like <code>lowerKey()</code>, <code>floorKey()</code>, <code>ceilingKey()</code>, and <code>higherKey()</code> help in finding keys near a specified key.</li>
-      <li><strong>Reverse Order:</strong> The <code>descendingMap()</code> method provides a view of the map in reverse order.</li>
-      <li><strong>Subset Views:</strong> Allows creation of subsets with precise control over inclusion/exclusion of boundary keys using <code>subMap()</code>, <code>headMap()</code>, and <code>tailMap()</code>.</li>
-      <li><strong>Polling Operations:</strong> Methods like <code>pollFirstEntry()</code> and <code>pollLastEntry()</code> allow retrieval and removal of the first or last entry.</li>
-    </ul>
-  
-    <p><strong>Common Implementation:</strong></p>
-    <ul>
-      <li><code>TreeMap</code>: The most common implementation of <code>NavigableMap</code>, which maintains key-value pairs in a red-black tree structure and provides navigation methods.</li>
-    </ul>
-  
-    <p><strong>Key Methods of NavigableMap:</strong></p>
-    <ul>
-      <li><code>K lowerKey(K key)</code>: Returns the greatest key strictly less than the specified key.</li>
-      <li><code>K floorKey(K key)</code>: Returns the greatest key less than or equal to the specified key.</li>
-      <li><code>K ceilingKey(K key)</code>: Returns the smallest key greater than or equal to the specified key.</li>
-      <li><code>K higherKey(K key)</code>: Returns the smallest key strictly greater than the specified key.</li>
-      <li><code>NavigableMap<K,V> descendingMap()</code>: Returns a map with the keys in reverse order.</li>
-      <li><code>Map.Entry<K,V> pollFirstEntry()</code>: Retrieves and removes the first entry in the map.</li>
-      <li><code>Map.Entry<K,V> pollLastEntry()</code>: Retrieves and removes the last entry in the map.</li>
-    </ul>
-  
-    <p><strong>Example Usage:</strong></p>
-    <pre><code>
-  import java.util.*;
-  
-  public class NavigableMapExample {
-      public static void main(String[] args) {
-          NavigableMap<String, Integer> navigableMap = new TreeMap<>();
-  
-          // Adding key-value pairs
-          navigableMap.put("Java", 10);
-          navigableMap.put("Python", 15);
-          navigableMap.put("C++", 12);
-          navigableMap.put("JavaScript", 18);
-  
-          // Displaying the map
-          System.out.println("NavigableMap: " + navigableMap);
-  
-          // Navigation operations
-          System.out.println("Lower Key (less than 'Python'): " + navigableMap.lowerKey("Python"));
-          System.out.println("Floor Key (less than or equal to 'Python'): " + navigableMap.floorKey("Python"));
-          System.out.println("Ceiling Key (greater than or equal to 'C++'): " + navigableMap.ceilingKey("C++"));
-          System.out.println("Higher Key (greater than 'Java'): " + navigableMap.higherKey("Java"));
-  
-          // Reverse order view
-          System.out.println("Descending Map: " + navigableMap.descendingMap());
-  
-          // Polling operations
-          System.out.println("Poll First Entry: " + navigableMap.pollFirstEntry());
-          System.out.println("Poll Last Entry: " + navigableMap.pollLastEntry());
-          System.out.println("Map after polling: " + navigableMap);
-      }
-  }
-    </code></pre>
-  </div>
-<hr>
-<div>
-    <h5>Explain RandomAccess Interface</h5>
-    <p>The <code>RandomAccess</code> interface is a marker interface in the <code>java.util</code> package. It is used to indicate that a <code>List</code> implementation supports fast (constant time) random access to its elements. This interface helps optimize operations for data structures where direct access by index is efficient.</p>
-  
-    <p><strong>Key Features of RandomAccess Interface:</strong></p>
-    <ul>
-      <li><strong>Marker Interface:</strong> It does not define any methods. Its purpose is to serve as a tagging mechanism.</li>
-      <li><strong>Improves Performance:</strong> Algorithms can check for this interface to use more efficient access methods when working with lists that support random access.</li>
-      <li><strong>Common Implementations:</strong> The <code>ArrayList</code> and <code>Vector</code> classes implement this interface because they allow fast, index-based access to their elements.</li>
-    </ul>
-  
-    <p><strong>Usage:</strong> When iterating over a list, checking whether it implements <code>RandomAccess</code> can help choose between <code>for</code>-loop (for index-based access) and iterator-based traversal for better performance.</p>
-  
-    <p><strong>Example:</strong></p>
-    <pre><code>
-  import java.util.*;
-  
-  public class RandomAccessExample {
-      public static void main(String[] args) {
-          List<String> arrayList = new ArrayList<>();
-          List<String> linkedList = new LinkedList<>();
-  
-          // Adding elements
-          arrayList.add("Java");
-          arrayList.add("Python");
-          linkedList.add("Java");
-          linkedList.add("Python");
-  
-          // Check if the list supports RandomAccess
-          System.out.println("Is ArrayList RandomAccess? " + (arrayList instanceof RandomAccess));
-          System.out.println("Is LinkedList RandomAccess? " + (linkedList instanceof RandomAccess));
-  
-          // Optimized iteration
-          if (arrayList instanceof RandomAccess) {
-              System.out.println("Iterating ArrayList using for-loop:");
-              for (int i = 0; i < arrayList.size(); i++) {
-                  System.out.println(arrayList.get(i));
-              }
-          } else {
-              System.out.println("Iterating ArrayList using iterator:");
-              for (String s : arrayList) {
-                  System.out.println(s);
+        <pre><code>
+          import java.util.List;
+          import java.util.ArrayList;
+          import java.util.Collection;
+          
+          public class ListMethodsExample {
+              public static void main(String[] args) {
+                  // Create a List
+                  List<String> fruits = new ArrayList<>();
+          
+                  // Adding elements using add method
+                  fruits.add("Apple");
+                  fruits.add("Banana");
+                  fruits.add("Mango");
+                  fruits.add("Peach");
+          
+                  // Insert an element at a specific position using add(index, element)
+                  fruits.add(1, "Grapes"); // Insert Grapes at index 1
+          
+                  System.out.println("Fruits List after adding Grapes at index 1: " + fruits);
+          
+                  // Insert all elements from another collection using addAll(index, collection)
+                  Collection<String> moreFruits = List.of("Pineapple", "Orange");
+                  fruits.addAll(2, moreFruits); // Insert at index 2
+          
+                  System.out.println("Fruits List after adding more fruits: " + fruits);
+          
+                  // Retrieve an element at a specific index using get(index)
+                  System.out.println("Element at index 2: " + fruits.get(2));
+          
+                  // Find the index of the first occurrence of a specific element using indexOf(object)
+                  int indexOfMango = fruits.indexOf("Mango");
+                  System.out.println("Index of Mango: " + indexOfMango);
+          
+                  // Find the index of the last occurrence of a specific element using lastIndexOf(object)
+                  fruits.add("Apple"); // Adding another Apple to test lastIndexOf
+                  int lastIndexOfApple = fruits.lastIndexOf("Apple");
+                  System.out.println("Last index of Apple: " + lastIndexOfApple);
+          
+                  // Remove an element at a specific index using remove(index)
+                  fruits.remove(4); // Removes "Peach"
+                  System.out.println("Fruits List after removal: " + fruits);
+          
+                  // Replace an element at a specific index using set(index, element)
+                  fruits.set(2, "Watermelon"); // Replace "Mango" with "Watermelon"
+                  System.out.println("Fruits List after replacing Mango with Watermelon: " + fruits);
+          
+                  // Get a sublist of the list using subList(fromIndex, toIndex)
+                  List<String> sublist = fruits.subList(1, 4); // Get elements from index 1 to 3
+                  System.out.println("Sublist of fruits: " + sublist);
               }
           }
-      }
-  }
-    </code></pre>
-  
-    <p><strong>Advantages:</strong></p>
-    <ul>
-      <li>Helps in optimizing performance by identifying lists that support fast random access.</li>
-      <li>Improves efficiency of algorithms by choosing appropriate access methods.</li>
-    </ul>
-  
-    <p><strong>Common Implementations:</strong> <code>ArrayList</code>, <code>Vector</code></p>
-    <p><strong>Non-Implementations:</strong> <code>LinkedList</code> does not implement <code>RandomAccess</code> because it is designed for sequential access.</p>
-  </div>
+                  </code></pre>
+
+
+</div>
 <hr>
-<div>
+
+<div id="ArrayList">
     <h5>Explain about ArrayList Class</h5>
     <p>The <code>ArrayList</code> class in <code>java.util</code> is a resizable array implementation of the <code>List</code> interface. It allows dynamic growth and shrinkage of the array as elements are added or removed. <code>ArrayList</code> is one of the most commonly used collection classes in Java for storing and manipulating a group of objects.</p>
   
@@ -720,9 +646,158 @@ public class SortedMapExample {
       <li>Not thread-safe for concurrent access.</li>
       <li>Slower than <code>LinkedList</code> for insertions and deletions in the middle of the list.</li>
     </ul>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="ALSize">
+  <h5>What is the default size of an ArrayList?</h5>
+  <ul>
+    <li>The default size of an <code>ArrayList</code> refers to its initial capacity.</li>
+    <li>When an <code>ArrayList</code> is created using the default constructor <code>new ArrayList&lt;&gt;()</code>, the initial capacity is **10**.</li>
+    <li>Internally, <code>ArrayList</code> uses an array, which grows dynamically when elements are added.</li>
+    <li>When the capacity is exceeded, the new capacity is calculated as <code>oldCapacity + (oldCapacity / 2)</code>, which is **1.5 times the previous capacity**.</li>
+    <li>You can specify an initial capacity explicitly using <code>new ArrayList&lt;&gt;(int initialCapacity)</code> to optimize memory usage.</li>
+</ul>
+</div>
+<hr>
+
+<div id="ensureCapacity">
+  <h5>How does ensureCapacity() work in ArrayList?</h5>
+  <ul>
+    <li><code>ensureCapacity(int minCapacity)</code> is a method in <code>ArrayList</code> used to increase the capacity of the list to accommodate more elements.</li>
+    <li>It helps in optimizing performance by reducing the number of times internal array resizing occurs.</li>
+    <li>If the specified <code>minCapacity</code> is greater than the current capacity, the internal array is expanded.</li>
+    <li>Internally, <code>ensureCapacity()</code> follows the resizing mechanism of <code>ArrayList</code> (increasing size by 1.5x when needed).</li>
+    <li>It is particularly useful when a large number of elements are expected to be added, avoiding frequent reallocation.</li>
+    <li>Example usage:</li>
+    <pre>
+        ArrayList<Integer> list = new ArrayList<>();
+        list.ensureCapacity(50); // Ensures the list can hold at least 50 elements
+    </pre>
+</ul>
+
+</div>
+<hr>
+
+<div id="ALImpl">
+  <h5>What is the internal implementation of ArrayList in Java?</h5>
+<ul>
+    <li><strong>Underlying Data Structure:</strong></li>
+    <ul>
+        <li><code>ArrayList</code> internally uses a **dynamic array** to store elements.</li>
+        <li>The array grows automatically when more elements are added beyond its capacity.</li>
+    </ul>
+
+    <li><strong>Default Capacity & Growth:</strong></li>
+    <ul>
+        <li>When created using <code>new ArrayList&lt;&gt;()</code>, it has an initial capacity of **10**.</li>
+        <li>When the array reaches its capacity, a new array is created with **1.5 times the previous size**, and elements are copied.</li>
+    </ul>
+
+    <li><strong>Adding Elements:</strong></li>
+    <ul>
+        <li><code>add(E e)</code> appends an element at the end.</li>
+        <li><code>add(int index, E e)</code> inserts at a specific index (shifting elements).</li>
+        <li>Resizing occurs if needed, using <code>ensureCapacity()</code>.</li>
+    </ul>
+
+    <li><strong>Accessing Elements:</strong></li>
+    <ul>
+        <li><code>get(int index)</code> retrieves an element in **O(1) time complexity**.</li>
+        <li>Uses direct indexing as it is backed by an array.</li>
+    </ul>
+
+    <li><strong>Removing Elements:</strong></li>
+    <ul>
+        <li><code>remove(int index)</code> shifts all elements after the removed index.</li>
+        <li>Worst-case removal (from start) takes **O(n) time complexity** due to shifting.</li>
+    </ul>
+
+    <li><strong>Iteration:</strong></li>
+    <ul>
+        <li>Supports iteration using <code>for</code> loop, <code>for-each</code>, <code>Iterator</code>, and <code>ListIterator</code>.</li>
+    </ul>
+
+    <li><strong>Thread-Safety:</strong></li>
+    <ul>
+        <li><code>ArrayList</code> is **not synchronized**, making it **not thread-safe**.</li>
+        <li>For thread-safe operations, use <code>Collections.synchronizedList()</code> or <code>CopyOnWriteArrayList</code>.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="ALInsert">
+  <h5>What happens when an element is inserted into the middle of an <code>ArrayList</code>?</h5>
+<ul>
+    <li><strong>Shifting Elements:</strong></li>
+    <ul>
+        <li>When an element is inserted at a specific index using <code>add(int index, E element)</code>, all elements from that index onward are shifted to the right.</li>
+        <li>This shifting increases the time complexity to **O(n)** in the worst case.</li>
+    </ul>
+
+    <li><strong>Resizing If Needed:</strong></li>
+    <ul>
+        <li>If the internal array reaches its capacity, it is resized by **1.5x the current size**.</li>
+        <li>A new array is created, and all elements are copied over, adding extra overhead.</li>
+    </ul>
+
+    <li><strong>Performance Impact:</strong></li>
+    <ul>
+        <li>Insertion at the middle causes **O(n) shifting cost**, making it less efficient compared to a <code>LinkedList</code>, which has **O(1) insertion time** when a reference to the node is available.</li>
+    </ul>
+
+    <li><strong>Example:</strong></li>
+    <pre>
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 4, 5));
+        list.add(2, 3); // Inserting 3 at index 2
+        System.out.println(list); // Output: [1, 2, 3, 4, 5]
+    </pre>
+
+    <li><strong>Best Practices:</strong></li>
+    <ul>
+        <li>If frequent middle insertions are required, consider using a **LinkedList** instead of an **ArrayList**.</li>
+        <li>For better performance, use **batch processing** instead of multiple insertions.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="ALScenario">
+  <h5>A <strong>bank transaction history feature</strong> requires fast access by index but also frequent updates. Which list implementation will you use?</h5>
+
+<ul>
+    <li><strong>Best Choice: <code>ArrayList</code></strong></li>
+    <ul>
+        <li><code>ArrayList</code> provides O(1) time complexity for accessing elements by index.</li>
+        <li>Since transaction history needs fast retrieval, <code>ArrayList</code> is a good fit.</li>
+    </ul>
+
+    <li><strong>Consideration for Updates:</strong></li>
+    <ul>
+        <li>If updates involve modifying existing elements, <code>ArrayList.set(index, element)</code> performs in O(1) time, making it efficient.</li>
+        <li>If frequent insertions/removals in the middle occur, shifting elements (O(n) cost) might be a downside.</li>
+    </ul>
+
+    <li><strong>Alternative: <code>LinkedList</code></strong></li>
+    <ul>
+        <li>If frequent insertions and deletions (e.g., adding/removing transactions dynamically) are required, <code>LinkedList</code> could be considered.</li>
+        <li>However, <code>LinkedList</code> has O(n) access time, which makes it slower for index-based retrieval.</li>
+    </ul>
+
+    <li><strong>Final Decision:</strong></li>
+    <ul>
+        <li>Use <code>ArrayList</code> if fast access by index is the top priority and updates mainly modify existing transactions.</li>
+        <li>If frequent middle insertions or deletions are required, a hybrid approach (e.g., <code>ArrayList</code> + indexing techniques like HashMap) might be needed.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="LLClass">
     <h5>Explain about LinkedList Class</h5>
     <p>The <code>LinkedList</code> class in <code>java.util</code> is a doubly linked list implementation of the <code>List</code> and <code>Deque</code> interfaces. It allows dynamic memory allocation, where each element is a node containing a reference to the previous and next nodes, making it efficient for insertion and deletion operations.</p>
   
@@ -790,9 +865,10 @@ public class SortedMapExample {
       <li>Slower for random access compared to <code>ArrayList</code> due to sequential traversal.</li>
       <li>Consumes more memory because of the storage overhead for node pointers.</li>
     </ul>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="SynchAL">
     <h5>How to Get a Synchronized Version of ArrayList</h5>
     <p>The <code>ArrayList</code> class is not thread-safe by default. To get a synchronized version of an <code>ArrayList</code>, we can use the <code>Collections.synchronizedList()</code> method. This ensures that the <code>ArrayList</code> is synchronized, making it safe for use in multi-threaded environments.</p>
   
@@ -834,9 +910,10 @@ public class SortedMapExample {
       <li>While iterating over the synchronized list, it's recommended to explicitly synchronize on the list to avoid <code>ConcurrentModificationException</code>.</li>
       <li>This approach does not prevent logical issues like race conditions; additional synchronization might still be needed for complex operations.</li>
     </ul>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="LLAL">
     <h5>Difference Between ArrayList and LinkedList</h5>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
@@ -891,9 +968,10 @@ public class SortedMapExample {
     </table>
   
     <p><strong>Summary:</strong> Choose <code>ArrayList</code> for fast random access and <code>LinkedList</code> for efficient insertions and deletions.</p>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="EnumItr">
     <h5>Difference Between Enumeration and Iterator</h5>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
@@ -954,9 +1032,10 @@ public class SortedMapExample {
     </table>
   
     <p><strong>Summary:</strong> <code>Enumeration</code> is outdated and limited in functionality, whereas <code>Iterator</code> is more versatile and suitable for modern collections. Use <code>Iterator</code> for better performance and flexibility.</p>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="ItrLItr">
     <h5>Difference Between Iterator and ListIterator:</h5>
     <table border="1" cellpadding="5" cellspacing="0">
       <thead>
@@ -1042,9 +1121,111 @@ public class SortedMapExample {
       }
   }
     </code></pre>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="FFastFSafe">
+  <h5>What is the difference between fail-fast and fail-safe iterators?</h5>
+  <ul>
+    <li><strong>Fail-Fast Iterator:</strong></li>
+    <ul>
+        <li>Throws <code>ConcurrentModificationException</code> if the collection is modified during iteration.</li>
+        <li>Works directly on the original collection, detecting structural changes.</li>
+        <li>Examples: Iterators of <code>ArrayList</code>, <code>HashMap</code>, <code>HashSet</code>, etc.</li>
+        <li>Faster performance due to working directly on the collection.</li>
+        <li>Should be used when thread-safety is not a concern.</li>
+    </ul>
+
+    <li><strong>Fail-Safe Iterator:</strong></li>
+    <ul>
+        <li>Does not throw <code>ConcurrentModificationException</code> if the collection is modified during iteration.</li>
+        <li>Works on a cloned copy of the collection, ensuring modifications do not affect iteration.</li>
+        <li>Examples: Iterators of <code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code>.</li>
+        <li>Consumes more memory due to creating a separate copy.</li>
+        <li>Useful in concurrent environments where modifications are frequent.</li>
+    </ul>
+  </ul>
+</div>
+<hr>
+
+<div id="SI">
+  <h5>Explain Set Interface</h5>
+  <p>The <code>Set</code> interface is a subinterface of the <code>Collection</code> interface in the <code>java.util</code> package. It represents a collection that does not allow duplicate elements. A <code>Set</code> is primarily used when uniqueness is required, and it does not maintain any specific order of elements unless explicitly stated by its implementation.</p>
+
+  <p><strong>Hierarchy:</strong></p>
+  <ul>
+    <li>The <code>Set</code> interface extends the <code>Collection</code> interface.</li>
+    <li>Some common implementations of the <code>Set</code> interface are:
+      <ul>
+        <li><code>HashSet</code>: Implements a hash table to store elements and does not guarantee the order of elements.</li>
+        <li><code>LinkedHashSet</code>: Extends <code>HashSet</code> and maintains the insertion order of elements.</li>
+        <li><code>TreeSet</code>: Implements a balanced tree structure and maintains elements in their natural order or a custom order defined by a comparator.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p><strong>Key Features of the Set Interface:</strong></p>
+  <ul>
+    <li><strong>No Duplicates:</strong> Ensures that all elements in the collection are unique.</li>
+    <li><strong>Unordered:</strong> Does not guarantee any specific order of elements (except for implementations like <code>LinkedHashSet</code> or <code>TreeSet</code>).</li>
+  </ul>
+
+  <p><strong>Key Methods of the Set Interface:</strong></p>
+  <ul>
+    <li><code>boolean add(E e)</code>: Adds the specified element to the set if it is not already present.</li>
+    <li><code>boolean contains(Object o)</code>: Checks if the set contains the specified element.</li>
+    <li><code>boolean remove(Object o)</code>: Removes the specified element from the set if it is present.</li>
+    <li><code>int size()</code>: Returns the number of elements in the set.</li>
+    <li><code>Iterator<E> iterator()</code>: Returns an iterator over the elements in the set.</li>
+    <li><code>boolean isEmpty()</code>: Checks if the set is empty.</li>
+    <li><code>void clear()</code>: Removes all elements from the set.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="SSI">
+  <h5>SortedSet Interface:</h5>
+  <p>The <code>SortedSet</code> interface is a subinterface of the <code>Set</code> interface in the <code>java.util</code> package. It represents a set that maintains its elements in a sorted order. The sorting can be based on the natural order of elements (if the elements implement the <code>Comparable</code> interface) or a custom order defined by a <code>Comparator</code>.</p>
+
+  <p><strong>Hierarchy:</strong></p>
+  <ul>
+    <li>The <code>SortedSet</code> interface extends the <code>Set</code> interface.</li>
+    <li>The <code>TreeSet</code> class is a common implementation of the <code>SortedSet</code> interface.</li>
+  </ul>
+
+  <p><strong>Key Features of the SortedSet Interface:</strong></p>
+  <ul>
+    <li><strong>Sorted Order:</strong> Ensures that elements are sorted either in their natural order or based on a custom comparator.</li>
+    <li><strong>No Duplicates:</strong> Ensures that all elements in the set are unique.</li>
+  </ul>
+
+  <p><strong>Key Methods of the SortedSet Interface:</strong></p>
+  <ul>
+    <li><code>E first()</code>: Returns the first (lowest) element in the set.</li>
+    <li><code>E last()</code>: Returns the last (highest) element in the set.</li>
+    <li><code>SortedSet<E> headSet(E toElement)</code>: Returns a view of the portion of the set whose elements are strictly less than the specified element.</li>
+    <li><code>SortedSet<E> tailSet(E fromElement)</code>: Returns a view of the portion of the set whose elements are greater than or equal to the specified element.</li>
+    <li><code>SortedSet<E> subSet(E fromElement, E toElement)</code>: Returns a view of the portion of the set whose elements range from <code>fromElement</code>, inclusive, to <code>toElement</code>, exclusive.</li>
+    <li><code>Comparator&lt;? super E> comparator()</code>: Returns the comparator used to order the elements, or <code>null</code> if the set uses natural ordering.</li>
+  </ul>
+
+  <p><strong>Common Implementation of the SortedSet Interface:</strong></p>
+  <ul>
+    <li><code>TreeSet</code>: A balanced tree implementation of the <code>SortedSet</code> interface. It maintains the elements in a sorted order.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="NI">
+  <h5>NavigableSet Interface:</h5>
+  <p>The <code>NavigableSet</code> interface, a subinterface of <code>SortedSet</code>, extends the functionality of sorted collections by adding navigation methods. 
+      It allows retrieval of elements based on proximity to a given value, such as the closest lower or higher element, and supports bidirectional traversal using <code>descendingSet()</code> and <code>descendingIterator()</code>.
+      Methods like <code>lower()</code>, <code>floor()</code>, <code>ceiling()</code>, and <code>higher()</code> offer precise control over element access. 
+      The <code>TreeSet</code> class is the most common implementation, maintaining elements in sorted order and supporting range views and polling operations like <code>pollFirst()</code> and <code>pollLast()</code>.</p>
+</div>
+<hr>
+
+<div is="HS">
     <h5>Explain HashSet Class</h5>
     <p>The <code>HashSet</code> class in <code>java.util</code> implements the <code>Set</code> interface and is backed by a hash table (actually a <code>HashMap</code> instance). It does not allow duplicate elements and does not maintain the insertion order of elements. The primary purpose of a <code>HashSet</code> is to provide a collection of unique elements and to allow fast retrieval.</p>
   
@@ -1097,9 +1278,140 @@ public class SortedMapExample {
       }
   }
     </code></pre>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="DHSLHSTS">
+  <h5>What is the difference between <b>HashSet</b>, <b>LinkedHashSet</b>, and <b>TreeSet</b>?</h5>
+
+<ul>
+    <li><b>HashSet:</b></li>
+    <ul>
+        <li><code>HashSet</code> is an unordered collection that does not guarantee the order of elements.</li>
+        <li>It uses a hash table for storing elements and ensures uniqueness of elements using the hash code and equals() methods.</li>
+        <li>It provides O(1) time complexity for basic operations like add, remove, and contains, assuming a good hash function.</li>
+    </ul>
+
+    <li><b>LinkedHashSet:</b></li>
+    <ul>
+        <li><code>LinkedHashSet</code> is an ordered version of the <code>HashSet</code>. It maintains the insertion order of elements.</li>
+        <li>Internally, it uses a hash table along with a linked list to maintain the order of elements.</li>
+        <li>It ensures uniqueness of elements like <code>HashSet</code>, but also maintains the order of insertion.</li>
+        <li>Operations like add, remove, and contains take O(1) time on average, but maintaining order adds a slight overhead compared to <code>HashSet</code>.</li>
+    </ul>
+
+    <li><b>TreeSet:</b></li>
+    <ul>
+        <li><code>TreeSet</code> is a sorted set that stores elements in their natural order or based on a custom comparator.</li>
+        <li>It uses a Red-Black tree to store elements, which ensures that the set is always sorted.</li>
+        <li>While it guarantees uniqueness, it does not allow elements to be stored in arbitrary order, unlike <code>HashSet</code> or <code>LinkedHashSet</code>.</li>
+        <li>Basic operations like add, remove, and contains take O(log n) time due to the underlying tree structure.</li>
+    </ul>
+
+    <li><b>Summary of Key Differences:</b></li>
+    <ul>
+        <li><b>Order:</b>
+            <ul>
+                <li><code>HashSet</code>: No guaranteed order.</li>
+                <li><code>LinkedHashSet</code>: Maintains insertion order.</li>
+                <li><code>TreeSet</code>: Stores elements in sorted order (either natural or using a comparator).</li>
+            </ul>
+        </li>
+        
+        <li><b>Performance:</b>
+            <ul>
+                <li><code>HashSet</code>: O(1) for add, remove, contains.</li>
+                <li><code>LinkedHashSet</code>: O(1) for add, remove, contains (with slight overhead for maintaining order).</li>
+                <li><code>TreeSet</code>: O(log n) for add, remove, contains due to the tree structure.</li>
+            </ul>
+        </li>
+
+        <li><b>Use Case:</b>
+            <ul>
+                <li><code>HashSet</code>: Use when you only care about uniqueness and do not need order.</li>
+                <li><code>LinkedHashSet</code>: Use when you care about both uniqueness and maintaining the order of insertion.</li>
+                <li><code>TreeSet</code>: Use when you need to store elements in a sorted order and care about efficient searching and navigation.</li>
+            </ul>
+        </li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HSNull">
+  
+<h5>Why does <b>HashSet</b> allow only one null value?</h5>
+
+<ul>
+    <li><b>HashSet stores elements using a hash table:</b></li>
+    <ul>
+        <li><code>HashSet</code> uses a hash table (backed by a <code>HashMap</code>) to store its elements.</li>
+        <li>In the hash table, the uniqueness of elements is determined by their hash code and equals() method.</li>
+    </ul>
+
+    <li><b>Hash code of null:</b></li>
+    <ul>
+        <li>The null value has a unique behavior in the context of hash tables.</li>
+        <li><code>null</code> has a hash code of 0, and the `equals()` method is not called for <code>null</code> (because it is never equal to any other object).</li>
+        <li>This ensures that only one <code>null</code> can exist in the set, since all `null` elements would have the same hash code, and adding a second <code>null</code> would violate the uniqueness property of the set.</li>
+    </ul>
+
+    <li><b>Why only one null?</b></li>
+    <ul>
+        <li>Since the hash code of <code>null</code> is always 0, it will always map to the same bucket in the hash table.</li>
+        <li>Even if you try to insert another <code>null</code> value, it will clash with the existing <code>null</code> value because they have the same hash code, leading to the rejection of the duplicate.</li>
+        <li>Thus, only one <code>null</code> value can be stored in a <code>HashSet</code> to maintain the set's property of uniqueness.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HSUniq">
+  <h5>How does <b>HashSet</b> maintain uniqueness?</h5>
+
+<ul>
+    <li><b>Underlying Data Structure:</b></li>
+    <ul>
+        <li><code>HashSet</code> internally uses a hash table (backed by a <code>HashMap</code>) to store its elements.</li>
+        <li>Each element in the <code>HashSet</code> is stored as a key in the hash table, and the values are dummy placeholders (often <code>Boolean.TRUE</code>).</li>
+    </ul>
+
+    <li><b>Uniqueness Mechanism:</b></li>
+    <ul>
+        <li>When an element is added to a <code>HashSet</code>, the set checks if the element already exists based on its hash code and equals() method.</li>
+        <li>If the element’s hash code matches an existing element’s hash code, <code>equals()</code> is used to compare the elements for equality.</li>
+        <li>If the element is equal to an existing element (i.e., both hash code and <code>equals()</code> comparison return true), it is not added to the set.</li>
+        <li>This guarantees that only unique elements are stored in the set.</li>
+    </ul>
+
+    <li><b>Hash Code and Equals:</b></li>
+    <ul>
+        <li><code>HashSet</code> relies on the correct implementation of the <code>hashCode()</code> and <code>equals()</code> methods of the objects being stored.</li>
+        <li>If two objects have the same hash code but are not equal, they may still be stored as separate entries (but this is inefficient).</li>
+    </ul>
+
+    <li><b>Example:</b></li>
+    <pre>
+        HashSet<String> set = new HashSet&lt;&gt;();
+        set.add("A");
+        set.add("B");
+        set.add("A"); // Duplicate, won't be added
+
+        System.out.println(set); // Output: [A, B]
+    </pre>
+    
+    <li><b>Advantages:</b></li>
+    <ul>
+        <li><code>HashSet</code> provides constant time complexity (O(1)) for basic operations like add, remove, and contains, assuming a good hash function.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HSDup">
     <h5>What Happens When You Try to Insert Duplicate Values in a Set?</h5>
     <ul>
       <li>When you attempt to add an element that already exists in the set, the <code>add()</code> method will return <code>false</code>, indicating that the element was not added because it was already present.</li>
@@ -1108,7 +1420,8 @@ public class SortedMapExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="LHS">
     <h5>LinkedHashSet Class:</h5>
     <p>The <code>LinkedHashSet</code> class in Java is part of the <code>java.util</code> package and extends the <code>HashSet</code> class. It implements the <code>Set</code> interface and is backed by a hash table (like <code>HashSet</code>) and a linked list that maintains the insertion order of elements. This means that in a <code>LinkedHashSet</code>, the elements are stored in the order in which they were added.</p>
   
@@ -1161,7 +1474,8 @@ public class SortedMapExample {
   
 </div>
 <hr>
-<div>
+
+<div id="TS">
     <h5>Explain TreeSet Class</h5>
     <p>The <code>TreeSet</code> class in Java is part of the <code>java.util</code> package and implements the <code>Set</code> interface. It is backed by a <code>TreeMap</code> and stores elements in a sorted order. Unlike other set implementations like <code>HashSet</code> or <code>LinkedHashSet</code>, which do not guarantee order, a <code>TreeSet</code> automatically arranges its elements according to their natural ordering or by a comparator provided at the time of set creation.</p>
   
@@ -1211,6 +1525,1413 @@ public class SortedMapExample {
     </code></pre>
 </div>
 <hr>
+
+<div id="TSO">
+  
+<h5>How does <b>TreeSet</b> maintain sorting order?</h5>
+
+<ul>
+    <li><b>Internal Data Structure:</b></li>
+    <ul>
+        <li><code>TreeSet</code> is backed by a **Red-Black tree**, which is a self-balancing binary search tree.</li>
+        <li>The elements in a <code>TreeSet</code> are stored in the tree nodes in such a way that the tree remains balanced, ensuring efficient access and insertion.</li>
+    </ul>
+
+    <li><b>Sorting Mechanism:</b></li>
+    <ul>
+        <li><code>TreeSet</code> sorts its elements using their **natural order** (i.e., the order defined by the <code>Comparable</code> interface).</li>
+        <li>If the elements implement the <code>Comparable</code> interface, the <code>compareTo()</code> method is used to determine the sorting order.</li>
+        <li>For objects that do not implement <code>Comparable</code>, you can provide a custom sorting order via a **Comparator**.</li>
+        <li>The Red-Black tree ensures that elements are always inserted in sorted order, and this sorting is maintained with each operation, including insertions, deletions, and lookups.</li>
+    </ul>
+
+    <li><b>Example of Natural Ordering:</b></li>
+    <pre>
+        TreeSet<Integer> set = new TreeSet&lt;&gt;();
+        set.add(5);
+        set.add(1);
+        set.add(3);
+        set.add(2);
+
+        System.out.println(set); // Output: [1, 2, 3, 5]
+    </pre>
+
+    <li><b>Custom Ordering (using Comparator):</b></li>
+    <ul>
+        <li>If a custom sorting order is required, a <code>Comparator</code> can be provided to the <code>TreeSet</code>.</li>
+        <li>In this case, the <code>Comparator</code> will define the sorting rules for the elements.</li>
+    </ul>
+    <pre>
+        TreeSet<Integer> set = new TreeSet&lt;&gt;(Comparator.reverseOrder());
+        set.add(5);
+        set.add(1);
+        set.add(3);
+        set.add(2);
+
+        System.out.println(set); // Output: [5, 3, 2, 1]
+    </pre>
+
+    <li><b>Performance:</b></li>
+    <ul>
+        <li>Because of the underlying Red-Black tree structure, operations like add, remove, and contains are **O(log n)** in time complexity.</li>
+        <li>Maintaining the sorted order ensures that the set remains efficient for searching and iteration.</li>
+    </ul>
+
+    <li><b>Use Case:</b></li>
+    <ul>
+        <li><code>TreeSet</code> is ideal when you need to store unique elements that are sorted automatically, either in their natural order or using a custom comparator.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HSVSTS">
+  <h5>Why is <b>HashSet</b> faster than <b>TreeSet</b>?</h5>
+
+<ul>
+    <li><b>Internal Data Structure:</b></li>
+    <ul>
+        <li><code>HashSet</code> is backed by a **hash table** (or a hash map), which provides fast access to elements using a hash code.</li>
+        <li><code>TreeSet</code> is backed by a **Red-Black tree**, a self-balancing binary search tree, which has a more complex structure for maintaining sorting order.</li>
+    </ul>
+
+    <li><b>Performance of Basic Operations:</b></li>
+    <ul>
+        <li>In <code>HashSet</code>, operations like **add**, **remove**, and **contains** typically have an average time complexity of **O(1)**, assuming a good hash function and low collision rates.</li>
+        <li>In <code>TreeSet</code>, the operations like **add**, **remove**, and **contains** take **O(log n)** time due to the underlying Red-Black tree structure, which maintains sorted order at all times.</li>
+    </ul>
+
+    <li><b>Sorting Overhead in TreeSet:</b></li>
+    <ul>
+        <li><code>TreeSet</code> maintains elements in a sorted order (either natural or custom sorting via a comparator), which requires extra effort during every insertion and deletion.</li>
+        <li>This sorting adds additional overhead because the tree structure needs to maintain balance after each modification (insertion or deletion) to ensure efficient searching and iteration.</li>
+    </ul>
+
+    <li><b>Cost of Comparison:</b></li>
+    <ul>
+        <li>In a <code>TreeSet</code>, elements are compared during insertion and lookup to maintain the sorting order. This comparison is generally **O(log n)** in time complexity, depending on the number of nodes in the tree.</li>
+        <li>In a <code>HashSet</code>, no comparisons are required for basic operations. Instead, elements are directly inserted or searched using their hash codes, which is faster than maintaining order.</li>
+    </ul>
+
+    <li><b>Use Case Differences:</b></li>
+    <ul>
+        <li><code>HashSet</code> is preferred when you need fast operations for storing and accessing unique elements **without caring about order**.</li>
+        <li><code>TreeSet</code> is used when you need **sorted elements** and are willing to sacrifice some performance for automatic sorting of data.</li>
+    </ul>
+
+    <li><b>Summary of Key Differences:</b></li>
+    <ul>
+        <li><code>HashSet</code>: Faster for **basic operations** (add, remove, contains) due to its **O(1)** time complexity (average case).</li>
+        <li><code>TreeSet</code>: Slower for **basic operations** due to the need to maintain **sorted order** and **balance** the tree, with time complexity of **O(log n)**.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HSScenario">
+  <h5>In an <b>authentication system</b>, you need to store <b>unique user session tokens</b> efficiently. Which Set implementation is best?</h5>
+
+<ul>
+    <li><b>Best Set Implementation: <code>HashSet</code></b></li>
+    <ul>
+        <li><code>HashSet</code> is the best choice when you need to store unique elements (such as session tokens) with fast access and insertion.</li>
+        <li>It uses a hash table internally, which provides constant time complexity (average O(1)) for basic operations like add, remove, and contains.</li>
+    </ul>
+
+    <li><b>Why <code>HashSet</code> is Ideal for Session Tokens:</b></li>
+    <ul>
+        <li>Efficiency: Since session tokens are typically unique and need to be checked frequently for existence or removed after the session expires, <code>HashSet</code> is efficient because it doesn't require comparisons or sorting.</li>
+        <li>No Ordering Required: In this case, the order of session tokens does not matter, and <code>HashSet</code> allows for fast access without maintaining any order, unlike <code>TreeSet</code>, which sorts the elements.</li>
+        <li>Handling Duplicates: Since <code>HashSet</code> ensures uniqueness, you won't have to worry about storing duplicate session tokens.</li>
+    </ul>
+
+    <li><b>Why Not Other Set Implementations?</b></li>
+    <ul>
+        <li><b><code>TreeSet</code></b>: Although it ensures uniqueness, it maintains elements in a sorted order. The sorting overhead and the fact that session tokens don't need to be sorted makes it less efficient for this use case compared to <code>HashSet</code>.</li>
+        <li><b><code>LinkedHashSet</code></b>: While it maintains insertion order, the extra overhead for maintaining the order makes it unnecessary for the use case of storing unique session tokens when the order is irrelevant.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><code>HashSet</code> is the optimal choice for storing unique user session tokens efficiently in terms of time complexity and memory usage.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="MI">
+  <h5>Map Interface:</h5>
+  <p>The <code>Map</code> interface is part of the <code>java.util</code> package and represents a collection of key-value pairs, where each key is unique, and each key maps to exactly one value. It is not a subtype of <code>Collection</code> but provides methods to store, retrieve, and manipulate key-value mappings.</p>
+
+  <p><strong>Key Features of the Map Interface:</strong></p>
+  <ul>
+    <li><strong>Key-Value Pairs:</strong> A <code>Map</code> stores entries, where each entry consists of a key and a value.</li>
+    <li><strong>Unique Keys:</strong> Every key in the map is unique, but the values associated with keys can be duplicate.</li>
+    <li><strong>Methods:</strong> Common methods include <code>put()</code> to add mappings, <code>get()</code> to retrieve values, and <code>remove()</code> to delete mappings.</li>
+  </ul>
+  <pre><code>
+      import java.util.*;
+      
+      public class MapExample {
+          public static void main(String[] args) {
+              Map<String, Integer> map = new HashMap<>();
+      
+              // Adding key-value pairs
+              map.put("Java", 10);
+              map.put("Python", 15);
+              map.put("C++", 12);
+      
+              // Retrieving a value using a key
+              System.out.println("Java: " + map.get("Java"));
+      
+              // Checking if a key exists
+              System.out.println("Contains 'Python': " + map.containsKey("Python"));
+      
+              // Iterating over keys and values
+              for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                  System.out.println(entry.getKey() + ": " + entry.getValue());
+              }
+          }
+      }
+        </code></pre>
+
+  <p><strong>Common Implementations of the Map Interface:</strong></p>
+  <ul>
+    <li><code>HashMap</code>: A widely used implementation that stores elements based on the hash of the keys, offering constant time performance for basic operations.</li>
+    <li><code>TreeMap</code>: A sorted map implementation that orders the keys according to their natural order or a custom comparator.</li>
+    <li><code>LinkedHashMap</code>: An implementation that maintains the order of insertion of the keys.</li>
+    <li><code>Hashtable</code>: An older, synchronized implementation (replaced by <code>ConcurrentHashMap</code> in modern applications for thread-safety).</li>
+  </ul>
+</div>
+<hr>
+
+<div id="SMI">
+  <h5>Explain SortedMap Interface</h5>
+  <p>The <code>SortedMap</code> interface is a subinterface of the <code>Map</code> interface in the <code>java.util</code> package. It represents a map that maintains its keys in a sorted order, either in their natural order or according to a custom comparator provided at the time of map creation. The elements in a <code>SortedMap</code> are ordered based on the keys, and it provides additional methods to deal with ranges of keys.</p>
+
+  <p><strong>Key Features of the SortedMap Interface:</strong></p>
+  <ul>
+    <li><strong>Sorted Keys:</strong> The keys are always stored in a sorted order (either natural or based on a <code>Comparator</code>).</li>
+    <li><strong>Additional Range Methods:</strong> It provides methods to view submaps, headmaps, and tailmaps based on a specific key range.</li>
+    <li><strong>Methods:</strong> Methods like <code>firstKey()</code>, <code>lastKey()</code>, <code>headMap()</code>, and <code>tailMap()</code> help with navigating through the map's sorted keys.</li>
+  </ul>
+
+  <p><strong>Common Implementation of the SortedMap Interface:</strong></p>
+  <ul>
+    <li><code>TreeMap</code>: The most common implementation of the <code>SortedMap</code> interface, which stores key-value pairs in a red-black tree structure and ensures that keys are kept in sorted order.</li>
+  </ul>
+
+  <p><strong>Key Methods of the SortedMap Interface:</strong></p>
+  <ul>
+    <li><code>K firstKey()</code>: Returns the first (lowest) key in the map.</li>
+    <li><code>K lastKey()</code>: Returns the last (highest) key in the map.</li>
+    <li><code>SortedMap<K,V> headMap(K toKey)</code>: Returns a view of the portion of the map whose keys are less than the specified key.</li>
+    <li><code>SortedMap<K,V> tailMap(K fromKey)</code>: Returns a view of the portion of the map whose keys are greater than or equal to the specified key.</li>
+    <li><code>SortedMap<K,V> subMap(K fromKey, K toKey)</code>: Returns a view of the portion of the map whose keys are between <code>fromKey</code> (inclusive) and <code>toKey</code> (exclusive).</li>
+  </ul>
+  <p><strong>Example Usage:</strong></p>
+<pre><code>
+import java.util.*;
+
+public class SortedMapExample {
+  public static void main(String[] args) {
+      SortedMap<String, Integer> sortedMap = new TreeMap<>();
+
+      // Adding key-value pairs
+      sortedMap.put("Java", 10);
+      sortedMap.put("Python", 15);
+      sortedMap.put("C++", 12);
+      sortedMap.put("JavaScript", 18);
+
+      // Displaying the sorted map
+      System.out.println("SortedMap: " + sortedMap);
+
+      // Accessing the first and last keys
+      System.out.println("First Key: " + sortedMap.firstKey());
+      System.out.println("Last Key: " + sortedMap.lastKey());
+
+      // Submaps
+      System.out.println("HeadMap (less than 'JavaScript'): " + sortedMap.headMap("JavaScript"));
+      System.out.println("TailMap (greater than or equal to 'C++'): " + sortedMap.tailMap("C++"));
+      System.out.println("SubMap (from 'Java' to 'Python'): " + sortedMap.subMap("Java", "Python"));
+  }
+}
+</code></pre>
+</div>
+<hr>
+
+<div id="NMI">
+  <h5>Eplain NavigableMap Interface</h5>
+  <p>The <code>NavigableMap</code> interface is a subinterface of <code>SortedMap</code> in the <code>java.util</code> package. It extends the functionality of <code>SortedMap</code> by providing navigation methods for retrieving entries based on their proximity to a given key. It supports bidirectional traversal and allows precise control over subsets of the map.</p>
+
+  <p><strong>Key Features of NavigableMap:</strong></p>
+  <ul>
+    <li><strong>Proximity Navigation:</strong> Methods like <code>lowerKey()</code>, <code>floorKey()</code>, <code>ceilingKey()</code>, and <code>higherKey()</code> help in finding keys near a specified key.</li>
+    <li><strong>Reverse Order:</strong> The <code>descendingMap()</code> method provides a view of the map in reverse order.</li>
+    <li><strong>Subset Views:</strong> Allows creation of subsets with precise control over inclusion/exclusion of boundary keys using <code>subMap()</code>, <code>headMap()</code>, and <code>tailMap()</code>.</li>
+    <li><strong>Polling Operations:</strong> Methods like <code>pollFirstEntry()</code> and <code>pollLastEntry()</code> allow retrieval and removal of the first or last entry.</li>
+  </ul>
+
+  <p><strong>Common Implementation:</strong></p>
+  <ul>
+    <li><code>TreeMap</code>: The most common implementation of <code>NavigableMap</code>, which maintains key-value pairs in a red-black tree structure and provides navigation methods.</li>
+  </ul>
+
+  <p><strong>Key Methods of NavigableMap:</strong></p>
+  <ul>
+    <li><code>K lowerKey(K key)</code>: Returns the greatest key strictly less than the specified key.</li>
+    <li><code>K floorKey(K key)</code>: Returns the greatest key less than or equal to the specified key.</li>
+    <li><code>K ceilingKey(K key)</code>: Returns the smallest key greater than or equal to the specified key.</li>
+    <li><code>K higherKey(K key)</code>: Returns the smallest key strictly greater than the specified key.</li>
+    <li><code>NavigableMap<K,V> descendingMap()</code>: Returns a map with the keys in reverse order.</li>
+    <li><code>Map.Entry<K,V> pollFirstEntry()</code>: Retrieves and removes the first entry in the map.</li>
+    <li><code>Map.Entry<K,V> pollLastEntry()</code>: Retrieves and removes the last entry in the map.</li>
+  </ul>
+
+  <p><strong>Example Usage:</strong></p>
+  <pre><code>
+import java.util.*;
+
+public class NavigableMapExample {
+    public static void main(String[] args) {
+        NavigableMap<String, Integer> navigableMap = new TreeMap<>();
+
+        // Adding key-value pairs
+        navigableMap.put("Java", 10);
+        navigableMap.put("Python", 15);
+        navigableMap.put("C++", 12);
+        navigableMap.put("JavaScript", 18);
+
+        // Displaying the map
+        System.out.println("NavigableMap: " + navigableMap);
+
+        // Navigation operations
+        System.out.println("Lower Key (less than 'Python'): " + navigableMap.lowerKey("Python"));
+        System.out.println("Floor Key (less than or equal to 'Python'): " + navigableMap.floorKey("Python"));
+        System.out.println("Ceiling Key (greater than or equal to 'C++'): " + navigableMap.ceilingKey("C++"));
+        System.out.println("Higher Key (greater than 'Java'): " + navigableMap.higherKey("Java"));
+
+        // Reverse order view
+        System.out.println("Descending Map: " + navigableMap.descendingMap());
+
+        // Polling operations
+        System.out.println("Poll First Entry: " + navigableMap.pollFirstEntry());
+        System.out.println("Poll Last Entry: " + navigableMap.pollLastEntry());
+        System.out.println("Map after polling: " + navigableMap);
+    }
+}
+  </code></pre>
+</div>
+<hr>
+
+<div id="RAI">
+  <h5>Explain RandomAccess Interface</h5>
+  <p>The <code>RandomAccess</code> interface is a marker interface in the <code>java.util</code> package. It is used to indicate that a <code>List</code> implementation supports fast (constant time) random access to its elements. This interface helps optimize operations for data structures where direct access by index is efficient.</p>
+
+  <p><strong>Key Features of RandomAccess Interface:</strong></p>
+  <ul>
+    <li><strong>Marker Interface:</strong> It does not define any methods. Its purpose is to serve as a tagging mechanism.</li>
+    <li><strong>Improves Performance:</strong> Algorithms can check for this interface to use more efficient access methods when working with lists that support random access.</li>
+    <li><strong>Common Implementations:</strong> The <code>ArrayList</code> and <code>Vector</code> classes implement this interface because they allow fast, index-based access to their elements.</li>
+  </ul>
+
+  <p><strong>Usage:</strong> When iterating over a list, checking whether it implements <code>RandomAccess</code> can help choose between <code>for</code>-loop (for index-based access) and iterator-based traversal for better performance.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre><code>
+import java.util.*;
+
+public class RandomAccessExample {
+    public static void main(String[] args) {
+        List<String> arrayList = new ArrayList<>();
+        List<String> linkedList = new LinkedList<>();
+
+        // Adding elements
+        arrayList.add("Java");
+        arrayList.add("Python");
+        linkedList.add("Java");
+        linkedList.add("Python");
+
+        // Check if the list supports RandomAccess
+        System.out.println("Is ArrayList RandomAccess? " + (arrayList instanceof RandomAccess));
+        System.out.println("Is LinkedList RandomAccess? " + (linkedList instanceof RandomAccess));
+
+        // Optimized iteration
+        if (arrayList instanceof RandomAccess) {
+            System.out.println("Iterating ArrayList using for-loop:");
+            for (int i = 0; i < arrayList.size(); i++) {
+                System.out.println(arrayList.get(i));
+            }
+        } else {
+            System.out.println("Iterating ArrayList using iterator:");
+            for (String s : arrayList) {
+                System.out.println(s);
+            }
+        }
+    }
+}
+  </code></pre>
+
+  <p><strong>Advantages:</strong></p>
+  <ul>
+    <li>Helps in optimizing performance by identifying lists that support fast random access.</li>
+    <li>Improves efficiency of algorithms by choosing appropriate access methods.</li>
+  </ul>
+
+  <p><strong>Common Implementations:</strong> <code>ArrayList</code>, <code>Vector</code></p>
+  <p><strong>Non-Implementations:</strong> <code>LinkedList</code> does not implement <code>RandomAccess</code> because it is designed for sequential access.</p>
+</div>
+<hr>
+
+<div id="DHMLHM">
+  <h5>What are the differences between <b>HashMap</b>, <b>LinkedHashMap</b>, and <b>TreeMap</b>?</h5>
+
+<ul>
+    <li><b>HashMap</b>:</li>
+    <ul>
+        <li><b>Internal Data Structure:</b> Uses a <b>hash table</b> to store key-value pairs.</li>
+        <li><b>Order:</b> Does not maintain any order of the keys or values. The order is not predictable.</li>
+        <li><b>Performance:</b> Provides constant time complexity, <b>O(1)</b> for <b>get</b> and <b>put</b> operations, on average (assuming a good hash function).</li>
+        <li><b>Null Keys and Values:</b> Allows one <b>null</b> key and multiple <b>null</b> values.</li>
+    </ul>
+
+    <li><b>LinkedHashMap</b>:</li>
+    <ul>
+        <li><b>Internal Data Structure:</b> Uses a <b>hash table</b> like <b>HashMap</b>, but it maintains a linked list of the entries to preserve insertion order.</li>
+        <li><b>Order:</b> Maintains the **insertion order** of keys (or **access order** if specified during construction).</li>
+        <li><b>Performance:</b> Slightly slower than <b>HashMap</b> because of the overhead of maintaining the order. However, its <b>get</b> and <b>put</b> operations are still <b>O(1)</b>.</li>
+        <li><b>Null Keys and Values:</b> Similar to <b>HashMap</b>, allows one <b>null</b> key and multiple <b>null</b> values.</li>
+    </ul>
+
+    <li><b>TreeMap</b>:</li>
+    <ul>
+        <li><b>Internal Data Structure:</b> Uses a **Red-Black tree** (a balanced binary search tree) to store key-value pairs.</li>
+        <li><b>Order:</b> Maintains the keys in **sorted order** based on their natural ordering or according to a <b>Comparator</b> provided at the time of creation.</li>
+        <li><b>Performance:</b> Provides <b>O(log n)</b> time complexity for <b>get</b> and <b>put</b> operations due to the underlying tree structure.</li>
+        <li><b>Null Keys and Values:</b> Does not allow <b>null</b> keys, but allows <b>null</b> values.</li>
+    </ul>
+
+    <li><b>Summary of Key Differences:</b></li>
+    <ul>
+        <li><b>HashMap:</b> Fast, no order, allows one <b>null</b> key.</li>
+        <li><b>LinkedHashMap:</b> Maintains insertion order or access order, slightly slower than <b>HashMap</b>.</li>
+        <li><b>TreeMap:</b> Maintains sorted order of keys, slower than both <b>HashMap</b> and <b>LinkedHashMap</b> due to <b>O(log n)</b> operations.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMImpl">
+  <h5>What is the <b>internal structure of HashMap</b> in Java 17?</h5>
+
+<ul>
+    <li><b>HashMap Internal Structure:</b></li>
+    <ul>
+        <li><b>HashMap</b> in Java 17 is based on an array of **buckets** (an array of **Entry** objects) and **hashing** to store key-value pairs.</li>
+        <li>Each **bucket** stores a linked list or a balanced tree structure (in case of hash collisions) that holds multiple entries for the same hash value.</li>
+    </ul>
+
+    <li><b>Hashing Process:</b></li>
+    <ul>
+        <li>Each key is hashed using its <b>hashCode()</b> method, and the hash value is used to determine the index (or bucket) in the internal array.</li>
+        <li>The position within the array is calculated using the formula:
+            <pre>index = hash(key) % array.length</pre></li>
+    </ul>
+
+    <li><b>Bucket Structure:</b></li>
+    <ul>
+        <li>When two or more keys hash to the same bucket index, a **linked list** or **tree** is used to store those key-value pairs.</li>
+        <li>In Java 17, if the number of elements in a bucket exceeds a certain threshold (TREEIFY_THRESHOLD), the list is converted into a **balanced red-black tree** for efficient lookups and insertions (O(log n)).</li>
+    </ul>
+
+    <li><b>Handling Collisions:</b></li>
+    <ul>
+        <li><b>Chaining:</b> In case of a hash collision, the **LinkedList** or **TreeNode** is used to store multiple entries at the same bucket index.</li>
+        <li>In Java 17, a **bucket** will use a **tree** structure for collision resolution when the bucket exceeds a size of **8** entries (by default). Otherwise, it remains as a linked list.</li>
+    </ul>
+
+    <li><b>Rehashing:</b></li>
+    <ul>
+        <li>If the number of elements in the **HashMap** exceeds a certain load factor (e.g., 0.75), the capacity of the internal array is **doubled** (rehashing) to maintain efficient performance.</li>
+    </ul>
+
+    <li><b>Performance:</b></li>
+    <ul>
+        <li>**Average Case**: Lookup, insert, and delete operations are expected to be **O(1)** in the average case, thanks to direct indexing of the array and the efficient collision handling mechanism (linked list or balanced tree).</li>
+        <li>**Worst Case**: In case of excessive collisions, where many keys hash to the same index, the worst-case performance could degrade to **O(n)** (with a linked list). However, in Java 17, collisions are handled more efficiently with the introduction of **red-black trees**, limiting the worst-case complexity to **O(log n)**.</li>
+    </ul>
+
+    <li><b>Summary of Key Points:</b></li>
+    <ul>
+        <li>In Java 17, **HashMap** uses an array of buckets, with each bucket storing either a linked list or a red-black tree to resolve hash collisions efficiently.</li>
+        <li>The hashing process determines the bucket where a key-value pair will be placed, and collision resolution uses either a linked list or a balanced tree depending on the number of elements in a bucket.</li>
+        <li>Rehashing is performed when the load factor threshold is exceeded to maintain the performance of the HashMap.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMColl">
+  <h5>How does <b>HashMap</b> handle collisions?</h5>
+
+<ul>
+    <li><b>Collision in HashMap:</b></li>
+    <ul>
+        <li>A collision occurs when two keys produce the same hash code, and they map to the same bucket in the internal array of the <b>HashMap</b>.</li>
+        <li>By default, <b>HashMap</b> uses the <code>hashCode()</code> method of the key to compute its hash code, and this value is used to determine the bucket where the key-value pair will be stored.</li>
+    </ul>
+
+    <li><b>Collision Handling Mechanism:</b></li>
+    <ul>
+        <li><b>Linked List Method:</b> When a collision occurs (i.e., two keys map to the same bucket), <b>HashMap</b> stores multiple key-value pairs in a linked list within that bucket.</li>
+        <li><b>Each element in the linked list</b> contains a key-value pair and a reference to the next element (if there are multiple entries in the same bucket).</li>
+    </ul>
+
+    <li><b>Tree-based Bucket (Since Java 8):</b></li>
+    <ul>
+        <li>Starting from Java 8, if the number of entries in a bucket exceeds a certain threshold (8 by default), <b>HashMap</b> replaces the linked list with a balanced binary search tree (BST) for better performance.</li>
+        <li>The tree structure allows for faster searching (logarithmic time complexity) compared to a linked list, which has linear time complexity.</li>
+    </ul>
+
+    <li><b>Key Considerations:</b></li>
+    <ul>
+        <li>Collision resolution is key to maintaining the performance of the <b>HashMap</b>. The fewer the collisions, the faster the operations (add, remove, get) will be.</li>
+        <li>If the <b>hashCode()</b> method of the key class is poorly designed (e.g., returning the same hash code for different keys), the performance can degrade significantly, leading to long chains or even trees in a single bucket.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>HashMap</b> handles collisions by using a linked list in each bucket, and from Java 8 onwards, it can use a balanced binary search tree for buckets with a high number of entries to maintain efficient performance.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMLF">
+  <h5>What is the <b>load factor in HashMap</b>, and how does it impact performance?</h5>
+
+<ul>
+    <li><b>Load Factor Definition:</b></li>
+    <ul>
+        <li>The <b>load factor</b> in a <code>HashMap</code> is a measure that determines when to increase the capacity of the map.</li>
+        <li>It is the threshold at which the map will resize its internal array (or resize the number of buckets) to maintain efficient performance.</li>
+        <li>The default load factor in <code>HashMap</code> is 0.75, meaning when the number of entries exceeds 75% of the current capacity, the map will resize.</li>
+    </ul>
+
+    <li><b>Impact of Load Factor on Performance:</b></li>
+    <ul>
+        <li><b>Resize Operations:</b> When the load factor is exceeded, <code>HashMap</code> performs a resize, which involves rehashing the keys and placing them into new buckets. This is a relatively expensive operation.</li>
+        <li><b>Higher Load Factor:</b> If the load factor is set to a higher value (e.g., 0.9), the <code>HashMap</code> will resize less frequently, which may improve memory usage efficiency. However, it can cause more collisions, leading to longer lookup times for entries.</li>
+        <li><b>Lower Load Factor:</b> If the load factor is set to a lower value (e.g., 0.5), the map will resize more frequently, resulting in better performance for lookup operations. However, it uses more memory because it creates more buckets upfront.</li>
+    </ul>
+
+    <li><b>Default Load Factor:</b></li>
+    <ul>
+        <li>The default load factor of 0.75 provides a good trade-off between memory usage and performance, balancing the number of resize operations and lookup performance.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li>The <b>load factor</b> in a <code>HashMap</code> directly affects its resizing behavior, which in turn impacts memory usage and performance (lookup and insertion times).</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="CHM">
+  <h5>Why should you use <b>ConcurrentHashMap</b> instead of <b>HashMap</b> in a multi-threaded environment?</h5>
+
+<ul>
+    <li><b>Thread Safety:</b></li>
+    <ul>
+        <li><b>ConcurrentHashMap</b> is designed for **concurrent access** by multiple threads. It allows multiple threads to read and write to the map concurrently without causing inconsistencies or data corruption.</li>
+        <li><b>HashMap</b> is not thread-safe. If multiple threads access a <b>HashMap</b> concurrently and at least one thread modifies the map, it can lead to unpredictable behavior and data corruption.</li>
+    </ul>
+
+    <li><b>Locking Mechanism:</b></li>
+    <ul>
+        <li><b>ConcurrentHashMap</b> uses a technique called **segmented locking** (or **bucket-level locking**). The map is divided into several segments, and each segment can be locked independently, allowing multiple threads to access different segments concurrently.</li>
+        <li><b>HashMap</b> does not have any locking mechanism. If multiple threads modify the map, the entire map might need to be synchronized externally, which can lead to performance bottlenecks.</li>
+    </ul>
+
+    <li><b>Performance:</b></li>
+    <ul>
+        <li><b>ConcurrentHashMap</b> offers higher **performance** in multi-threaded environments because it allows threads to work concurrently on different segments without blocking each other, minimizing contention.</li>
+        <li><b>HashMap</b> may suffer from performance issues in multi-threaded environments, especially when using synchronization mechanisms like **synchronized blocks or methods**, which can cause threads to block each other.</li>
+    </ul>
+
+    <li><b>Atomic Operations:</b></li>
+    <ul>
+        <li><b>ConcurrentHashMap</b> supports atomic operations, like <code>putIfAbsent</code>, <code>replace</code>, and <code>remove</code>, which allow you to perform certain actions on the map in an atomic and thread-safe manner without needing additional synchronization.</li>
+        <li><b>HashMap</b> does not provide such atomic operations, and you would have to manually synchronize operations if you want to ensure thread-safety for specific actions.</li>
+    </ul>
+
+    <li><b>Use Case:</b></li>
+    <ul>
+        <li><b>ConcurrentHashMap</b> is ideal for scenarios where you have **frequent concurrent reads and writes** from multiple threads, such as in a multi-threaded web application or a highly concurrent server environment.</li>
+        <li><b>HashMap</b> is suitable in single-threaded scenarios or when external synchronization is used to make it thread-safe, but it's not recommended in multi-threaded environments due to its lack of built-in synchronization mechanisms.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>ConcurrentHashMap</b> provides built-in thread-safety, better performance in multi-threaded environments, and atomic operations, making it the preferred choice for concurrent applications. <b>HashMap</b> is not thread-safe and should not be used in multi-threaded environments without external synchronization.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMCHM">
+  <h5>What is the difference between <b>HashMap</b> and <b>ConcurrentHashMap</b>?</h5>
+
+<ul>
+    <li><b>Thread Safety:</b></li>
+    <ul>
+        <li><b>HashMap</b> is not thread-safe, meaning it is not designed to handle concurrent access from multiple threads. If multiple threads modify the map simultaneously, it can lead to inconsistent state or exceptions.</li>
+        <li><b>ConcurrentHashMap</b> is thread-safe and designed for concurrent access. It allows multiple threads to read and update the map without locking the entire map, improving performance in multi-threaded environments.</li>
+    </ul>
+
+    <li><b>Synchronization:</b></li>
+    <ul>
+        <li><b>HashMap</b> uses no synchronization. If thread safety is required, the programmer must manually synchronize the map or use a wrapper like <b>Collections.synchronizedMap()</b>.</li>
+        <li><b>ConcurrentHashMap</b> uses fine-grained locking. It allows multiple threads to work on different segments of the map at the same time, making it more efficient in high-concurrency scenarios.</li>
+    </ul>
+
+    <li><b>Performance:</b></li>
+    <ul>
+        <li><b>HashMap</b> performs better in a single-threaded scenario because there is no overhead of synchronization.</li>
+        <li><b>ConcurrentHashMap</b> might perform slower than <b>HashMap</b> in a single-threaded environment due to the additional synchronization mechanisms in place to ensure thread safety.</li>
+    </ul>
+
+    <li><b>Null Keys and Values:</b></li>
+    <ul>
+        <li><b>HashMap</b> allows **one null key** and multiple **null values**.</li>
+        <li><b>ConcurrentHashMap</b> does not allow **null keys** or **null values** to prevent ambiguity in concurrent operations.</li>
+    </ul>
+
+    <li><b>Usage Context:</b></li>
+    <ul>
+        <li><b>HashMap</b> is ideal when thread safety is not a concern, or if thread safety is managed manually.</li>
+        <li><b>ConcurrentHashMap</b> is preferred when dealing with high concurrency and multiple threads accessing or modifying the map simultaneously.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>HashMap</b> is non-thread-safe and faster in single-threaded contexts, but not suitable for concurrent access without external synchronization.</li>
+        <li><b>ConcurrentHashMap</b> is thread-safe, designed for concurrent access, but may have a slight performance overhead due to the fine-grained locking mechanism.</li>
+    </ul>
+</ul>
+</div>
+<hr>
+
+<div id="WHM">
+  <h5>How does <b>WeakHashMap</b> work, and when should it be used?</h5>
+
+<ul>
+    <li><b>WeakHashMap Overview:</b></li>
+    <ul>
+        <li><b>WeakHashMap</b> is a map implementation in Java where the keys are stored as weak references. This means that the garbage collector can reclaim the memory used by the keys if there are no strong references to them.</li>
+        <li>In a <b>WeakHashMap</b>, the value objects are held using regular references (strong references), but the keys are weakly referenced. This allows entries to be automatically removed from the map when the key is no longer referenced outside the map.</li>
+    </ul>
+
+    <li><b>How WeakHashMap Works:</b></li>
+    <ul>
+        <li>When an entry's key is no longer referenced anywhere else in the program (except for the map), the garbage collector can collect the key and the associated value.</li>
+        <li>This is unlike a regular <b>HashMap</b>, where the entry remains in the map until it is explicitly removed, regardless of whether the key is being used elsewhere.</li>
+    </ul>
+
+    <li><b>When to Use WeakHashMap:</b></li>
+    <ul>
+        <li><b>Cache-like behavior:</b> <b>WeakHashMap</b> is commonly used for caching scenarios where you want to store temporary data but don't want the map to prevent objects from being garbage collected when they are no longer in use.</li>
+        <li><b>Listener patterns:</b> In scenarios where objects act as listeners or handlers, and you want the map to automatically clean up when the listener object is no longer in use.</li>
+        <li><b>Memory-sensitive applications:</b> If your application must manage memory carefully and automatically reclaim memory used by unused keys without manual intervention.</li>
+    </ul>
+
+    <li><b>Example Use Case:</b></li>
+    <ul>
+        <li>Consider a scenario where you're storing references to user session data. If a user session is no longer in use (i.e., no strong references remain to the session key), the session data should be automatically cleaned up. A <b>WeakHashMap</b> is ideal for such use cases because it allows session data to be garbage collected when the session is no longer referenced.</li>
+    </ul>
+
+    <li><b>Key Considerations:</b></li>
+    <ul>
+        <li><b>WeakHashMap</b> should be used carefully, as objects in the map may disappear unexpectedly if their keys are garbage collected. This may lead to unexpected behaviors in the application.</li>
+        <li>It is important to note that the map doesn't guarantee when or if a key will be garbage collected, so developers need to account for possible removal of entries without explicit removal requests.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMNull">
+  <h5>Why does <b>HashMap</b> allow one null key but multiple null values?</h5>
+
+<ul>
+    <li><b>Null Key:</b></li>
+    <ul>
+        <li>In <b>HashMap</b>, only one null key is allowed because the key's hash code is used to determine the bucket where the entry is stored. However, the hash code of null is undefined, meaning that there is no specific bucket for multiple null keys.</li>
+        <li>If <b>HashMap</b> allowed more than one null key, it would be impossible to differentiate between them based on the hash code alone, leading to ambiguity in the map's structure.</li>
+    </ul>
+
+    <li><b>Null Values:</b></li>
+    <ul>
+        <li><b>HashMap</b> allows multiple null values because the values are stored independently from the keys, and the map does not rely on a value's hash code for placement in the map.</li>
+        <li>The map only needs to ensure that the keys are unique, but it has no restriction on how many values can be null since they are not involved in the hash-based placement of entries.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>HashMap</b> allows one null key because there can only be one hash code for null, while it allows multiple null values because the values are not involved in the key's hash-based placement.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMSize">
+  <h5>Explain the <b>resize()</b> operation in HashMap</h5>
+
+<ul>
+    <li><b>resize()</b> is an internal operation in <code>HashMap</code> that occurs when the number of entries exceeds a certain threshold (i.e., the load factor). This operation increases the capacity of the map to ensure that it maintains optimal performance.</li>
+    
+    <li><b>When does resize() occur?</b></li>
+    <ul>
+        <li>By default, a <code>HashMap</code> starts with an initial capacity of 16 and a load factor of 0.75. This means when the number of entries reaches 75% of the current capacity, the <b>resize()</b> operation is triggered.</li>
+        <li>For example, if the initial capacity is 16, the <b>resize()</b> operation occurs when there are 12 entries in the map (16 * 0.75 = 12).</li>
+    </ul>
+
+    <li><b>How does resize() work?</b></li>
+    <ul>
+        <li>The <b>resize()</b> operation involves creating a new, larger internal array to store the entries. The new size is typically doubled (i.e., the capacity is increased by 2 times).</li>
+        <li>After resizing, the existing entries are rehashed and placed into the new array. The rehashing involves recalculating the hash codes of the keys and distributing them into the new buckets.</li>
+    </ul>
+
+    <li><b>Effect of resize() on performance</b></li>
+    <ul>
+        <li>Resize operations can be expensive because they require creating a new array and rehashing all the entries, which takes time proportional to the number of entries in the map (i.e., O(n) time complexity).</li>
+        <li>This can cause temporary performance degradation, especially when many entries are added in a short time.</li>
+    </ul>
+
+    <li><b>Key Points to Remember:</b></li>
+    <ul>
+        <li>The <b>resize()</b> operation ensures that the <code>HashMap</code> maintains a good balance between time complexity and space usage by adjusting the capacity.</li>
+        <li>It is triggered when the map exceeds the threshold determined by the load factor.</li>
+        <li>Although resizing is necessary for efficient operation, it can have a performance impact due to the rehashing process.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMScenario">
+  <h5>You need to implement a <b>caching mechanism</b> for a high-traffic website. Which Map implementation will you use?</h5>
+
+<ul>
+    <li><b>Best Map Implementation: <code>LinkedHashMap</code></b></li>
+    <ul>
+        <li><code>LinkedHashMap</code> is the best choice for implementing a caching mechanism where you need to store key-value pairs while maintaining the insertion order.</li>
+        <li>It uses a hash table with a linked list to maintain the order of elements. This allows for efficient access and insertion while keeping the order intact.</li>
+    </ul>
+
+    <li><b>Why <code>LinkedHashMap</code> is Ideal for Caching:</b></li>
+    <ul>
+        <li><b>Access Order:</b> <code>LinkedHashMap</code> provides an option to maintain access order (via constructor parameter), which is crucial for **Least Recently Used (LRU)** caching. When the cache reaches its size limit, you can easily evict the least recently used entry.</li>
+        <li><b>Efficiency:</b> Operations like **put**, **get**, and **remove** are typically performed in constant time (O(1)) under most circumstances, making it efficient for a high-traffic website.</li>
+    </ul>
+
+    <li><b>Why Not Other Map Implementations?</b></li>
+    <ul>
+        <li><b><code>HashMap</code>:</b> While <code>HashMap</code> is fast, it doesn't maintain any order (neither insertion nor access order). For caching where order matters (like LRU caching), <code>LinkedHashMap</code> is better suited.</li>
+        <li><b><code>TreeMap</code>:</b> It maintains a natural ordering of the keys or custom order based on a comparator. However, this introduces overhead due to sorting, which is not necessary for a caching mechanism where quick access is more important than sorting.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><code>LinkedHashMap</code> is the optimal choice for a <b>caching mechanism</b> on a high-traffic website, especially if you need to maintain **insertion or access order** for eviction purposes, such as in an LRU cache.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMLRU">
+  <h5>You are designing an <b>LRU Cache</b> for an e-commerce platform. Which Map implementation is suitable?</h5>
+
+<ul>
+    <li><b>Best Map Implementation: <code>LinkedHashMap</code></b></li>
+    <ul>
+        <li><code>LinkedHashMap</code> is the best choice for implementing an LRU (Least Recently Used) Cache.</li>
+        <li>It maintains the **insertion order** or **access order** depending on the constructor used.</li>
+        <li>By setting the access order to <code>true</code> when creating the map, <code>LinkedHashMap</code> automatically maintains the order in which the entries were last accessed. This is essential for an LRU Cache.</li>
+    </ul>
+
+    <li><b>Why <code>LinkedHashMap</code> is Ideal for LRU Cache:</b></li>
+    <ul>
+        <li>It allows fast access and insertion of elements (O(1) time complexity for get and put operations).</li>
+        <li>Using <code>LinkedHashMap</code> with access order enabled automatically keeps track of the most recently accessed elements, which helps in efficiently evicting the least recently used items.</li>
+        <li>When the cache exceeds its size limit, you can easily remove the oldest (least recently used) element by iterating over the linked list maintained by the map.</li>
+    </ul>
+
+    <li><b>Why Not Other Map Implementations?</b></li>
+    <ul>
+        <li><code>HashMap</code>: While it provides fast access, it does not maintain any order, making it unsuitable for LRU cache implementations where the access order is critical.</li>
+        <li><code>TreeMap</code>: Although it maintains elements in a sorted order, it adds unnecessary complexity and overhead for the LRU use case since sorting is not needed in LRU cache systems.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><code>LinkedHashMap</code> with access order enabled is the most suitable map implementation for designing an LRU cache, as it efficiently maintains the order of access and allows for fast eviction of least recently used elements.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="HMScenario1">
+  <h5>In a <b>trading system</b>, you need to store <b>orders with unique IDs sorted by timestamp</b>. Which Map will you use?</h5>
+
+<ul>
+    <li><b>Best Map Implementation: <code>TreeMap</code></b></li>
+    <ul>
+        <li><code>TreeMap</code> is the ideal choice when you need to store key-value pairs that are sorted according to the natural order of the keys or a custom comparator.</li>
+        <li><code>TreeMap</code> is a Red-Black tree-based implementation of the <code>Map</code> interface, which maintains the order of elements by their keys.</li>
+    </ul>
+
+    <li><b>Why <code>TreeMap</code> is Ideal for Orders Sorted by Timestamp:</b></li>
+    <ul>
+        <li>The orders can be sorted by their timestamp (which can be the key in the map), and <code>TreeMap</code> will keep the entries sorted automatically.</li>
+        <li>Each order will have a unique ID (the value), and the keys will be the timestamps. With this, you can efficiently retrieve the order by its timestamp or range of timestamps.</li>
+        <li><code>TreeMap</code> ensures that the orders are always ordered, which is crucial for a trading system that requires fast access to orders based on their timestamp.</li>
+    </ul>
+
+    <li><b>Why Not Other Map Implementations?</b></li>
+    <ul>
+        <li><b><code>HashMap</code></b>: While it provides fast insertion and retrieval (O(1) average time complexity), it does not maintain any order. Since orders need to be sorted by timestamp, <code>HashMap</code> is not suitable.</li>
+        <li><b><code>LinkedHashMap</code></b>: Although it maintains the insertion order, it does not sort the keys by timestamp. It may be suitable for cases where you want to maintain the order of insertion but not sorting by timestamp.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><code>TreeMap</code> is the optimal choice for storing orders with unique IDs sorted by timestamp, as it automatically maintains the order of the keys.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="CustomHM">
+  <h5>How would you <b>implement your own custom HashMap</b>?</h5>
+
+<ul>
+    <li><b>Overview of Custom HashMap Implementation:</b></li>
+    <ul>
+        <li>A custom HashMap can be implemented by creating a class with an array of "buckets," where each bucket is a list or linked list to handle collisions.</li>
+        <li>Each key-value pair will be stored in a "bucket" that corresponds to the hash value of the key. The hash value determines the index of the bucket.</li>
+    </ul>
+
+    <li><b>Steps to Implement Custom HashMap:</b></li>
+    <ul>
+        <li><b>Step 1: Create a HashMap Class</b></li>
+        <ul>
+            <li>Define a class for your HashMap with an array (or list) of buckets. Each bucket stores a linked list of entries.</li>
+            <li>Each entry will store a key-value pair.</li>
+        </ul>
+
+        <li><b>Step 2: Define a Hash Function</b></li>
+        <ul>
+            <li>Implement a hash function to calculate the index for a given key. You can use the key's hashCode method to generate the hash value.</li>
+            <li>The hash value should be modulo the number of buckets to map the key to the appropriate bucket index.</li>
+        </ul>
+
+        <li><b>Step 3: Handle Collisions</b></li>
+        <ul>
+            <li>Use a linked list (or another data structure like a balanced tree) to handle collisions in the same bucket.</li>
+            <li>If two keys have the same hash code and therefore map to the same bucket, store them as separate entries in the linked list.</li>
+        </ul>
+
+        <li><b>Step 4: Implement Basic Operations</b></li>
+        <ul>
+            <li>Define methods like <b>put(key, value)</b>, <b>get(key)</b>, <b>remove(key)</b>, and <b>containsKey(key)</b>:</li>
+            <ul>
+                <li><b>put(key, value)</b>: Compute the hash value, map it to the corresponding bucket, and store the key-value pair. If the key already exists, replace the old value.</li>
+                <li><b>get(key)</b>: Compute the hash value, access the appropriate bucket, and search for the key in that bucket. Return the value if found.</li>
+                <li><b>remove(key)</b>: Compute the hash value, locate the bucket, and remove the key-value pair from the linked list if the key exists.</li>
+                <li><b>containsKey(key)</b>: Compute the hash value and check if the key exists in the corresponding bucket.</li>
+            </ul>
+        </ul>
+
+        <li><b>Step 5: Resize the HashMap (Optional)</b></li>
+        <ul>
+            <li>If the number of elements in the HashMap exceeds a certain threshold (e.g., 75% of the total capacity), resize the HashMap by increasing the number of buckets and rehashing the existing entries to new buckets.</li>
+        </ul>
+
+        <li><b>Step 6: Testing and Debugging</b></li>
+        <ul>
+            <li>Test the HashMap implementation thoroughly to ensure it handles collisions, resizes, and provides correct behavior for put, get, remove, and containsKey methods.</li>
+        </ul>
+    </ul>
+
+    <li><b>Example Code of Custom HashMap:</b></li>
+    <ul>
+        <li>
+            <pre>
+                class CustomHashMap<K, V> {
+                    private class Entry {
+                        K key;
+                        V value;
+                        Entry next;
+
+                        Entry(K key, V value) {
+                            this.key = key;
+                            this.value = value;
+                        }
+                    }
+
+                    private Entry[] buckets;
+                    private int size;
+
+                    public CustomHashMap(int capacity) {
+                        buckets = new Entry[capacity];
+                        size = 0;
+                    }
+
+                    private int hash(K key) {
+                        return key.hashCode() % buckets.length;
+                    }
+
+                    public void put(K key, V value) {
+                        int index = hash(key);
+                        Entry entry = buckets[index];
+
+                        // If bucket is empty, create a new entry
+                        if (entry == null) {
+                            buckets[index] = new Entry(key, value);
+                        } else {
+                            // Check if key already exists, and update value
+                            while (entry != null) {
+                                if (entry.key.equals(key)) {
+                                    entry.value = value;
+                                    return;
+                                }
+                                entry = entry.next;
+                            }
+                            // Insert the new entry at the head of the linked list
+                            Entry newEntry = new Entry(key, value);
+                            newEntry.next = buckets[index];
+                            buckets[index] = newEntry;
+                        }
+                        size++;
+                    }
+
+                    public V get(K key) {
+                        int index = hash(key);
+                        Entry entry = buckets[index];
+
+                        while (entry != null) {
+                            if (entry.key.equals(key)) {
+                                return entry.value;
+                            }
+                            entry = entry.next;
+                        }
+                        return null;
+                    }
+
+                    public boolean containsKey(K key) {
+                        int index = hash(key);
+                        Entry entry = buckets[index];
+
+                        while (entry != null) {
+                            if (entry.key.equals(key)) {
+                                return true;
+                            }
+                            entry = entry.next;
+                        }
+                        return false;
+                    }
+
+                    public V remove(K key) {
+                        int index = hash(key);
+                        Entry entry = buckets[index];
+                        Entry previous = null;
+
+                        while (entry != null) {
+                            if (entry.key.equals(key)) {
+                                if (previous == null) {
+                                    buckets[index] = entry.next;
+                                } else {
+                                    previous.next = entry.next;
+                                }
+                                size--;
+                                return entry.value;
+                            }
+                            previous = entry;
+                            entry = entry.next;
+                        }
+                        return null;
+                    }
+                }
+            </pre>
+        </li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="QI">
+  <h5>Queue Interface:</h5>
+  <p>The <code>Queue</code> interface is part of the <code>java.util</code> package and represents a collection designed for holding elements prior to processing. It is used to model data structures like queues where elements are processed in a First-In-First-Out (FIFO) order. The <code>Queue</code> interface extends the <code>Collection</code> interface and provides methods to add, remove, and examine elements in the queue.</p>
+
+  <p><strong>Key Features of the Queue Interface:</strong></p>
+  <ul>
+    <li><strong>FIFO Order:</strong> Elements are processed in the order they are added (first-in, first-out).</li>
+    <li><strong>Operations:</strong> Common operations include <code>offer()</code> to add, <code>poll()</code> to remove, and <code>peek()</code> to view the front element.</li>
+    <li><strong>Blocking and Non-blocking Methods:</strong> Some implementations support blocking methods like <code>take()</code> and <code>put()</code> for thread-safe operations.</li>
+  </ul>
+
+  <p><strong>Common Implementations of the Queue Interface:</strong></p>
+  <ul>
+    <li><code>LinkedList</code>: A general-purpose implementation of the <code>Queue</code> interface.</li>
+    <li><code>PriorityQueue</code>: A queue where elements are ordered based on their priority (not strictly FIFO).</li>
+    <li><code>ArrayBlockingQueue</code>: A thread-safe, bounded queue implementation for concurrent programming.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="QS">
+  <h5>What is the difference between <b>Queue and Stack</b>?</h5>
+
+<ul>
+    <li><b>Queue:</b></li>
+    <ul>
+        <li>A Queue follows the <b>First-In-First-Out (FIFO)</b> principle, meaning the element added first will be removed first.</li>
+        <li>It is like a queue in real life (e.g., a line at a ticket counter), where the first person in line is the first one to be served.</li>
+        <li>Common methods: <code>offer()</code>, <code>poll()</code>, <code>peek()</code>.</li>
+        <li>Used when tasks are processed in the order they are received, such as in task scheduling, message processing, and print queues.</li>
+    </ul>
+
+    <li><b>Stack:</b></li>
+    <ul>
+        <li>A Stack follows the <b>Last-In-First-Out (LIFO)</b> principle, meaning the element added last will be removed first.</li>
+        <li>It is like a stack of plates, where the last plate placed on the stack is the first one to be removed.</li>
+        <li>Common methods: <code>push()</code>, <code>pop()</code>, <code>peek()</code>.</li>
+        <li>Used in scenarios like undo operations, function calls, and depth-first search algorithms.</li>
+    </ul>
+
+    <li><b>Key Differences:</b></li>
+    <ul>
+        <li><b>Order of Processing:</b> Queue follows FIFO, Stack follows LIFO.</li>
+        <li><b>Real-World Analogy:</b> Queue is like a line of people waiting for a service; Stack is like a stack of plates where the last plate placed is the first one to be used.</li>
+        <li><b>Methods:</b> Queue provides methods like <code>offer()</code>, <code>poll()</code>, and <code>peek()</code>, while Stack provides <code>push()</code>, <code>pop()</code>, and <code>peek()</code>.</li>
+        <li><b>Use Cases:</b> Queue is used in task scheduling, print queues, and asynchronous processing, while Stack is used in undo features, recursion, and depth-first search.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="PQ">
+  <h5>How does <b>PriorityQueue</b> work internally?</h5>
+
+<ul>
+    <li><b>Internal Data Structure:</b></li>
+    <ul>
+        <li><b>PriorityQueue</b> is backed by a binary heap, specifically a **min-heap** by default. The heap structure ensures that the element with the highest priority (or the smallest element in the case of a min-heap) is always at the root of the heap.</li>
+        <li>The heap is implemented as an array, and the parent-child relationships are maintained by the indices in this array. For an element at index i:
+            <ul>
+                <li>The left child is at index 2*i + 1.</li>
+                <li>The right child is at index 2*i + 2.</li>
+                <li>The parent is at index (i - 1) / 2.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <li><b>Priority Queue Operations:</b></li>
+    <ul>
+        <li><b>add(E e)</b>: Adds an element to the queue. The new element is placed at the end of the heap (array), and then the heap property is restored by "bubbling up" the element to its correct position.</li>
+        <li><b>remove()</b>: Removes the root element (the element with the highest priority). The last element in the heap is moved to the root position, and the heap property is restored by "bubbling down" this element until the heap is in a valid state again.</li>
+        <li><b>peek()</b>: Returns the root element without removing it, allowing you to view the highest-priority element without altering the queue.</li>
+        <li><b>poll()</b>: Removes and returns the root element, similar to <b>remove()</b>, but it returns null if the queue is empty, rather than throwing an exception.</li>
+    </ul>
+
+    <li><b>Heap Property:</b></li>
+    <ul>
+        <li>The heap always maintains a specific property where the priority (value) of the parent node is always either greater than or less than the values of its children. In a min-heap, the root always holds the smallest value, and in a max-heap, the root holds the largest value.</li>
+        <li>This property allows the <b>PriorityQueue</b> to efficiently access the highest-priority element in **O(1)** time and perform insertions and deletions in **O(log n)** time.</li>
+    </ul>
+
+    <li><b>Custom Ordering:</b></li>
+    <ul>
+        <li><b>PriorityQueue</b> by default uses natural ordering (ascending order) if the elements are comparable, but you can provide a custom comparator to change the priority order.</li>
+        <li>If a comparator is provided, the queue will arrange elements based on the comparator’s ordering instead of their natural order.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>PriorityQueue</b> is backed by a binary heap, offering efficient priority-based element insertion and removal.</li>
+        <li>Operations like add, remove, and poll take **O(log n)** time, while peeking the highest priority element takes **O(1)** time.</li>
+        <li>The queue supports both natural ordering and custom comparators to define the priority of elements.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="ADQLDQ">
+  <h5>How does <b>ArrayDeque</b> differ from <b>LinkedList-based Deque</b>?</h5>
+
+<ul>
+    <li><b>Internal Data Structure:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> is backed by a dynamic array, whereas <b>LinkedList-based Deque</b> is backed by a doubly linked list.</li>
+    </ul>
+
+    <li><b>Performance of Operations:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> provides faster access and modification of elements at both ends, with **amortized constant time complexity** (O(1)) for operations like **addFirst()**, **addLast()**, **removeFirst()**, and **removeLast()**.</li>
+        <li><b>LinkedList-based Deque</b> also offers constant time complexity for these operations, but due to the overhead of managing node pointers, it may have slightly more memory usage and overhead for some cases.</li>
+    </ul>
+
+    <li><b>Memory Usage:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> uses less memory compared to <b>LinkedList-based Deque</b> because it stores elements in a contiguous array with no extra memory needed for links between nodes.</li>
+        <li><b>LinkedList-based Deque</b> requires additional memory for the **previous** and **next** node pointers along with the actual data, making it more memory-intensive.</li>
+    </ul>
+
+    <li><b>Resizing and Capacity:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> dynamically resizes the underlying array when the capacity is exceeded. This resizing may incur a **costly time complexity** during resizing (O(n)), but amortized over time, the time complexity remains O(1) for most operations.</li>
+        <li><b>LinkedList-based Deque</b> does not require resizing because it uses a linked structure where each element points to the next, so memory is allocated dynamically as needed without resizing costs.</li>
+    </ul>
+
+    <li><b>Use Case Suitability:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> is generally preferred when you have frequent **push** and **pop** operations at both ends of the deque, and **constant memory usage** is a priority.</li>
+        <li><b>LinkedList-based Deque</b> might be more appropriate when you require a **consistent** performance with complex node management (like using nodes in a broader linked structure), though it's less space-efficient than <b>ArrayDeque</b>.</li>
+    </ul>
+
+    <li><b>Null Elements:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> does not allow **null** elements. Trying to add null will result in a <code>NullPointerException</code>.</li>
+        <li><b>LinkedList-based Deque</b> allows null elements, so it's possible to insert **null** values if needed.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>ArrayDeque</b> is typically faster and more memory-efficient, especially for scenarios with frequent operations at both ends of the deque and without null element handling.</li>
+        <li><b>LinkedList-based Deque</b> provides more flexibility, allowing null elements, but at the cost of additional memory usage and slightly more overhead due to the linked structure.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="TSQ">
+  <h5>How would you implement a <b>Task Scheduler</b> using a Queue?</h5>
+
+<ul>
+    <li><b>Queue Choice: <code>PriorityQueue</code> or <code>LinkedList</code></b></li>
+    <ul>
+        <li>A <code>PriorityQueue</code> can be used if tasks need to be scheduled based on priority (e.g., high-priority tasks are executed first).</li>
+        <li>If the tasks are scheduled in the order they are added, a <code>LinkedList</code> (as a <code>Queue</code>) is a simple and efficient choice.</li>
+    </ul>
+
+    <li><b>Task Scheduler Implementation Steps:</b></li>
+    <ul>
+        <li><b>Step 1:</b> Define the task structure. A task can be represented by a class that includes task details, priority (if needed), and execution time.</li>
+        <li><b>Step 2:</b> Use a Queue to store the tasks. You can choose a <code>PriorityQueue</code> for priority-based scheduling or a simple <code>LinkedList</code> for FIFO scheduling.</li>
+        <li><b>Step 3:</b> Implement a method to add tasks to the queue. Tasks are added based on their priority or time of arrival.</li>
+        <li><b>Step 4:</b> Implement a method to process tasks from the queue. The task with the highest priority (or the first in line) will be processed first.</li>
+        <li><b>Step 5:</b> Set up a loop to continuously check the queue for tasks and execute them until all tasks are processed.</li>
+    </ul>
+
+    <li><b>Example Code using LinkedList as Queue:</b></li>
+    <ul>
+        <li>
+            <pre>
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Task {
+    String name;
+    int timeToExecute;
+
+    public Task(String name, int timeToExecute) {
+        this.name = name;
+        this.timeToExecute = timeToExecute;
+    }
+}
+
+public class TaskScheduler {
+    Queue<Task> taskQueue = new LinkedList<>();
+
+    public void addTask(Task task) {
+        taskQueue.add(task);
+        System.out.println("Task added: " + task.name);
+    }
+
+    public void processTasks() {
+        while (!taskQueue.isEmpty()) {
+            Task task = taskQueue.poll();
+            System.out.println("Processing task: " + task.name + " (Time to Execute: " + task.timeToExecute + "ms)");
+            try {
+                Thread.sleep(task.timeToExecute); // Simulate task execution time
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        TaskScheduler scheduler = new TaskScheduler();
+        scheduler.addTask(new Task("Task1", 2000));
+        scheduler.addTask(new Task("Task2", 1000));
+        scheduler.addTask(new Task("Task3", 1500));
+
+        scheduler.processTasks();
+    }
+}
+            </pre>
+        </li>
+    </ul>
+
+    <li><b>Explanation:</b></li>
+    <ul>
+        <li>The task scheduler uses a <code>LinkedList</code> as a queue where tasks are processed in the order they are added.</li>
+        <li>The <code>addTask</code> method adds tasks to the queue, and the <code>processTasks</code> method processes them one by one by calling <code>poll</code> to retrieve the next task and simulating its execution.</li>
+        <li>If you need priority-based scheduling, you can replace the <code>LinkedList</code> with a <code>PriorityQueue</code>, where tasks with higher priority are processed first.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="SyncConcu">
+  <h5>What are <b>synchronized collections vs concurrent collections</b>?</h5>
+
+<ul>
+    <li><b>Synchronized Collections:</b></li>
+    <ul>
+        <li>Synchronized collections are part of the <code>java.util.Collections</code> utility class and are thread-safe due to synchronization.</li>
+        <li>Each method in a synchronized collection is wrapped with the synchronized keyword, ensuring that only one thread can access the collection at a time.</li>
+        <li>Example: <code>Collections.synchronizedList(new ArrayList())</code></li>
+        <li>While synchronized collections are thread-safe, they may lead to performance issues due to the overhead of synchronization. Only one thread can access the collection at a time, which can cause contention and reduce concurrency.</li>
+        <li>Accessing the collection in multiple threads requires careful synchronization when iterating over it. It is recommended to manually synchronize on the collection while iterating.</li>
+    </ul>
+
+    <li><b>Concurrent Collections:</b></li>
+    <ul>
+        <li>Concurrent collections are part of the <code>java.util.concurrent</code> package and are designed for high-concurrency environments.</li>
+        <li>These collections are optimized for concurrent access by multiple threads without the need for explicit synchronization.</li>
+        <li>Examples: <code>CopyOnWriteArrayList</code>, <code>ConcurrentHashMap</code>, <code>BlockingQueue</code>, etc.</li>
+        <li>Concurrent collections provide better performance compared to synchronized collections because they allow multiple threads to work on different parts of the collection without blocking each other.</li>
+        <li>They internally manage locking or provide lock-free access to data to improve thread safety and avoid bottlenecks.</li>
+        <li>Unlike synchronized collections, concurrent collections handle thread safety at a finer level, allowing multiple threads to access independent parts of the collection concurrently.</li>
+    </ul>
+
+    <li><b>Key Differences:</b></li>
+    <ul>
+        <li><b>Synchronization:</b> Synchronized collections use synchronized methods, whereas concurrent collections use advanced techniques like fine-grained locking or lock-free data structures.</li>
+        <li><b>Performance:</b> Synchronized collections can suffer from performance degradation due to blocking, whereas concurrent collections are designed for better performance in highly concurrent environments.</li>
+        <li><b>Use Cases:</b> Synchronized collections are better for simpler, single-threaded scenarios, while concurrent collections are optimized for high-concurrency, multi-threaded environments.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li>Synchronized collections are a basic way to achieve thread-safety by wrapping collections in synchronized methods, while concurrent collections are more advanced and provide better performance in multi-threaded environments by allowing finer-grained concurrency control.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="COWA">
+  <h5>How does <b>CopyOnWriteArrayList</b> differ from a synchronized list?</h5>
+
+<ul>
+    <li><b>Internal Mechanism:</b></li>
+    <ul>
+        <li><b>CopyOnWriteArrayList</b> creates a copy of the array whenever it is modified (for example, when an element is added, removed, or replaced). This ensures that iterators can operate on a consistent, unchanging snapshot of the list, even when the list is being modified.</li>
+        <li><b>Synchronized list</b> (e.g., <code>Collections.synchronizedList(new ArrayList<>())</code>) simply synchronizes each method call (such as add, remove, etc.) using a lock. This ensures that only one thread can access the list at a time, but it doesn't provide thread-safe iteration without additional synchronization.</li>
+    </ul>
+
+    <li><b>Concurrency and Thread Safety:</b></li>
+    <ul>
+        <li><b>CopyOnWriteArrayList</b> is optimized for scenarios where reads are frequent and writes (modifications) are infrequent. It allows multiple threads to read the list without locking, which is highly beneficial in situations with many concurrent readers.</li>
+        <li><b>Synchronized list</b> ensures thread safety by synchronizing each method call. However, it might introduce contention, especially when multiple threads are attempting to modify the list concurrently.</li>
+    </ul>
+
+    <li><b>Performance:</b></li>
+    <ul>
+        <li><b>CopyOnWriteArrayList</b> provides better performance for situations where reads dominate because it doesn't require locking for reading. However, it comes with a performance penalty for writes, as it creates a new copy of the array on each modification.</li>
+        <li><b>Synchronized list</b> can have worse performance than <b>CopyOnWriteArrayList</b> in read-heavy scenarios because it locks the list for each operation, which can introduce contention when there are multiple threads trying to read or modify the list simultaneously.</li>
+    </ul>
+
+    <li><b>Iteration:</b></li>
+    <ul>
+        <li><b>CopyOnWriteArrayList</b> allows safe iteration even when the list is being modified concurrently, since it operates on a snapshot copy of the list.</li>
+        <li><b>Synchronized list</b> requires external synchronization during iteration to prevent concurrent modification exceptions, as the list is modified directly.</li>
+    </ul>
+
+    <li><b>Use Case:</b></li>
+    <ul>
+        <li><b>CopyOnWriteArrayList</b> is ideal for scenarios where reads significantly outnumber writes, and thread safety for iteration is important.</li>
+        <li><b>Synchronized list</b> is better when writes are frequent and thread safety is required for both reading and writing, but you need to manually synchronize iteration to avoid concurrent modification exceptions.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>CopyOnWriteArrayList</b> offers better performance for read-heavy, low-write scenarios with safe iteration, while a <b>synchronized list</b> provides thread safety but may suffer from performance degradation and requires additional synchronization during iteration.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="CHMHT">
+  <h5>How does <b>ConcurrentHashMap</b> handle concurrency differently than <b>HashTable</b>?</h5>
+
+<ul>
+    <li><b>Internal Locking Mechanism:</b></li>
+    <ul>
+        <li><b>HashTable</b> uses a single lock for the entire map, which means if one thread is accessing the map, other threads are blocked from accessing it, resulting in reduced concurrency.</li>
+        <li><b>ConcurrentHashMap</b> uses a finer-grained locking approach by splitting the map into segments (or buckets) and locking only a specific segment when a thread accesses it. This allows multiple threads to concurrently access different segments, improving overall concurrency.</li>
+    </ul>
+
+    <li><b>Thread Safety and Performance:</b></li>
+    <ul>
+        <li><b>HashTable</b> is fully synchronized at the method level, meaning every operation (put, get, remove) locks the entire map, which can cause significant performance degradation in multi-threaded scenarios with high contention.</li>
+        <li><b>ConcurrentHashMap</b> allows for higher performance in concurrent environments because it provides thread safety at a more granular level, allowing multiple threads to read and write concurrently without locking the whole map. This results in less contention and better scalability.</li>
+    </ul>
+
+    <li><b>Null Keys and Values:</b></li>
+    <ul>
+        <li><b>HashTable</b> does not allow null keys or null values. If you attempt to insert a null key or value, it throws a <b>NullPointerException</b>.</li>
+        <li><b>ConcurrentHashMap</b> does not allow null values, but it allows null keys. This is intentional to prevent ambiguity, as a null value can indicate that the key is not present, but null keys may have a specific use case in certain scenarios.</li>
+    </ul>
+
+    <li><b>Performance During High Contention:</b></li>
+    <ul>
+        <li><b>HashTable</b> degrades significantly under high contention because of the global lock, where only one thread can modify the map at a time.</li>
+        <li><b>ConcurrentHashMap</b> handles high contention better due to its segmented locking, allowing multiple threads to work concurrently with fewer performance hits even in heavily contended scenarios.</li>
+    </ul>
+
+    <li><b>Method Synchronization:</b></li>
+    <ul>
+        <li><b>HashTable</b> synchronizes every method in the class, which means every operation is thread-safe but can be slow.</li>
+        <li><b>ConcurrentHashMap</b> only synchronizes the operations that need to be thread-safe, allowing other operations like <b>get</b> and <b>containsKey</b> to run without locking and thus perform better in multi-threaded environments.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>HashTable</b> uses a global lock, is fully synchronized, and has performance limitations under high concurrency.</li>
+        <li><b>ConcurrentHashMap</b> provides finer-grained locking, allows for better concurrency, and is designed to work more efficiently in highly concurrent environments with less performance degradation.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="CSLM">
+  <h5>Why is <b>ConcurrentSkipListMap</b> useful in multi-threaded applications?</h5>
+
+<ul>
+    <li><b>Thread Safety:</b></li>
+    <ul>
+        <li><b>ConcurrentSkipListMap</b> is designed for use in multi-threaded environments and provides thread-safe operations without the need for explicit synchronization.</li>
+        <li>It allows multiple threads to safely access and modify the map concurrently, making it ideal for high-concurrency scenarios.</li>
+    </ul>
+
+    <li><b>Non-blocking Reads and Writes:</b></li>
+    <ul>
+        <li>The <b>ConcurrentSkipListMap</b> uses a lock-free mechanism that allows threads to perform non-blocking reads, which helps to reduce contention and increase overall performance in highly concurrent systems.</li>
+        <li>Read operations are highly optimized, ensuring minimal latency when accessing data.</li>
+    </ul>
+
+    <li><b>Ordered Data:</b></li>
+    <ul>
+        <li>Unlike other thread-safe maps (like <b>Hashtable</b>), <b>ConcurrentSkipListMap</b> maintains a natural ordering of its keys or can use a custom comparator.</li>
+        <li>This ordering is maintained even in a multi-threaded environment, making it useful for applications that need to perform range-based queries or iterate over sorted keys in a concurrent manner.</li>
+    </ul>
+
+    <li><b>Scalability:</b></li>
+    <ul>
+        <li><b>ConcurrentSkipListMap</b> provides better scalability than other thread-safe maps, as it handles concurrency more efficiently by using a skip-list data structure, which enables faster search and update times in large data sets.</li>
+    </ul>
+
+    <li><b>Useful in Real-time Systems:</b></li>
+    <ul>
+        <li>Because it allows concurrent read and write operations with minimal locking, <b>ConcurrentSkipListMap</b> is useful in real-time applications where performance is critical, such as in distributed systems or multi-threaded servers.</li>
+    </ul>
+
+    <li><b>Comparison with Other Maps:</b></li>
+    <ul>
+        <li><b>HashMap</b> and <b>Hashtable</b> are not thread-safe, requiring external synchronization for thread safety.</li>
+        <li><b>ConcurrentSkipListMap</b> offers better performance for concurrent access compared to <b>Hashtable</b> or <b>Collections.synchronizedMap()</b>, which require full synchronization of operations.</li>
+    </ul>
+
+    <li><b>Summary:</b></li>
+    <ul>
+        <li><b>ConcurrentSkipListMap</b> is an ideal choice for multi-threaded applications where thread safety, ordered data, and high scalability are needed.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
+<div id="TSScenraio">
+  <h5>In a <b>multi-threaded data processing system</b>, how would you handle concurrent updates to a shared collection?</h5>
+
+<ul>
+    <li><b>Use Thread-Safe Collections</b></li>
+    <ul>
+        <li>For thread-safe operations on shared collections, you can use <b>Concurrent Collections</b> such as <code>ConcurrentHashMap</code> or <code>CopyOnWriteArrayList</code> in Java.</li>
+        <li>These collections are specifically designed to handle concurrent access and updates, ensuring that multiple threads can interact with the collection safely.</li>
+    </ul>
+
+    <li><b>Synchronization</b></li>
+    <ul>
+        <li>If you need to use a non-thread-safe collection like <code>ArrayList</code> or <code>HashMap</code>, you can synchronize the collection explicitly using <code>synchronized</code> blocks or methods.</li>
+        <li>For example, <code>synchronized(collection)</code> will lock the collection during updates to ensure that only one thread can modify it at a time.</li>
+    </ul>
+
+    <li><b>Using Collections.synchronizedCollection</b></li>
+    <ul>
+        <li>If you are working with a legacy collection or need thread safety for a general collection, you can wrap it with <code>Collections.synchronizedList</code> or <code>Collections.synchronizedMap</code>.</li>
+        <li>This ensures that all operations on the collection are synchronized, making it thread-safe.</li>
+    </ul>
+
+    <li><b>Read-Write Locks</b></li>
+    <ul>
+        <li>In scenarios where reads are more frequent than writes, you can use <code>ReadWriteLock</code> (e.g., <code>ReentrantReadWriteLock</code>) to allow multiple threads to read the collection concurrently but ensure exclusive access for writes.</li>
+        <li>This approach improves performance when read operations dominate, as it reduces the contention between threads.</li>
+    </ul>
+
+    <li><b>Atomic Operations</b></li>
+    <ul>
+        <li>For specific atomic operations, you can use the <code>Atomic*</code> classes like <code>AtomicInteger</code>, <code>AtomicLong</code>, or <code>AtomicReference</code> for updating individual elements of the collection in an atomic manner without the need for manual synchronization.</li>
+    </ul>
+
+    <li><b>Immutable Collections</b></li>
+    <ul>
+        <li>If updates are not required after creation, using immutable collections (e.g., using <code>Collections.unmodifiableList</code>) can prevent any concurrent modification issues.</li>
+    </ul>
+
+    <li><b>Summary</b></li>
+    <ul>
+        <li>To handle concurrent updates to a shared collection, prefer using thread-safe collections or synchronize access using locks or explicit synchronization. If the collection needs frequent updates, consider using <code>ConcurrentHashMap</code> or <code>CopyOnWriteArrayList</code> for better performance.</li>
+    </ul>
+</ul>
+
+</div>
+<hr>
+
 <div>
     <p><strong>Comparable Interface:</strong></p>
     <p>The <code>Comparable</code> interface is part of the <code>java.lang</code> package and is used to define the natural ordering of objects. A class that implements this interface must override the <code>compareTo()</code> method, which compares the current object with another object of the same type. The method returns:
@@ -1354,6 +3075,6 @@ public class SortedMapExample {
     <p><strong>Summary:</strong> 
       The <code>Comparable</code> interface is used for defining the natural order of objects, typically implemented within the class itself. On the other hand, the <code>Comparator</code> interface provides more flexibility, allowing multiple ways to compare objects, usually implemented in a separate class.
     </p>
-  </div>
+</div>
   
   

@@ -677,5 +677,215 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
         A memory leak in Java is a situation where some objects are no longer used by an application, but the Garbage Collector fails to recognize them as unused. 
         This leads to the OutOfMemoryError if those unused objects contribute to the heap usage significantly enough that the next memory allocation request by the application cannot be fulfilled.
     </p>
+    <h5>🔍 How to Avoid Memory Leaks in Java</h5> 
+    <ul>
+        <b>Avoid Unwanted Object References</b>
+        <p>✔ Set objects to <code>null</code> when they are no longer needed.</p>
+        <p>✔ Use <code>WeakReference</code> or <code>SoftReference</code> for objects that can be garbage collected.</p>
+    
+        <b>Use Weak References in Collections</b>
+        <p>✔ Replace <code>HashMap</code> with <code>WeakHashMap</code> to avoid strong references.</p>
+        <p>✔ Use <code>ConcurrentLinkedQueue</code> for caching objects efficiently.</p>
+    
+        <b>Deregister Event Listeners & Callbacks</b>
+        <p>✔ Remove listeners manually when they are no longer needed.</p>
+        <p>✔ Use <code>removeActionListener()</code> for UI components.</p>
+    
+        <b>Close JDBC, I/O, and Network Resources</b>
+        <p>✔ Always close database connections, file streams, and sockets.</p>
+        <p>✔ Use <code>try-with-resources</code> to manage resources automatically.</p>
+    
+        <b>Avoid Memory Leaks in Inner Classes</b>
+        <p>✔ Use <code>static</code> inner classes to avoid unintended references to the outer class.</p>
+        <p>✔ If anonymous inner classes are used, ensure they don’t hold long-lived references.</p>
+    
+        <b>Use Proper Caching Strategies</b>
+        <p>✔ Implement LRU (Least Recently Used) caches using <code>LinkedHashMap</code> or <code>Guava Cache</code>.</p>
+        <p>✔ Clear cache entries periodically to avoid excessive memory usage.</p>
+    
+        <b>Enable JVM Monitoring & Heap Analysis</b>
+        <p>✔ Use <code>VisualVM</code>, <code>JProfiler</code>, or <code>Eclipse MAT</code> to detect memory leaks.</p>
+        <p>✔ Analyze heap dumps to identify objects consuming memory unnecessarily.</p>
+    
+        <b>Tune Garbage Collection (GC)</b>
+        <p>✔ Use GC logging (<code>-XX:+PrintGCDetails</code>) to monitor memory usage.</p>
+        <p>✔ Choose the right GC algorithm (<code>G1GC</code>, <code>ZGC</code>) for optimized performance.</p>
+    </ul>
 </div>
 <hr>
+<div>
+  <h5> How to Generate and Analyze Heap Dump in GraalVM</h2>
+
+  <div>
+      <b> Enable Heap Dump Generation</b>
+      <p> Run your Java application with the following JVM option:</p>
+      <pre><code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof</code></pre>
+      <p>This automatically generates a heap dump when an OutOfMemoryError occurs.</p>
+  </div>
+
+  <div>
+      <b> Manually Generate Heap Dump</b>
+      <p>You can manually create a heap dump using one of the following methods:</p>
+      
+      <b> Using `jcmd` (Recommended in GraalVM)</b>
+      <pre><code>jcmd <PID> GC.heap_dump heapdump.hprof</code></pre>
+
+      <b> Using `jmap` (Alternative)</b>
+      <pre><code>jmap -dump:live,format=b,file=heapdump.hprof <PID></code></pre>
+
+      <b> Using GraalVM’s Native Image (If running native binary)</b>
+      <p>If you are using GraalVM’s **native-image**, enable heap dump support using:</p>
+      <pre><code>-XX:+HeapDumpAfterFullGC</code></pre>
+  </div>
+
+  <div>
+      <b> Analyze Heap Dump with VisualVM</b>
+      <p>GraalVM provides VisualVM as a profiling tool.</p>
+      
+      <b> Open Heap Dump in VisualVM</b>
+      <pre><code>visualvm</code></pre>
+      <p>Steps:</p>
+      <ul>
+          <li>Open VisualVM.</li>
+          <li>Go to **File → Load Heap Dump**.</li>
+          <li>Choose the `heapdump.hprof` file.</li>
+          <li>Analyze **biggest memory consumers** and **retained size of objects**.</li>
+      </ul>
+  </div>
+
+  <div>
+      <b> Analyze Heap Dump with Eclipse MAT (Memory Analyzer Tool)</b>
+      <p>For advanced memory leak detection:</p>
+      <ul>
+          <li>Download & Install **Eclipse MAT** from: <a href="https://www.eclipse.org/mat/" target="_blank">Eclipse MAT</a></li>
+          <li>Open **heapdump.hprof** file in MAT.</li>
+          <li>Click on **"Leak Suspects Report"** to find memory leaks.</li>
+      </ul>
+  </div>
+
+  <div>
+      <b> Fix Memory Issues</b>
+      <p>Based on the heap dump analysis, you can:</p>
+      <ul>
+          <li>Reduce **unnecessary object retention**.</li>
+          <li>Use **Weak References** for caches.</li>
+          <li>Close **JDBC connections, files, and network sockets** properly.</li>
+          <li>Optimize **Garbage Collection (GC) settings** in GraalVM.</li>
+      </ul>
+  </div>
+
+  <div>
+      <b> Summary</b>
+      <ul>
+          <li>Generate heap dump using **jcmd**, **jmap**, or GraalVM’s options.</li>
+          <li>Analyze heap dump in **VisualVM** or **Eclipse MAT**.</li>
+          <li>Find memory leaks by checking **object retention size**.</li>
+          <li>Fix issues by **optimizing memory usage and garbage collection**.</li>
+      </ul>
+  </div>
+</div>
+<hr>
+<div>
+  <h5>How you handled Memory leak in your project?</h5>
+  <p>
+    In one of our high-traffic microservices, we encountered an OutOfMemoryError (OOM) in production. 
+    The service was responsible for handling real-time user sessions, and over time, it started consuming more memory than expected.
+  </p>
+  <div>
+      <b>Step 1: Identifying the Issue</b>
+      <ul>
+          <li>The application crashed intermittently with <code>OutOfMemoryError</code>.</li>
+          <li>Increased Garbage Collection (GC) time led to slow performance.</li>
+          <li>The service restarted frequently, affecting availability.</li>
+      </ul>
+
+      <b>Initial Debugging</b>
+      <ul>
+          <li>Checked logs and found <code>java.lang.OutOfMemoryError: Java heap space</code>.</li>
+          <li>Used Prometheus + Grafana to monitor heap usage trends.</li>
+          <li>Found that memory usage was steadily increasing over time.</li>
+      </ul>
+  </div>
+  <hr class="thin-line">
+
+  <div>
+    <b>Step 2: Debugging Using Heap Dump</b>
+    <ul>
+        <li>Captured Heap Dump using the following command:</li>
+    </ul>
+    <pre><code>jcmd &lt;PID&gt; GC.heap_dump heapdump.hprof</code></pre>
+    <ul>
+        <li>Used VisualVM and Eclipse MAT to analyze the heap dump.</li>
+    </ul>
+
+    <b>Findings from Heap Dump Analysis</b>
+    <ul>
+        <li>Large number of active user session objects were retained.</li>
+        <li>Static HashMap was holding user sessions indefinitely, preventing GC from clearing them.</li>
+    </ul>
+  </div>
+  <hr class="thin-line">
+
+  <div>
+    <b>Step 3: Root Cause Analysis</b>
+    <p>The <code>UserSessionManager</code> class was using a static HashMap to store user sessions:</p>
+    <pre><code>
+public class UserSessionManager {
+private static final Map&lt;String, UserSession&gt; sessionCache = new HashMap&lt;&gt;();
+
+public static void addSession(String sessionId, UserSession session) {
+    sessionCache.put(sessionId, session);
+}
+}
+    </code></pre>
+    <ul>
+        <li>Sessions were never removed, leading to a memory leak.</li>
+        <li>As more users logged in, the <code>sessionCache</code> grew indefinitely.</li>
+    </ul>
+  </div>
+  <hr class="thin-line">
+
+  <div>
+    <b>Step 4: Solution & Fix</b><br>
+
+    <b>1. Used WeakHashMap Instead of HashMap</b>
+    <ul>
+        <li>Replaced HashMap with WeakHashMap to allow garbage collection when sessions are no longer referenced:</li>
+    </ul>
+    <pre><code>
+private static final Map&lt;String, UserSession&gt; sessionCache = new WeakHashMap&lt;&gt;();
+    </code></pre>
+
+    <b>2. Implemented Session Timeout & Cleanup Mechanism</b>
+    <ul>
+        <li>Introduced <code>ScheduledExecutorService</code> to periodically remove inactive sessions.</li>
+    </ul>
+    <pre><code>
+ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+scheduler.scheduleAtFixedRate(() -> {
+sessionCache.entrySet().removeIf(entry -> entry.getValue().isExpired());
+}, 10, 10, TimeUnit.MINUTES);
+    </code></pre>
+
+    <b>3. Optimized JVM Heap Settings</b>
+    <ul>
+        <li>Increased Heap Size for better memory allocation:</li>
+    </ul>
+    <pre><code>-Xms512m -Xmx2g</code></pre>
+    <ul>
+        <li>Tuned Garbage Collector (G1GC) settings:</li>
+    </ul>
+    <pre><code>-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=45</code></pre>
+  </div>
+  <hr class="thin-line">
+
+  <div>
+      <b>Step 5: Validation & Results</b>
+      <ul>
+          <li>Re-deployed the fix and monitored memory usage.</li>
+          <li>Heap usage remained stable, preventing OutOfMemoryError.</li>
+          <li>Garbage Collection (GC) times improved, reducing CPU load.</li>
+          <li>User sessions were correctly removed after timeout.</li>
+      </ul>
+  </div>
+</div>
