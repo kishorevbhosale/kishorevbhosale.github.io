@@ -1,203 +1,170 @@
 <div>
     <h2 style="text-align: center;">Designing a Vending Machine</h2>
     <hr>
-
-    <h5>Requirements:</h5>
-    <ul>
-        <li>The vending machine should support multiple products with different prices and quantities.</li>
-        <li>The machine should accept coins and notes of different denominations.</li>
-        <li>The machine should dispense the selected product and return change if necessary.</li>
-        <li>The machine should keep track of the available products and their quantities.</li>
-        <li>The machine should handle multiple transactions concurrently and ensure data consistency.</li>
-        <li>The machine should provide an interface for restocking products and collecting money.</li>
-        <li>The machine should handle exceptional scenarios, such as insufficient funds or out-of-stock products.</li>
-    </ul>
+    <div>
+        <ul>
+            <li><a href="#req">Requirements</a></li>
+            <li><a href="#seq">Sequnece Diagram</a></li>
+            <li><a href="#comp">Components</a></li>
+            <li><a href="#code">Code</a></li>
+        </ul>
+    </div>
+    <hr>
+    <div id="req">
+        <h5>Requirements:</h5>
+        <ul>
+            <li>The vending machine should support multiple products with different prices and quantities.</li>
+            <li>The machine should accept coins and notes of different denominations.</li>
+            <li>The machine should dispense the selected product and return change if necessary.</li>
+            <li>The machine should keep track of the available products and their quantities.</li>
+            <li>The machine should handle multiple transactions concurrently and ensure data consistency.</li>
+            <li>The machine should provide an interface for restocking products and collecting money.</li>
+            <li>The machine should handle exceptional scenarios, such as insufficient funds or out-of-stock products.</li>
+        </ul>
+    </div>
     <hr>
 
-    <h5>Sequnece Diagram</h5>
-    <img src="../../../images/vending_machine.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-    <hr>
+    <div id="seq">
+        <h5>Sequnece Diagram</h5>
+        <img src="../../../images/vending_machine.png" alt="cache" style="display: block; margin: auto; width: 80%;">
+        <hr>
+    </div>
 
-    <h5>Components:</h5>
-    <p>The system will consist of the following classes:</p>
-    <ul>
-        <li><strong>Product:</strong> Class to represent the products with their price and quantity.</li>
-        <li><strong>Coin/Note:</strong> Class to represent different denominations of coins and notes.</li>
-        <li><strong>VendingMachine:</strong> The core class responsible for handling transactions, accepting coins/notes, dispensing products, and maintaining inventory.</li>
-        <li><strong>Transaction:</strong> Class to represent a single transaction, tracking the inserted money and the product selected.</li>
-        <li><strong>InventoryManager:</strong> A class responsible for managing the products in the vending machine (restocking, checking availability).</li>
-        <li><strong>CashManager:</strong> A class responsible for managing the coins and notes in the machine (for storing and returning change).</li>
-    </ul>
+    <div id="comp">
+        <h5>Components:</h5>
+        <p>The system will consist of the following classes:</p>
+        <ul>
+            <li><strong>Product:</strong> Class to represent the products with their price and quantity.</li>
+            <li><strong>Coin/Note:</strong> Class to represent different denominations of coins and notes.</li>
+            <li><strong>VendingMachine:</strong> The core class responsible for handling transactions, accepting coins/notes, dispensing products, and maintaining inventory.</li>
+            <li><strong>Transaction:</strong> Class to represent a single transaction, tracking the inserted money and the product selected.</li>
+            <li><strong>InventoryManager:</strong> A class responsible for managing the products in the vending machine (restocking, checking availability).</li>
+            <li><strong>CashManager:</strong> A class responsible for managing the coins and notes in the machine (for storing and returning change).</li>
+        </ul>
+    </div>
     <hr>
     
-    <h5>Code Implementation:</h5>
-<pre><code>
-// Coin/Note class represents different denominations
+    <div id="code">
+        <h5>Code Implementation:</h5>
+        <pre><code>
+package com.lld;
+
+import java.util.HashMap;
+import java.util.Map;
+
 class Coin {
     private int value;
-
     public Coin(int value) {
         this.value = value;
     }
-
     public int getValue() {
         return value;
     }
 }
-</code></pre>
-
-<pre><code>
+<hr class="thin-line">
 class Note {
     private int value;
-
     public Note(int value) {
         this.value = value;
     }
-
     public int getValue() {
         return value;
     }
 }
-</code></pre>
-
-<pre><code>
-// Product class represents a product in the vending machine
+<hr class="thin-line">
 class Product {
     private String name;
     private int price;
     private int quantity;
-
     public Product(String name, int price, int quantity) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
-
     public String getName() {
         return name;
     }
-
     public int getPrice() {
         return price;
     }
-
     public int getQuantity() {
         return quantity;
     }
-
     public void decreaseQuantity() {
         if (quantity > 0) {
             quantity--;
         }
     }
-
+    public void increaseQuantity(int amount) {
+        this.quantity += amount;
+    }
     public boolean isAvailable() {
         return quantity > 0;
     }
 }
-</code></pre>
-
-<pre><code>
-// CashManager class manages the inserted coins/notes and returns change
+<hr class="thin-line">
 class CashManager {
     private int balance = 0;
-
     public void insertCoin(Coin coin) {
         balance += coin.getValue();
     }
-
     public void insertNote(Note note) {
         balance += note.getValue();
     }
-
     public int getBalance() {
         return balance;
     }
-
     public void deductAmount(int amount) {
         balance -= amount;
     }
-
     public int returnChange(int price) {
         int change = balance - price;
         deductAmount(price);
         return change;
     }
 }
-</code></pre>
-
-<pre><code>
-// InventoryManager class to manage products
+<hr class="thin-line">
 class InventoryManager {
-    private Map<String, Product> productMap = new HashMap<>();
-
+    private Map&lt;String, Product&gt; productMap = new HashMap&lt;&gt;();
     public void addProduct(Product product) {
         productMap.put(product.getName(), product);
     }
-
     public Product getProduct(String productName) {
         return productMap.get(productName);
     }
-
     public boolean isProductAvailable(String productName) {
         return productMap.containsKey(productName) && productMap.get(productName).isAvailable();
     }
-
     public void restockProduct(String productName, int quantity) {
         Product product = productMap.get(productName);
         if (product != null) {
-            for (int i = 0; i < quantity; i++) {
-                product.decreaseQuantity();
-            }
+            product.increaseQuantity(quantity); // Fix: Increase quantity instead of decreasing
+        } else {
+            System.out.println("Product not found in inventory.");
         }
     }
 }
-</code></pre>
-
-<pre><code>
-// Transaction class to represent a transaction
-class Transaction {
-    private String productName;
-    private int amountInserted;
-
-    public Transaction(String productName, int amountInserted) {
-        this.productName = productName;
-        this.amountInserted = amountInserted;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public int getAmountInserted() {
-        return amountInserted;
-    }
-}
-</code></pre>
-
-<pre><code>
-// VendingMachine class handles product selection, money insertion, dispensing, and change
+<hr class="thin-line">
 class VendingMachine {
     private CashManager cashManager;
     private InventoryManager inventoryManager;
-
     public VendingMachine() {
         this.cashManager = new CashManager();
         this.inventoryManager = new InventoryManager();
     }
-
+    public void addProduct(Product product) {
+        inventoryManager.addProduct(product);
+    }
     public void insertCoin(Coin coin) {
         cashManager.insertCoin(coin);
     }
-
     public void insertNote(Note note) {
         cashManager.insertNote(note);
     }
-
     public void selectProduct(String productName) {
         if (inventoryManager.isProductAvailable(productName)) {
             Product product = inventoryManager.getProduct(productName);
-            if (cashManager.getBalance() >= product.getPrice()) {
+            if (cashManager.getBalance() &gt;= product.getPrice()) {
                 int change = cashManager.returnChange(product.getPrice());
                 product.decreaseQuantity();
                 System.out.println("Dispensing: " + productName);
@@ -209,19 +176,14 @@ class VendingMachine {
             System.out.println("Product is out of stock.");
         }
     }
-
     public void restockProduct(String productName, int quantity) {
         inventoryManager.restockProduct(productName, quantity);
     }
-
     public void collectMoney() {
         System.out.println("Collecting money: " + cashManager.getBalance() + " cents.");
     }
 }
-</code></pre>
-
-<pre><code>
-// Main class for testing the system
+<hr class="thin-line">
 public class VendingMachineApp {
     public static void main(String[] args) {
         // Creating product objects
@@ -231,9 +193,9 @@ public class VendingMachineApp {
 
         // Creating VendingMachine instance
         VendingMachine vendingMachine = new VendingMachine();
-        vendingMachine.restockProduct("Soda", 10);
-        vendingMachine.restockProduct("Chips", 5);
-        vendingMachine.restockProduct("Candy", 7);
+        vendingMachine.addProduct(soda);
+        vendingMachine.addProduct(chips);
+        vendingMachine.addProduct(candy);
 
         // Insert coins and select products
         vendingMachine.insertCoin(new Coin(25));
@@ -251,17 +213,16 @@ public class VendingMachineApp {
         vendingMachine.collectMoney();
     }
 }
-</code></pre>
-<hr>
-    <h5>Explanation of the Code:</h5>
-    <ul>
-        <li><strong>Coin/Note Class:</strong> Represents different denominations of coins and notes inserted into the machine. Each coin or note has a value.</li>
-        <li><strong>Product Class:</strong> Represents a product in the vending machine. It contains information about the product's name, price, and quantity. It also has methods to check if a product is available and to decrease its quantity after a purchase.</li>
-        <li><strong>CashManager Class:</strong> This class manages the money inserted into the machine. It provides methods for inserting coins/notes, checking balance, and returning change.</li>
-        <li><strong>InventoryManager Class:</strong> Handles the management of the products available in the vending machine. It supports actions like checking product availability, restocking products, etc.</li>
-        <li><strong>Transaction Class:</strong> Keeps track of each transaction, including the product selected and the amount inserted by the user.</li>
-        <li><strong>VendingMachine Class:</strong> The main class managing the vending machine's operations. It integrates with the CashManager and InventoryManager to perform actions such as inserting coins, selecting products, dispensing products, and returning change.</li>
-    </ul>
+<hr class="thin-line">
+<b>Output:</b>
+Dispensing: Soda
+Returning change: 0 cents.
+Dispensing: Chips
+Returning change: 5 cents.
+Collecting money: 5 cents.
+        </code></pre>
+    </div>
+
 <hr>
     <h5>Design Considerations:</h5>
     <ul>
