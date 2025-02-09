@@ -31,15 +31,15 @@
     <hr>
 
     <b>Code Implementation:</b>
-<pre><code>
+<pre>
 import java.util.*;
 
 enum RoomType {
     SINGLE, DOUBLE, DELUXE, SUITE
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 class Room {
     private int roomNumber;
     private RoomType roomType;
@@ -67,9 +67,9 @@ class Room {
         isAvailable = available;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 class Guest {
     private String name;
     private String contact;
@@ -96,9 +96,9 @@ class Guest {
         this.reservation = reservation;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 class Reservation {
     private Room room;
     private Date checkInDate;
@@ -122,9 +122,9 @@ class Reservation {
         return checkOutDate;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 class HotelManagementSystem {
     private List&lt;Room&gt; rooms = new ArrayList<>();
     private Map&lt;Integer, Guest&gt; guestMap = new HashMap<>();
@@ -177,9 +177,9 @@ class HotelManagementSystem {
         }
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 public class HotelManagementApp {
     public static void main(String[] args) {
         HotelManagementSystem system = new HotelManagementSystem();
@@ -206,7 +206,7 @@ public class HotelManagementApp {
         system.listAvailableRooms();
     }
 }
-</code></pre>
+</pre>
 
     <b>Sample Input and Output:</b>
     <pre>

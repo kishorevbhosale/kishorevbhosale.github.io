@@ -38,7 +38,7 @@
     <hr>
 
     <h5>Code Implementation:</h5>
-    <pre><code>
+    <pre>
 // BankAccount Class - Represents the user's bank account
 class BankAccount {
     private String accountNumber;
@@ -65,9 +65,9 @@ class BankAccount {
         balance += amount;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // User Class - Represents an ATM user
 class User {
     private String cardNumber;
@@ -88,18 +88,18 @@ class User {
         return bankAccount;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // CashDispenser Class - Simulates the dispensing of cash
 class CashDispenser {
     public void dispenseCash(double amount) {
         System.out.println("Dispensing cash: " + amount);
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // BackendSystem Class - Simulates the bank's backend system
 class BackendSystem {
     public boolean validateAccount(String cardNumber, String pin) {
@@ -107,9 +107,9 @@ class BackendSystem {
         return cardNumber.equals("12345") && pin.equals("1234");
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // ATM Class - Represents the ATM system
 class ATM {
     private CashDispenser cashDispenser;
@@ -162,9 +162,9 @@ class ATM {
         }
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Main class to simulate ATM operations
 public class ATMSystemApp {
     public static void main(String[] args) {
@@ -182,20 +182,20 @@ public class ATMSystemApp {
         atm.withdrawCash(1000); // Insufficient funds case
     }
 }
-</code></pre>
+</pre>
 <hr>
     
     <h5>Sample Input:</h5>
-    <pre><code>
+    <pre>
     Authenticate user with card number "12345" and PIN "1234".
     Deposit 200 units.
     Withdraw 300 units.
     Withdraw 1000 units (which should fail due to insufficient balance).
-    </code></pre>
+    </pre>
 
 
     <h5>Sample Output:</h5>
-    <pre><code>
+    <pre>
     Authentication successful.
     Your current balance is: 1000.0
     Deposited: 200
@@ -203,7 +203,7 @@ public class ATMSystemApp {
     Dispensing cash: 300
     Your current balance is: 900.0
     Insufficient funds.
-    </code></pre>
+    </pre>
     <hr>
 
     <h5>Explanation of Output:</h5>

@@ -81,9 +81,9 @@ EXPOSE 8080
 
 # Command to run the application
 CMD ["java", "-jar", "your-app.jar"]
-</code></pre>
+</pre>
         <li><strong>Build the Docker image</strong>: Navigate to the directory containing the Dockerfile and run the following command:
-            <pre><code>docker build -t your-app .</code></pre>
+            <pre>docker build -t your-app .</pre>
         </li>
     </ol>
 </div>
@@ -91,11 +91,11 @@ CMD ["java", "-jar", "your-app.jar"]
 <div>    
     <h3>Running Spring boot app as a Containers using Dockerfile</h3>
     <ol>
-        <li><strong>Build the application</strong>: Compile the Spring Boot application to a standalone executable JAR. Run the command <pre><code>mvn clean install</code></pre></li><br>
+        <li><strong>Build the application</strong>: Compile the Spring Boot application to a standalone executable JAR. Run the command <pre>mvn clean install</pre></li><br>
         <li><strong>Create Dockerfile</strong>: Place the Dockerfile in the same directory as your JAR file.</li><br>
-        <li><strong>Build the Docker image</strong>: Run <pre><code>docker build -t image-name:tag .</code></pre> from the directory containing the Dockerfile.</li><br>
+        <li><strong>Build the Docker image</strong>: Run <pre>docker build -t image-name:tag .</pre> from the directory containing the Dockerfile.</li><br>
         <li><strong>Run the Docker container</strong>: 
-            <pre><code>docker run -p 8080:8080 your-app</code></pre>
+            <pre>docker run -p 8080:8080 your-app</pre>
         </li>
     </ol>
 </div>
@@ -116,11 +116,11 @@ CMD ["java", "-jar", "your-app.jar"]
     <p>Buildpacks are tools that automate the process of building container images directly from application source code without requiring a Dockerfile. They analyze the codebase, detect the programming language and dependencies, and create an optimized image with the necessary runtime and dependencies.</p>
     <p>Buildpacks are part of the <strong>Cloud Native Buildpacks</strong> initiative, supported by platforms like Heroku and Cloud Foundry. They streamline containerization and are particularly useful for developers unfamiliar with writing Dockerfiles.</p>
     <p>Add Buildpacks Dependency in Spring Boot's pom.xml</p>
-    <pre><code>mvn spring-boot:build-image</code></pre>
+    <pre>mvn spring-boot:build-image</pre>
     <br>
     <b>Google Jib</b>
     <p>Google Jib is an open-source Java containerization tool designed to create optimized Docker and OCI images for Java applications directly from their build systems, such as Maven or Gradle, without needing a Docker daemon.</p>
     <p>Jib simplifies the process by layering the application, dependencies, and runtime efficiently, leading to faster builds and smaller image sizes.</p>
     <p>Add Google Jib Dependency in Spring Boot's pom.xml</p>
-    <pre><code>mvn compile jib:dockerBuild</code></pre>
+    <pre>mvn compile jib:dockerBuild</pre>
 </div>

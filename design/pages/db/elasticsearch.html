@@ -1030,37 +1030,37 @@ GET product/_search
   <ul>
     <li><b>Bool Query:</b> Combines queries using <code>must</code>, <code>should</code>, <code>must_not</code>, and <code>filter</code>.
       <br>Example: 
-      <pre><code>{
+      <pre>{
   "bool": {
     "must": { "match": { "content": "search" } },
     "filter": { "term": { "status": "published" } }
   }
-}</code></pre>
+}</pre>
     </li>
     <li><b>Constant Score Query:</b> Wraps another query and assigns a constant score to all matching documents.
       <br>Example: <code>{ "constant_score": { "filter": { "term": { "status": "active" } } } }</code>
     </li>
     <li><b>DisMax Query:</b> Combines subqueries, returning the highest score from any subquery.
       <br>Example: 
-      <pre><code>{
+      <pre>{
   "dis_max": {
     "queries": [
       { "match": { "title": "quick" } },
       { "match": { "description": "quick" } }
     ]
   }
-}</code></pre>
+}</pre>
     </li>
     <li><b>Function Score Query:</b> Modifies scores of matching documents using functions (e.g., decay, weight).
       <br>Example: 
-      <pre><code>{
+      <pre>{
   "function_score": {
     "query": { "match": { "content": "Elasticsearch" } },
     "functions": [
       { "weight": 2, "field_value_factor": { "field": "popularity" } }
     ]
   }
-}</code></pre>
+}</pre>
     </li>
   </ul>
   

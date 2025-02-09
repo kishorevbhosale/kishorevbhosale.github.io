@@ -43,7 +43,7 @@
         <li>The instance is created irrespective of whether it is needed or not.</li>
         <li>This is create by making by making constructor as private and static method to get instance</li>
     </ul>
-    <pre><code>
+    <pre>
         public class EagerSingleton {
             private static final EagerSingleton instance = new EagerSingleton();
       
@@ -55,7 +55,7 @@
                 return instance;
             }
         }
-        </code></pre>
+        </pre>
         <br>
         <b>Drawbacks:</b><br>
         <p>
@@ -69,7 +69,7 @@
         <li>Lazy initialization postpones the creation of the Singleton instance until it is actually needed.</li>
         <li>This approach is beneficial in cases where the instance is resource-intensive or expensive to create, allowing you to delay its initialization until it's required.</li>
     </ul>
-    <pre><code>
+    <pre>
         public class LazySingleton {
             private static LazySingleton instance;
 
@@ -84,7 +84,7 @@
                 return instance;
             }
         }
-    </code></pre>
+    </pre>
     <br>
     <b>Drawbacks:</b><br>
     <p>
@@ -97,7 +97,7 @@
         <li>With reflection, you can create a new instance of the Singleton class, which can lead to having more than one instance, breaking the pattern's purpose.</li>
     </ul>
     <b>Sample code for breaking singleton with Reflection</b>
-    <pre><code>
+    <pre>
     import java.lang.reflect.Constructor;
 
     // Simple Singleton class
@@ -138,13 +138,13 @@
             }
         }
     }
-    </code></pre>
+    </pre>
     <br>
     <b>Prevent singleton failure due to reflection</b>
     <ul>
         <li>Throw runtime exception if constructor is already initialized</li>
     </ul>
-    <pre><code>
+    <pre>
         public class Singleton {
             private static Singleton instance;
 
@@ -161,7 +161,7 @@
                 return instance;
             }
         }
-    </code></pre>
+    </pre>
     <br>
     <b>Drawbacks:</b>
     <p>
@@ -174,7 +174,7 @@
         <li>Thread-safe Singleton ensures that even if multiple threads access the <b>getInstance()</b> method simultaneously, only one instance is created.</li>
         </ul>
         <b>Sample code for multi-thread access the Lazy initialization</b>
-        <pre><code>
+        <pre>
             class Singleton {
                 private static Singleton instance = null;
             
@@ -217,7 +217,7 @@
                     thread2.start();
                 }
             }
-        </code></pre>
+        </pre>
         <ul>
             <li><b>Issue:</b> If two or more threads call getInstance() at the same time and the instance hasn't been created yet, 
                 both threads may end up creating separate instances due to the lack of synchronization.</li>
@@ -227,7 +227,7 @@
         <ul>
             <li>Synchronize the getInstance() method to ensure only one thread can create the instance at a time.</li>
         </ul>
-        <pre><code>
+        <pre>
             public class ThreadSafeSingleton {
                 private static ThreadSafeSingleton instance;
                 private static final Object lock = new Object();
@@ -246,7 +246,7 @@
                     return instance;
                 }
             }
-        </code></pre>
+        </pre>
         <br>
         <b>Drawbacks:</b>
         <ul>
@@ -260,7 +260,7 @@
                 This approach is also thread-safe and can handle exceptions during object creation.
             </li>
         </ul>
-        <pre><code>
+        <pre>
             public class StaticBlockSingleton {
                 private static StaticBlockSingleton instance;
 
@@ -281,7 +281,7 @@
                     return instance;
                 }
             }
-        </code></pre>
+        </pre>
         <br>
         <b>Drawbacks:</b>
         <ul>
@@ -295,7 +295,7 @@
                 by checking the instance twice—once without locking and once within a synchronized block.</li>
             <li>This approach helps in maintaining thread-safety while avoiding unnecessary synchronization once the instance is initialized.</li>
         </ul>
-        <pre><code>
+        <pre>
             class DoubleCheckedLockingSingleton {
 
                 // Volatile keyword ensures changes made in one thread are visible to others
@@ -336,7 +336,7 @@
                     thread2.start();
                 }
             }            
-        </code></pre>
+        </pre>
 
         
                       

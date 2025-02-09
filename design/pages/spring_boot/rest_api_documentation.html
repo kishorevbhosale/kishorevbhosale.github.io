@@ -23,17 +23,17 @@
             <p>
                 To start using SpringDoc OpenAPI, you need to add the following dependency in your <b>pom.xml</b>:
             </p>
-            <pre><code>
+            <pre>
     &lt;dependency&gt;
     &nbsp;&nbsp;&lt;groupId&gt;org.springdoc&lt;/groupId&gt;
     &nbsp;&nbsp;&lt;artifactId&gt;springdoc-openapi-ui&lt;/artifactId&gt;
     &nbsp;&nbsp;&lt;version&gt;1.5.13&lt;/version&gt;
     &lt;/dependency&gt;
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">@OpenAPIDefinition Example</h3>
             <p>The <b>@OpenAPIDefinition</b> annotation allows you to define API-level information such as the title, description, and version.</p>
-            <pre><code>
+            <pre>
     @OpenAPIDefinition(
     &nbsp;&nbsp;info = @Info(
     &nbsp;&nbsp;&nbsp;&nbsp;title = "Employee API",
@@ -46,27 +46,27 @@
     public class EmployeeController {
     &nbsp;&nbsp;// Controller code here
     }
-            </code></pre>
+            </pre>
 
             <h3 class="section-title">Using @Tag for Grouping API Endpoints</h3>
             <p>
                 The <b>@Tag</b> annotation is used to group related API operations together under a common tag name.
             </p>
-            <pre><code>
+            <pre>
                 @Tag(name = "Employee Management", description = "Operations related to employee management")
                 @RestController
                 @RequestMapping("/api/employees")
                 public class EmployeeController {
                 // Controller code here
                 }
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">@Operation and @ApiResponse for API Documentation</h3>
             <p>
                 The <b>@Operation</b> annotation provides metadata for an individual API operation. You can define the HTTP method, summary, and detailed description for each operation. 
                 The <b>@ApiResponse</b> annotation specifies the possible responses the API can return.
             </p>
-            <pre><code>
+            <pre>
     @Operation(summary = "Get employee by ID", description = "Fetch an employee's details by their unique ID")
     @ApiResponse(responseCode = "200", description = "Successful operation"
                 content = @Content(schema = @Schema(implementation = Employee.class)))
@@ -75,14 +75,14 @@
     public ResponseEntity&lt;Employee&gt; getEmployeeById(@PathVariable Long id) {
     &nbsp;&nbsp;// Method implementation
     }
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">@Schema for Describing Data Models</h3>
             <p>
                 The <b>@Schema</b> annotation is used to describe the structure of request and response bodies. 
                 It can also be used to specify constraints like minimum and maximum values, and required fields.
             </p>
-            <pre><code>
+            <pre>
     public class Employee { 
     &nbsp;&nbsp;@Schema(description = "Unique identifier of the employee", example = "1", required = true) 
     &nbsp;&nbsp;private Long id;
@@ -92,17 +92,17 @@
     &nbsp;&nbsp;private String department;
     &nbsp;&nbsp;// Getters and Setters 
         }
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">Sample API Response</h3>
             <p>Here is an example of a response from the <b>/api/employees/{id}</b> endpoint:</p>
-            <pre><code>
+            <pre>
                 { <br>
                 &nbsp;&nbsp;"id": 1,
                 &nbsp;&nbsp;"name": "John Doe",
                 &nbsp;&nbsp;"department": "HR"
                 }
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">Conclusion</h3>
             <p>

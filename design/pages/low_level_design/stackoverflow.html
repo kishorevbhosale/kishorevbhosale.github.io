@@ -31,7 +31,7 @@
     <hr>
     
     <b>Code Implementation</b>
-<pre><code>
+<pre>
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,9 +67,9 @@ class User {
         this.reputation += points;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Tag Class
 class Tag {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -85,9 +85,9 @@ class Tag {
         return name;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Comment Class
 class Comment {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -103,9 +103,9 @@ class Comment {
         this.creationDate = LocalDateTime.now();
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Vote Class
 class Vote {
     private User voter;
@@ -120,9 +120,9 @@ class Vote {
         return value;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Answer Class
 class Answer {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -150,9 +150,9 @@ class Answer {
         votes += vote.getValue();
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Question Class
 class Question {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -198,9 +198,9 @@ class Question {
         return answers;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // StackOverflow Class
 class StackOverflow {
     private List&lt;User&gt; users;
@@ -239,9 +239,9 @@ class StackOverflow {
         return result;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Demonstration Class
 public class StackOverflowDemo {
     public static void main(String[] args) {
@@ -270,7 +270,7 @@ public class StackOverflowDemo {
         }
     }
 }
-</code></pre>
+</pre>
 
     <b>Sample Input and Output</b>
     <p>Input:</p>

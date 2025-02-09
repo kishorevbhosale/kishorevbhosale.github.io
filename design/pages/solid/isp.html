@@ -18,7 +18,7 @@
 <br>
 <div>
     <h3 class="section-title">Violation of ISP</h3>
-<pre><code>
+<pre>
     // Fat Interface: Violates ISP
 interface Printer {
     void print(String document);
@@ -72,7 +72,7 @@ class MultiFunctionPrinter implements Printer {
         System.out.println("Copying: " + document);
     }
 }
-</code></pre>
+</pre>
 </div>
 <br>
 <div>
@@ -88,7 +88,7 @@ class MultiFunctionPrinter implements Printer {
         To comply with the Interface Segregation Principle, we should break the large, monolithic Printer interface into smaller, 
         more specific interfaces. This way, each printer class only implements the interfaces relevant to its capabilities.
     </p>
-    <pre><code>
+    <pre>
 // Segregated Interfaces adhering to ISP
 interface Printable {
     void print(String document);
@@ -141,7 +141,7 @@ class MultiFunctionPrinter implements Printable, Scannable, Faxable, Copyable {
         System.out.println("Copying: " + document);
     }
 }
-    </code></pre>
+    </pre>
 </div>
 <br>
 <div>

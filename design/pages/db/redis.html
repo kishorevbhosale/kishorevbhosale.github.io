@@ -760,7 +760,7 @@
             <ul>
               <li><code>HSET {key} {field} {value}</code> (Modern replacement for deprecated HMSET)</li>
               <li>Example: 
-                <pre><code>HSET user:1001 name "Alice" email "alice@example.com"</code></pre>
+                <pre>HSET user:1001 name "Alice" email "alice@example.com"</pre>
               </li>
             </ul>
           </li>
@@ -770,7 +770,7 @@
             <ul>
               <li><code>HGETALL {key}</code> → Returns all field-value pairs</li>
               <li>Example: 
-                <pre><code>HGETALL user:1001</code></pre>
+                <pre>HGETALL user:1001</pre>
                 Output: <code>name → "Alice", email → "alice@example.com"</code>
               </li>
             </ul>
@@ -781,7 +781,7 @@
             <ul>
               <li><code>HGET {key} {field}</code> → Returns specific field value</li>
               <li>Example: 
-                <pre><code>HGET user:1001 email</code></pre>
+                <pre>HGET user:1001 email</pre>
                 Output: <code>"alice@example.com"</code>
               </li>
             </ul>
@@ -792,7 +792,7 @@
             <ul>
               <li><code>HEXISTS {key} {field}</code> → Returns 1 (exists) or 0 (not found)</li>
               <li>Example: 
-                <pre><code>HEXISTS user:1001 age</code></pre>
+                <pre>HEXISTS user:1001 age</pre>
                 Output: <code>0</code>
               </li>
             </ul>
@@ -803,7 +803,7 @@
             <ul>
               <li><code>HDEL {key} {field}</code> → Deletes specified field</li>
               <li>Example: 
-                <pre><code>HDEL user:1001 email</code></pre>
+                <pre>HDEL user:1001 email</pre>
                 Output: Removes email field from user:1001
               </li>
             </ul>
@@ -814,7 +814,7 @@
             <ul>
               <li><code>HSETNX {key} {field} {value}</code> → Sets value only if field doesn't exist</li>
               <li>Example: 
-                <pre><code>HSETNX user:1001 age 30</code></pre>
+                <pre>HSETNX user:1001 age 30</pre>
                 Output: Adds age field since it doesn't exist
               </li>
             </ul>

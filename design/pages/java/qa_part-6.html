@@ -109,34 +109,34 @@
         <ol>
           <li>
             <b>Not Type-Safe:</b> 
-            <pre><code>
+            <pre>
       Object[] objArray = new Object[3];
       objArray[0] = "Hello";
       objArray[1] = 10; // Adding an integer
       String str = (String) objArray[1]; // ClassCastException at runtime
-            </code></pre>
+            </pre>
             This issue arises because object arrays allow storing different types, but improper casting can cause runtime errors.
           </li>
           <li>
             <b>Not Suitable for Primitive Types:</b> 
-            <pre><code>
+            <pre>
       Object[] objArray = new Object[2];
       objArray[0] = 10; // Autoboxing to Integer
       objArray[1] = 20.5; // Autoboxing to Double
       int sum = (Integer) objArray[0] + (Double) objArray[1]; // Requires explicit casting
-            </code></pre>
+            </pre>
             Boxing and unboxing can lead to performance degradation and verbose code.
           </li>
           <li>
             <b>Fixed Size:</b> 
-            <pre><code>
+            <pre>
       Object[] objArray = new Object[3];
       objArray[0] = "Java";
       objArray[1] = "Python";
       objArray[2] = "C++";
       // Adding more elements is not possible, leading to ArrayIndexOutOfBoundsException
       objArray[3] = "JavaScript"; 
-            </code></pre>
+            </pre>
             The array cannot grow beyond its defined size.
           </li>
           
@@ -372,10 +372,10 @@
         </tr>
         <tr>
           <td>Example</td>
-          <td><pre><code>Collection<String> list = new ArrayList<>();
-  list.add("Java");</code></pre></td>
-          <td><pre><code>List<String> list = new ArrayList<>();
-  Collections.sort(list);</code></pre></td>
+          <td><pre>Collection<String> list = new ArrayList<>();
+  list.add("Java");</pre></td>
+          <td><pre>List<String> list = new ArrayList<>();
+  Collections.sort(list);</pre></td>
         </tr>
       </tbody>
     </table>
@@ -471,7 +471,7 @@
           <li><code>E set(int index, E element)</code>: Replaces the element at the specified position with the specified element.</li>
           <li><code>List<E> subList(int fromIndex, int toIndex)</code>: Returns a view of the portion of the list between the specified <code>fromIndex</code> (inclusive) and <code>toIndex</code> (exclusive).</li>
         </ul>
-        <pre><code>
+        <pre>
           import java.util.List;
           import java.util.ArrayList;
           import java.util.Collection;
@@ -515,7 +515,7 @@
                   System.out.println("Sublist of fruits: " + sublist);
               }
           }
-                  </code></pre>
+                  </pre>
 </div>
 <hr>
 
@@ -543,7 +543,7 @@
     </ul>
   
     <p><b>Example Usage:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class ArrayListExample {
@@ -571,7 +571,7 @@
           }
       }
   }
-    </code></pre>
+    </pre>
   
     <p><b>Advantages of ArrayList:</b></p>
     <ul>
@@ -761,7 +761,7 @@
     </ul>
   
     <p><b>Example Usage:</b></p>
-    <pre><code>
+    <code>
   import java.util.*;
   
   public class LinkedListExample {
@@ -790,7 +790,7 @@
           System.out.println("LinkedList after poll: " + list);
       }
   }
-    </code></pre>
+    </code>
   
     <p><b>Advantages of LinkedList:</b></p>
     <ul>
@@ -819,7 +819,7 @@
     </ol>
   
     <p><b>Example:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class SynchronizedArrayListExample {
@@ -841,7 +841,7 @@
           }
       }
   }
-    </code></pre>
+    </pre>
   
     <p><b>Key Points:</b></p>
     <ul>
@@ -932,7 +932,7 @@
       <li>Applicable for Legacy classes like Vector and Stack</li>
       <li>Only allows forword traversal</li>
       <li>Cannot modify elements during iteration.</li>
-      <pre><code>
+      <pre>
 import java.util.*;
 
 public class EnumerationExample {
@@ -949,7 +949,7 @@ public class EnumerationExample {
     }
 }
 
-      </code></pre>
+      </pre>
     </ul>
 
     <ul>
@@ -959,7 +959,7 @@ public class EnumerationExample {
       <li>Only allows forward traversal.</li>
       <li>Allows element removal during iteration using remove().</li>
       <li>Does not support element modification.</li>
-      <pre><code>
+      <pre>
 import java.util.*;
 
 public class IteratorExample {
@@ -981,7 +981,7 @@ public class IteratorExample {
     }
 }
 
-      </code></pre>
+      </pre>
     </ul>
 </div>
 <hr>
@@ -1036,7 +1036,7 @@ public class IteratorExample {
     </table>
   
     <p><b>Example for Iterator:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class IteratorExample {
@@ -1049,10 +1049,10 @@ public class IteratorExample {
           }
       }
   }
-    </code></pre>
+    </pre>
   
     <p><b>Example for ListIterator:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class ListIteratorExample {
@@ -1071,7 +1071,7 @@ public class IteratorExample {
           }
       }
   }
-    </code></pre>
+    </pre>
 </div>
 <hr>
 
@@ -1088,7 +1088,7 @@ public class IteratorExample {
         <li>Examples: Iterators of <code>ArrayList</code>, <code>LinkedList</code>, <code>HashSet</code>, <code>HashMap</code>, <code>LinkedHashMap</code> etc.</li>
         <li>Faster performance due to working directly on the collection.</li>
         <li>Should be used when thread-safety is not a concern.</li>
-        <pre><code>
+        <pre>
 import java.util.*;
 
 public class FailFastExample {
@@ -1106,9 +1106,9 @@ public class FailFastExample {
         }
     }
 }
-        </code></pre>
+        </pre>
         <li><b>How to avoid it?</b> : Use <b>Iterator.remove()</b> instead of <b>list.remove()</b></li>
-        <pre><code>
+        <pre>
           Iterator<String> iterator = list.iterator();
             while (iterator.hasNext()) {
                 String item = iterator.next();
@@ -1117,7 +1117,7 @@ public class FailFastExample {
                 }
             }
             
-        </code></pre>
+        </pre>
     </ul>
 
     <li><b>Fail-Safe Iterator:</b></li>
@@ -1127,7 +1127,7 @@ public class FailFastExample {
         <li>Examples: Iterators of <code>CopyOnWriteArrayList</code>, <code>CopyOnWriteArraySet</code>, <code>ConcurrentHashMap</code>.</li>
         <li>Consumes more memory due to creating a separate copy.</li>
         <li>Useful in concurrent environments where modifications are frequent.</li>
-        <pre><code>
+        <pre>
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Iterator;
 
@@ -1147,7 +1147,7 @@ public class FailSafeExample {
     }
 }
 
-        </code></pre>
+        </pre>
     </ul>
   </ul>
 </div>
@@ -1259,7 +1259,7 @@ public class FailSafeExample {
     </ul>
   
     <p><b>Example Usage:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class HashSetExample {
@@ -1287,7 +1287,7 @@ public class FailSafeExample {
           System.out.println("Size of HashSet: " + set.size());
       }
   }
-    </code></pre>
+    </pre>
 </div>
 <hr>
 
@@ -1455,7 +1455,7 @@ public class FailSafeExample {
     </ul>
   
     <p><b>Example Usage:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class LinkedHashSetExample {
@@ -1484,7 +1484,7 @@ public class FailSafeExample {
   LinkedHashSet: [Java, Python, C++]
   Contains 'Python': true
   After removing 'C++': [Java, Python]
-    </code></pre>
+    </pre>
   
 </div>
 <hr>
@@ -1513,7 +1513,7 @@ public class FailSafeExample {
     </ul>
   
     <p><b>Example Usage:</b></p>
-    <pre><code>
+    <pre>
   import java.util.*;
   
   public class TreeSetExample {
@@ -1541,7 +1541,7 @@ public class FailSafeExample {
   First Element: 10
   Last Element: 30
 
-    </code></pre>
+    </pre>
 </div>
 <hr>
 
@@ -1691,7 +1691,7 @@ public class FailSafeExample {
     <li><b>Unique Keys:</b> Every key in the map is unique, but the values associated with keys can be duplicate.</li>
     <li><b>Methods:</b> Common methods include <code>put()</code> to add mappings, <code>get()</code> to retrieve values, and <code>remove()</code> to delete mappings.</li>
   </ul>
-  <pre><code>
+  <pre>
       import java.util.*;
       
       public class MapExample {
@@ -1721,7 +1721,7 @@ public class FailSafeExample {
       Java: 10
       Python: 15
       C++: 12
-        </code></pre>
+        </pre>
 
   <p><b>Common Implementations of the Map Interface:</b></p>
   <ul>
@@ -1758,7 +1758,7 @@ public class FailSafeExample {
     <li><code>SortedMap<K,V> subMap(K fromKey, K toKey)</code>: Returns a view of the portion of the map whose keys are between <code>fromKey</code> (inclusive) and <code>toKey</code> (exclusive).</li>
   </ul>
   <p><b>Example Usage:</b></p>
-<pre><code>
+<pre>
 import java.util.*;
 
 public class SortedMapExample {
@@ -1791,7 +1791,7 @@ Last Key: Python
 HeadMap (less than 'JavaScript'): {C++=12, Java=10}
 TailMap (greater than or equal to 'C++'): {C++=12, Java=10, JavaScript=18, Python=15}
 SubMap (from 'Java' to 'Python'): {Java=10, JavaScript=18}
-</code></pre>
+</pre>
 </div>
 <hr>
 
@@ -1824,7 +1824,7 @@ SubMap (from 'Java' to 'Python'): {Java=10, JavaScript=18}
   </ul>
 
   <p><b>Example Usage:</b></p>
-  <pre><code>
+  <pre>
 import java.util.*;
 
 public class NavigableMapExample {
@@ -1865,7 +1865,7 @@ Descending Map: {Python=15, JavaScript=18, Java=10, C++=12}
 Poll First Entry: C++=12
 Poll Last Entry: Python=15
 Map after polling: {Java=10, JavaScript=18}
-  </code></pre>
+  </pre>
 </div>
 <hr>
 
@@ -1883,7 +1883,7 @@ Map after polling: {Java=10, JavaScript=18}
   <p><b>Usage:</b> When iterating over a list, checking whether it implements <code>RandomAccess</code> can help choose between <code>for</code>-loop (for index-based access) and iterator-based traversal for better performance.</p>
 
   <p><b>Example:</b></p>
-  <pre><code>
+  <pre>
 import java.util.*;
 
 public class RandomAccessExample {
@@ -1915,7 +1915,7 @@ public class RandomAccessExample {
         }
     }
 }
-  </code></pre>
+  </pre>
 
   <p><b>Advantages:</b></p>
   <ul>
@@ -1989,7 +1989,7 @@ public class RandomAccessExample {
             <li>Key: "vaibhav", Value: 40 → HashCode: 118, Index: 6 → Collision occurs, linked list formed at index 6.</li>
           </ul>
           
-          <pre><code>
+          <pre>
   map.put(new Key("vishal"), 20);
   <b>Create a node object as : </b>
   {
@@ -2000,7 +2000,7 @@ public class RandomAccessExample {
     Integer value = 20
     Node next = null
   }
-          </code></pre>
+          </pre>
           <img src="../../images/hashmap.PNG" alt="lb" style="display: block; margin: auto; width: 50%;"><br>
   
       <li>Collision Handling:</li>
@@ -2024,12 +2024,12 @@ public class RandomAccessExample {
           </ul>
   
       <li>Example Code:</li>
-           <pre><code>
+           <pre>
             map.put(new Key("vishal"), 20);
             map.put(new Key("sachin"), 30);
             map.put(new Key("vaibhav"), 40);
             System.out.println(map.get(new Key("sachin"))); // Output: 30
-          </code></pre>
+          </pre>
   </ul>
 
     <li><b>Hashing Process:</b></li>
@@ -3339,7 +3339,7 @@ public class TaskScheduler {
           <li>A positive integer if the current object is greater than the specified object.</li>
           <li>Zero if the current object is equal to the specified object.</li>
       </ul>
-      <pre><code>
+      <pre>
 import java.util.*;
 
 class Student implements Comparable<Student> {
@@ -3379,7 +3379,7 @@ public class ComparableExample {
 <b>Output</b>
 [Student{id=1, name='Bob'}, Student{id=2, name='Charlie'}, Student{id=3, name='Alice'}]
 
-      </code></pre>
+      </pre>
     </ul>
 
     <b>Comparator Interface:</b>
@@ -3387,7 +3387,7 @@ public class ComparableExample {
       <li>It is part of the <code>java.util</code> package.</li>
       <li>Defining the custom sorting order.</li>
       <li>Method to implement: int compare(T obj1, T obj2)</li>
-      <pre><code>
+      <pre>
 import java.util.*;
 
 class Student {
@@ -3440,12 +3440,12 @@ public class ComparatorExample {
 <b>Output:</b>
 Sorted by name: [Student{id=3, name='Alice'}, Student{id=1, name='Bob'}, Student{id=2, name='Charlie'}]
 Sorted by ID (Descending): [Student{id=3, name='Alice'}, Student{id=2, name='Charlie'}, Student{id=1, name='Bob'}]
-      </code></pre>
+      </pre>
     </ul>
     
     <b>Comparator with Lambda Expressions:</b>
     <ul>
-      <pre><code>
+      <pre>
   import java.util.*;
 
   public class ComparatorLambdaExample {
@@ -3468,7 +3468,7 @@ Sorted by ID (Descending): [Student{id=3, name='Alice'}, Student{id=2, name='Cha
   <b>Output:</b>
   Sorted by name: [Student{id=3, name='Alice'}, Student{id=1, name='Bob'}, Student{id=2, name='Charlie'}]
   Sorted by ID (Descending): [Student{id=3, name='Alice'}, Student{id=2, name='Charlie'}, Student{id=1, name='Bob'}]
-      </code></pre>
+      </pre>
     </ul>
     
     <b>When to Use Comparable vs Comparator?</b>

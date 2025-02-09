@@ -19,7 +19,7 @@
     <h3 class="section-title">2. @ExceptionHandler Annotation</h3>
     <p>The <b>@ExceptionHandler</b> annotation is used within controller classes to handle specific exceptions that occur during the execution of a request.</p>
     <p><strong>Example:</strong> Handling a specific exception like <b>NullPointerException</b>.</p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,13 +37,13 @@ public class ExceptionController {
         return "Caught Null Pointer Exception: " + ex.getMessage();
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">3. Global Exception Handling using @ControllerAdvice</h3>
     <p>The <strong>@ControllerAdvice</strong> annotation is used to define a global exception handler that applies to all controllers. This is a centralized way to manage exceptions.</p>
     <p><strong>Example:</strong> Creating a global exception handler for all exceptions.</p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,13 +59,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Global Exception Handler: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">4. Custom Exception Handling with @ResponseStatus</h3>
     <p>The <strong>@ResponseStatus</strong> annotation allows you to map exceptions to specific HTTP status codes. This provides more control over the response status returned when an exception occurs.</p>
     <p><strong>Example:</strong> Custom exception with specific HTTP status.</p>
-    <pre><code>
+    <pre>
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -75,9 +75,9 @@ public class ResourceNotFoundException extends RuntimeException {
         super(message);
     }
 }
-    </code></pre>
+    </pre>
     <p><strong>Controller using the custom exception:</strong></p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -89,13 +89,13 @@ public class MyController {
         throw new ResourceNotFoundException("Resource not found");
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">5. Exception Handling with ResponseStatusException</h3>
     <p>The <strong>ResponseStatusException</strong> class can be used to throw exceptions with a specific HTTP status and message directly from the controller.</p>
     <p><strong>Example:</strong> Throwing an exception using <b>ResponseStatusException</b>.</p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -109,13 +109,13 @@ public class MyController {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Request");
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">6. Custom Error Response Structure</h3>
     <p>We can create a custom error response structure by defining a custom error class and using it in exception handlers.</p>
     <p><strong>Step 1:</strong> Define a custom error response class.</p>
-    <pre><code>
+    <pre>
 public class CustomErrorResponse {
     private String errorMessage;
     private String errorCode;
@@ -129,10 +129,10 @@ public class CustomErrorResponse {
 
     // Getters and setters
 }
-    </code></pre>
+    </pre>
 
     <p><strong>Step 2:</strong> Use the custom error response in the global exception handler.</p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.ResponseEntity;
@@ -153,13 +153,13 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">7. Handling Validation Exceptions</h3>
     <p>Spring Boot automatically handles validation using annotations like <b>@Valid</b> and <b>@Validated</b>, but custom validation exceptions can also be handled.</p>
     <p><strong>Example:</strong> Handling validation exceptions using @ControllerAdvice.</p>
-    <pre><code>
+    <pre>
     <b>// DTO Class with Validation</b>
     public class ProductRequest {
         @NotNull(message = "Name is required")
@@ -195,7 +195,7 @@ public class CustomGlobalExceptionHandler {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
     }
-    </code></pre>
+    </pre>
     <ul>
         <li>The <b>@Valid</b> annotation in ProductController triggers validation for the incoming request.</li>
         <li>In case of validation failure, <b>MethodArgumentNotValidException</b> is thrown and handled by the <b>GlobalExceptionHandler</b>.</li>
@@ -204,13 +204,13 @@ public class CustomGlobalExceptionHandler {
     <br>
     <h3 class="section-title">8. Sample JSON Error Response</h3>
     <p>Below is an example of how a typical custom error response might look when handling an exception:</p>
-    <pre><code>
+    <pre>
 {
     "errorMessage": "Resource not found",
     "errorCode": "ERROR-404",
     "timestamp": "2024-09-30T15:23:01"
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">9. Summary</h3>
@@ -231,7 +231,7 @@ public class CustomGlobalExceptionHandler {
         <div class="interview-answer">
             <p>You can exclude specific methods from being handled by <b>@ControllerAdvice</b> by using <b>@ExceptionHandler</b> directly within the controller method itself. 
                 This allows for a more fine-grained exception handling strategy.
-                <pre><code>
+                <pre>
 
     <b>// Global exception handler using @ControllerAdvice</b>
     @ControllerAdvice
@@ -273,7 +273,7 @@ public class CustomGlobalExceptionHandler {
         }
     }
 
-    </code></pre>
+    </pre>
             </p>
             <ul>
                 <li>The first endpoint <b>/resource/{id}</b> will use the global exception handler.</li>
@@ -288,7 +288,7 @@ public class CustomGlobalExceptionHandler {
         <div class="interview-answer">
             <p>
                 You can create custom exception handling for specific exceptions related to HTTP client and server errors by using <b>@ControllerAdvice</b> with multiple <b>@ExceptionHandler</b> methods.
-<pre><code>
+<pre>
     <b>// Exception handler for RestTemplate HTTP exceptions</b>
     @ControllerAdvice
     public class RestTemplateExceptionHandler {
@@ -335,7 +335,7 @@ public class CustomGlobalExceptionHandler {
         }
     }
     
-</code></pre>
+</pre>
             </p>
         </div>
 
@@ -349,7 +349,7 @@ public class CustomGlobalExceptionHandler {
                 <p>You should catch low-level exceptions (e.g., DataAccessException from Spring Data) in the service layer and 
                     rethrow them as service-specific exceptions. This allows you to hide implementation details from the higher layers.
                 </p>
-<pre><code>
+<pre>
 <b>// Custom service-layer exception</b>
 public class ServiceException extends RuntimeException {
     public ServiceException(String message, Throwable cause) {
@@ -398,7 +398,7 @@ public class MyController {
     }
 }
 
-</code></pre>
+</pre>
             </div>
 </div>
 </div>

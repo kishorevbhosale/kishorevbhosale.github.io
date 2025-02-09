@@ -97,7 +97,7 @@
     <h4>Service Discovery</h4>
     <p>Service Discovery enables applications to discover and communicate with other services in a dynamic environment. It reduces the need for hard-coded IP addresses and simplifies the process of adding new services.</p>
     <p><strong>How it Works:</strong> Services register themselves with the service registry upon startup, and the registry keeps track of all available services. Other services can query the registry to find the available instances of a specific service.</p>
-    <pre><code>public class EurekaServiceRegistry implements ServiceRegistry {
+    <pre>public class EurekaServiceRegistry implements ServiceRegistry {
     private final EurekaClient eurekaClient;
 
     public EurekaServiceRegistry(EurekaClient eurekaClient) {
@@ -109,13 +109,13 @@
         return eurekaClient.getInstancesById("my-service-id");
     }
 }
-</code></pre>
+</pre>
     <p><strong>Configuration:</strong> In Spring Cloud, enable service discovery with <code>@EnableEurekaClient</code> for Eureka, or <code>@EnableDiscoveryClient</code> for Consul.</p>
 <hr>
     <h4>Service Registry</h4>
     <p>Service Registry keeps a catalog of services available in the system. This ensures services can register and deregister automatically, making it easier to handle failures and scale services dynamically.</p>
     <p><strong>How it Works:</strong> Services register themselves with the service registry, and the registry provides a central view of all service instances. This setup allows services to be self-healing, where a failed instance can be automatically removed from the registry and replaced by a new instance.</p>
-    <pre><code>public class EurekaServiceRegistry implements ServiceRegistry {
+    <pre>public class EurekaServiceRegistry implements ServiceRegistry {
     private final EurekaClient eurekaClient;
 
     public EurekaServiceRegistry(EurekaClient eurekaClient) {
@@ -132,7 +132,7 @@
         eurekaClient.deregisterInstance(serviceInstance.getServiceId(), serviceInstance.getInstanceId());
     }
 }
-</code></pre>
+</pre>
 <hr>
     <h4>Load Balancing in Cloud-Native Applications</h4>
     <p>Load balancing in cloud-native applications can be done either at the client-side or server-side.</p>
@@ -171,7 +171,7 @@
         <p>Start by creating a new Spring Boot project using your preferred IDE or by using Spring Initializr (https://start.spring.io/). Include the <code>spring-cloud-starter-netflix-eureka-server</code> Maven dependency in your project.</p>
     
         <h5>2. Configure the Properties</h5>
-        <pre><code>
+        <pre>
     server:
       port: 8070
     eureka:
@@ -182,7 +182,7 @@
         registerWithEureka: false
       serviceUrl:
         defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-    </code></pre>
+    </pre>
     
         <h5>3. Add the Eureka Server Annotation</h5>
         <p>In the main class of your project, annotate it with <code>@EnableEurekaServer</code>. This annotation configures the application to act as a Eureka Server.</p>
@@ -199,7 +199,7 @@
     <p>Start by creating a new Spring Boot project using your preferred IDE or by using Spring Initializr (https://start.spring.io/). Include the <code>spring-cloud-starter-netflix-eureka-client</code> Maven dependency.</p>
 
     <h5>2. Configure the Properties</h5>
-    <pre><code>
+    <pre>
 eureka:
   instance:
     preferIpAddress: true
@@ -208,7 +208,7 @@ eureka:
     fetchRegistry: true
   serviceUrl:
     defaultZone: "http://localhost:8070/eureka/"
-</code></pre>
+</pre>
 
     <h5>3. Build and Run the Application</h5>
     <p>Build your project and run it as a Spring Boot application. Open a web browser and navigate to <code>http://localhost:8070</code>. You should see the microservice registered itself as an application, which can be confirmed inside the Eureka Server dashboard.</p>

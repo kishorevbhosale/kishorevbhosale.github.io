@@ -71,32 +71,32 @@
                 <h5>2. Common Expression Patterns</h5>
                 <ol>
                     <li><strong>Match All Methods in a Package</strong>
-                        <pre><code>@Pointcut("execution(* com.example.service.*.*(..))")</code></pre>
+                        <pre>@Pointcut("execution(* com.example.service.*.*(..))")</pre>
                         <p>This expression matches all methods in any class within the <b>com.example.service</b> package.</p>
                     </li>
                     
                     <li><strong>Match Specific Method</strong>
-                        <pre><code>@Pointcut("execution(void com.example.service.MyService.performTask())")</code></pre>
+                        <pre>@Pointcut("execution(void com.example.service.MyService.performTask())")</pre>
                         <p>This matches the <b>performTask</b> method in the <b>MyService</b> class.</p>
                     </li>
                     
                     <li><strong>Match All Methods with Specific Return Type</strong>
-                        <pre><code>@Pointcut("execution(String com.example.service.*.get*(..))")</code></pre>
+                        <pre>@Pointcut("execution(String com.example.service.*.get*(..))")</pre>
                         <p>This matches all methods in any class in the package that start with "get" and return a <b>String</b>.</p>
                     </li>
                     
                     <li><strong>Match Methods with Specific Parameters</strong>
-                        <pre><code>@Pointcut("execution(* com.example.service.*.addUser(String, ..))")</code></pre>
+                        <pre>@Pointcut("execution(* com.example.service.*.addUser(String, ..))")</pre>
                         <p>This matches the <b>addUser</b> method that takes a <b>String</b> as the first parameter, regardless of the second parameter type.</p>
                     </li>
                     
                     <li><strong>Match Methods with Annotations</strong>
-                        <pre><code>@Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")</code></pre>
+                        <pre>@Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")</pre>
                         <p>This matches any method annotated with <b>@GetMapping</b>.</p>
                     </li>
                     
                     <li><strong>Combining Pointcuts</strong>
-                        <pre><code>@Pointcut("execution(* com.example.service.*.*(..)) || execution(* com.example.repository.*.*(..))")</code></pre>
+                        <pre>@Pointcut("execution(* com.example.service.*.*(..)) || execution(* com.example.repository.*.*(..))")</pre>
                         <p>This expression matches all methods in both the <b>service</b> and <b>repository</b> packages.</p>
                     </li>
                 </ol>
@@ -106,7 +106,7 @@
 
                 <br>
                 <h3 class="section-title">Example: Using Pointcut Expressions in Advice</h3>
-                <pre><code>
+                <pre>
                     import org.aspectj.lang.annotation.Aspect;
                     import org.aspectj.lang.annotation.Before;
                     import org.springframework.stereotype.Component;
@@ -125,7 +125,7 @@
                             System.out.println("Log: A service method is about to be executed.");
                         }
                     }
-                    </code></pre>
+                    </pre>
                     <br>
                     <h3 class="section-title">AOP Proxies in Spring</h3>
                     <h5>What is Proxy?</h5>
@@ -156,7 +156,7 @@
                     <h3 class="section-title">Combining It All with Example</h3>
                     <h5>1. Logging</h5>
                     <div class="example">
-                        <pre><code>
+                        <pre>
     @Aspect
     @Component
     public class LoggingAspect {
@@ -176,12 +176,12 @@
             System.out.println("Exception in method: " + joinPoint.getSignature().getName() + " with error: " + error.getMessage());
         }
     }
-                        </code></pre>
+                        </pre>
                     </div>
 
                     <h5>2. Transaction Management</h5>
                     <div class="example">
-                        <pre><code>
+                        <pre>
     @Aspect
     @Component
     public class TransactionAspect {
@@ -203,12 +203,12 @@
             return result;
         }
     }
-                        </code></pre>
+                        </pre>
                     </div>
 
                     <h5>3. Security</h5>
                     <div class="example">
-                        <pre><code>
+                        <pre>
     @Aspect
     @Component
     public class SecurityAspect {
@@ -226,12 +226,12 @@
             return true; // Dummy implementation
         }
     }
-                        </code></pre>
+                        </pre>
                     </div>
 
                     <h5>4. Performance Monitoring</h5>
                     <div class="example">
-                        <pre><code>
+                        <pre>
     @Aspect
     @Component
     public class PerformanceMonitoringAspect {
@@ -245,12 +245,12 @@
             return result;
         }
     }
-                        </code></pre>
+                        </pre>
                     </div>
 
                     <h5>5. Exception handling</h5>
                     <div class="example">
-                        <pre><code>
+                        <pre>
     @Aspect
     @Component
     public class ExceptionHandlingAspect {
@@ -261,12 +261,12 @@
             System.out.println("Exception in method: " + joinPoint.getSignature().getName() + " with message: " + ex.getMessage());
         }
     }
-                        </code></pre>
+                        </pre>
                     </div>
 
                     <h5>6. Audit Logging</h5>
                     <div class="example">
-                        <pre><code>
+                        <pre>
     @Aspect
     @Component
     public class AuditLoggingAspect {
@@ -277,7 +277,7 @@
             System.out.println("Audit log for method: " + joinPoint.getSignature().getName());
         }
     }
-                            </code></pre>
+                            </pre>
                             </div>
                     
                     

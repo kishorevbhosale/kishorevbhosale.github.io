@@ -204,12 +204,12 @@
         <strong>Thread Management:</strong>
         HotSpot provides robust multithreading support for concurrent applications, ensuring efficient CPU utilization.
       </li>
-      <pre><code>
+      <pre>
 C:\Users\user>java --version
 java 17.0.12 2024-07-16 LTS
 Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-jvmci-23.0-b41)
 <b>Java HotSpot(TM)</b> 64-Bit Server VM Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-jvmci-23.0-b41, mixed mode, sharing)
-      </code></pre>
+      </pre>
     </ul>
   </div>
   <hr>
@@ -301,22 +301,22 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
       <li>
         <strong>Strong Reference:</strong>
         <p>The most commonly used type of reference. Any object that has a strong reference will not be eligible for garbage collection unless the reference is explicitly set to <code>null</code>.</p>
-        <pre><code>String str = "Hello, World!";</code></pre>
+        <pre>String str = "Hello, World!";</pre>
       </li>
       <li>
         <strong>Weak Reference:</strong>
         <p>Objects with weak references are eligible for garbage collection when no strong references exist. Weak references are used for objects like caches and mappings.</p>
-        <pre><code>WeakReference&lt;String&gt; weakRef = new WeakReference&lt;&gt;(new String("WeakReference"));</code></pre>
+        <pre>WeakReference&lt;String&gt; weakRef = new WeakReference&lt;&gt;(new String("WeakReference"));</pre>
       </li>
       <li>
         <strong>Soft Reference:</strong>
         <p>Soft references allow objects to stay in memory as long as sufficient memory is available. They are useful for implementing memory-sensitive caches.</p>
-        <pre><code>SoftReference&lt;String&gt; softRef = new SoftReference&lt;&gt;(new String("SoftReference"));</code></pre>
+        <pre>SoftReference&lt;String&gt; softRef = new SoftReference&lt;&gt;(new String("SoftReference"));</pre>
       </li>
       <li>
         <strong>Phantom Reference:</strong>
         <p>Phantom references are used to schedule cleanup actions before an object is reclaimed by the garbage collector. They are created using the <code>PhantomReference</code> class.</p>
-        <pre><code>PhantomReference&lt;String&gt; phantomRef = new PhantomReference&lt;&gt;(new String("Phantom"), refQueue);</code></pre>
+        <pre>PhantomReference&lt;String&gt; phantomRef = new PhantomReference&lt;&gt;(new String("Phantom"), refQueue);</pre>
       </li>
     </ul>
     <b>Summary</b>
@@ -393,22 +393,22 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     <li>
       <strong>Strong Reference:</strong>
       <p>The most commonly used type of reference. Any object that has a strong reference will not be eligible for garbage collection unless the reference is explicitly set to <code>null</code>.</p>
-      <pre><code>String str = "Hello, World!";</code></pre>
+      <pre>String str = "Hello, World!";</pre>
     </li>
     <li>
       <strong>Weak Reference:</strong>
       <p>Objects with weak references are eligible for garbage collection when no strong references exist. Weak references are used for objects like caches and mappings.</p>
-      <pre><code>WeakReference&lt;String&gt; weakRef = new WeakReference&lt;&gt;(new String("WeakReference"));</code></pre>
+      <pre>WeakReference&lt;String&gt; weakRef = new WeakReference&lt;&gt;(new String("WeakReference"));</pre>
     </li>
     <li>
       <strong>Soft Reference:</strong>
       <p>Soft references allow objects to stay in memory as long as sufficient memory is available. They are useful for implementing memory-sensitive caches.</p>
-      <pre><code>SoftReference&lt;String&gt; softRef = new SoftReference&lt;&gt;(new String("SoftReference"));</code></pre>
+      <pre>SoftReference&lt;String&gt; softRef = new SoftReference&lt;&gt;(new String("SoftReference"));</pre>
     </li>
     <li>
       <strong>Phantom Reference:</strong>
       <p>Phantom references are used to schedule cleanup actions before an object is reclaimed by the garbage collector. They are created using the <code>PhantomReference</code> class.</p>
-      <pre><code>PhantomReference&lt;String&gt; phantomRef = new PhantomReference&lt;&gt;(new String("Phantom"), refQueue);</code></pre>
+      <pre>PhantomReference&lt;String&gt; phantomRef = new PhantomReference&lt;&gt;(new String("Phantom"), refQueue);</pre>
     </li>
   </ul>
   <b>Summary</b>
@@ -596,7 +596,7 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
       </li>
     </ul>
     <b>Code Example</b>
-    <pre><code>
+    <pre>
   public class GarbageCollectorExample {
       public static void main(String[] args) {
           // Suggesting garbage collection
@@ -607,7 +607,7 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
           System.out.println("Garbage collection suggested.");
       }
   }
-    </code></pre>
+    </pre>
     <b>Conclusion</b>
     <p>
       While <code>System.gc()</code> and <code>Runtime.getRuntime().gc()</code> can be used to suggest garbage collection, they do not force it. The JVM's garbage collector operates autonomously to optimize application performance and memory management.
@@ -719,7 +719,7 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
   <div>
       <b> Enable Heap Dump Generation</b>
       <p> Run your Java application with the following JVM option:</p>
-      <pre><code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof</code></pre>
+      <pre>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof</pre>
       <p>This automatically generates a heap dump when an OutOfMemoryError occurs.</p>
   </div>
 
@@ -728,14 +728,14 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
       <p>You can manually create a heap dump using one of the following methods:</p>
       
       <b> Using `jcmd` (Recommended in GraalVM)</b>
-      <pre><code>jcmd <PID> GC.heap_dump heapdump.hprof</code></pre>
+      <pre>jcmd <PID> GC.heap_dump heapdump.hprof</pre>
 
       <b> Using `jmap` (Alternative)</b>
-      <pre><code>jmap -dump:live,format=b,file=heapdump.hprof <PID></code></pre>
+      <pre>jmap -dump:live,format=b,file=heapdump.hprof <PID></pre>
 
       <b> Using GraalVM’s Native Image (If running native binary)</b>
       <p>If you are using GraalVM’s **native-image**, enable heap dump support using:</p>
-      <pre><code>-XX:+HeapDumpAfterFullGC</code></pre>
+      <pre>-XX:+HeapDumpAfterFullGC</pre>
   </div>
 
   <div>
@@ -743,7 +743,7 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
       <p>GraalVM provides VisualVM as a profiling tool.</p>
       
       <b> Open Heap Dump in VisualVM</b>
-      <pre><code>visualvm</code></pre>
+      <pre>visualvm</pre>
       <p>Steps:</p>
       <ul>
           <li>Open VisualVM.</li>
@@ -813,7 +813,7 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     <ul>
         <li>Captured Heap Dump using the following command:</li>
     </ul>
-    <pre><code>jcmd &lt;PID&gt; GC.heap_dump heapdump.hprof</code></pre>
+    <pre>jcmd &lt;PID&gt; GC.heap_dump heapdump.hprof</pre>
     <ul>
         <li>Used VisualVM and Eclipse MAT to analyze the heap dump.</li>
     </ul>
@@ -829,7 +829,7 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
   <div>
     <b>Step 3: Root Cause Analysis</b>
     <p>The <code>UserSessionManager</code> class was using a static HashMap to store user sessions:</p>
-    <pre><code>
+    <pre>
 public class UserSessionManager {
 private static final Map&lt;String, UserSession&gt; sessionCache = new HashMap&lt;&gt;();
 
@@ -837,7 +837,7 @@ public static void addSession(String sessionId, UserSession session) {
     sessionCache.put(sessionId, session);
 }
 }
-    </code></pre>
+    </pre>
     <ul>
         <li>Sessions were never removed, leading to a memory leak.</li>
         <li>As more users logged in, the <code>sessionCache</code> grew indefinitely.</li>
@@ -852,30 +852,30 @@ public static void addSession(String sessionId, UserSession session) {
     <ul>
         <li>Replaced HashMap with WeakHashMap to allow garbage collection when sessions are no longer referenced:</li>
     </ul>
-    <pre><code>
+    <pre>
 private static final Map&lt;String, UserSession&gt; sessionCache = new WeakHashMap&lt;&gt;();
-    </code></pre>
+    </pre>
 
     <b>2. Implemented Session Timeout & Cleanup Mechanism</b>
     <ul>
         <li>Introduced <code>ScheduledExecutorService</code> to periodically remove inactive sessions.</li>
     </ul>
-    <pre><code>
+    <pre>
 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 scheduler.scheduleAtFixedRate(() -> {
 sessionCache.entrySet().removeIf(entry -> entry.getValue().isExpired());
 }, 10, 10, TimeUnit.MINUTES);
-    </code></pre>
+    </pre>
 
     <b>3. Optimized JVM Heap Settings</b>
     <ul>
         <li>Increased Heap Size for better memory allocation:</li>
     </ul>
-    <pre><code>-Xms512m -Xmx2g</code></pre>
+    <pre>-Xms512m -Xmx2g</pre>
     <ul>
         <li>Tuned Garbage Collector (G1GC) settings:</li>
     </ul>
-    <pre><code>-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=45</code></pre>
+    <pre>-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=45</pre>
   </div>
   <hr class="thin-line">
 

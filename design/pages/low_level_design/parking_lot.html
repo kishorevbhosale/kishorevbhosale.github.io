@@ -37,7 +37,7 @@
     <hr>
 
     <h5>Code Implementation:</h5>
-<pre><code>
+<pre>
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +50,9 @@ enum VehicleType {
 enum ParkingSpotType {
     HANDICAPPED, COMPACT, LARGE, MOTORCYCLE
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // ParkingSpot class
 class ParkingSpot {
     private ParkingSpotType type;
@@ -79,9 +79,9 @@ class ParkingSpot {
         return type;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Vehicle class
 class Vehicle {
     private VehicleType type;
@@ -94,9 +94,9 @@ class Vehicle {
         return type;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // ParkingTicket class
 class ParkingTicket {
     private Vehicle vehicle;
@@ -127,9 +127,9 @@ class ParkingTicket {
         return fee;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // ParkingLot class
 class ParkingLot {
     private List&lt;ParkingSpot&gt; spots;
@@ -209,9 +209,9 @@ class ParkingLot {
         return capacity;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // DisplayBoard class
 class DisplayBoard {
     private ParkingLot parkingLot;
@@ -228,9 +228,9 @@ class DisplayBoard {
         System.out.println("Available Spots: " + (parkingLot.getCapacity() - parkingLot.getCurrentOccupancy()));
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Main class for testing
 public class ParkingLotSystem {
     public static void main(String[] args) {
@@ -257,7 +257,7 @@ public class ParkingLotSystem {
         parkingLot.displayBoard.updateDisplay();
     }
 }
-</code></pre>
+</pre>
 <hr>
     <h5>Design Explanation:</h5>
     <ul>

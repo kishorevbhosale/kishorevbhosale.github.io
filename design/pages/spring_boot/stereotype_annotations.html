@@ -14,7 +14,7 @@
                 <li>The generic stereotype annotation that marks a class as a Spring Bean.</li>
                 <li>Spring automatically detects classes annotated with @Component and registers them as beans.</li>
             </ul>
-            <pre><code>
+            <pre>
     import org.springframework.stereotype.Component;
     <b>@Component</b>
     public class MyComponent {
@@ -22,7 +22,7 @@
             System.out.println("Doing something...");
         }
     }                
-            </code></pre>
+            </pre>
 
             <br>
             <hr>
@@ -30,7 +30,7 @@
             <ul>
                 <li>The <b>@Service</b> annotation is typically applied to classes in the service layer, where business logic is implemented and external API calls are handled.</li>
             </ul>
-            <pre><code>
+            <pre>
     import org.springframework.stereotype.Service;
     <b>@Service</b>
     public class MyService {
@@ -38,14 +38,14 @@
             return "My Business Service";
         }
     }                   
-            </code></pre>
+            </pre>
             <br>
             <hr>
             <h5>3. @Repository</h5>
             <ul>
                 <li>The <b>@Repository</b> annotation is used for classes that manage database operations, such as insert, update, delete, and query actions.</li>
             </ul>
-            <pre><code>
+            <pre>
     import org.springframework.stereotype.Repository;
     <b>@Repository</b>
     public class MyRepository {
@@ -54,7 +54,7 @@
         }
     }
                                    
-            </code></pre>
+            </pre>
             <br>
             <hr>
 
@@ -64,7 +64,7 @@
                 <li><b>@RestController</b> is a specialized version of `@Controller` that combines `@Controller` and `@ResponseBody`, 
                     and is used to handle RESTful web services, returning data directly in JSON or XML format instead of views.</li>
             </ul>
-            <pre><code>
+            <pre>
     import org.springframework.web.bind.annotation.RestController;
     import org.springframework.web.bind.annotation.GetMapping;              
     @RestController
@@ -74,7 +74,7 @@
             return "This is data from REST API";
         }
     }                
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">@PostConstruct</h3>
             <img src="../../images/bean8.PNG" style="display: block; margin: auto; width: 100%;" class="img-fluid">
@@ -86,7 +86,7 @@
             <p>A <b>@Configuration</b> class is a special type of Spring component that is used to define Spring beans through methods annotated with <b>@Bean</b>. 
                 This approach allows you to configure your application using Java code instead of XML. 
             A <b>@Configuration</b> class can also include other configuration classes and allow for component scanning.</p>
-            <pre><code>
+            <pre>
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
     <b>@Configuration</b>
@@ -96,7 +96,7 @@
             return new MyService();
         }
     }
-            </code></pre>
+            </pre>
             <br>
 
         </div>

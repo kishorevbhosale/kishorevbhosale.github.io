@@ -22,7 +22,7 @@
     </p>
 </div>
 <div>
-    <pre><code>
+    <pre>
         // Low-level module: EmailSender
         class EmailSender {
             public void sendEmail(String message) {
@@ -61,7 +61,7 @@
             }
         }
         
-    </code></pre>
+    </pre>
 </div>
 <div>
     <h5>Problem (DIP Violation):</h5>
@@ -84,7 +84,7 @@
     </ol>
 </div>
 <div>
-    <pre><code>
+    <pre>
         // High-level abstraction: MessageSender interface
         interface MessageSender {
             void send(String message);
@@ -134,7 +134,7 @@
                 smsNotification.sendNotification("Hello via SMS!");
             }
         }        
-    </code></pre>
+    </pre>
 </div>
 <div>
     <h5>Key Points in the Refactored Design</h5>

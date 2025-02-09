@@ -41,7 +41,7 @@
     <hr>
 
     <h5>Code Implementation:</h5>
-<pre><code>
+<pre>
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -82,9 +82,9 @@ class Book {
         this.available = true;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing Member
 class Member {
     private String name;
@@ -119,9 +119,9 @@ class Member {
         return borrowedBooks.size() >= maxBooks;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing Transaction (Borrow or Return)
 class Transaction {
     private Book book;
@@ -141,9 +141,9 @@ class Transaction {
                 " | Member: " + member.getMemberId() + " | Date: " + transactionDate);
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing Library
 class Library {
     private Map<String, Book> catalog;
@@ -213,9 +213,9 @@ class Library {
         }
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Main class to simulate Library Management System
 public class LibraryManagementApp {
     public static void main(String[] args) {
@@ -241,10 +241,10 @@ public class LibraryManagementApp {
         library.returnBook("M001", "12345");  // Alice returns Java Programming
     }
 }
-</code></pre>
+</pre>
 
 <h5>Sample Input:</h5>
-    <pre><code>
+    <pre>
     // Adding books to the library
     Book book1 = new Book("Java Programming", "Author A", "12345", 2020);
     Book book2 = new Book("Data Structures", "Author B", "67890", 2018);
@@ -263,10 +263,10 @@ public class LibraryManagementApp {
 
     // Returning books
     library.returnBook("M001", "12345");  // Alice returns Java Programming
-    </code></pre>
+    </pre>
 
     <h5>Sample Output:</h5>
-    <pre><code>
+    <pre>
     // Output after Alice borrows Java Programming
     Transaction: borrow | Book: Java Programming | Member: M001 | Date: <current date and time>
 
@@ -279,7 +279,7 @@ public class LibraryManagementApp {
     // If Bob tries to borrow another book while having already borrowed the maximum allowed books
     Transaction: borrow | Book: Data Structures | Member: M002 | Date: <current date and time>
     Book is already borrowed.
-    </code></pre>
+    </pre>
 
     <h5>Explanation of the Code:</h5>
     <ul>

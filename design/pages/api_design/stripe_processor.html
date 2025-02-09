@@ -159,35 +159,35 @@
         This object represents a customer of your business. 
         Use it to create recurring charges, save payment and contact information, and track payments that belong to the same customer.
     </p>
-    <pre><code>
+    <pre>
         POST /v1/customers
         POST /v1/customers/:id
         GET /v1/customers/:id
         GET /v1/customers
         DELETE /v1/customers/:id
         GET /v1/customers/search
-    </code></pre>
+    </pre>
     <b>Session: </b>
     <p>
         A **Checkout Session** is a temporary setup for your customer to complete their payment for one-time purchases or subscriptions. 
         Each time a customer tries to pay, you create a new session to keep things organized. Once the payment is successful, the session saves the customer’s info and payment details. 
         You simply create the session on your server and redirect the customer to its URL to start the checkout process.
     </p>
-    <pre><code>
+    <pre>
         POST /v1/checkout/sessions
         POST /v1/checkout/sessions/:id
         GET /v1/checkout/sessions/:id
         GET /v1/checkout/sessions/:id/line_items
         GET /v1/checkout/sessions
         POST /v1/checkout/sessions/:id/expire
-    </code></pre>
+    </pre>
     <b>Invoices: </b>
     <p>
         Invoices are bills for amounts owed by a customer, generated either as one-time or recurring from a subscription. 
         Stripe can automatically charge the customer or send the invoice via email for manual payment. Before charging, Stripe applies any customer credits and adjusts the amount. 
         If the amount is too small to charge, it’s added as credit for the next invoice.
     </p>
-    <pre><code>
+    <pre>
         POST /v1/invoices
         POST /v1/invoices/:id
         GET /v1/invoices/:id
@@ -195,54 +195,54 @@
         DELETE /v1/invoices/:id
         POST /v1/invoices/:id/pay
         GET /v1/invoices/search
-    </code></pre>
+    </pre>
     <b>Charges: </b>
     <p>
         The Charge object represents a single attempt to move money into your Stripe account. 
         PaymentIntent confirmation is the most common way to create Charges, but transferring money to a different Stripe account through Connect also creates Charges.
     </p>
-    <pre><code>
+    <pre>
         POST /v1/charges
         POST /v1/charges/:id
         GET /v1/charges/:id
         GET /v1/charges
         GET /v1/charges/search
-    </code></pre>
+    </pre>
     <b>Refunds:</b>
     <p>
         Refund objects allow you to refund a previously created charge that isn’t refunded yet. 
         Funds are refunded to the credit or debit card that’s initially charged.
     </p>
-    <pre><code>
+    <pre>
         POST /v1/payouts
         POST /v1/payouts/:id
         GET /v1/payouts/:id
         GET /v1/payouts
         POST /v1/payouts/:id/cancel
         POST /v1/payouts/:id/reverse
-    </code></pre>
+    </pre>
     
     <h5>Balance:</h5>
     <p>
         This is an object representing your Stripe balance. You can retrieve it to see the balance currently on your Stripe account.
     </p>
-    <pre><code>
+    <pre>
         GET /v1/balance
-    </code></pre>
+    </pre>
 
     <h5>Payouts:</h5>
     <p>
         A Payout object is created when you receive funds from Stripe or initiate a payout to a connected bank account or debit card. 
         You can view individual payouts or list all payouts. Payout schedules vary based on your country and industry.
     </p>
-    <pre><code>
+    <pre>
         POST /v1/payouts
         POST /v1/payouts/:id/reverse
         POST /v1/payouts/:id
         GET /v1/payouts/:id
         GET /v1/payouts
         POST /v1/payouts/:id/cancel
-    </code></pre>
+    </pre>
     <hr>
     <h5>GraphQL Queries</h5>
     <b>Customer</b>

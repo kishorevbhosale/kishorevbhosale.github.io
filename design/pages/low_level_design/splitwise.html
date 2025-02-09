@@ -30,7 +30,7 @@
     <hr>
 
     <b>Code Implementation:</b>
-<pre><code>
+<pre>
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -56,18 +56,18 @@ abstract class Split {
         this.amount = amount;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Equal Split
 class EqualSplit extends Split {
     public EqualSplit(User user) {
         super(user);
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Percent Split
 class PercentSplit extends Split {
     private double percentage;
@@ -81,18 +81,18 @@ class PercentSplit extends Split {
         return percentage;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Exact Split
 class ExactSplit extends Split {
     public ExactSplit(User user) {
         super(user);
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // User class
 class User {
     private String id;
@@ -119,9 +119,9 @@ class User {
         return balances;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Expense class
 class Expense {
     private String id;
@@ -150,9 +150,9 @@ class Expense {
         return paidBy;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Group class
 class Group {
     private String id;
@@ -183,9 +183,9 @@ class Group {
         expenses.add(expense);
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Splitwise Service
 class SplitwiseService {
     private static SplitwiseService instance;
@@ -254,9 +254,9 @@ class SplitwiseService {
         }
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Demo Class
 public class SplitwiseDemo {
     public static void main(String[] args) {
@@ -288,7 +288,7 @@ public class SplitwiseDemo {
         service.settleBalance(u2, u1);
     }
 }
-</code></pre>
+</pre>
 
     <b>Input:</b>
     <ul>

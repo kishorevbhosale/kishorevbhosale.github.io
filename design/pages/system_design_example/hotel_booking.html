@@ -311,7 +311,7 @@
           <h5>1. Hotels Table</h5>
           <p>Stores information about hotels.</p>
           <p><b>Table Name:</b> hotels</p>
-          <pre><code>
+          <pre>
       Columns:
         - hotel_id: VARCHAR(255) [Primary Key]
         - name: VARCHAR(255)
@@ -322,14 +322,14 @@
         - manager_id: VARCHAR(255)
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </code></pre>
+          </pre>
         </div>
         
         <div id="users-table">
           <h5>2. Users Table</h5>
           <p>Stores information about users who use the platform.</p>
           <p><b>Table Name:</b> users</p>
-          <pre><code>
+          <pre>
       Columns:
         - user_id: VARCHAR(255) [Primary Key]
         - name: VARCHAR(255)
@@ -338,14 +338,14 @@
         - password_hash: VARCHAR(255)
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </code></pre>
+          </pre>
         </div>
         
         <div id="bookings-table">
           <h5>3. Bookings Table</h5>
           <p>Stores booking details for users.</p>
           <p><b>Table Name:</b> bookings</p>
-          <pre><code>
+          <pre>
       Columns:
         - booking_id: VARCHAR(255) [Primary Key]
         - hotel_id: VARCHAR(255) [Foreign Key to hotels(hotel_id)]
@@ -357,14 +357,14 @@
         - total_amount: DECIMAL(10, 2)
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </code></pre>
+          </pre>
         </div>
         
         <div id="payments-table">
           <h5>4. Payments Table</h5>
           <p>Stores payment information for bookings.</p>
           <p><b>Table Name:</b> payments</p>
-          <pre><code>
+          <pre>
       Columns:
         - payment_id: VARCHAR(255) [Primary Key]
         - booking_id: VARCHAR(255) [Foreign Key to bookings(booking_id)]
@@ -373,13 +373,13 @@
         - status: ENUM('PENDING', 'SUCCESS', 'FAILED')
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </code></pre>
+          </pre>
         </div>
         
         <div id="search-index">
           <h5>5. ElasticSearch Index</h5>
           <p>Used for searching hotels based on criteria like location, amenities, and availability.</p>
-          <pre><code>
+          <pre>
       Index Name: hotels_index
       Fields:
         - hotel_id: VARCHAR(255)
@@ -388,14 +388,14 @@
         - available_rooms: INT
         - price_per_night: DECIMAL(10, 2)
         - amenities: JSON
-          </code></pre>
+          </pre>
         </div>
         
         <div id="cassandra-archival">
           <h5>6. Cassandra Archival</h5>
           <p>Stores historical booking data for analysis.</p>
           <p><b>Table Name:</b> bookings_archive</p>
-          <pre><code>
+          <pre>
       Columns:
         - booking_id: VARCHAR(255) [Primary Key]
         - hotel_id: VARCHAR(255)
@@ -406,20 +406,20 @@
         - status: ENUM('BOOKED', 'CANCELLED', 'COMPLETED')
         - total_amount: DECIMAL(10, 2)
         - archived_at: TIMESTAMP
-          </code></pre>
+          </pre>
         </div>
         
         <div id="kafka-event-log">
           <h5>7. Kafka Event Log</h5>
           <p>Logs events for notifications and analytics.</p>
           <p><b>Table Name:</b> kafka_event_log</p>
-          <pre><code>
+          <pre>
       Columns:
         - event_id: VARCHAR(255) [Primary Key]
         - event_type: ENUM('BOOKING_CONFIRMED', 'BOOKING_CANCELLED', 'PAYMENT_SUCCESS', 'PAYMENT_FAILED')
         - payload: JSON
         - created_at: TIMESTAMP
-          </code></pre>
+          </pre>
         </div>
       </div>
       
@@ -435,7 +435,7 @@
             <b>A) Add a Hotel</b>
             <p><strong>Endpoint:</strong> POST /hotels</p>
             <p><strong>Request Body:</strong></p>
-            <pre><code>
+            <pre>
             {
                 "name": "Hotel Paradise",
                 "location": "New York",
@@ -443,39 +443,39 @@
                 "amenities": ["WiFi", "Pool", "Gym"],
                 "manager_id": "manager123"
             }
-                </code></pre>
+                </pre>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "hotel_id": "hotel123",
                 "message": "Hotel added successfully"
             }
-                </code></pre>
+                </pre>
                 </div>
                 
                 <div id="update-hotel">
                 <b>B) Update Hotel Details</b>
                 <p><strong>Endpoint:</strong> PUT /hotels/{hotel_id}</p>
                 <p><strong>Request Body:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "name": "Hotel Paradise Deluxe",
                 "amenities": ["WiFi", "Pool", "Spa"]
             }
-                </code></pre>
+                </pre>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
                 {
                     "message": "Hotel details updated successfully"
                 }
-                </code></pre>
+                </pre>
                 </div>
                 
                 <div id="get-hotel-info">
                 <b>C) Get Hotel Information</b>
                 <p><strong>Endpoint:</strong> GET /hotels/{hotel_id}</p>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
                 {
                     "hotel_id": "hotel123",
                     "name": "Hotel Paradise",
@@ -484,7 +484,7 @@
                     "available_rooms": 20,
                     "amenities": ["WiFi", "Pool", "Gym"]
                 }
-                </code></pre>
+                </pre>
                 </div>
         </ul>
       </div>
@@ -499,7 +499,7 @@
                 <p><strong>Request Parameters:</strong></p>
                 <pre>location=New York&checkin_date=2025-01-15&checkout_date=2025-01-20&amenities=WiFi</pre>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             [
                 {
                 "hotel_id": "hotel123",
@@ -516,7 +516,7 @@
                 "price_per_night": 200
                 }
             ]
-                </code></pre>
+                </pre>
                 </div>
         </ul>
       </div>
@@ -529,7 +529,7 @@
                 <b>A) Create a Booking</b>
                 <p><strong>Endpoint:</strong> POST /bookings</p>
                 <p><strong>Request Body:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "hotel_id": "hotel123",
                 "user_id": "user789",
@@ -537,33 +537,33 @@
                 "checkout_date": "2025-01-20",
                 "rooms": 1
             }
-                </code></pre>
+                </pre>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "booking_id": "booking456",
                 "status": "RESERVED",
                 "message": "Booking created successfully"
             }
-                </code></pre>
+                </pre>
                 </div>
                 
                 <div id="cancel-booking">
                 <b>B) Cancel a Booking</b>
                 <p><strong>Endpoint:</strong> PUT /bookings/{booking_id}/cancel</p>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "message": "Booking cancelled successfully"
             }
-                </code></pre>
+                </pre>
                 </div>
                 
                 <div id="get-booking-details">
                 <b>C) Get Booking Details</b>
                 <p><strong>Endpoint:</strong> GET /bookings/{booking_id}</p>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "booking_id": "booking456",
                 "hotel_id": "hotel123",
@@ -573,7 +573,7 @@
                 "checkout_date": "2025-01-20",
                 "rooms": 1
             }
-                </code></pre>
+                </pre>
                 </div>
         </ul>
       </div>
@@ -586,7 +586,7 @@
                 <b>A) Initiate Payment</b>
                 <p><strong>Endpoint:</strong> POST /payments</p>
                 <p><strong>Request Body:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "booking_id": "booking456",
                 "amount": 750,
@@ -597,28 +597,28 @@
                 "cvv": "123"
                 }
             }
-                </code></pre>
+                </pre>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "payment_id": "payment789",
                 "status": "SUCCESS",
                 "message": "Payment processed successfully"
             }
-                </code></pre>
+                </pre>
                 </div>
                 
                 <div id="get-payment-status">
                 <b>B) Get Payment Status</b>
                 <p><strong>Endpoint:</strong> GET /payments/{payment_id}</p>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             {
                 "payment_id": "payment789",
                 "status": "SUCCESS",
                 "amount": 750
             }
-                </code></pre>
+                </pre>
                 </div>
         </ul>
       </div>
@@ -631,7 +631,7 @@
                 <b>View User Bookings</b>
                 <p><strong>Endpoint:</strong> GET /users/{user_id}/bookings</p>
                 <p><strong>Response:</strong></p>
-                <pre><code>
+                <pre>
             [
                 {
                 "booking_id": "booking123",
@@ -648,7 +648,7 @@
                 "status": "CANCELLED"
                 }
             ]
-                </code></pre>
+                </pre>
                 </div>
         </ul>
       </div>
@@ -658,14 +658,14 @@
         <p>This service listens to Kafka events for updates such as booking status changes and sends notifications to users.</p>
         <ul>
             <p><strong>Example Kafka Event:</strong></p>
-            <pre><code>
+            <pre>
             {
                 "event_type": "BOOKING_CONFIRMED",
                 "user_id": "user789",
                 "booking_id": "booking456",
                 "message": "Your booking at Hotel Paradise has been confirmed."
             }
-                </code></pre>
+                </pre>
         </ul>
       </div>
       

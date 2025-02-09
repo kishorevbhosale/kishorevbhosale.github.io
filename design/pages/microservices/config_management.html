@@ -9,7 +9,7 @@
     
         <h5>1. Using @Value</h5>
         <p>The <code>@Value</code> annotation is used to inject a single property value into a field.</p>
-        <pre><code>@RestController
+        <pre>@RestController
     public class MyController {
     
         @Value("${app.name}")
@@ -20,15 +20,15 @@
             return appName;
         }
     }
-    </code></pre>
+    </pre>
         <p><strong>Explanation:</strong> The <code>@Value</code> annotation injects the value of <code>app.name</code> from <code>application.properties</code>.</p>
-        <pre><code># application.properties
+        <pre># application.properties
     app.name=My Spring Boot App
-    </code></pre>
+    </pre>
     
         <h5>2. Using @ConfigurationProperties</h5>
         <p>The <code>@ConfigurationProperties</code> annotation binds a group of properties into a Java class.</p>
-        <pre><code>@Component
+        <pre>@Component
     @ConfigurationProperties(prefix = "app")
     public class AppConfig {
         private String name;
@@ -51,16 +51,16 @@
             return "Name: " + appConfig.getName() + ", Version: " + appConfig.getVersion();
         }
     }
-    </code></pre>
+    </pre>
         <p><strong>Explanation:</strong> The <code>@ConfigurationProperties</code> binds all properties with the prefix <code>app</code> into the <code>AppConfig</code> class.</p>
-        <pre><code># application.properties
+        <pre># application.properties
     app.name=My Spring Boot App
     app.version=1.0.0
-    </code></pre>
+    </pre>
     
         <h5>3. Using Environment Object</h5>
         <p>The <code>Environment</code> object can be used to programmatically fetch property values.</p>
-        <pre><code>@RestController
+        <pre>@RestController
     public class MyController {
     
         private final Environment environment;
@@ -74,15 +74,15 @@
             return environment.getProperty("app.description");
         }
     }
-    </code></pre>
+    </pre>
         <p><strong>Explanation:</strong> The <code>Environment</code> object retrieves the value of <code>app.description</code> at runtime.</p>
-        <pre><code># application.properties
+        <pre># application.properties
     app.description=This is a Spring Boot application.
-    </code></pre>
+    </pre>
     
         <h5>4. Using @PropertySource Annotation</h5>
         <p>The <code>@PropertySource</code> annotation is used to load properties from an external file.</p>
-        <pre><code>@Configuration
+        <pre>@Configuration
     @PropertySource("classpath:custom.properties")
     public class CustomConfig {
     
@@ -108,15 +108,15 @@
             return customConfig.getCustomProperty();
         }
     }
-    </code></pre>
+    </pre>
         <p><strong>Explanation:</strong> The <code>@PropertySource</code> annotation loads properties from the <code>custom.properties</code> file.</p>
-        <pre><code># custom.properties
+        <pre># custom.properties
     custom.property=Custom Value
-    </code></pre>
+    </pre>
     
         <h5>5. Using @Configuration and Beans</h5>
         <p>Properties can also be loaded and injected into beans.</p>
-        <pre><code>@Configuration
+        <pre>@Configuration
     public class AppConfig {
     
         @Bean
@@ -139,7 +139,7 @@
             return appName;
         }
     }
-    </code></pre>
+    </pre>
         <p><strong>Explanation:</strong> This approach uses a bean to inject the property value, which can then be used in the application.</p>
     
         <h3>Conclusion</h3>
@@ -167,35 +167,35 @@
             <div class="code">
                 <h5>Example:</h5>
 <b>application.yml:</b>
-<pre><code>
+<pre>
 spring:
   application:
     name: account-service
 logging:
   level:
     root: INFO
-</code></pre>
+</pre>
 
 <b>application-dev.yml:</b>
-<pre><code>
+<pre>
 datasource:
   url: jdbc:mysql://dev-db:3306/accounts
   username: dev_user
-</code></pre>
+</pre>
 
 <b>application-qa.yml:</b>
-<pre><code>
+<pre>
 datasource:
   url: jdbc:mysql://qa-db:3306/accounts
   username: qa_user
-</code></pre>
+</pre>
 
 <b>application-prod.yml:</b>
-<pre><code>
+<pre>
 datasource:
   url: jdbc:mysql://prod-db:3306/accounts
   username: prod_user
- </code></pre>
+ </pre>
 
             </div>
         </div>
@@ -213,12 +213,12 @@ datasource:
             <p>Use Spring Cloud Config Server to pull properties from a Git repository:</p>
             <div class="code">
                 <h5>Repository Structure:</h5>
-                <pre><code>
+                <pre>
 config-repo/
   account-service-dev.yml
   account-service-qa.yml
   account-service-prod.yml
-                </code></pre>
+                </pre>
             </div>
         </div>
     </div>
@@ -233,22 +233,22 @@ config-repo/
             <h4>Configuring Jenkins for Parameterized Deployment</h4>
             <p>Create a parameterized Jenkins job with a dropdown to select the target environment:</p>
             <div class="code">
-                <pre><code>
+                <pre>
 parameters {
     choice(name: 'ENVIRONMENT', choices: ['dev', 'qa', 'prod'], description: 'Select the deployment environment')
 }
-                </code></pre>
+                </pre>
             </div>
         </div>
 
         <div class="section">
             <h4>Setting the Profile Dynamically</h4>
             <div class="code">
-                <pre><code>
+                <pre>
 environment {
     SPRING_PROFILES_ACTIVE = "${params.ENVIRONMENT}"
 }
-                </code></pre>
+                </pre>
             </div>
         </div>
 
@@ -256,31 +256,31 @@ environment {
             <h4>Pipeline Stages</h4>
             <div class="code">
                 <h5>Checkout Code:</h5>
-                <pre><code>
+                <pre>
 stage('Checkout Code') {
     steps {
         checkout scm
     }
 }
-                </code></pre>
+                </pre>
 
                 <h5>Build the Application:</h5>
-                <pre><code>
+                <pre>
 stage('Build') {
     steps {
         sh 'mvn clean package'
     }
 }
-                </code></pre>
+                </pre>
 
                 <h5>Deploy the Application:</h5>
-                <pre><code>
+                <pre>
 stage('Deploy') {
     steps {
         sh "java -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} -jar target/account-service.jar"
     }
 }
-                </code></pre>
+                </pre>
             </div>
         </div>
     </div>
@@ -307,7 +307,7 @@ stage('Deploy') {
             <li>Use the AWS SDK to fetch secrets at runtime:</li>
         </ul>
         <div class="code">
-            <pre><code>
+            <pre>
 @Configuration
 public class SecretsConfig {
     @Bean
@@ -321,7 +321,7 @@ public class SecretsConfig {
         return new JSONObject(secretValue).getString("password");
     }
 }
-            </code></pre>
+            </pre>
         </div>
     </div>
 
@@ -335,11 +335,11 @@ public class SecretsConfig {
             <li>Pass <code>SPRING_PROFILES_ACTIVE</code> as an environment variable in the deployment YAML:</li>
         </ul>
         <div class="code">
-            <pre><code>
+            <pre>
 env:
 - name: SPRING_PROFILES_ACTIVE
   value: "qa"
-            </code></pre>
+            </pre>
         </div>
     </div>
 
@@ -354,7 +354,7 @@ env:
         </ul>
         <div class="code">
             <h5>Spring Cloud Bus Setup:</h5>
-            <pre><code>
+            <pre>
 @SpringBootApplication
 @EnableConfigServer
 @EnableDiscoveryClient
@@ -364,10 +364,10 @@ public class ConfigServerApplication {
         SpringApplication.run(ConfigServerApplication.class, args);
     }
 }
-            </code></pre>
+            </pre>
 
             <h5>Spring Cloud Bus Configuration:</h5>
-            <pre><code>
+            <pre>
 @SpringBootApplication
 @EnableSpringCloudBus
 @EnableConfigServer
@@ -377,10 +377,10 @@ public class AccountServiceApplication {
         SpringApplication.run(AccountServiceApplication.class, args);
     }
 }
-            </code></pre>
+            </pre>
 
             <h5>Application.yml for Config Refresh:</h5>
-            <pre><code>
+            <pre>
 spring:
   cloud:
     config:
@@ -389,10 +389,10 @@ spring:
       bus:
         refresh:
           applications: account-service
-            </code></pre>
+            </pre>
 
             <h5>Runtime Refresh Controller:</h5>
-            <pre><code>
+            <pre>
 @RestController
 public class ConfigRefreshController {
 
@@ -409,7 +409,7 @@ public class ConfigRefreshController {
         return ResponseEntity.ok("Configuration refreshed!");
     }
 }
-            </code></pre>
+            </pre>
         </div>
 
         <h4>Triggering /refresh Endpoint Automatically</h4>

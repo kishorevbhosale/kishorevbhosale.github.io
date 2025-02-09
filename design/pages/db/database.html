@@ -326,7 +326,7 @@
             <p>A <b>Clustered Index</b> sorts and stores the data rows of the table based on the indexed column(s). Since the data is physically sorted in the order of the index, each table can only have one clustered index.</p>
     
             
-            <pre><code>
+            <pre>
                 CREATE TABLE Employees (
                 EmployeeID INT PRIMARY KEY,
                 Name VARCHAR(100),
@@ -336,7 +336,7 @@
     
                 -- Creating a Clustered Index on the EmployeeID column (usually created by default for PRIMARY KEY)
                 CREATE CLUSTERED INDEX idx_EmployeeID ON Employees (EmployeeID);
-            </code></pre>
+            </pre>
             
             <p>In this case, the table's data rows will be sorted by the <b><em>EmployeeID</em></b>, and the index itself holds the data. The data is physically reordered to match the index.</p>
             <br>

@@ -17,7 +17,7 @@
     </div>
     <h5>Violation of OCP:</h5>
     <p>Consider the initial implementation where the notification system is limited to email notifications.</p>
-    <pre><code>
+    <pre>
         class NotificationService {
             public void sendNotification(String message, String type) {
                 if (type.equals("email")) {
@@ -29,13 +29,13 @@
                 System.out.println("Sending email: " + message);
             }
         }        
-    </code></pre>
+    </pre>
     <br>
     <h5>Problem (OCP Violation):</h5>
     <p>
         For example, adding SMS notification support would require changing the class like this:
     </p>
-    <pre><code>
+    <pre>
         class NotificationService {
             public void sendNotification(String message, String type) {
                 if (type.equals("email")) {
@@ -53,7 +53,7 @@
                 System.out.println("Sending SMS: " + message);
             }
         }
-        </code></pre>
+        </pre>
         <br>
         <b>This violates OCP because:</b>
         <ol>
@@ -75,7 +75,7 @@
     <h3 class="section-title">Refactored Design (Complying with OCP):</h3>
     <p>We can create an interface Notification and then implement different notification types like EmailNotification, 
         SmsNotification, and PushNotification.</p>
-    <pre><code>
+    <pre>
         <b>// Notification Interface</b>
         interface Notification {
             void send(String message);
@@ -118,7 +118,7 @@
             }
         }
         
-    </code></pre>
+    </pre>
 </div>
 <div>
     <h5>How It Now Complies with OCP:</h5>

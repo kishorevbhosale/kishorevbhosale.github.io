@@ -1087,10 +1087,10 @@ public class CommandLineExample {
         <li><code>&gt;&gt;&gt;</code>: Logical right shift operator that does not retain the sign bit, filling it with zero.</li>
       </ul>
     </p>
-    <pre><code>int x = -8; // Binary: 11111111111111111111111111111000
+    <pre>int x = -8; // Binary: 11111111111111111111111111111000
   System.out.println(x >> 2);  // Output: -2 (Arithmetic shift)
   System.out.println(x >>> 2); // Output: 1073741822 (Logical shift)
-  </code></pre>
+  </pre>
   </div>
   <hr>
   <!-- Covariant Return Type -->
@@ -2138,20 +2138,20 @@ public class CustomSerializationExample {
   <div>
     <h5>Q. How to copy an array in Java?</h5>
     <p><b>Answer:</b> Arrays can be copied using methods like <code>System.arraycopy()</code>, <code>Arrays.copyOf()</code>, or <code>clone()</code>.</p>
-    <pre><code>int[] original = {1, 2, 3};
+    <pre>int[] original = {1, 2, 3};
   int[] copy = Arrays.copyOf(original, original.length);
-  </code></pre>
+  </pre>
   </div>
   <hr>
   <div>
     <h5>Q. What do you understand by the jagged array?</h5>
     <p><b>Answer:</b> A jagged array is a multi-dimensional array where each row can have a different length.</p>
-    <pre><code>int[][] jagged = {
+    <pre>int[][] jagged = {
       {1, 2},
       {3, 4, 5},
       {6}
   };
-  </code></pre>
+  </pre>
   </div>
   <hr>
   <div>
@@ -2386,7 +2386,7 @@ class Example {
   <div>
     <h5>Q. Can a constructor call another constructor in the same class?</h5>
     <p><b>Answer:</b> Yes, using the <code>this()</code> keyword, one constructor can call another in the same class.</p>
-    <pre><code>class Example {
+    <pre>class Example {
       Example() {
           this(42); // Calls parameterized constructor
       }
@@ -2395,7 +2395,7 @@ class Example {
           System.out.println("Data: " + data);
       }
   }
-  </code></pre>
+  </pre>
   </div>
   <hr>
   <div>

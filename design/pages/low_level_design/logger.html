@@ -26,14 +26,14 @@
     <hr>
 
     <b>Code Implementation:</b>
-<pre><code>
+<pre>
 // Enum representing log levels
 enum LogLevel {
     DEBUG, INFO, WARNING, ERROR, FATAL
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing a log message
 class LogMessage {
     private LocalDateTime timestamp;
@@ -51,16 +51,16 @@ class LogMessage {
         return "[" + timestamp + "] [" + level + "] " + message;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Interface for log appenders
 interface LogAppender {
     void append(LogMessage message);
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Console Appender
 class ConsoleAppender implements LogAppender {
     @Override
@@ -68,9 +68,9 @@ class ConsoleAppender implements LogAppender {
         System.out.println(message.toString());
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // File Appender
 class FileAppender implements LogAppender {
     private String filePath;
@@ -88,9 +88,9 @@ class FileAppender implements LogAppender {
         }
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Database Appender
 class DatabaseAppender implements LogAppender {
     private String connectionString;
@@ -111,9 +111,9 @@ class DatabaseAppender implements LogAppender {
         }
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Logger Configuration
 class LoggerConfig {
     private LogLevel logLevel;
@@ -132,9 +132,9 @@ class LoggerConfig {
         return appender;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Logger Singleton
 class Logger {
     private static Logger instance;
@@ -181,9 +181,9 @@ class Logger {
     public void error(String message) { log(LogLevel.ERROR, message); }
     public void fatal(String message) { log(LogLevel.FATAL, message); }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Example Usage
 public class LoggingExample {
     public static void main(String[] args) {
@@ -203,7 +203,7 @@ public class LoggingExample {
         logger.fatal("This is a FATAL message");
     }
 }
-</code></pre>
+</pre>
 
     
     <p>Input:</p>

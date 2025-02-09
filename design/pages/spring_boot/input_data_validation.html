@@ -19,12 +19,12 @@
     <p>
         To enable validation, you must include the <strong>spring-boot-starter-validation</strong> dependency in your <b>pom.xml</b> (for Maven users) or <b>build.gradle</b> (for Gradle users).
     </p>
-    <pre><code>
+    <pre>
 &lt;dependency&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
 &lt;/dependency&gt;
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">3. Using Validation Annotations</h3>
@@ -42,7 +42,7 @@
     <br>
     <h3 class="section-title">4. Sample DTO Class with Validation Annotations</h3>
     <p>Let's create a simple DTO (Data Transfer Object) class that will hold input data with validation rules:</p>
-    <pre><code>
+    <pre>
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -65,12 +65,12 @@ public class UserDTO {
 
     // Getters and setters
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">5. Using @Valid or @Validated in Controller</h3>
     <p>To trigger validation in the controller, the <strong>@Valid</strong> or <strong>@Validated</strong> annotation is used on the request body parameter. If validation fails, Spring Boot automatically returns a 400 Bad Request response with validation errors.</p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,12 +86,12 @@ public class UserController {
         return ResponseEntity.ok("User is valid and created successfully!");
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">6. Default Error Response for Validation</h3>
     <p>If validation fails, Spring Boot returns a default error response in JSON format containing details of the validation errors. Here's an example:</p>
-    <pre><code>
+    <pre>
 {
     "timestamp": "2024-09-30T15:30:00.123+00:00",
     "status": 400,
@@ -101,13 +101,13 @@ public class UserController {
         "Age should be at least 18"
     ]
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">7. Customizing Validation Error Responses</h3>
     <p>We can create custom validation error responses by handling the <b>MethodArgumentNotValidException</b> in a global exception handler. This gives more control over the structure of the error response.</p>
     <p><strong>Step 1:</strong> Define a custom error response class.</p>
-    <pre><code>
+    <pre>
 import java.util.List;
 
 @Getter
@@ -121,10 +121,10 @@ public class ValidationErrorResponse {
         this.errors = errors;
     }
 }
-    </code></pre>
+    </pre>
 
     <p><strong>Step 2:</strong> Define a global exception handler to customize validation error responses.</p>
-    <pre><code>
+    <pre>
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.ResponseEntity;
@@ -150,12 +150,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity&lt;&gt;(response, HttpStatus.BAD_REQUEST);
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">8. Custom Error Response Example</h3>
     <p>When validation fails, the custom error response might look like this:</p>
-    <pre><code>
+    <pre>
 {
     "message": "Validation failed",
     "errors": [
@@ -164,12 +164,12 @@ public class GlobalExceptionHandler {
         "age: Age should be at least 18"
     ]
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">9. Validating Path Variables and Request Parameters</h3>
     <p>Spring Boot also supports validation of path variables and request parameters using the same validation annotations. The <b>@Validated</b> annotation is used at the controller method level for such cases.</p>
-    <pre><code>
+    <pre>
 import javax.validation.constraints.Min;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -186,7 +186,7 @@ public class UserController {
         return ResponseEntity.ok("User with ID: " + id);
     }
 }
-    </code></pre>
+    </pre>
 
     <br>
     <h3 class="section-title">10. Summary</h3>

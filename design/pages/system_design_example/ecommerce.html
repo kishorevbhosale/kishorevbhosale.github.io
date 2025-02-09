@@ -224,7 +224,7 @@
                     <b>Fetch Supplier Inventory</b>
                     <p><strong>GET /suppliers/{supplier_id}/inventory</strong></p>
                     <p><strong>Description:</strong> Fetch inventory data for a supplier.</p>
-                    <pre><code>
+                    <pre>
       {
         "supplier_id": "123",
         "items": [
@@ -232,13 +232,13 @@
             { "item_id": "102", "stock": 10 }
         ]
       }
-                    </code></pre>
+                    </pre>
                 </div>
                 <div>
                     <b>Add New Item</b>
                     <p><strong>POST /items</strong></p>
                     <p><strong>Description:</strong> Add a new item to the system.</p>
-                    <pre><code>
+                    <pre>
       {
         "item_id": "103",
         "name": "Sony 65” TV",
@@ -248,7 +248,7 @@
             "resolution": "4K"
         }
       }
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
       
@@ -257,7 +257,7 @@
                 <div>
                     <b>Get Item Details</b>
                     <p><strong>GET /items/{item_id}</strong></p>
-                    <pre><code>
+                    <pre>
       {
         "item_id": "103",
         "name": "Sony 65” TV",
@@ -265,17 +265,17 @@
         "stock": 5,
         "price": 999.99
       }
-                    </code></pre>
+                    </pre>
                 </div>
                 <div>
                     <b>Update Item</b>
                     <p><strong>PUT /items/{item_id}</strong></p>
-                    <pre><code>
+                    <pre>
       {
         "price": 899.99,
         "stock": 4
       }
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
       
@@ -285,12 +285,12 @@
                     <b>Search Items</b>
                     <p><strong>GET /search</strong></p>
                     <p><strong>Query Parameters:</strong> ?query=TV&sort=price&filter=category:Electronics</p>
-                    <pre><code>
+                    <pre>
       [
         { "item_id": "101", "name": "Sony 65” TV", "price": 899.99 },
         { "item_id": "102", "name": "Samsung 55” TV", "price": 799.99 }
       ]
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
       
@@ -299,34 +299,34 @@
                 <div>
                     <b>Get Wishlist</b>
                     <p><strong>GET /users/{user_id}/wishlist</strong></p>
-                    <pre><code>
+                    <pre>
       [
         { "item_id": "101", "name": "Sony 65” TV", "price": 899.99 }
       ]
-                    </code></pre>
+                    </pre>
                 </div>
                 <div>
                     <b>Add to Wishlist</b>
                     <p><strong>POST /users/{user_id}/wishlist</strong></p>
-                    <pre><code>
+                    <pre>
       { "item_id": "101" }
-                    </code></pre>
+                    </pre>
                 </div>
                 <div>
                     <b>Get Cart</b>
                     <p><strong>GET /users/{user_id}/cart</strong></p>
-                    <pre><code>
+                    <pre>
       [
         { "item_id": "101", "quantity": 1, "price": 899.99 }
       ]
-                    </code></pre>
+                    </pre>
                 </div>
                 <div>
                     <b>Add to Cart</b>
                     <p><strong>POST /users/{user_id}/cart</strong></p>
-                    <pre><code>
+                    <pre>
       { "item_id": "101", "quantity": 1 }
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
       
@@ -335,17 +335,17 @@
                 <div>
                     <b>Place Order</b>
                     <p><strong>POST /orders</strong></p>
-                    <pre><code>
+                    <pre>
       {
         "user_id": "u123",
         "items": [{ "item_id": "101", "quantity": 1 }]
       }
-                    </code></pre>
+                    </pre>
                 </div>
                 <div>
                     <b>Get Order Details</b>
                     <p><strong>GET /orders/{order_id}</strong></p>
-                    <pre><code>
+                    <pre>
       {
         "order_id": "o123",
         "user_id": "u123",
@@ -353,7 +353,7 @@
         "items": [{ "item_id": "101", "quantity": 1 }],
         "total_price": 899.99
       }
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
       
@@ -362,13 +362,13 @@
                 <div>
                     <b>Send Notification</b>
                     <p><strong>POST /notifications</strong></p>
-                    <pre><code>
+                    <pre>
       {
         "user_id": "u123",
         "type": "order_placed",
         "message": "Your order has been placed successfully!"
       }
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
       
@@ -377,11 +377,11 @@
                 <div>
                     <b>Get Recommendations</b>
                     <p><strong>GET /users/{user_id}/recommendations</strong></p>
-                    <pre><code>
+                    <pre>
       [
         { "item_id": "102", "name": "Samsung 55” TV", "price": 799.99 }
       ]
-                    </code></pre>
+                    </pre>
                 </div>
             </div>
     </div>

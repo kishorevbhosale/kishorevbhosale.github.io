@@ -65,16 +65,16 @@
             <li><strong>Ways to Pass Startup Scripts</strong>:
                 <ul>
                     <li><strong>Directly passing the startup script:</strong> You can embed the script directly in the metadata of the VM instance or project. This is done using the <code>startup-script</code> metadata key.
-                        <pre><code>gcloud compute instances create my-vm --metadata startup-script='#!/bin/bash
+                        <pre>gcloud compute instances create my-vm --metadata startup-script='#!/bin/bash
 # Update and install nginx
 apt-get update && apt-get install -y nginx
-systemctl start nginx'</code></pre>
+systemctl start nginx'</pre>
                     </li>
                     <li><strong>Pass a startup script from a local file:</strong> You can reference a local file and pass it during VM creation using the <code>--metadata-from-file</code> option.
-                        <pre><code>gcloud compute instances create my-vm --metadata-from-file startup-script=/path/to/script.sh</code></pre>
+                        <pre>gcloud compute instances create my-vm --metadata-from-file startup-script=/path/to/script.sh</pre>
                     </li>
                     <li><strong>Pass a startup script from Google Cloud Storage:</strong> Store your script in a Google Cloud Storage bucket and use the <code>startup-script-url</code> metadata key to reference it.
-                        <pre><code>gcloud compute instances create my-vm --metadata startup-script-url=gs://my-bucket/startup-script.sh</code></pre>
+                        <pre>gcloud compute instances create my-vm --metadata startup-script-url=gs://my-bucket/startup-script.sh</pre>
                     </li>
                 </ul>
             </li>
@@ -102,7 +102,7 @@ systemctl start nginx'</code></pre>
         </div>
         <div class="answer">
             <strong>Answer:</strong> You can set a project-level startup script by adding it to the project metadata. This script will be applied to all VM instances in the project unless an instance-specific startup script is defined. Use the following command:
-            <pre><code>gcloud compute project-info add-metadata --metadata startup-script='#!/bin/bash ...'</code></pre>
+            <pre>gcloud compute project-info add-metadata --metadata startup-script='#!/bin/bash ...'</pre>
         </div>
 
         <div class="question">
@@ -117,7 +117,7 @@ systemctl start nginx'</code></pre>
         </div>
         <div class="answer">
             <strong>Answer:</strong> You can store the script in a Cloud Storage bucket and reference it using the <code>startup-script-url</code> metadata key during instance creation. Example:
-            <pre><code>gcloud compute instances create my-vm --metadata startup-script-url=gs://my-bucket/startup-script.sh</code></pre>
+            <pre>gcloud compute instances create my-vm --metadata startup-script-url=gs://my-bucket/startup-script.sh</pre>
         </div>
 
         <div class="question">

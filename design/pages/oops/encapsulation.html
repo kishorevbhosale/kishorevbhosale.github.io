@@ -14,7 +14,7 @@
 
 <div>
 <h3 class="section-title">Implementing Encapsulation in Java</h3>
-    <pre><code>
+    <pre>
         public class BankAccount {
             private double balance; // Private balance, cannot be accessed directly.
         
@@ -43,7 +43,7 @@
                 return balance; // Controlled access to balance.
             }
         }        
-    </code></pre>
+    </pre>
     <h5>Explanation of Code</h5>
     <p>In this example, the account balance is protected by Encapsulation, and external users cannot change it directly. 
         All interactions with the balance must go through methods like deposit() or withdraw().</p>
@@ -100,7 +100,7 @@
     <div class="interview-answer">
         <p><strong>Answer:</strong> Consider a banking application where we encapsulate the "balance" of a bank account. If in the future we decide to log every time the balance is updated (for audit purposes), we can add this functionality inside the setter method for the balance. The rest of the application that uses the bank account object will not need to change, demonstrating the flexibility of encapsulated code.</p>
                  
-        <pre><code>
+        <pre>
         // BankAccount class with encapsulated balance attribute
         class BankAccount {
             // Private attribute (data hiding)
@@ -155,7 +155,7 @@
                 // Checking the current balance
                 System.out.println("Current balance: $" + account.getBalance());  // Output: Current balance: $1300.0
             }
-            </code></pre>
+            </pre>
         
         
             <h5>Benefits of Encapsulation in This Example:</h5>

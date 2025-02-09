@@ -34,15 +34,15 @@
     <b>Examples:</b>
         <p><strong>Zero Parameter:</strong></p>
         Syntax: <pre>() -> System.out.println("Zero parameter lambda");</pre>
-<pre><code>
+<pre>
 Runnable r = () -> {
     System.out.println("No parameters in this lambda.");
 };
 r.run();
-</code></pre>
+</pre>
         <p><strong>Single Parameter:</strong></p>
         Syntax : <pre>(p) -> System.out.println("One parameter: " + p);</pre>
-<pre><code>
+<pre>
 import java.util.ArrayList;
 class Test {
     public static void main(String args[])
@@ -57,14 +57,14 @@ class Test {
         arrL.forEach(n -> System.out.println(n));
     }
 }
-</code></pre>
+</pre>
         <p><strong>Multiple Parameters:</strong></p>
-        <pre><code>
+        <pre>
     java.util.function.BiFunction<Integer, Integer, Integer> add = (a, b) -> {
         return a + b;
     };
     System.out.println("Sum: " + add.apply(5, 10));
-        </code></pre>
+        </pre>
         <b>Key Points:</b>
         <ul>
             <li>Parentheses can be omitted for single parameters without type declaration.</li>
@@ -94,7 +94,7 @@ class Test {
         <li><strong>Immutability:</strong> Streams do not modify the original data source but create a new result.</li>
     </ul>
     <b>Example:</b>
-    <pre><code>
+    <pre>
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,7 +112,7 @@ public class StreamAPIExample {
         System.out.println(filteredNames); // Output: [ALICE]
     }
 }
-    </code></pre>
+    </pre>
     <b>Types of Operations:</b>
     <ul>
         <li><strong>Intermediate Operations:</strong> Transform streams, e.g., <code>filter()</code>, <code>map()</code>, <code>sorted()</code>.</li>
@@ -148,7 +148,7 @@ public class StreamAPIExample {
         <li><strong>Default and Static Methods:</strong> Can have these methods in addition to the single abstract method.</li>
     </ul>
     <p><strong>Defining and Using a Functional Interface:</strong></p>
-    <pre><code>
+    <pre>
 @FunctionalInterface
 interface MyFunctionalInterface {
     void displayMessage(String message);
@@ -163,7 +163,7 @@ public class FunctionalInterfaceExample {
         myFunction.displayMessage("Hello, Functional Interface!");
     }
 }
-    </code></pre>
+    </pre>
     <b>Built-in Functional Interfaces:</b>
     <ul>
         <li><strong><code>java.util.function.Predicate&lt;T&gt;</code>:</strong> Tests a condition and returns a boolean.</li>
@@ -190,13 +190,13 @@ public class FunctionalInterfaceExample {
         The <code>map</code> function is used when you want to apply a transformation to each element in the stream and get a single, transformed element for each input element. It produces a stream of transformed elements.
     </p>
     <p><strong>Example:</strong></p>
-    <pre><code>
+    <pre>
 List&lt;String&gt; words = Arrays.asList("apple", "banana", "cherry");
 List&lt;Integer&gt; wordLengths = words.stream()
                                  .map(String::length)
                                  .collect(Collectors.toList());
 System.out.println(wordLengths); // Output: [5, 6, 6]
-    </code></pre>
+    </pre>
     <p>
         In this case, each word is transformed into its length using <code>map</code>.
     </p>
@@ -206,7 +206,7 @@ System.out.println(wordLengths); // Output: [5, 6, 6]
         The <code>flatMap</code> function is used when the transformation results in multiple elements for a single element. It flattens the nested stream structure into a single stream.
     </p>
     <p><strong>Example:</strong></p>
-    <pre><code>
+    <pre>
 List&lt;List&lt;String&gt;&gt; nestedList = Arrays.asList(
     Arrays.asList("apple", "banana"),
     Arrays.asList("cherry", "date"),
@@ -217,7 +217,7 @@ List&lt;String&gt; flatList = nestedList.stream()
                                  .flatMap(List::stream)
                                  .collect(Collectors.toList());
 System.out.println(flatList); // Output: [apple, banana, cherry, date, elderberry, fig]
-    </code></pre>
+    </pre>
     <p>
         In this case, <code>flatMap</code> is used to flatten the nested lists into a single list.
     </p>
@@ -243,7 +243,7 @@ System.out.println(flatList); // Output: [apple, banana, cherry, date, elderberr
         When a functional interface extends another functional interface, it can inherit the abstract method(s) of the parent interface, and you can add additional methods as long as the single abstract method rule is maintained.
     </p>
     <b>Example:</b>
-    <pre><code>
+    <pre>
 @FunctionalInterface
 interface Animal {
     void makeSound();
@@ -272,7 +272,7 @@ public class FunctionalInterfaceExample {
         dog.bark();       // Output: Dog barks
     }
 }
-    </code></pre>
+    </pre>
     <b>Key Points:</b>
     <ul>
         <li>A functional interface can extend another functional interface, but it must have one abstract method.</li>
@@ -306,171 +306,171 @@ public class FunctionalInterfaceExample {
 
     <b>1. <code>anyMatch()</code></b>
     <p>Returns <code>true</code> if any elements of the stream satisfy the provided predicate.</p>
-    <pre><code>
+    <pre>
 List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5);
 boolean hasEven = numbers.stream().anyMatch(n -> n % 2 == 0);
 System.out.println(hasEven); // Output: true
-    </code></pre>
+    </pre>
 
     <b>2. <code>noneMatch()</code></b>
     <p>Returns <code>true</code> if no elements of the stream satisfy the provided predicate.</p>
-    <pre><code>
+    <pre>
 boolean noNegative = numbers.stream().noneMatch(n -> n < 0);
 System.out.println(noNegative); // Output: true
-    </code></pre>
+    </pre>
 
     <b>3. <code>mapToLong()</code></b>
     <p>Transforms the elements of the stream into <code>long</code> values.</p>
-    <pre><code>
+    <pre>
 List&lt;Integer&gt; integers = Arrays.asList(1, 2, 3, 4, 5);
 long sum = integers.stream().mapToLong(Integer::longValue).sum();
 System.out.println(sum); // Output: 15
-    </code></pre>
+    </pre>
 
     <b>4. <code>findAny()</code></b>
     <p>Returns any element from the stream, or an empty <code>Optional</code> if no element is present. It may be useful in parallel streams.</p>
-    <pre><code>
+    <pre>
 Optional&lt;Integer&gt; anyNumber = numbers.stream().findAny();
 System.out.println(anyNumber.orElse(-1)); // Output: Any element
-    </code></pre>
+    </pre>
 
     <b>5. <code>forEachOrdered()</code></b>
     <p>Performs an action for each element of the stream, maintaining the encounter order (in case of parallel streams).</p>
-    <pre><code>
+    <pre>
 numbers.stream().forEachOrdered(System.out::println); 
 // Output: 1 2 3 4 5 (in order)
-    </code></pre>
+    </pre>
 
     <b>6. <code>forEach()</code></b>
     <p>Performs an action for each element of the stream.</p>
-    <pre><code>
+    <pre>
 numbers.stream().forEach(System.out::println); 
 // Output: 1 2 3 4 5
-    </code></pre>
+    </pre>
 
     <b>7. <code>allMatch()</code></b>
     <p>Returns <code>true</code> if all elements of the stream satisfy the provided predicate.</p>
-    <pre><code>
+    <pre>
 boolean allEven = numbers.stream().allMatch(n -> n % 2 == 0);
 System.out.println(allEven); // Output: false
-    </code></pre>
+    </pre>
 
     <b>8. <code>filter()</code></b>
     <p>Filters elements of the stream based on a predicate.</p>
-    <pre><code>
+    <pre>
 List&lt;Integer&gt; evenNumbers = numbers.stream().filter(n -> n % 2 == 0).collect(Collectors.toList());
 System.out.println(evenNumbers); // Output: [2, 4]
-    </code></pre>
+    </pre>
 
     <b>9. <code>findFirst()</code></b>
     <p>Returns the first element of the stream, or an empty <code>Optional</code> if no element is present.</p>
-    <pre><code>
+    <pre>
 Optional&lt;Integer&gt; first = numbers.stream().findFirst();
 System.out.println(first.orElse(-1)); // Output: 1
-    </code></pre>
+    </pre>
 
     <b>10. <code>flatMapToInt()</code></b>
     <p>Transforms the elements of the stream into an <code>IntStream</code> by flattening nested collections.</p>
-    <pre><code>
+    <pre>
 List&lt;List&lt;Integer&gt;&gt; nestedNumbers = Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4));
 int sum = nestedNumbers.stream()
                        .flatMapToInt(list -> list.stream().mapToInt(Integer::intValue))
                        .sum();
 System.out.println(sum); // Output: 10
-    </code></pre>
+    </pre>
 
     <b>11. <code>mapToInt()</code></b>
     <p>Transforms the elements of the stream into <code>IntStream</code>.</p>
-    <pre><code>
+    <pre>
 List&lt;Integer> integers = Arrays.asList(1, 2, 3, 4);
 int sum = integers.stream().mapToInt(Integer::intValue).sum();
 System.out.println(sum); // Output: 10
-    </code></pre>
+    </pre>
 
     <b>12. <code>map()</code></b>
     <p>Transforms the elements of the stream using a function.</p>
-    <pre><code>
+    <pre>
 List&lt;String&gt; words = Arrays.asList("hello", "world");
 List&lt;String&gt; upperWords = words.stream().map(String::toUpperCase).collect(Collectors.toList());
 System.out.println(upperWords); // Output: [HELLO, WORLD]
-    </code></pre>
+    </pre>
 
     <b>13. <code>peek()</code></b>
     <p>Allows for performing an action on each element as the stream is processed, without modifying the stream.</p>
-    <pre><code>
+    <pre>
 List&lt;Integer&gt; modifiedList = numbers.stream()
                                     .peek(n -> System.out.println("Processing: " + n))
                                     .map(n -> n * 2)
                                     .collect(Collectors.toList());
-    </code></pre>
+    </pre>
 
     <b>14. <code>counting()</code></b>
     <p>Counts the number of elements in the stream.</p>
-    <pre><code>
+    <pre>
 long count = numbers.stream().count();
 System.out.println(count); // Output: 5
-    </code></pre>
+    </pre>
 
     <b>15. <code>Iterator()</code></b>
     <p>Converts the stream to an <code>Iterator</code> (only available in the <code>Stream</code> interface).</p>
-    <pre><code>
+    <pre>
 Iterator&lt;Integer&gt; iterator = numbers.stream().iterator();
 while (iterator.hasNext()) {
     System.out.println(iterator.next());
 }
-    </code></pre>
+    </pre>
 
     <b>16. <code>generate()</code></b>
     <p>Generates an infinite stream using a supplier function.</p>
-    <pre><code>
+    <pre>
 Stream&lt;Integer&gt; infiniteStream = Stream.generate(() -> (int) (Math.random() * 100));
 infiniteStream.limit(5).forEach(System.out::println);
-    </code></pre>
+    </pre>
 
     <b>17. <code>skip()</code></b>
     <p>Skips the first <code>n</code> elements of the stream.</p>
-    <pre><code>
+    <pre>
 List&lt;Integer&gt; skippedNumbers = numbers.stream().skip(2).collect(Collectors.toList());
 System.out.println(skippedNumbers); // Output: [3, 4, 5]
-    </code></pre>
+    </pre>
 
     <b>18. <code>SummaryStatistics()</code></b>
     <p>Collects statistics, such as count, sum, min, average, and max, from a stream of data.</p>
-    <pre><code>
+    <pre>
 IntSummaryStatistics stats = numbers.stream().mapToInt(Integer::intValue).summaryStatistics();
 System.out.println(stats); // Output: IntSummaryStatistics{count=5, sum=15, min=1, average=3.000000, max=5}
-    </code></pre>
+    </pre>
 
     <b>19. <code>Builder()</code></b>
     <p>Used to create a stream through <code>Stream.builder()</code>.</p>
-    <pre><code>
+    <pre>
 Stream&lt;Integer&gt; stream = Stream.<Integer>builder().add(1).add(2).add(3).build();
 stream.forEach(System.out::println); // Output: 1 2 3
-    </code></pre>
+    </pre>
 
     <b>20. <code>empty()</code></b>
     <p>Returns an empty stream.</p>
-    <pre><code>
+    <pre>
 Stream&lt;String&gt; emptyStream = Stream.empty();
 System.out.println(emptyStream.count()); // Output: 0
-    </code></pre>
+    </pre>
 
     <b>21. <code>Stream toArray()</code></b>
     <p>Converts a stream into an array.</p>
-    <pre><code>
+    <pre>
 Integer[] array = numbers.stream().toArray(Integer[]::new);
 System.out.println(Arrays.toString(array)); // Output: [1, 2, 3, 4, 5]
-    </code></pre>
+    </pre>
 
     <b>22. <code>Sum of List with Stream Filter</code></b>
     <p>Calculates the sum of elements after filtering the stream based on a condition.</p>
-    <pre><code>
+    <pre>
 int sumOfEvens = numbers.stream()
                         .filter(n -> n % 2 == 0)
                         .mapToInt(Integer::intValue)
                         .sum();
 System.out.println(sumOfEvens); // Output: 6
-    </code></pre>
+    </pre>
 
 </div>
 <hr>
@@ -487,11 +487,11 @@ System.out.println(sumOfEvens); // Output: 6
         <li><strong>Empty Value:</strong> It represents an empty value when there is no data available, helping you avoid null checks.</li>
     </ul>
     <b>Creating an Optional Object:</b>
-    <pre><code>
+    <pre>
 Optional&lt;String&gt; nonEmptyOptional = Optional.of("Hello");
 Optional&lt;String&gt; emptyOptional = Optional.empty();
 Optional&lt;String&gt; nullableOptional = Optional.ofNullable(null);
-    </code></pre>
+    </pre>
     <b>Common Methods:</b>
     <ul>
         <li><strong><code>isPresent()</code>:</strong> Returns <code>true</code> if there is a value present, otherwise <code>false</code>.</li>
@@ -510,90 +510,90 @@ Optional&lt;String&gt; nullableOptional = Optional.ofNullable(null);
     
         <b>1. <code>isPresent()</code></b>
         <p>Returns <code>true</code> if the value is present, otherwise <code>false</code>.</p>
-        <pre><code>
+        <pre>
     Optional&lt;String&gt; optionalName = Optional.of(&quot;John&quot;);
     System.out.println(optionalName.isPresent()); // Output: true
     
     Optional&lt;String&gt; emptyOptional = Optional.empty();
     System.out.println(emptyOptional.isPresent()); // Output: false
-        </code></pre>
+        </pre>
     
         <b>2. <code>ifPresent()</code></b>
         <p>If the value is present, it performs the provided action on it.</p>
-        <pre><code>
+        <pre>
     optionalName.ifPresent(name -&gt; System.out.println(&quot;Hello, &quot; + name)); 
     // Output: Hello, John
     
     emptyOptional.ifPresent(name -&gt; System.out.println(&quot;Hello, &quot; + name)); 
     // No output since the value is absent
-        </code></pre>
+        </pre>
     
         <b>3. <code>get()</code></b>
         <p>Returns the value if present, or throws <code>NoSuchElementException</code> if not.</p>
-        <pre><code>
+        <pre>
     String name = optionalName.get();
     System.out.println(name); // Output: John
     
     // Uncommenting the following will throw NoSuchElementException
     // String emptyName = emptyOptional.get(); 
-        </code></pre>
+        </pre>
     
         <b>4. <code>orElse()</code></b>
         <p>Returns the value if present, or a default value if not.</p>
-        <pre><code>
+        <pre>
     String result = optionalName.orElse(&quot;Default Name&quot;);
     System.out.println(result); // Output: John
     
     String resultEmpty = emptyOptional.orElse(&quot;Default Name&quot;);
     System.out.println(resultEmpty); // Output: Default Name
-        </code></pre>
+        </pre>
     
         <b>5. <code>orElseGet()</code></b>
         <p>Returns the value if present, or invokes a supplier to return a default value if not.</p>
-        <pre><code>
+        <pre>
     String resultFromSupplier = emptyOptional.orElseGet(() -&gt; &quot;Generated Default Name&quot;);
     System.out.println(resultFromSupplier); // Output: Generated Default Name
-        </code></pre>
+        </pre>
     
         <b>6. <code>orElseThrow()</code></b>
         <p>Returns the value if present, or throws an exception if not.</p>
-        <pre><code>
+        <pre>
     String value = optionalName.orElseThrow(() -&gt; new IllegalArgumentException(&quot;Value is absent&quot;));
     System.out.println(value); // Output: John
     
     // Uncommenting the following will throw IllegalArgumentException
     // String emptyValue = emptyOptional.orElseThrow(() -&gt; new IllegalArgumentException(&quot;Value is absent&quot;));
-        </code></pre>
+        </pre>
     
         <b>7. <code>filter()</code></b>
         <p>Returns an empty <code>Optional</code> if the value does not satisfy the given predicate.</p>
-        <pre><code>
+        <pre>
     Optional&lt;String&gt; filteredName = optionalName.filter(name -&gt; name.startsWith(&quot;J&quot;));
     System.out.println(filteredName.orElse(&quot;No match&quot;)); // Output: John
     
     Optional&lt;String&gt; filteredEmpty = emptyOptional.filter(name -&gt; name.startsWith(&quot;J&quot;));
     System.out.println(filteredEmpty.orElse(&quot;No match&quot;)); // Output: No match
-        </code></pre>
+        </pre>
     
         <b>8. <code>map()</code></b>
         <p>Transforms the value inside the <code>Optional</code> if it is present.</p>
-        <pre><code>
+        <pre>
     Optional&lt;String&gt; upperCaseName = optionalName.map(String::toUpperCase);
     System.out.println(upperCaseName.orElse(&quot;No value&quot;)); // Output: JOHN
     
     Optional&lt;String&gt; emptyUpperCase = emptyOptional.map(String::toUpperCase);
     System.out.println(emptyUpperCase.orElse(&quot;No value&quot;)); // Output: No value
-        </code></pre>
+        </pre>
     
         <b>9. <code>flatMap()</code></b>
         <p>Similar to <code>map()</code>, but expects an <code>Optional</code> return value from the transformation function.</p>
-        <pre><code>
+        <pre>
     Optional&lt;String&gt; flatMappedName = optionalName.flatMap(name -&gt; Optional.of(name.toUpperCase()));
     System.out.println(flatMappedName.orElse(&quot;No value&quot;)); // Output: JOHN
     
     Optional&lt;String&gt; emptyFlatMap = emptyOptional.flatMap(name -&gt; Optional.of(name.toUpperCase()));
     System.out.println(emptyFlatMap.orElse(&quot;No value&quot;)); // Output: No value
-        </code></pre>
+        </pre>
     
     
     <b>Benefits of Optional:</b>
@@ -630,7 +630,7 @@ Optional&lt;String&gt; nullableOptional = Optional.ofNullable(null);
     </ul>
 
     <b>Example:</b>
-    <pre><code>
+    <pre>
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
@@ -661,7 +661,7 @@ public class DateTimeExample {
         System.out.println(&quot;Formatted date-time: &quot; + formattedDateTime);
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Benefits of Date-Time API:</b>
     <ul>
@@ -686,16 +686,16 @@ public class DateTimeExample {
     </ul>
 
     <b>Syntax:</b>
-    <pre><code>
+    <pre>
 interface MyInterface {
     default void defaultMethod() {
         System.out.println(&quot;This is a default method.&quot;);
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Example:</b>
-    <pre><code>
+    <pre>
 interface Animal {
     default void sound() {
         System.out.println(&quot;Animals make sound&quot;);
@@ -718,14 +718,14 @@ public class Main {
         dog.sleep(); // Output: Dog is sleeping
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Multiple Inheritance of Default Methods:</b>
     <p>
         Java allows multiple interfaces with default methods. In case of a conflict (when two interfaces define the same default method), the class implementing the interfaces must explicitly override the method to resolve the conflict.
     </p>
 
-    <pre><code>
+    <pre>
 interface InterfaceA {
     default void commonMethod() {
         System.out.println(&quot;InterfaceA default method&quot;);
@@ -751,7 +751,7 @@ public class Main {
         obj.commonMethod(); // Output: TestClass overrides commonMethod
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Benefits of Default Methods:</b>
     <ul>
@@ -763,7 +763,7 @@ public class Main {
 <hr>
 <div>
     <h5>How to Find Duplicate Elements in a Stream in Java?</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -784,14 +784,14 @@ public class FindDuplicates {
         duplicates.forEach(n -&gt; System.out.println(&quot;Duplicate element: &quot; + n));
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Duplicate element: 1
 Duplicate element: 2
 Duplicate element: 5
-    </code></pre>
+    </pre>
 
     <b>Explanation of Alternative Approach:</b>
     <ul>
@@ -807,7 +807,7 @@ Duplicate element: 5
     </p>
 
     <b>Optimized and Easy Solution:</b>
-    <pre><code>
+    <pre>
 import java.util.stream.*;
 
 public class CharacterCount {
@@ -823,7 +823,7 @@ public class CharacterCount {
         System.out.println(&quot;Occurrence of character '" + targetChar + "': &quot; + count);
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation:</b>
     <ul>
@@ -833,9 +833,9 @@ public class CharacterCount {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Occurrence of character 'a': 3
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
@@ -847,7 +847,7 @@ Occurrence of character 'a': 3
     <b>Optimized Solution:</b>
     <p>The most efficient and simple way to get a slice of a stream is by chaining the <code>skip()</code> and <code>limit()</code> methods:</p>
     
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -864,7 +864,7 @@ public class StreamSliceExample {
         System.out.println(slicedList);  // Output: [4, 5, 6, 7, 8]
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation of Code:</b>
     <ul>
@@ -874,9 +874,9 @@ public class StreamSliceExample {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 [4, 5, 6, 7, 8]
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
@@ -893,7 +893,7 @@ public class StreamSliceExample {
     </ol>
 
     <b>Example:</b>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -911,7 +911,7 @@ public class ReverseParallelStream {
         reversedList.stream().forEach(System.out::println); // Output reversed elements
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation of Code:</b>
     <ul>
@@ -922,7 +922,7 @@ public class ReverseParallelStream {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 8
 7
 6
@@ -931,7 +931,7 @@ public class ReverseParallelStream {
 3
 2
 1
-    </code></pre>
+    </pre>
 
     <b>Why This Solution is Optimized:</b>
     <ul>
@@ -947,7 +947,7 @@ public class ReverseParallelStream {
     </p>
 
     <b>Example Code:</b>
-    <pre><code>
+    <pre>
 import java.util.stream.IntStream;
 import java.util.List;
 import java.util.Arrays;
@@ -961,7 +961,7 @@ public class StreamWithIndices {
                  .forEach(index -&gt; System.out.println(&quot;Index: &quot; + index + &quot;, Value: &quot; + items.get(index)));
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation of Code:</b>
     <ul>
@@ -970,12 +970,12 @@ public class StreamWithIndices {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Index: 0, Value: A
 Index: 1, Value: B
 Index: 2, Value: C
 Index: 3, Value: D
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
@@ -994,7 +994,7 @@ Index: 3, Value: D
     </ul>
 
     <b>Example Code:</b>
-    <pre><code>
+    <pre>
 import java.util.concurrent.CompletableFuture;
 
 public class CompletableFutureExample {
@@ -1025,7 +1025,7 @@ public class CompletableFutureExample {
         }
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation of Code:</b>
     <ul>
@@ -1036,9 +1036,9 @@ public class CompletableFutureExample {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Result: HELLO, COMPLETABLEFUTURE!
-    </code></pre>
+    </pre>
 
     <b>Benefits of CompletableFuture:</b>
     <ul>
@@ -1074,7 +1074,7 @@ Result: HELLO, COMPLETABLEFUTURE!
 
     <b>Example Comparison:</b>
     <h5>Using Future:</h5>
-    <pre><code>
+    <pre>
 import java.util.concurrent.*;
 
 public class FutureExample {
@@ -1091,11 +1091,11 @@ public class FutureExample {
         executor.shutdown();
     }
 }
-    </code></pre>
+    </pre>
     <p><strong>Limitation:</strong> The <code>future.get()</code> call blocks the thread, which defeats asynchronous programming.</p>
 
     <h5>Using CompletableFuture:</h5>
-    <pre><code>
+    <pre>
 import java.util.concurrent.CompletableFuture;
 
 public class CompletableFutureExample {
@@ -1121,7 +1121,7 @@ public class CompletableFutureExample {
         }
     }
 }
-    </code></pre>
+    </pre>
     <p><strong>Advantage:</strong> Non-blocking execution and result processing with chaining.</p>
 
     <b>Conclusion:</b>
@@ -1147,7 +1147,7 @@ public class CompletableFutureExample {
     <b>Examples:</b>
 
     <h5>1. Reference to a Static Method</h5>
-    <pre><code>
+    <pre>
 import java.util.function.Consumer;
 
 public class StaticMethodReference {
@@ -1160,10 +1160,10 @@ public class StaticMethodReference {
         consumer.accept(&quot;Hello, Method Reference!&quot;);
     }
 }
-    </code></pre>
+    </pre>
 
     <h5>2. Reference to an Instance Method of a Particular Object</h5>
-    <pre><code>
+    <pre>
 import java.util.function.Consumer;
 
 public class InstanceMethodReference {
@@ -1177,10 +1177,10 @@ public class InstanceMethodReference {
         consumer.accept(&quot;Instance Method Reference Example&quot;);
     }
 }
-    </code></pre>
+    </pre>
 
     <h5>3. Reference to an Instance Method of an Arbitrary Object of a Particular Type</h5>
-    <pre><code>
+    <pre>
 import java.util.function.Function;
 
 public class ArbitraryObjectMethodReference {
@@ -1190,10 +1190,10 @@ public class ArbitraryObjectMethodReference {
         System.out.println(result);
     }
 }
-    </code></pre>
+    </pre>
 
     <h5>4. Reference to a Constructor</h5>
-    <pre><code>
+    <pre>
 import java.util.function.Supplier;
 
 public class ConstructorReference {
@@ -1206,7 +1206,7 @@ public class ConstructorReference {
         supplier.get(); // Invokes the constructor
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Advantages of Method References:</b>
     <ul>
@@ -1236,9 +1236,9 @@ public class ConstructorReference {
     </ul>
 
     <b>Basic Syntax:</b>
-    <pre><code>
+    <pre>
 jdeps [options] &lt;path-to-jar/class-files&gt;
-    </code></pre>
+    </pre>
 
     <b>Options:</b>
     <ul>
@@ -1252,21 +1252,21 @@ jdeps [options] &lt;path-to-jar/class-files&gt;
     <b>Examples:</b>
 
     <h5>1. Analyzing Dependencies of a JAR File:</h5>
-    <pre><code>
+    <pre>
 jdeps -s myapp.jar
-    </code></pre>
+    </pre>
     <p><strong>Output:</strong> Displays a summary of dependencies for the JAR file.</p>
 
     <h5>2. Verbose Dependency Analysis:</h5>
-    <pre><code>
+    <pre>
 jdeps -verbose:class myapp.jar
-    </code></pre>
+    </pre>
     <p><strong>Output:</strong> Provides detailed dependencies at the class level.</p>
 
     <h5>3. Detecting JDK Internal API Usage:</h5>
-    <pre><code>
+    <pre>
 jdeps -jdkinternals myapp.jar
-    </code></pre>
+    </pre>
     <p><strong>Output:</strong> Lists internal APIs used by the application, helping to avoid compatibility issues in future JDK versions.</p>
 
     <b>Benefits of jdeps:</b>
@@ -1297,7 +1297,7 @@ jdeps -jdkinternals myapp.jar
 
     <b>Example Usage:</b>
     <h5>1. Using <code>String::valueOf</code> to Convert Numbers to Strings</h5>
-    <pre><code>
+    <pre>
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1314,10 +1314,10 @@ public class MethodReferenceExample {
         System.out.println(stringNumbers); // Output: [1, 2, 3, 4]
     }
 }
-    </code></pre>
+    </pre>
 
     <h5>2. Lambda Equivalent</h5>
-    <pre><code>
+    <pre>
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1334,7 +1334,7 @@ public class LambdaExample {
         System.out.println(stringNumbers); // Output: [1, 2, 3, 4]
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Common Uses of <code>String::valueOf</code>:</b>
     <ul>
@@ -1407,7 +1407,7 @@ public class LambdaExample {
 <div>
     <h5>Java 8 Program to Find the Second Highest Number in a List</h5>
    
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1430,16 +1430,16 @@ public class SecondHighest {
         );
     }
 }
-    </code></pre>
+    </pre>
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Second Highest Number: 35
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Java 8 Program to Remove Duplicates from a List of Integers</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1457,17 +1457,17 @@ public class RemoveDuplicates {
         System.out.println(&quot;List without duplicates: &quot; + uniqueNumbers);
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 List without duplicates: [1, 2, 3, 4, 5, 6, 7, 8]
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Java 8 Program to Partition a List of Strings Based on Length</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 import java.util.function.Predicate;
@@ -1485,19 +1485,19 @@ public class PartitionStrings {
         System.out.println(&quot;Strings with length 3 or less: &quot; + partitioned.get(false));
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Strings with length greater than 3: [apple, elephant]
 Strings with length 3 or less: [cat, dog, bat, rat]
-    </code></pre>
+    </pre>
 
 </div>
 <hr>
 <div>
     <h5>You have a collection of employee objects. How would you retrieve the names of all employees? </h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1535,26 +1535,26 @@ public class EmployeeNames {
         System.out.println(&quot;Employee Names: &quot; + employeeNames);
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Employee Names: [Alice, Bob, Charlie]
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>You have a list of transactions. How would you find the transaction with the highest amount?</h5>
-    <pre><code>
+    <pre>
 Transaction maxTransaction = transactions.stream()
     .max(Comparator.comparing(Transaction::getAmount))
     .orElse(null);
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Java 8 Program to Find Maximum and Minimum Values in a List</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1576,19 +1576,19 @@ public class MaxMinValues {
         System.out.println(&quot;Minimum value: &quot; + min.orElse(null));
     }
 }
-    </code></pre>
+    </pre>
 
    
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Maximum value: 25
 Minimum value: 3
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Find the Employee of a Specific Department with the nth Highest Salary</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1631,18 +1631,18 @@ public class SecondHighestSalary {
         );
     }
 }
-    </code></pre>
+    </pre>
 
    
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Employee with second highest salary in IT: Employee{name=Bob, department=IT, salary=75000.0}
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Find the First Non-Repeated Character in a String using Java Streams</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
@@ -1666,14 +1666,14 @@ public class FirstNonRepeatedCharacter {
                 firstNonRepeated.orElse(&#39;None&#39;));
     }
 }
-    </code></pre>
+    </pre>
     <b>Input and Output Example:</b>
     <p>
         For the input string <code>&quot;swiss&quot;</code>, the program will output:
     </p>
-    <pre><code>
+    <pre>
 First Non-Repeated Character: w
-    </code></pre>
+    </pre>
     <b>Explanation:</b>
     <ul>
         <li><code>Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())</code>: 
@@ -1684,7 +1684,7 @@ First Non-Repeated Character: w
 <hr>
 <div>
     <h5>Finding the First Repeated Character in a String Using Stream Functions</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1705,7 +1705,7 @@ public class FirstRepeatedCharacter {
         );
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation:</b>
     <ul>
@@ -1713,15 +1713,15 @@ public class FirstRepeatedCharacter {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 First repeated character: t
-    </code></pre>
+    </pre>
 
 </div>
 <hr>
 <div>
     <h5>Given a list of integers, sort all the values present in it using Stream functions?</h5>
-    <pre><code>
+    <pre>
 public class SortValues{
     public static void main(String args[]) {
             List&lt;Integer&gt; myList = Arrays.asList(10,15,8,49,25,98,98,32,15);
@@ -1735,12 +1735,12 @@ public class SortValues{
           Arrays.stream(arr).boxed().sorted().collect(Collectors.toList())
     }
   }
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Given a list of integers, sort all the values present in it in descending order using Stream functions?</h5>
-    <pre><code>
+    <pre>
 public class SortDescending{
     public static void main(String args[]) {
         List&lt;Integer&gt; myList = Arrays.asList(10,15,8,49,25,98,98,32,15);
@@ -1750,12 +1750,12 @@ public class SortDescending{
                    .forEach(System.out::println);
     }
 }
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.</h5>
-    <pre><code>
+    <pre>
 public boolean containsDuplicate(int[] nums) {
     List&lt;Integer&gt; list = Arrays.stream(nums)
                                .boxed()
@@ -1771,20 +1771,20 @@ public boolean containsDuplicate(int[] nums) {
         return Arrays.stream(nums)
                      .anyMatch(num -> !setData.add(num));
   }
-</code></pre>
+</pre>
     <b>output</b>
-    <pre><code>
+    <pre>
 Input: nums = [1,2,3,1]
 Output: true
 
 Input: nums = [1,2,3,4]
 Output: false
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>How to Convert a List of Objects into a Map by Considering Duplicate Keys and Store Them in Sorted Order?</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1821,7 +1821,7 @@ public class ListToSortedMap {
         );
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation:</b>
     <ul>
@@ -1831,16 +1831,16 @@ public class ListToSortedMap {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Alice: [Person{name=Alice, age=30}, Person{name=Alice, age=28}]
 Bob: [Person{name=Bob, age=25}, Person{name=Bob, age=22}]
 David: [Person{name=David, age=35}]
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>How to Count Each Element/Word from a String ArrayList in Java 8?</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1857,7 +1857,7 @@ public class WordCount {
         wordCount.forEach((word, count) -&gt; System.out.println(word + &quot;: &quot; + count));
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Explanation:</b>
     <ul>
@@ -1867,16 +1867,16 @@ public class WordCount {
     </ul>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 apple: 3
 banana: 2
 orange: 1
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Program to Print the Count of Each Character in a String</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1895,10 +1895,10 @@ public class CharacterCount {
             System.out.println(&quot;Character: &quot; + character + &quot;, Count: &quot; + count));
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Output for Input "hello world":</b>
-    <pre><code>
+    <pre>
 Character: h, Count: 1
 Character: e, Count: 1
 Character: l, Count: 3
@@ -1906,12 +1906,12 @@ Character: o, Count: 2
 Character: w, Count: 1
 Character: r, Count: 1
 Character: d, Count: 1
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
     <h5>Find Numbers Starting with 1 Using Stream Functions</h5>
-    <pre><code>
+    <pre>
 import java.util.*;
 import java.util.stream.*;
 
@@ -1929,10 +1929,10 @@ public class FindNumbersStartingWithOne {
         System.out.println(&quot;Numbers starting with 1: &quot; + result);
     }
 }
-    </code></pre>
+    </pre>
 
     <b>Output:</b>
-    <pre><code>
+    <pre>
 Numbers starting with 1: [10, 15, 1, 100, 121]
-    </code></pre>
+    </pre>
 </div>

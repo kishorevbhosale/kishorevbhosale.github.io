@@ -43,7 +43,7 @@
                 For example, a logging service can be implemented as a singleton bean, since it doesn't require multiple instances for different parts of the application.</p>
             </div>
             <h5>Example Code: Singleton Bean in Spring</h5>
-            <pre><code>
+            <pre>
         import org.springframework.context.annotation.Scope;
         import org.springframework.stereotype.Service;
         
@@ -54,7 +54,7 @@
                 System.out.println("Logging message: " + message);
             }
         }
-            </code></pre>
+            </pre>
             <br>
 
             <h3 class="section-title">Eager vs Lazy Instantiation of Singleton Scope</h3>
@@ -69,7 +69,7 @@
             <p>Eager instantiation is ideal for beans that are crucial to the application’s startup process, such as configuration services or connection pools, which need to be ready as soon as the application starts.</p>
         
             <h6>Example Code: Eager Instantiation</h6>
-            <pre><code>
+            <pre>
         import org.springframework.context.annotation.Scope;
         import org.springframework.stereotype.Service;
         
@@ -80,7 +80,7 @@
                 System.out.println("ConfigurationService bean created at startup");
             }
         }
-            </code></pre>
+            </pre>
             <hr>
             <h5>Lazy Instantiation</h5>
             <ul>
@@ -93,7 +93,7 @@
             <p>Lazy instantiation is useful for beans that are not always needed during the lifecycle of the application, such as optional services or background tasks.</p>
         
             <h6>Example Code: Lazy Instantiation</h6>
-            <pre><code>
+            <pre>
         import org.springframework.context.annotation.Lazy;
         import org.springframework.stereotype.Service;
         
@@ -104,7 +104,7 @@
                 System.out.println("ReportService bean created on-demand");
             }
         }
-            </code></pre>
+            </pre>
             <img src="../../images/spring6.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
             <br>
 
@@ -202,7 +202,7 @@
             <div class="interview-answer">
                 <p>In this scenario, lazy initialization is a good solution. By annotating the Singleton bean with <b>@Lazy</b>, 
                     I can delay its initialization until it is actually required by the application, reducing the initial startup time.</p>
-                <pre><code>
+                <pre>
                 @Service
                 @Lazy
                 public class HeavyResourceService {
@@ -210,7 +210,7 @@
                         // Heavy initialization logic
                     }
                 }
-                </code></pre>
+                </pre>
             
             </div>
 

@@ -137,17 +137,17 @@
             <br>
             <h3 class="section-title">How to handle message expiration and dead-lettering in RabbitMQ?</h3>
                 <p><b>Message Expiration: </b>Set a <b><em>expiration</em></b> property on messages or queues to automatically remove messages after a certain time period. This is useful for handling time-sensitive messages.</p>
-                <pre><code>
+                <pre>
     channel.basic_publish(
         exchange='',
         routing_key='my_queue',
         body='message',
         properties=pika.BasicProperties(<b>expiration='60000'</b>)  # Message expires in 60 seconds
     )
-            </code></pre>
+            </pre>
                 <p><b>Dead-Letter Exchanges (DLX): </b>Configure a dead-letter exchange to route messages that cannot be delivered or are rejected by consumers. 
                     Set the <b><em>x-dead-letter-exchange</em></b> argument on the original queue to specify the DLX.</p>
-                <pre><code>
+                <pre>
     channel.queue_declare(
         queue='original_queue',
         arguments={
@@ -155,7 +155,7 @@
         }
     )
     
-                </code></pre>
+                </pre>
             <br>
             <h3 class="section-title">Install RabbitMQ using Docker Desktop</h3>
                 <ol>
@@ -163,10 +163,10 @@
                     <li>Open Docker Desktop and ensure it's running.</li> 
                     <li>Open a terminal or command prompt.</li>
                     <li>Pull the RabbitMQ Docker image:
-                        <pre><code><b>docker pull rabbitmq:management</b></code></pre>
+                        <pre><b>docker pull rabbitmq:management</b></pre>
                     </li>
                     <li>Run the RabbitMQ container:
-                        <pre><code><b>docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management</b></code></pre>
+                        <pre><b>docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management</b></pre>
                         <ul>
                             <li><strong>-d</strong> runs the container in detached mode.</li>
                             <li><strong>--name rabbitmq</strong> assigns a name to the container.</li>

@@ -138,24 +138,24 @@
               <tr>
                 <td>Example</td>
                 <td>
-                  <pre><code>
+                  <pre>
           abstract class Animal {
               abstract void makeSound();
               void eat() {
                   System.out.println("Eating...");
               }
           }
-          </code></pre>
+          </pre>
                 </td>
                 <td>
-                  <pre><code>
+                  <pre>
           interface Animal {
               void makeSound();
               default void eat() {
                   System.out.println("Eating...");
               }
           }
-          </code></pre>
+          </pre>
                 </td>
               </tr>
             </table>
@@ -175,7 +175,7 @@
         Java implements multiple inheritance through interfaces. <br>
         A class can implement multiple interfaces, thus inheriting behavior from all of them.<br> 
         This avoids the "diamond problem" caused by ambiguity in multiple inheritance.</p>
-        <pre><code>
+        <pre>
       interface InterfaceA {
           void methodA();
       }
@@ -201,7 +201,7 @@
               obj.methodB();
           }
       }
-        </code></pre>
+        </pre>
       
  </div>
 <hr>
@@ -226,7 +226,7 @@
   <div>
     <h5> What is the role of the `super` keyword in Java?</h5>
     <p><strong>Answer:</strong> The <code>super</code> keyword is used to refer to the immediate parent class. It can be used to call the parent class constructor or methods.</p>
-    <pre><code>class Animal {
+    <pre>class Animal {
       void eat() {
           System.out.println("Animal eats.");
       }
@@ -238,7 +238,7 @@
           System.out.println("Dog eats.");
       }
   }
-  </code></pre>
+  </pre>
   </div>
 <hr>
   <!-- Q11 -->
@@ -251,7 +251,7 @@
           <li>Method overloading cannot be achieved by changing only the return type.</li>
           <li>It is resolved at compile time based on the method signature.</li>
         </ul>
-        <pre><code>
+        <pre>
       class Calculator {
           // Overloaded methods
           int add(int a, int b) {
@@ -275,7 +275,7 @@
               System.out.println(calc.add(1, 2, 3));    // Calls int add(int, int, int)
           }
       }
-        </code></pre>
+        </pre>
       
         <p><strong>Method Overriding:</strong> This occurs when a subclass provides a specific implementation for a method already defined in its parent class. It is <b>runtime polymorphism</b>.</p>
         <p><strong>Key Points:</strong></p>
@@ -284,7 +284,7 @@
           <li>Only instance methods can be overridden; static methods are hidden.</li>
           <li>The <code>@Override</code> annotation is used for clarity and to catch errors.</li>
         </ul>
-        <pre><code>
+        <pre>
       class Parent {
           void display() {
               System.out.println("Display from Parent");
@@ -304,7 +304,7 @@
               obj.display(); // Calls Child's overridden method
           }
       }
-        </code></pre>
+        </pre>
       
         <p><strong>Tricky Points:</strong></p>
         <ul>
@@ -320,7 +320,7 @@
   <h5>Can we overload a static method in Java?</h5>
   <p>
     Yes, you can overload a static method in Java. You can declare as many static methods of the same name as you wish provided all of them have different method signatures.
-    <pre><code>
+    <pre>
       class Calculator {
           // Static method to add two integers
           static int add(int a, int b) {
@@ -346,14 +346,14 @@
               System.out.println(Calculator.add(10.5, 20.5));       // Calls method with two doubles
           }
       }
-          </code></pre>
+          </pre>
       
           <b>Output:</b>
-          <pre><code>
+          <pre>
       30
       60
       31.0
-    </code></pre>
+    </pre>
   </p>
 </div>
 <hr>
@@ -367,7 +367,7 @@
           <li>During method hiding, the method of the reference type (class type) is invoked, not the runtime object.</li>
         </ul>
         
-        <pre><code>
+        <pre>
       class Parent {
           static void staticMethod() {
               System.out.println("Static method in Parent");
@@ -391,7 +391,7 @@
               child.staticMethod();            // Outputs: Static method in Child
           }
       }
-        </code></pre>
+        </pre>
         
         <p><strong>Key Points:</strong></p>
         <ul>
@@ -430,7 +430,7 @@
   </p>
 
   <b>Example of Covariant Return Type in Java:</b>
-  <pre><code>
+  <pre>
 class Animal {
   // Method returning an Animal object
   Animal getAnimal() {
@@ -455,14 +455,14 @@ public class CovariantReturnTypeDemo {
       Dog anotherDog = dog.getAnimal(); // Returns a Dog object, covariant return type
   }
 }
-  </code></pre>
+  </pre>
 
   <b>Output:</b>
-  <pre><code>
+  <pre>
 No output, but the types are correct:
 - animal.getAnimal() returns Animal
 - dog.getAnimal() returns Dog
-  </code></pre>
+  </pre>
 
   <b>Explanation of the Example:</b>
   <ul>
@@ -499,7 +499,7 @@ No output, but the types are correct:
         </ul>
         
         <p><strong>Example: Member Inner Class</strong></p>
-        <pre><code>
+        <pre>
       class OuterClass {
           private String message = "Hello from Outer Class!";
           
@@ -517,7 +517,7 @@ No output, but the types are correct:
               inner.displayMessage();
           }
       }
-        </code></pre>
+        </pre>
         
         <p><strong>Why Use Inner Classes?</strong></p>
         <ul>
@@ -545,7 +545,7 @@ No output, but the types are correct:
   </p>
 
   <b>Example of Calling a Superclass Method from a Subclass:</b>
-  <pre><code>
+  <pre>
 class Animal {
   // Method in the superclass
   void sound() {
@@ -570,13 +570,13 @@ public class SuperclassMethodCallDemo {
       dog.sound();  // Calls the overridden method in Dog class
   }
 }
-  </code></pre>
+  </pre>
 
   <b>Output:</b>
-  <pre><code>
+  <pre>
 Dog barks
 Animal makes a sound
-  </code></pre>
+  </pre>
   <b>Limitations:</b>
   <ul>
       <li>You can only call the superclass method from the subclass if the method is not marked as <code>private</code> in the superclass.</li>
@@ -595,7 +595,7 @@ Animal makes a sound
         <li>No setter methods.</li>
       </ul>
     </p>
-    <pre><code>final class Immutable {
+    <pre>final class Immutable {
       private final String name;
   
       Immutable(String name) {
@@ -606,7 +606,7 @@ Animal makes a sound
           return name;
       }
   }
-  </code></pre>
+  </pre>
   </div>
 <hr>
   <!-- Q16 -->
@@ -621,7 +621,7 @@ Animal makes a sound
         </ul>
         
         <p><strong>Example:</strong></p>
-        <pre><code>
+        <pre>
       sealed class Shape permits Circle, Rectangle {
           double area;
       
@@ -667,7 +667,7 @@ Animal makes a sound
               System.out.println("Rectangle Area: " + rectangle.calculateArea());
           }
       }
-        </code></pre>
+        </pre>
         
         <p><strong>Why Use Sealed Classes?</strong></p>
         <ul>

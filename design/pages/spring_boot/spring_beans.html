@@ -20,11 +20,11 @@
                 <h5>Example 1: XML-Based Bean Configuration</h5>
                 Traditionally, beans were defined in an XML file. A typical bean configuration in XML looks like this:<br><br>
                 
-                    <pre><code>
+                    <pre>
     &lt;bean id="myBean" class="com.example.MyClass"&gt;
         &lt;property name="property1" value="value1"/&gt;
     &lt;/bean&gt;
-                    </code></pre>
+                    </pre>
                 
             <br>
             
@@ -32,16 +32,16 @@
                 In modern Spring applications, beans are more commonly defined using annotations. 
                 By using the @Component annotation on a class, you can let Spring know that this class is a bean:<br>
                 
-            <pre><code>
+            <pre>
     @Component
     public class MyBean {
         // Your code here
     }
-            </code></pre>
+            </pre>
             <br>
                 <h5>Example 3: Java-based Configuration</h5>
                 You can also define beans using Java-based configuration with the @Configuration and @Bean annotations:<br><br>
-                <pre><code>
+                <pre>
     @Configuration
     public class MyConfig {
     
@@ -50,7 +50,7 @@
             return new MyBean();
         }
     }    
-                </code></pre>
+                </pre>
             <br>
             <br>
             <h3 class="section-title"> Bean Scope</h3>
@@ -97,7 +97,7 @@
             </ul>
             <br>
             <h5>Example Using AnnotationConfigApplicationContext</h5>
-            <pre><code>
+            <pre>
     import org.springframework.context.ApplicationContext;
     import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -115,11 +115,11 @@
             myBean.doSomething();
         }
     }
-            </code></pre>
+            </pre>
             <br>
             <hr>
             <h5>Example of Registering Beans Dynamically</h5>
-            <pre><code>
+            <pre>
         import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
         public class DynamicBeanApp {
@@ -143,7 +143,7 @@
                 context.close();
             }
         }
-            </code></pre>
+            </pre>
             <br>
             <h3 class="section-title">What is NoUniqueBeanDefinitionException in Spring</h3>
             <p>
@@ -179,11 +179,11 @@
                     <b>Specify a Qualifier:</b> Use the <b>@Qualifier</b> annotation to specify the name of the bean you want to inject or retrieve. This helps Spring distinguish between multiple beans of the same type.
                     For example:
                 <div class = "example">
-                    <pre><code>
+                    <pre>
     @Autowired
     @Qualifier("myService1")
     private MyService myService;
-                    </code></pre>
+                    </pre>
                 </div>
                 </li>
                 

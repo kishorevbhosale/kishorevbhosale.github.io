@@ -1,0 +1,549 @@
+<div>
+    <ul>
+        <li><a href="#1">1. What are the key features introduced in Java 8?</a></li>
+        <li><a href="#2">2. What is a functional interface? Can you name a few built-in functional interfaces in Java 8?</a></li>
+        <li><a href="#3">3. What is a lambda expression? How does it differ from an anonymous class?</a></li>
+        <li><a href="#4">4. What is the purpose of the default and static methods in interfaces?</a></li>
+        <li><a href="#5">5. How does the <b>Optional</b> class help in handling null values? Can you give an example?</a></li>
+        <li><a href="#6">6. What is the <b>Stream</b> API? How does it differ from <b>Collections</b>?</a></li>
+        <li><a href="#7">7. What is the difference between map() and flatmap() in Streams?</a></li>
+        <li><a href="#8">8. How does forEach() work in Streams, and how is it different from a traditional for loop?</a></li>
+        <li><a href="#9">9. What is the difference between findFirst() and findAny()?</a></li>
+        <li><a href="#10">10. What are method references, and how do they work?</a></li>
+        <li><a href="#11">11. What are the different types of streams in Java 8? How does parallel stream differ from sequential stream?</a></li>
+        <li><a href="#12">12. Explain the concept of lazy evaluation in Streams.</a></li>
+        <li><a href="#13">13. What are collectors in Java 8? Can you explain collect(Collectors.toList())?</a></li>
+        <li><a href="#14">14. What is the difference between reduce() and collect() in Streams?</a></li>
+        <li><a href="#15">15. Explain how Predicate, Function, Supplier, and Consumer functional interfaces work.</a></li>
+        <li><a href="#16">16. How do you handle checked exceptions in lambda expressions?</a></li>
+        <li><a href="#17">17. What is the difference between synchronized and ConcurrentHashMap in Java 8?</a></li>
+        <li><a href="#18">18. What are CompletableFuture and ForkJoinPool, and how do they improve asynchronous programming?</a></li>
+        <li><a href="#19">19. Explain try-with-resources and how it was improved in Java 9 compared to Java 7/8.</a></li>
+        <li><a href="#20">20. What is the var keyword in Java 10, and how does it work?</a></li>
+        <li><a href="#21">21. What is a sealed class in Java 17? How does it help in restricting class hierarchies?</a></li>
+        <li><a href="#22">22. What are records in Java 14, and how do they differ from normal classes?</a></li>
+        <li><a href="#23">23. Explain pattern matching for instanceof introduced in Java 16.</a></li>
+        <li><a href="#24">24. How do switch expressions introduced in Java 12 improve readability and maintainability?</a></li>
+        <li><a href="#25">25. What is text block support in Java 13? How is it different from multiline strings?</a></li>
+        <li><a href="#26">26. Explain ZGC and Shenandoah GC. How do they improve performance in Java 17?</a></li>
+        <li><a href="#27">27. How do you use Records in Java 17 for immutable data classes?</a></li>
+        <li><a href="#28">28. What is Foreign Function & Memory API, and how does it improve interoperability in Java 17?</a></li>
+        <li><a href="#29">29. What are Virtual Threads (Project Loom) and how do they improve concurrency?</a></li>
+        <li><a href="#30">30. What is JEP 356: Enhanced Pseudo-Random Number Generators?</a></li>
+        <li><a href="#31">31. How does Java 8 improve functional programming, and how can it be used effectively in enterprise applications?</a></li>
+        <li><a href="#32">32. What are the advantages of using Streams over traditional loops? Are there any performance trade-offs?</a></li>
+        <li><a href="#33">33. How would you optimize a large-scale data processing pipeline using Java Streams and Parallel Streams?</a></li>
+        <li><a href="#34">34. When should you use <b>Optional</b>? Can excessive use of <b>Optional</b> be a performance overhead?</a></li>
+        <li><a href="#35">35. How do you ensure thread safety when working with Java Streams in a concurrent environment?</a></li>
+        <li><a href="#36">36. How does Java 17 improve memory management and garbage collection compared to Java 8?</a></li>
+        <li><a href="#37">37. What is GraalVM, and how does it enhance Java performance?</a></li>
+        <li><a href="#38">38. How would you design a microservices architecture using Java 17 features like Virtual Threads?</a></li>
+        <li><a href="#39">39. How does Java 17's sealed classes impact API design and maintainability?</a></li>
+        <li><a href="#40">40. How do you migrate an enterprise-level application from Java 8 to Java 17? What are the key considerations?</a></li>
+    
+    </ul>
+</div>
+<hr>
+
+<div id="1"> 
+    <h5>1. What are the key features introduced in Java 8?</h5>
+    <div>
+        <ul>
+            <li>Lambda Expressions</li>
+            <li>Functional Interfaces</li>
+            <li>Stream API</li>
+            <li>Default and Static Methods in Interfaces</li>
+            <li>Optional Class</li>
+            <li>New Date and Time API (java.time package)</li>
+            <li>Collectors and Collectors API</li>
+            <li>Improved Type Inference</li>
+            <li>Parallel Streams</li>
+            <li>CompletableFuture and Asynchronous Programming</li>
+            <li>New JavaScript Engine (Nashorn)</li>
+        </ul>
+    </div>
+
+</div>
+<hr>
+
+<div id="2">    
+    <h5>2. What is a functional interface? Can you name a few built-in functional interfaces in Java 8?</h5>
+    <div>
+        <p>A functional interface in Java 8 is an interface that contains exactly one abstract method. It can have multiple default and static methods. <br>Functional interfaces are used for lambda expressions and method references.</p>
+        <ul>
+            <li><b>Predicate&lt;T&gt;</b> - Represents a boolean-valued function of one argument.</li>
+            <li><b>Function&lt;T, R&gt;</b> - Represents a function that takes one argument and produces a result.</li>
+            <li><b>Consumer&lt;T&gt;</b> - Represents an operation that takes a single argument and returns no result.</li>
+            <li><b>Supplier&lt;T&gt;</b> - Represents a supplier of results without taking any input.</li>
+            <li><b>BiFunction&lt;T, U, R&gt;</b> - Represents a function that takes two arguments and produces a result.</li>
+            <li><b>UnaryOperator&lt;T&gt;</b> - A function that takes one argument and returns a result of the same type.</li>
+            <li><b>BinaryOperator&lt;T&gt;</b> - A function that takes two arguments of the same type and returns a result of the same type.</li>
+        </ul>
+    </div>
+    
+</div>
+<hr>
+
+<div id="3">    
+    <h5>3. What is a lambda expression? How does it differ from an anonymous class?</h5>
+    <div>
+        <ul>
+            <li><b>Lambda Expression:</b> A lambda expression is a concise way to represent an anonymous function in Java. It allows passing behavior as a parameter.</li>
+            <li><b>Syntax:</b> <code>(parameters) -> expression</code> or <code>(parameters) -> { statements }</code></li>
+            <li><b>Example:</b> <code>(a, b) -> a + b;</code></li>
+        </ul>
+        <ul>
+            <li><b>Differences from Anonymous Class:</b></li>
+            <li>Lambda expressions do not create a separate class file, whereas anonymous classes do.</li>
+            <li>They have a more concise syntax compared to anonymous classes.</li>
+            <li>They can only be used for functional interfaces (interfaces with a single abstract method).</li>
+            <li>Anonymous classes can have multiple methods and instance variables, whereas lambdas cannot.</li>
+            <li>Anonymous classes allow access to this referring to their own instance, but lambdas refer to the enclosing class instance.</li>
+        </ul>
+    </div>
+    
+</div>
+<hr>
+
+<div id="4">    
+    <h5>4. What is the purpose of the default and static methods in interfaces?</h5>
+    <div>
+        <ul>
+            <li><b>Purpose of default methods:</b>
+                <ul>
+                    <li>Allow interfaces to have method implementations.</li>
+                    <li>Help in backward compatibility without breaking existing code.</li>
+                    <li>Provide a way to add new functionality to interfaces without affecting implementing classes.</li>
+                </ul>
+            </li>
+            <li><b>Purpose of static methods:</b>
+                <ul>
+                    <li>Provide utility methods that belong to the interface itself.</li>
+                    <li>Cannot be overridden by implementing classes.</li>
+                    <li>Help in avoiding utility classes like <b>Collections</b> for small helper methods.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+</div>
+<hr>
+
+<div id="5">    
+    <h5>5. How does the <b>Optional</b> class help in handling null values? Can you give an example?</h5>
+    <div>
+        <ul>
+            <li>The <b>Optional</b> class in Java 8 is used to handle null values safely and avoid NullPointerException.</li>
+            <li>It acts as a container that may or may not contain a non-null value.</li>
+            <li>Key methods of <b>Optional</b> include:
+                <ul>
+                    <li><b>of(value)</b>: Creates an <b>Optional</b> with a non-null value.</li>
+                    <li><b>ofNullable(value)</b>: Creates an <b>Optional</b> that can hold a null value.</li>
+                    <li><b>empty()</b>: Returns an empty <b>Optional</b>.</li>
+                    <li><b>isPresent()</b>: Checks if a value is present.</li>
+                    <li><b>ifPresent(Consumer)</b>: Executes an action if a value is present.</li>
+                    <li><b>orElse(defaultValue)</b>: Returns the value or a default if empty.</li>
+                    <li><b>orElseGet(Supplier)</b>: Returns a computed default value if empty.</li>
+                    <li><b>orElseThrow(Supplier)</b>: Throws an exception if no value is present.</li>
+                </ul>
+            </li>
+            <li>Example usage:
+                <ul>
+                    <li>
+                        <pre>
+    Optional<String> optionalValue = Optional.ofNullable(null);
+    String result = optionalValue.orElse("Default Value");
+    System.out.println(result); // Output: Default Value
+                        </pre>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<hr>
+
+<div id="6">    
+    <h5>6. What is the <b>Stream</b> API? How does it differ from <b>Collections</b>?</h5>
+    <div>
+        <ul>
+            <li><b>Stream API:</b> 
+                <ul>
+                    <li>Introduced in Java 8, the Stream API allows processing sequences of elements in a functional programming style.</li>
+                    <li>It provides operations such as filtering, mapping, reducing, and sorting, which can be performed declaratively.</li>
+                    <li>Streams work on data sources like Collections, Arrays, or I/O channels.</li>
+                </ul>
+            </li>
+            
+            <li><b>Differences between Stream API and Collections:</b>
+                <ul>
+                    <li><b>Storage vs. Computation:</b> 
+                        <ul>
+                            <li>Collections are used to store and manage data in memory.</li>
+                            <li>Streams do not store data; instead, they perform computations on the data.</li>
+                        </ul>
+                    </li>
+    
+                    <li><b>Iteration:</b> 
+                        <ul>
+                            <li>Collections use external iteration, where the developer controls how elements are retrieved (e.g., for or while loops).</li>
+                            <li>Streams use internal iteration, where iteration is handled by the Stream itself.</li>
+                        </ul>
+                    </li>
+    
+                    <li><b>Mutability:</b> 
+                        <ul>
+                            <li>Collections allow modification of elements (adding, updating, or deleting).</li>
+                            <li>Streams do not modify the original data but create new transformed Streams.</li>
+                        </ul>
+                    </li>
+    
+                    <li><b>Lazy Evaluation:</b> 
+                        <ul>
+                            <li>Collections execute operations immediately when called.</li>
+                            <li>Streams operate lazily, meaning computations are not performed until a terminal operation is invoked.</li>
+                        </ul>
+                    </li>
+    
+                    <li><b>Parallel Execution:</b> 
+                        <ul>
+                            <li>Collections process elements sequentially by default.</li>
+                            <li>Streams support parallel processing using parallelStream(), which can improve performance on multi-core processors.</li>
+                        </ul>
+                    </li>
+    
+                    <li><b>Single-use vs. Reusability:</b> 
+                        <ul>
+                            <li>Collections can be iterated multiple times.</li>
+                            <li>Streams can be consumed only once. A new Stream must be created for reprocessing.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<hr>
+
+<div id="7">    
+    <h5>7. What is the difference between map() and flatmap() in Streams?</h5>
+    <div>
+        <ul>
+            <li><b>map():</b> Transforms each element in the stream using a function and returns a Stream of transformed elements.</li>
+            <li><b>flatMap():</b> Transforms each element into a Stream and then flattens all resulting Streams into a single Stream.</li>
+            <li><b>Key Difference:</b> 
+                <ul>
+                    <li><code>map()</code> produces a Stream of Streams when dealing with nested structures.</li>
+                    <li><code>flatMap()</code> merges the nested Streams into a single Stream.</li>
+                </ul>
+            </li>
+                <li><b>map() Example:</b>
+                    <ul>
+                        <li>Given a list of numbers, we want to square each number.</li>
+                        <li><code>List<Integer> numbers = Arrays.asList(1, 2, 3, 4);</code></li>
+                        <li><code>List<Integer> squaredNumbers = numbers.stream().map(n -> n * n).collect(Collectors.toList());</code></li>
+                        <li>Result: <code>[1, 4, 9, 16]</code></li>
+                    </ul>
+                </li>
+                <li><b>flatMap() Example:</b>
+                    <ul>
+                        <li>Given a list of sentences, we want to split each sentence into words and flatten the result.</li>
+                        <li><code>List<String> sentences = Arrays.asList("Hello World", "Java Streams");</code></li>
+                        <li><code>List<String> words = sentences.stream().flatMap(sentence -> Arrays.stream(sentence.split(" "))).collect(Collectors.toList());</code></li>
+                        <li>Result: <code>[Hello, World, Java, Streams]</code></li>
+                    </ul>
+                </li>
+            </ul>
+    </div>
+</div>
+<hr>
+
+<div id="8">    
+    <h5>8. How does forEach() work in Streams, and how is it different from a traditional for loop?</h5>
+    <div>
+    <p>The forEach() method in Streams is used to iterate over the elements of the stream and perform a given action. It is part of the Stream API introduced in Java 8 and provides a functional-style iteration mechanism compared to the traditional for loop.</p>
+
+    <ul>
+        <li><b>How forEach() works in Streams:</b>
+        <ul>
+            <li>It is a terminal operation in the Stream API.</li>
+            <li>It accepts a Consumer functional interface, which is applied to each element of the stream.</li>
+            <li>It performs the action on each element but does not return a value (void return type).</li>
+            <li>It is often used for side effects, such as printing or updating external variables.</li>
+        </ul>
+        </li>
+
+        <li><b>Example using forEach() in Streams:</b>
+        <pre>
+    List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+    names.stream().forEach(name -> System.out.println(name));
+        </pre>
+        <ul>
+            <li>Here, the stream processes the list of names and applies the System.out.println() method to each element in the stream.</li>
+        </ul>
+        </li>
+
+        <li><b>How is forEach() different from a traditional for loop?</b>
+        <ul>
+            <li><b>Iteration style:</b> 
+            <ul>
+                <li>forEach() is functional and declarative, focusing on the action to perform.</li>
+                <li>The traditional for loop is imperative and focuses on the control flow.</li>
+            </ul>
+            </li>
+            <li><b>Parallelism:</b> 
+            <ul>
+                <li>forEach() can work with parallel streams, allowing concurrent processing of elements.</li>
+                <li>Traditional for loops are usually sequential, and parallelism must be manually handled.</li>
+            </ul>
+            </li>
+            <li><b>Side effects:</b> 
+            <ul>
+                <li>forEach() is commonly used for side effects (printing, logging, etc.), but it can sometimes make the code harder to debug due to the lack of control flow.</li>
+                <li>In contrast, traditional for loops are more predictable and flexible in controlling the iteration process.</li>
+            </ul>
+            </li>
+        </ul>
+        </li>
+    </ul>
+    </div>
+</div>
+<hr>
+
+<div id="9">    
+    <h5>9. What is the difference between findFirst() and findAny()?</h5>
+    <div>
+    <p><b>Difference between findFirst() and findAny()</b></p>
+    <ul>
+        <li><b>findFirst():</b>  
+        <ul>
+            <li>Returns the first element of a stream.</li>
+            <li>It respects the encounter order of the stream.</li>
+            <li>If the stream is ordered (e.g., List, SortedSet), it will return the first element as per the order.</li>
+            <li>It is usually used when you want to guarantee getting the first element in a stream.</li>
+            <li><b>Example:</b></li>
+            <li><code>Optional<Integer> first = Stream.of(1, 2, 3, 4).findFirst();</code></li>
+            <li><code>first.ifPresent(System.out::println);  // Output: 1</code></li>
+        </ul>
+        </li>
+        <li><b>findAny():</b>
+        <ul>
+            <li>Returns any element from the stream. It does not guarantee any specific element.</li>
+            <li>It is often used in parallel streams, where it can return any element without worrying about the order.</li>
+            <li>If the stream is unordered, it may return any element; if it is ordered, it can still return any element.</li>
+            <li><b>Example:</b></li>
+            <li><code>Optional<Integer> any = Stream.of(1, 2, 3, 4).findAny();</code></li>
+            <li><code>any.ifPresent(System.out::println);  // Output: (could be any element, e.g., 1)</code></li>
+        </ul>
+        </li>
+    </ul>
+    </div>
+</div>
+<hr>
+
+<div id="10">    
+    <h5>10. What are method references, and how do they work?</h5>
+    <div>
+        <p>Method references provide a way to refer to methods of classes or objects directly, using a compact, readable syntax. They are shorthand for lambda expressions when calling a method. Method references can be used where a functional interface is expected.</p>
+      
+        <ul>
+          <li><b>Syntax:</b> ClassName::methodName</li>
+          <li><b>Types of method references:</b>
+            <ul>
+              <li><b>Static method reference:</b> Refers to a static method.</li>
+              <li><b>Instance method reference:</b> Refers to an instance method of a specific object.</li>
+              <li><b>Instance method reference of an arbitrary object:</b> Refers to an instance method of an object of a particular class.</li>
+              <li><b>Constructor reference:</b> Refers to a constructor to create objects.</li>
+            </ul>
+          </li>
+        </ul>
+      
+        <p><b>Examples:</b></p>
+      
+        <ul>
+          <li><b>Static method reference:</b>
+            <pre>ClassName::staticMethodName</pre>
+            <p>Example: <code>Math::max</code></p>
+            <pre>List<Integer> numbers = Arrays.asList(1, 3, 2);
+      numbers.stream().max(Math::max).ifPresent(System.out::println);</pre>
+          </li>
+          
+          <li><b>Instance method reference:</b>
+            <pre>object::instanceMethodName</pre>
+            <p>Example: <code>String::toUpperCase</code></p>
+            <pre>List<String> words = Arrays.asList("hello", "world");
+      words.stream().map(String::toUpperCase).forEach(System.out::println);</pre>
+          </li>
+      
+          <li><b>Instance method reference of an arbitrary object of a particular type:</b>
+            <pre>ClassName::instanceMethodName</pre>
+            <p>Example: <code>List::add</code></p>
+            <pre>List<String> words = new ArrayList<>();
+      Stream.of("apple", "banana").forEach(words::add);</pre>
+          </li>
+      
+          <li><b>Constructor reference:</b>
+            <pre>ClassName::new</pre>
+            <p>Example: <code>ArrayList::new</code></p>
+            <pre>Supplier<List<String>> listSupplier = ArrayList::new;
+      List<String> list = listSupplier.get();</pre>
+          </li>
+        </ul>
+      </div>
+      
+</div>
+<hr>
+
+<div id="11">    
+    <h5>11. What are the different types of streams in Java 8? How does parallel stream differ from sequential stream?</h5>
+</div>
+<hr>
+
+<div id="12">    
+    <h5>12. Explain the concept of lazy evaluation in Streams.</h5>
+</div>
+<hr>
+
+<div id="13">    
+    <h5>13. What are collectors in Java 8? Can you explain collect(Collectors.toList())?</h5>
+</div>
+<hr>
+
+<div id="14">    
+    <h5>14. What is the difference between reduce() and collect() in Streams?</h5>
+</div>
+<hr>
+
+<div id="15">    
+    <h5>15. Explain how Predicate, Function, Supplier, and Consumer functional interfaces work.</h5>
+</div>
+<hr>
+
+<div id="16">    
+    <h5>16. How do you handle checked exceptions in lambda expressions?</h5>
+</div>
+<hr>
+
+<div id="17">    
+    <h5>17. What is the difference between synchronized and ConcurrentHashMap in Java 8?</h5>
+</div>
+<hr>
+
+<div id="18">    
+    <h5>18. What are CompletableFuture and ForkJoinPool, and how do they improve asynchronous programming?</h5>
+</div>
+<hr>
+
+<div id="19">    
+    <h5>19. Explain try-with-resources and how it was improved in Java 9 compared to Java 7/8.</h5>
+</div>
+<hr>
+
+<div id="20">    
+    <h5>20. What is the var keyword in Java 10, and how does it work?</h5>
+</div>
+<hr>
+
+<div id="21">    
+    <h5>21. What is a sealed class in Java 17? How does it help in restricting class hierarchies?</h5>
+</div>
+<hr>
+
+<div id="22">    
+    <h5>22. What are records in Java 14, and how do they differ from normal classes?</h5>
+</div>
+<hr>
+
+<div id="23">    
+    <h5>23. Explain pattern matching for instanceof introduced in Java 16.</h5>
+</div>
+<hr>
+
+<div id="24">    
+    <h5>24. How do switch expressions introduced in Java 12 improve readability and maintainability?</h5>
+</div>
+<hr>
+
+<div id="25">    
+    <h5>25. What is text block support in Java 13? How is it different from multiline strings?</h5>
+</div>
+<hr>
+
+<div id="26">    
+    <h5>26. Explain ZGC and Shenandoah GC. How do they improve performance in Java 17?</h5>
+</div>
+<hr>
+
+<div id="27">    
+    <h5>27. How do you use Records in Java 17 for immutable data classes?</h5>
+</div>
+<hr>
+
+<div id="28">    
+    <h5>28. What is Foreign Function & Memory API, and how does it improve interoperability in Java 17?</h5>
+</div>
+<hr>
+
+<div id="29">    
+    <h5>29. What are Virtual Threads (Project Loom) and how do they improve concurrency?</h5>
+</div>
+<hr>
+
+<div id="30">    
+    <h5>30. What is JEP 356: Enhanced Pseudo-Random Number Generators?</h5>
+</div>
+<hr>
+
+<div id="31">    
+    <h5>31. How does Java 8 improve functional programming, and how can it be used effectively in enterprise applications?</h5>
+</div>
+<hr>
+
+<div id="32">    
+    <h5>32. What are the advantages of using Streams over traditional loops? Are there any performance trade-offs?</h5>
+</div>
+<hr>
+
+<div id="33">    
+    <h5>33. How would you optimize a large-scale data processing pipeline using Java Streams and Parallel Streams?</h5>
+</div>
+<hr>
+
+<div id="34">    
+    <h5>34. When should you use <b>Optional</b>? Can excessive use of <b>Optional</b> be a performance overhead?</h5>
+</div>
+<hr>
+
+<div id="35">    
+    <h5>35. How do you ensure thread safety when working with Java Streams in a concurrent environment?</h5>
+</div>
+<hr>
+
+<div id="36">    
+    <h5>36. How does Java 17 improve memory management and garbage collection compared to Java 8?</h5>
+</div>
+<hr>
+
+<div id="37">    
+    <h5>37. What is GraalVM, and how does it enhance Java performance?</h5>
+</div>
+<hr>
+
+<div id="38">    
+    <h5>38. How would you design a microservices architecture using Java 17 features like Virtual Threads?</h5>
+</div>
+<hr>
+
+<div id="39">    
+    <h5>39. How does Java 17's sealed classes impact API design and maintainability?</h5>
+</div>
+<hr>
+
+<div id="40">    
+    <h5>40. How do you migrate an enterprise-level application from Java 8 to Java 17? What are the key considerations?</h5>
+</div>
+<hr>
+
+
+</ul>
+

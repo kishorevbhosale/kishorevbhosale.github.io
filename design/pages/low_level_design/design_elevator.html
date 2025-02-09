@@ -37,7 +37,7 @@
     <hr>
 
     <h5>Code Implementation:</h5>
-<pre><code>
+<pre>
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -45,9 +45,9 @@ import java.util.concurrent.*;
 enum Direction {
     UP, DOWN, IDLE
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing a user request
 class UserRequest {
     int sourceFloor;
@@ -58,9 +58,9 @@ class UserRequest {
         this.destinationFloor = destinationFloor;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing the elevator
 class Elevator {
     private int capacity;
@@ -111,9 +111,9 @@ class Elevator {
         direction = Direction.IDLE;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Class representing the ElevatorSystem
 class ElevatorSystem {
     private List<Elevator> elevators;
@@ -149,9 +149,9 @@ class ElevatorSystem {
         return closestElevator;
     }
 }
-</code></pre>
+</pre>
 
-<pre><code>
+<pre>
 // Main application to simulate elevator system usage
 public class ElevatorApp {
     public static void main(String[] args) {
@@ -163,7 +163,7 @@ public class ElevatorApp {
         elevatorSystem.requestElevator(new UserRequest(5, 1));
     }
 }
-</code></pre>
+</pre>
     <hr>
 
     <h5>Explanation of the Code:</h5>

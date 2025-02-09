@@ -4,7 +4,7 @@
     <p>
         Combines @Controller and @ResponseBody. It indicates that a class is a Spring MVC controller where every method returns a domain object instead of a view.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         @RequestMapping("/api")
         public class MyController {
@@ -13,7 +13,7 @@
                 return "Hello, World!";
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -21,7 +21,7 @@
     <p>
         Used to map web requests to a specific handler class or method. It can be applied at the class or method level.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         @RequestMapping("/api")
         public class MyController {
@@ -30,7 +30,7 @@
                 return "Hello, World!";
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -38,7 +38,7 @@
     <p>
         A shortcut for @RequestMapping with method=RequestMethod.GET. Used for handling GET requests.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @GetMapping("/hello")
@@ -46,7 +46,7 @@
                 return "Hello, World!";
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -54,7 +54,7 @@
     <p>
         A shortcut for @RequestMapping with method=RequestMethod.POST. Used for handling POST requests.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @PostMapping("/create")
@@ -62,7 +62,7 @@
                 return "Data created: " + data;
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -70,7 +70,7 @@
     <p>
         A shortcut for @RequestMapping with method=RequestMethod.PUT. Used for handling PUT requests.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @PutMapping("/update")
@@ -78,7 +78,7 @@
                 return "Data updated: " + data;
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -86,7 +86,7 @@
     <p>
         A shortcut for @RequestMapping with method=RequestMethod.DELETE. Used for handling DELETE requests.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @DeleteMapping("/delete/{id}")
@@ -94,7 +94,7 @@
                 return "Deleted ID: " + id;
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -102,7 +102,7 @@
     <p>
         Used to extract values from the URI and bind them to method parameters.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @GetMapping("/user/{id}")
@@ -110,7 +110,7 @@
                 return "User ID: " + id;
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -118,7 +118,7 @@
     <p>
         Maps the body of the HTTP request to a Java object. Useful for handling JSON data.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @PostMapping("/create")
@@ -132,7 +132,7 @@
             public String getName() { return name; }
             public void setName(String name) { this.name = name; }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -140,7 +140,7 @@
     <p>
         Used to extract query parameters from the URL.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         public class MyController {
             @GetMapping("/greet")
@@ -148,7 +148,7 @@
                 return "Hello, " + name;
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -156,7 +156,7 @@
     <p>
         Used to handle exceptions in a specific controller or globally.
     </p>
-    <pre><code>
+    <pre>
         @RestController
         @ControllerAdvice
         public class ExceptionController {
@@ -165,7 +165,7 @@
                 return "Error: " + e.getMessage();
             }
         }
-    </code></pre>
+    </pre>
 </div>
 
 <div>
@@ -173,7 +173,7 @@
     <p>
         Enables cross-origin resource sharing (CORS).
     </p>
-    <pre><code>
+    <pre>
         @RestController
         @CrossOrigin(origins = "http://example.com")
         public class MyController {
@@ -182,5 +182,5 @@
                 return "Data";
             }
         }
-    </code></pre>
+    </pre>
 </div>

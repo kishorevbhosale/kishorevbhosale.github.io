@@ -25,7 +25,7 @@
         <li>Centralized deployment, requiring the entire application to be redeployed for any change.</li>
     </ul>
     <h4>Example:</h4>
-    <pre><code>
+    <pre>
         // Example of tightly coupled e-commerce modules
         public class ECommerceApplication {
             private InventoryModule inventory;
@@ -38,7 +38,7 @@
                 order.createOrder();
             }
         }
-    </code></pre>
+    </pre>
 </div>
 <hr>
 <div>
@@ -51,17 +51,17 @@
             <b>Identify Service Boundaries:</b>
             Analyze the monolithic application and break it into smaller services based on business domains (e.g., Inventory, Payment, Order, User Management).
             <h5>Example:</h5>
-            <pre><code>
+            <pre>
                 Inventory Service: Manages product stock levels.
                 Payment Service: Handles transactions and payments.
                 Order Service: Manages order creation and tracking.
-            </code></pre>
+            </pre>
         </li>
         <li>
             <b>Adopt API-Based Communication:</b>
             Replace internal method calls with RESTful APIs or messaging queues to allow services to communicate independently.
             <h5>Example:</h5>
-            <pre><code>
+            <pre>
                 // RESTful API Example
                 @RestController
                 @RequestMapping("/inventory")
@@ -71,7 +71,7 @@
                         return inventoryService.checkStock(productId);
                     }
                 }
-            </code></pre>
+            </pre>
         </li>
         <li>
             <b>Decouple the Database:</b>
