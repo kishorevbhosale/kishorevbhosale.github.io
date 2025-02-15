@@ -1,6 +1,17 @@
-<div>
-    <h1 style="text-align: center;">Dependency Inversion Principle (DIP)</h1>
-    <hr>
+<h2 style="text-align: center;">Dependency Inversion Principle (DIP)</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#intro">Introduction </a></li>
+        <li><a href="#violation">DIP violation</a></li>
+        <li><a href="#dip">How to achieve DIP </a></li>
+        <li><a href="#key">Key points in the refactored design </a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="intro">
+    <h5>Introduction</h5>
     <p>
         <b>"High-level modules should not depend on low-level modules. Both should depend on abstractions. 
             Abstractions should not depend on details. Details should depend on abstractions."</b>
@@ -12,16 +23,19 @@
         changes to high-level components.
     </p>
 </div>
-<div>
-    <h3 class="section-title">Example: Notification System</h3>
+<hr>
+
+<div id="violation">
+    <h5>DIP violation</h5>
+    <b>Example: Notification System</b>
     <p>
         Imagine you are building a notification system that sends alerts via different channels such as email and SMS. 
         Without dependency injection or the Dependency Inversion Principle, your NotificationService class might depend 
         directly on concrete implementations like EmailSender or SMSSender. This creates a tight coupling between the
         high-level class (NotificationService) and the low-level classes (EmailSender, SMSSender).
     </p>
-</div>
-<div>
+    <br>
+    <b>Code for DI:</b>
     <pre>
         // Low-level module: EmailSender
         class EmailSender {
@@ -62,9 +76,8 @@
         }
         
     </pre>
-</div>
-<div>
-    <h5>Problem (DIP Violation):</h5>
+
+    <b>Violation:</b>
     <ol>
         <li>Tight Coupling: NotificationService depends directly on EmailSender and SMSSender.
              If we want to change how these notifications are sent (e.g., introduce a PushNotificationSender), 
@@ -75,15 +88,16 @@
         
     </ol>
 </div>
-<div>
-    <h3 class="section-title">Refactored Design (Complying with DIP using Dependency Injection):</h3>
+<hr>
+
+<div id="dip">
+    <h5>How to achieve DIP : refactored design</h5>
     <ol>
         <li>Create an interface MessageSender that abstracts the sending logic.</li>
         <li>Implement EmailSender, SMSSender, and any other sender classes as low-level modules that implement this interface.</li>
         <li>Use dependency injection to pass the desired sender to the NotificationService class.</li>
     </ol>
-</div>
-<div>
+    <br>
     <pre>
         // High-level abstraction: MessageSender interface
         interface MessageSender {
@@ -136,8 +150,10 @@
         }        
     </pre>
 </div>
-<div>
-    <h5>Key Points in the Refactored Design</h5>
+<hr>
+
+<div id="key">
+    <h5>Key Points in the refactored design</h5>
     <ul>
         <li><b>Abstractions Over Concrete Classes:</b> We have introduced a MessageSender interface that both EmailSender and SMSSender implement. 
             This makes NotificationService depend on the abstraction (MessageSender) rather than the concrete classes (EmailSender or SMSSender).</li>

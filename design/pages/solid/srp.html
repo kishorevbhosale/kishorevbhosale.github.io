@@ -1,6 +1,19 @@
-<div>
-    <h1 style="text-align: center;">Single Responsibility Principle (SRP)</h1>
-    <hr>
+<h2 style="text-align: center;">Single Responsibility Principle (SRP)</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#intro">Introduction </a></li>
+        <li><a href="#violation">SRP violation</a></li>
+        <li><a href="#why-violates">Why this violates SRP </a></li>
+        <li><a href="#srp">How to achieve SRP </a></li>
+        <li><a href="#Adheres-SRP">How this adheres to SRP</a></li>
+        <li><a href="#benefits">Benefits of SRP </a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="intro">
+    <h5>Introduction</h5>
     <p>
         The <b>Single Responsibility Principle (SRP)</b> is one of the five S.O.L.I.D. design principles, 
         and it focuses on the idea that a class should only have <b>one responsibility</b> or <b>one reason to change</b>.
@@ -11,8 +24,10 @@
         This principle is vital for reducing code complexity and improving maintainability in object-oriented programming.
     </p>
 </div>
-<div>
-    <h3 class="section-title">SRP Violation Example</h3>
+<hr>
+
+<div id="violation">
+    <h5>SRP violation</h5>
     <div class="example">
         <p>Consider a simple example of an employee management system. We have an Employee class that handles:</p>
         <ol>
@@ -28,9 +43,8 @@
         </ol>
         <p>Each of these tasks should belong to separate classes so that changes in one responsibility do not affect other unrelated parts of the system.</p>
     </div>
-</div>
-<div>
-    <h5>Code for SRP Violation</h5>
+
+    <b>Code for SRP Violation</b>
     <pre>
         class Employee {
             private String name;
@@ -63,9 +77,10 @@
         
     </pre>
 </div>
-<br>
-<div>
-    <h5>Why This Violates SRP:</h5>
+<hr>
+
+<div id="why-violates">
+    <h5>Why this violates SRP:</h5>
     <p>The Employee class has multiple responsibilities:</p>
     <ol>
         <li>Salary Calculation (calculateSalary()).</li>
@@ -75,19 +90,20 @@
     <p>Any changes to the salary calculation, the database system, or employee details could require modifying this class. 
         This makes the class fragile, harder to test, and difficult to extend.</p>
 </div>
-<div>
-    <h3 class="section-title">How to Achieve SRP</h3>
+<hr>
+
+<div id="srp">
+    <h5>How to achieve SRP</h5>
     <p>To adhere to SRP, we can refactor the code by separating concerns into different classes, each with a single responsibility.<br> 
-        Here's how we can do that:</p>
-        <ol>
-            <li>Employee class should only handle employee-related information.</li>
-            <li>SalaryCalculator class should be responsible for salary calculation.</li>
-            <li>EmployeeRepository class should be responsible for saving employee data to a database.</li>
-        </ol>
-</div>
-<br>
-<div>
-    <h3 class="section-title">Refactored Code Following SRP:</h3>
+        Here's how we can do that:
+    </p>
+    <ol>
+        <li>Employee class should only handle employee-related information.</li>
+        <li>SalaryCalculator class should be responsible for salary calculation.</li>
+        <li>EmployeeRepository class should be responsible for saving employee data to a database.</li>
+    </ol>
+
+    <b>Refactored Code Following SRP:</b>
     <pre>
 <b>// Class responsible for employee information (responsibility 1)</b>
 class Employee {
@@ -151,17 +167,20 @@ public class SRPExample {
 
     </pre>
 </div>
-<div>
-    <h5>How This Adheres to SRP:</h5>
+<hr>
+
+<div id="Adheres-SRP">
+    <h5>How this adheres to SRP:</h5>
     <ol>
         <li>The Employee class now only manages employee-related information like name, position, and salary, which is its sole responsibility.</li>
         <li>The SalaryCalculator class is solely responsible for salary calculation logic, adhering to its single responsibility.</li>
         <li>The EmployeeRepository class is responsible for saving employee data to the database, handling persistence logic independently of other classes.</li>
     </ol>
 </div>
-<br>
-<div>
-    <h3 class="section-title">Benefits of SRP:</h3>
+<hr>
+
+<div id="benefits">
+    <h5>Benefits of SRP:</h5>
     <ul>
         <li>Easier to Maintain: If salary calculation logic changes, only the SalaryCalculator class needs to be modified. Similarly, if the database logic changes, only the EmployeeRepository class would need an update.</li>
         <li>Improved Testability: Each responsibility is isolated, allowing for independent testing of Employee, SalaryCalculator, and EmployeeRepository classes.</li> 
@@ -169,3 +188,4 @@ public class SRPExample {
         <li>Better Readability and Understanding: The code becomes cleaner and easier to understand as each class has a clear, singular responsibility.</li>  
     </ul>
 </div>
+<hr>
