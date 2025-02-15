@@ -1,5 +1,34 @@
-<div>
-    <h5>Exception Handling in Java: Quick Revision</h5>
+<div class="custom-container">
+    <ol>
+      <b>Exception Handling in Java</b>
+      <li><a href="#revision">Quick Revision</a></li>
+      <li><a href="#Hierarchy">Exception Handling Hierarchy in Java </a></li>
+      <li><a href="#CheckedUnchecked">Explain Checked Exceptions and Unchecked Exceptions in Java</a></li>
+      <li><a href="#Try-Catch-Finally">Explain Try-Catch and Finally Block in Java </a></li>
+      <li><a href="#Throw-Throws">Throw and Throws Keywords in Java </a></li>
+      <li><a href="#Custom-Exceptions">Custom Exceptions in Java</a></li>
+      <li><a href="#Multi-Catch">Multi-Catch Block in Java </a></li>
+      <li><a href="#Try-with-Resources">Try-with-Resources in Java </a></li>
+      <li><a href="#Stack-Trace">Stack Trace in Java </a></li>
+      <li><a href="#Error-Exception">Difference Between Error and Exception in Java </a></li>
+      <li><a href="#Unreachable-Catch-Block">Understanding Unreachable Catch Block Error in Java</a></li>
+      <li><a href="#ClassNotFoundException-NoClassDefFoundError">Understanding the Differences Between ClassNotFoundException and NoClassDefFoundError</a></li>
+      <li><a href="#final-finally-finalize">Understanding the Differences Between final, finally, and finalize Keywords in Java</a></li>
+      <li><a href="#Exception-Propagation">Understanding Exception Propagation in Java </a></li>
+      <li><a href="#Best-Practices">Best Practices for Java Exception Handling </a></li>
+      <li><a href="#rules-overriding-method-exception">What are the rules we should follow when overriding a method throwing an Exception?</a></li>
+      <li><a href="#Exception-Inside-Lambda">Throwing an Exception Inside a Lambda Expression </a></li>
+      <li><a href="#try-without-catch-finally">Are we allowed to use only try blocks without a catch and finally blocks? </a></li>
+      <li><a href="#Finally-Block">Does the Finally Block Always Execute in Java?</a></li>
+      <li><a href="#Exception-Object-Exception-Handling">What Happens to the Exception Object After Exception Handling? </a></li>
+      <li><a href="#Checked-Exceptions-Static-Block">Can Checked Exceptions Be Thrown from a Static Block? </a></li>
+      <li><a href="#Exception-by-Main">What Happens When an Exception Is Thrown by the Main Method?</a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="revision">
+    <h5>Quick Revision</h5>
     <ul>
         <li><b>Exception</b>: An unexpected event during program execution disrupting normal flow.</li>
         <li><b>Checked Exceptions</b>: Exceptions checked at compile-time, e.g., <code>IOException</code>.</li>
@@ -23,8 +52,9 @@
     </ul>
 </div>
 <hr>
-<div>
-    <h5>Q. Exception Handling Hierarchy in Java</h5>
+
+<div id="Hierarchy">
+    <h5>Exception Handling Hierarchy in Java</h5>
     <p>
         Exception handling in Java is based on a well-defined class hierarchy that categorizes various types of exceptions. All exception-related classes inherit from the <code>Throwable</code> class, which is the root of the hierarchy. Below is a detailed explanation of the exception handling hierarchy:
     </p>
@@ -91,8 +121,9 @@
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Checked Exceptions and Unchecked Exceptions in Java</h5>
+
+<div id="CheckedUnchecked">
+    <h5>Explain Checked Exceptions and Unchecked Exceptions in Java</h5>
     <p>In Java, exceptions are categorized into <b>Checked Exceptions</b> and <b>Unchecked Exceptions</b> based on when they are checked by the compiler. Understanding this distinction is essential for effective exception handling.</p>
 
     <b>1. Checked Exceptions</b>
@@ -175,8 +206,9 @@ public class UncheckedExceptionExample {
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Try-Catch and Finally Block in Java</h5>
+
+<div id="Try-Catch-Finally">
+    <h5>Explain Try-Catch and Finally Block in Java</h5>
     <p>
         The <code>try-catch</code> and <code>finally</code> blocks are fundamental constructs in Java for handling exceptions. These blocks help ensure that a program can gracefully handle runtime errors and continue execution without crashing. Here’s a detailed explanation of their usage, scenarios, and common interview questions.
     </p>
@@ -303,7 +335,8 @@ System.out.println(test()); // Output: 20
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Throw-Throws">
     <h5>Throw and Throws Keywords in Java</h5>
     <p>
         The <code>throw</code> and <code>throws</code> keywords in Java are used for exception handling but serve different purposes. While <code>throw</code> is used to explicitly throw an exception, <code>throws</code> is used to declare exceptions that a method might throw.
@@ -427,7 +460,8 @@ public class ThrowsExample {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Custom-Exceptions">
     <h5>Custom Exceptions in Java</h5>
     <p>
         Custom exceptions are user-defined exceptions in Java that allow developers to create specific exceptions for their application’s requirements. By extending the <code>Exception</code> class or <code>RuntimeException</code> class, developers can create meaningful exception types to represent unique error conditions in their application.
@@ -524,7 +558,8 @@ class UncheckedExceptionExample {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Multi-Catch">
     <h5>Multi-Catch Block in Java</h5>
     <p>
         The multi-catch block in Java, introduced in Java 7, allows a single <code>catch</code> block to handle multiple exception types. This helps reduce redundant code and improves readability by combining similar exception handling logic.
@@ -606,7 +641,8 @@ public class MultiCatchExample {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Try-with-Resources">
     <h5>Try-with-Resources in Java</h5>
     <p>
         The <b>try-with-resources</b> statement, introduced in Java 7, is a feature for managing resources such as streams, files, or database connections efficiently. It ensures that resources are closed automatically after they are no longer needed, reducing the risk of resource leaks.
@@ -722,7 +758,8 @@ public class CustomResourceExample {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Stack-Trace">
     <h5>Stack Trace in Java</h5>
     <p>
         A <b>stack trace</b> in Java is a diagnostic tool that provides a detailed breakdown of the call stack at the point where an exception occurred. It shows the sequence of method calls that led to the error, making it easier to debug and identify the source of the issue.
@@ -793,7 +830,8 @@ public class GetStackTraceExample {
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="Error-Exception">
     <h5>Difference Between Error and Exception in Java</h5>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
@@ -843,7 +881,8 @@ public class GetStackTraceExample {
     </table>
 </div>
 <hr>
-<div>
+
+<div id="Unreachable-Catch-Block">
     <h5>Understanding Unreachable Catch Block Error in Java</h5>
     <p>
         An "Unreachable Catch Block" error occurs in Java when a catch block is declared that will never be executed, because the exception it handles will never be thrown. This situation arises from the logical flow of the program and the type of exceptions being thrown by the methods invoked.
@@ -889,7 +928,8 @@ public class UnreachableCatchBlockExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="ClassNotFoundException-NoClassDefFoundError">
     <h5>Understanding the Differences Between ClassNotFoundException and NoClassDefFoundError</h5>
     <p>
         Both exceptions are related to issues with class loading in Java, but they differ in their causes, how they are thrown, and their implications.
@@ -928,7 +968,8 @@ public class UnreachableCatchBlockExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="final-finally-finalize">
     <h5>Understanding the Differences Between final, finally, and finalize Keywords in Java</h5>
     <p>
         In Java, final, finally, and finalize are keywords with distinct purposes and usages in the language.
@@ -987,7 +1028,8 @@ protected void finalize() {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="Exception-Propagation">
     <h5>Understanding Exception Propagation in Java</h5>
     <p>
         Exception propagation refers to the process of an exception being passed up the call stack until it is either caught and handled or reaches the main method and terminates the program.
@@ -1029,7 +1071,8 @@ public void method2() {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="Best-Practices">
     <h5>Best Practices for Java Exception Handling</h5>
     <ul>
         <li><b>Use Specific Exceptions:</b> Prefer specific exceptions over generic ones for better error messages and easier debugging.</li>
@@ -1045,8 +1088,9 @@ public void method2() {
     </ul>
 </div>
 <hr>
-<div>
-    <h5>Q. What are the rules we should follow when overriding a method throwing an Exception?</h5>
+
+<div id="rules-overriding-method-exception">
+    <h5>What are the rules we should follow when overriding a method throwing an Exception?</h5>
     <b>Rule 1: Exception Handling in Method Overriding</b>
     <p>
         When overriding a method in Java, specific rules apply to exception handling. If the parent class method does not throw any exceptions, the overridden method in the child class must also avoid throwing checked exceptions. However, it is permissible for the overridden method to throw unchecked exceptions. 
@@ -1121,7 +1165,8 @@ class ChildDemo extends ParentDemo {
             </p>
 </div>
 <hr>
-<div>
+
+<div id="Exception-Inside-Lambda">
     <h5>Throwing an Exception Inside a Lambda Expression</h5>
     <p>
         Yes, it is possible to throw an exception inside a lambda expression's body. Here are the key points:
@@ -1148,8 +1193,9 @@ class ChildDemo extends ParentDemo {
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Q. Are we allowed to use only try blocks without a catch and finally blocks?</h5>
+
+<div id="try-without-catch-finally">
+    <h5>Are we allowed to use only try blocks without a catch and finally blocks?</h5>
     <p>
         Before Java 7, it was mandatory for a <code>try</code> block to be followed by either a <code>catch</code> or a <code>finally</code> block. A standalone <code>try</code> block was not allowed.
     </p>
@@ -1161,8 +1207,9 @@ class ChildDemo extends ParentDemo {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Does the Finally Block Always Execute in Java?</h5>
+
+<div id="Finally-Block">
+    <h5>Does the Finally Block Always Execute in Java?</h5>
     <p>
         The <code>finally</code> block is designed to execute regardless of whether an exception occurs in the <code>try</code> or <code>catch</code> blocks. It ensures cleanup operations are performed.
     </p>
@@ -1171,14 +1218,16 @@ class ChildDemo extends ParentDemo {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. What Happens to the Exception Object After Exception Handling?</h5>
+
+<div id="Exception-Object-Exception-Handling">
+    <h5>What Happens to the Exception Object After Exception Handling?</h5>
     <p>
         Once exception handling is complete, the exception object becomes eligible for garbage collection. It will be removed from memory during the JVM's garbage collection process, as it is no longer referenced.
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Checked-Exceptions-Static-Block">
     <h5>Can Checked Exceptions Be Thrown from a Static Block?</h5>
     <p>
         It is not possible to throw checked exceptions from a static block. However, you can include <code>try-catch</code> logic within the static block to handle exceptions locally. 
@@ -1188,7 +1237,8 @@ class ChildDemo extends ParentDemo {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Exception-by-Main">
     <h5>What Happens When an Exception Is Thrown by the Main Method?</h5>
     <p>
         If an exception is thrown by the <code>main()</code> method and is not handled, the Java Runtime terminates the program. The exception message, along with the stack trace, is displayed on the system console to help identify the cause of the error.

@@ -293,18 +293,38 @@ h5 {
     margin-top: 20px;
 }
 
-/* 📱 Mobile Optimization */
-@media only screen and (max-width: 768px) {
-    h5 {
-        font-size: 1.1rem; /* Slightly smaller for tablets & phones */
-        margin-top: 15px;
-    }
+.responsive-image {
+    display: block;
+    margin: auto;
+    width: 90%; /* Makes it responsive for all screen sizes */
+    max-width: 600px; /* Prevents it from being too large on desktops */
+    height: auto; /* Maintains aspect ratio */
+    
+    border: 3px solid #444; /* Subtle professional border */
+    border-radius: 10px; /* Slightly rounded corners for a modern look */
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+    padding: 5px; /* Space between image and border */
+    background: #fff; /* Clean white background */
+    
+    transition: transform 0.3s ease-in-out; /* Smooth hover effect */
 }
 
-@media only screen and (max-width: 480px) {
-    h5 {
-        font-size: 1rem; /* Even smaller for very small screens */
-        margin-top: 10px;
-        letter-spacing: 0.3px; /* Reduce spacing for better readability */
-    }
+.responsive-image:hover {
+    transform: scale(1.02); /* Slight zoom effect on hover for interactivity */
 }
+
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers images */
+    align-items: center; /* Aligns images vertically */
+    gap: 24px; /* Adds space between images */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    width: 100%;
+    padding: 20px;
+}
+
+
+
+

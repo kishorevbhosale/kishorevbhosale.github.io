@@ -1,4 +1,33 @@
-<div>
+<div class="custom-container">
+    <ol>
+      <b>Multi-Threading in Java</b>
+      <li><a href="#revision">Multi-Threading in Java: Quick Revision</a></li>
+      <li><a href="#thread-life-cycle">Explain Thread Life Cycle in Java </a></li>
+      <li><a href="#thread-creation">Explain Thread Creation in Java</a></li>
+      <li><a href="#thread-saftey">Explain how Thread Safety in Java</li>
+      <li><a href="#synchronized-block">What is Synchronized Block in Java </a></li>
+      <li><a href="#thread-communication">How Thread Communication happens in Java</a></li>
+      <li><a href="#executor">Explain in detail Executor Framework in Java</a></li>
+      <li><a href="#deadlock">Explain Deadlock in Java</a></li>
+      <li><a href="#race">How Race Conditions works in Java </a></li>
+      <li><a href="#locks">Explain Locks in Java</a></li>
+      <li><a href="#threadLocal">Explain ThreadLocal in Java</a></li>
+      <li><a href="#ThreadGroup">Explain ThreadGroup in Java</a></li>
+      <li><a href="#Fork/Join">Explain Fork/Join Framework in Java</a></li>
+      <li><a href="#JavaConcurrency">Explain Java Concurrency Utilities</a></li>
+      <li><a href="#ThreadPriority">Explain Thread Priority in Java</a></li>
+      <li><a href="#DaemonThreads">Explain Daemon Threads in Java </a></li>
+      <li><a href="#CallableFuture">Callable and Future in Java</a></li>
+      <li><a href="#ScheduledExecutorService">ScheduledExecutorService in Java</a></li>
+      <li><a href="#BlockingQueue">Explain BlockingQueue in Java</a></li>
+      <li><a href="#JoiningThreads">Explain Joining Threads in Java </a></li>
+      <li><a href="#ThreadPools">Explain Thread Pools in Java</a></li>
+      <li><a href="#CompletableFuture">Explain CompletableFuture in Java </a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="revision">
     <h5>Multi-Threading in Java: Quick Revision</h5>
     <ul>
         <li><b>Thread Life Cycle:</b> Understand the states: New, Runnable, Running, Blocked/Waiting, and Terminated.</li>
@@ -40,8 +69,9 @@
     </ul>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Thread Life Cycle in Java</h5>
+
+<div id="thread-life-cycle">
+    <h5>Explain Thread Life Cycle in Java</h5>
     <p>
         A thread in Java goes through a defined series of states during its life cycle. These states are managed by the <code>Thread</code> class and the Java Virtual Machine (JVM). The thread life cycle includes the following states:
     </p>
@@ -105,8 +135,9 @@
     <img src="../../images/thread_lifecycle.PNG" alt="cache" style="display: block; margin: auto; width: 80%;">
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Thread Creation in Java</h5>
+
+<div id="thread-creation">
+    <h5>Explain Thread Creation in Java</h5>
     <p>
         In Java, threads are represented by the <code>Thread</code> class, and there are multiple ways to create and start a thread. Here are the main approaches to create threads:
     </p>
@@ -241,10 +272,12 @@
     </ul>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain how Thread Safety in Java</h5>
+
+<div id="thread-saftey">
+    <h5>Explain how Thread Safety in Java</h5>
     <p>
-        Thread safety refers to the ability of a program to handle multiple threads simultaneously without causing data inconsistency or corruption. In Java, several techniques are available to ensure thread safety:
+        Thread safety refers to the ability of a program to handle multiple threads simultaneously without causing data inconsistency or corruption. 
+        In Java, several techniques are available to ensure thread safety:
     </p>
 
     <b>1. Synchronization</b>
@@ -338,8 +371,9 @@
     </table>
 </div>
 <hr>
-<div>
-    <h5>Q. What is Synchronized Block in Java</h5>
+
+<div id="synchronized-block">
+    <h5>What is Synchronized Block in Java</h5>
     <p>
         <b>Synchronized Block</b> is used in Java to restrict access to a particular section of code so that only one thread can execute it at a time. This ensures thread safety when multiple threads access shared resources.
     </p>
@@ -440,8 +474,9 @@
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. How Thread Communication happens in Java</h5>
+
+<div id="thread-communication">
+    <h5>How Thread Communication happens in Java</h5>
     <p>
         Thread communication in Java refers to the process by which multiple threads can communicate with each other and coordinate their actions. This is achieved through the use of inter-thread communication methods provided by the <code>Object</code> class, such as <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code>. These methods facilitate a way for threads to wait for certain conditions to be met before proceeding or to notify other threads that a condition has changed.
     </p>
@@ -565,8 +600,9 @@
     </ul>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain in detail Executor Framework in Java</h5>
+
+<div id="executor">
+    <h5>Explain in detail Executor Framework in Java</h5>
     <p>
         The Executor Framework in Java, introduced in Java 5, is a high-level API that simplifies the management of threads and thread pools. It provides mechanisms to execute tasks asynchronously, allowing developers to focus on task execution rather than thread management.
     </p>
@@ -695,8 +731,9 @@ public class ExecutorExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Deadlock in Java</h5>
+
+<div id="deadlock">
+    <h5>Explain Deadlock in Java</h5>
     <p>
         Deadlock is a situation in a multithreaded program where two or more threads are blocked forever, waiting for each other's resources. It typically occurs when multiple threads hold some shared resources (like locks) and try to acquire locks held by other threads, resulting in a circular wait.
     </p>
@@ -813,8 +850,9 @@ if (deadlockedThreads != null) {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. How Race Conditions works in Java</h5>
+
+<div id="race">
+    <h5>How Race Conditions works in Java</h5>
     <p>
         A race condition in Java occurs when two or more threads access shared data or resources concurrently, and the final outcome depends on the timing or interleaving of their execution. This can lead to unpredictable behavior, inconsistencies, or bugs in a multithreaded application.
     </p>
@@ -947,8 +985,9 @@ public class RaceConditionExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Locks in Java</h5>
+
+<div id="locks">
+    <h5>Explain Locks in Java</h5>
     <p>
         In Java, <b>locks</b> are synchronization mechanisms used to manage access to shared resources by multiple threads. They provide greater flexibility and control compared to the traditional <code>synchronized</code> keyword. Locks are part of the <code>java.util.concurrent.locks</code> package, introduced in Java 5.
     </p>
@@ -1132,8 +1171,9 @@ public class StampedLockExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain ThreadLocal in Java</h5>
+
+<div id="threadLocal">
+    <h5>Explain ThreadLocal in Java</h5>
     <p>
         The <code>ThreadLocal</code> class in Java provides thread-local variables. Each thread accessing such a variable (via its <code>get</code> or <code>set</code> methods) has its own, independently initialized copy of the variable. This is useful for maintaining per-thread state, such as user sessions or transaction information, without interference from other threads.
     </p>
@@ -1224,7 +1264,8 @@ public class ThreadLocalExample {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="ThreadGroup">
     <h5>Explain ThreadGroup in Java</h5>
     <p>
         The <b>ThreadGroup</b> class in Java is a way to group multiple threads into a single unit. It allows you to manage threads as a group and perform actions on all threads in the group simultaneously. Thread groups are useful for managing thread hierarchies and organizing threads in complex multithreaded applications.
@@ -1343,8 +1384,9 @@ public class ThreadGroupHierarchy {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Fork/Join Framework in Java</h5>
+
+<div id="Fork/Join">
+    <h5>Explain Fork/Join Framework in Java</h5>
     <p>
         The <b>Fork/Join Framework</b> in Java is a framework for parallel task execution. It is part of the <code>java.util.concurrent</code> package and was introduced in Java 7. The framework is designed to recursively divide a large task into smaller subtasks (fork), execute them concurrently, and then combine their results (join). It leverages multiple processors for efficient parallelism, making it ideal for compute-intensive operations.
     </p>
@@ -1463,8 +1505,9 @@ public class ForkJoinExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Java Concurrency Utilities</h5>
+
+<div id="JavaConcurrency">
+    <h5>Explain Java Concurrency Utilities</h5>
     <p>
         Java provides a robust set of concurrency utilities in the <code>java.util.concurrent</code> package to simplify the development of multithreaded applications. These utilities include thread management, synchronization mechanisms, concurrent data structures, and task execution frameworks. They address common concurrency challenges and improve scalability, performance, and ease of use.
     </p>
@@ -1613,8 +1656,9 @@ public class AtomicExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Thread Priority in Java</h5>
+
+<div id="ThreadPriority">
+    <h5>Explain Thread Priority in Java</h5>
     <p>
         Thread priority in Java determines the relative importance of threads during execution. It is used by the thread scheduler to decide which thread to run when multiple threads are in a runnable state. Thread priority is an integer value ranging from <b>1 (MIN_PRIORITY)</b> to <b>10 (MAX_PRIORITY)</b>, with a default value of <b>5 (NORM_PRIORITY)</b>.
     </p>
@@ -1695,8 +1739,9 @@ Thread-1 with priority 1 is running.
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Daemon Threads in Java</h5>
+
+<div id="DaemonThreads">
+    <h5>Explain Daemon Threads in Java</h5>
     <p>
         A daemon thread in Java is a low-priority background thread that provides support services to user threads. It runs continuously in the background and is automatically terminated by the JVM when all user threads finish execution. Daemon threads are typically used for tasks like garbage collection, background monitoring, or performing low-priority maintenance work.
     </p>
@@ -1809,8 +1854,9 @@ Main thread finished.
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Callable and Future in Java</h5>
+
+<div id="CallableFuture">
+    <h5>Callable and Future in Java</h5>
     <p>
         In Java, <code>Callable</code> and <code>Future</code> are key components of the <code>java.util.concurrent</code> package used for creating tasks and managing their results. <code>Callable</code> allows for concurrent computation with a return value, while <code>Future</code> represents the result of an asynchronous computation.
     </p>
@@ -1951,8 +1997,9 @@ public class FutureWithCallable {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. ScheduledExecutorService in Java</h5>
+
+<div id="ScheduledExecutorService">
+    <h5>ScheduledExecutorService in Java</h5>
     <p>
         <code>ScheduledExecutorService</code> is a part of the <code>java.util.concurrent</code> package that allows you to schedule tasks to run after a given delay or periodically with a fixed delay. It's particularly useful for performing background tasks at fixed intervals.
     </p>
@@ -2039,8 +2086,9 @@ public class ScheduledExecutorServiceExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain BlockingQueue in Java</h5>
+
+<div id="BlockingQueue">
+    <h5>Explain BlockingQueue in Java</h5>
     <p>
         <code>BlockingQueue</code> is a part of the <code>java.util.concurrent</code> package that is designed to be used in concurrent programming environments where multiple threads need to safely produce and consume elements from a shared queue.
     </p>
@@ -2142,8 +2190,9 @@ public class BlockingQueueExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Joining Threads in Java</h5>
+
+<div id="JoiningThreads">
+    <h5>Explain Joining Threads in Java</h5>
     <p>
         The concept of joining threads in Java is used to wait for a thread to finish its execution before continuing the execution of the current thread. This is particularly useful in scenarios where multiple threads need to complete before a main thread can proceed.
     </p>
@@ -2214,8 +2263,9 @@ class ThreadJoinExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Thread Pools in Java</h5>
+
+<div id="ThreadPools">
+    <h5>Explain Thread Pools in Java</h5>
     <p>
         A <code>ThreadPool</code> in Java is a mechanism to manage a group of reusable threads for executing multiple tasks concurrently. Instead of creating a new thread for every task, a thread pool maintains a fixed number of threads, which can be reused to execute tasks. This improves performance and resource management in applications with many short-lived tasks.
     </p>
@@ -2324,8 +2374,9 @@ public class ThreadPoolExample {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain CompletableFuture in Java</h5>
+
+<div id="CompletableFuture">
+    <h5>Explain CompletableFuture in Java</h5>
     <p>
         <code>CompletableFuture</code> is a class in the <code>java.util.concurrent</code> package that represents a future result of an asynchronous computation. It provides a more flexible and powerful way to handle asynchronous tasks compared to traditional <code>Future</code>.
     </p>

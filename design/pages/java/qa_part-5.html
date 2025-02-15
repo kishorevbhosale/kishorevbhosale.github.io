@@ -1,5 +1,31 @@
-<div>
-    <h5>Quick Revision: Key Points on Memory Management in Java</h5>
+<div class="custom-container">
+  <ol>
+    <b>Memory Management in Java</b>
+    <li><a href="#Quick-Revision">Quick Revision</a></li>
+    <li><a href="#Memory-JVM">What Kinds of Memory Does the JVM Manage? </a></li>
+    <li><a href="#Parts-Heap">Different Parts of the Heap in Java</a></li>
+    <li><a href="#PermGen-Space">What is PermGen Space? </a></li>
+    <li><a href="#Metaspace">What is Metaspace? </a></li>
+    <li><a href="#PermGen-Metaspace">Difference Between PermGen and Metaspace </a></li>
+    <li><a href="#HotSpot">What is Java HotSpot?</a></li>
+    <li><a href="#Java-Interpreter">What is the Java Interpreter? </a></li>
+    <li><a href="#JIT">Working of the JIT Compiler </a></li>
+    <li><a href="#Code-Cache">What is the Code Cache in Java HotSpot? </a></li>
+    <li><a href="#Reference-Types">Reference Types in Java</a></li>
+    <li><a href="#ReferenceQueue">What is the Use of ReferenceQueue? </a></li>
+    <li><a href="#GC">What is a Garbage Collector? </a></li>
+    <li><a href="#How-GC">How Garbage Collection Process in Java </a></li>
+    <li><a href="#GC-Run">Can We Force the Garbage Collector to Run? </a></li>
+    <li><a href="#MinorGC-MajorGC">What is MinorGC and MajorGC? </a></li>
+    <li><a href="#memory-leak">What is a memory leak? </a></li>
+    <li><a href="#Heap-Dump-GraalVM">How to Generate and Analyze Heap Dump in GraalVM </a></li>
+    <li><a href="#handle-memory-leak">How you handled Memory leak in your project?</a></li>
+  </ol>
+</div>
+<hr>
+
+<div id="Quick-Revision">
+    <h5>Quick Revision</h5>
     <ul>
         <li><strong>Automatic Garbage Collection:</strong> Java uses garbage collection to automatically manage memory by removing unreferenced objects.</li>
         <li><strong>Heap Memory:</strong> Divided into Young Generation, Old Generation, and sometimes Metaspace (Java 8+); used for object storage.</li>
@@ -22,7 +48,8 @@
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="Memory-JVM">
     <h5>What Kinds of Memory Does the JVM Manage?</h5>
     <p>The Java Virtual Machine (JVM) manages several types of memory, categorized into distinct areas:</p>
     <img src="../../images/jvm_memory.PNG" style="display: block; margin: auto; width: 80%;" class="img-fluid">
@@ -69,7 +96,8 @@
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Parts-Heap">
     <h5>Different Parts of the Heap in Java</h5>
     <p>The heap in Java is divided into multiple regions to optimize garbage collection and memory management. Here's a detailed explanation of the parts:</p>
     <img src="../../images/jvm_memory_1.PNG" style="display: block; margin: auto; width: 80%;" class="img-fluid">
@@ -118,7 +146,8 @@
     <p><strong>Heap Size Limits:</strong> The theoretical maximum heap limit for a 32-bit JVM is 4GB, but practical limits are lower due to constraints like swap memory, kernel address space, memory fragmentation, and VM overhead.</p>
 </div>
 <hr>
-<div>
+
+<div id="PermGen-Space">
     <h5>What is PermGen Space?</h5>
     <p>PermGen (Permanent Generation) is a memory pool in the HotSpot JVM used to store metadata about the virtual machine itself and user-defined classes. It holds reflective data, such as class and method objects, and is unique to the HotSpot JVM.</p>
     <b>Key Characteristics of PermGen:</b>
@@ -157,7 +186,8 @@
     <p>Starting with Java 8, PermGen was replaced by Metaspace, which uses native memory instead of heap memory. This change resolved many of the limitations of PermGen, such as fixed-size constraints.</p>
 </div>
 <hr>
-<div>
+
+<div id="Metaspace">
     <h5>What is Metaspace?</h5>
     <p>With the introduction of JDK 8, the concept of PermGen space has been replaced by Metaspace. The metadata information previously stored in PermGen is now relocated to native memory, under the Metaspace. This transition aligns with practices used by other JVM implementations like Oracle JRockit and IBM JVM.</p>
     <b>Key Features of Metaspace:</b>
@@ -169,7 +199,8 @@
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="PermGen-Metaspace">
     <h5>Difference Between PermGen and Metaspace</h5>
     <p>The primary difference between PermGen and Metaspace lies in their memory management. While PermGen is contiguous within the Java heap, Metaspace is external to the Java heap and resides in native memory. This separation from the heap means that Metaspace's size is not fixed and instead, it dynamically adjusts its allocation based on the available resources of the host operating system.</p>
     <b>Key Differences:</b>
@@ -179,7 +210,8 @@
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="HotSpot">
     <h5>What is Java HotSpot?</h5>
     <p>Java HotSpot is a high-performance implementation of the Java Virtual Machine (JVM) developed by Oracle Corporation. It enables Java applications to run efficiently across various hardware and operating systems.</p>
     <b>Key Features of Java HotSpot</b>
@@ -211,9 +243,10 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
 <b>Java HotSpot(TM)</b> 64-Bit Server VM Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-jvmci-23.0-b41, mixed mode, sharing)
       </pre>
     </ul>
-  </div>
-  <hr>
-  <div>
+</div>
+<hr>
+
+<div id="Java-Interpreter">
     <h5>What is the Java Interpreter?</h5>
     <p>The Java Interpreter is a component of the Java runtime environment that directly executes Java bytecode instructions. Bytecode is the intermediate representation of Java programs, generated by the Java compiler, and is platform-independent.</p>
     <b>Key Features of the Java Interpreter</b>
@@ -238,9 +271,10 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
         <strong>Legacy Use:</strong>
         Modern JVMs like Java HotSpot often combine interpretation with JIT compilation for better performance.</li>
     </ul>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="JIT">
     <h5>Working of the JIT Compiler</h5>
     <p>
       A Just-In-Time (JIT) compiler operates after a program has started execution, dynamically converting bytecode or virtual machine instructions into the host CPU's native machine code. This process occurs "just-in-time" to optimize program performance.
@@ -282,7 +316,8 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     </p>
 </div>
 <hr>
-<div>
+
+<div id="Code-Cache">
     <h5>What is the Code Cache in Java HotSpot?</h5>
     <p>
         In order to run JVM bytecode on different platforms, it needs to be converted to machine instructions. 
@@ -291,7 +326,8 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     </p>
 </div>  
 <hr>
-<div>
+
+<div id="Reference-Types">
     <h5>Reference Types in Java</h5>
     <p>
       In Java, references are used to access objects stored in memory. The Java programming language provides four types of references to manage memory and the lifecycle of objects, especially in relation to garbage collection.
@@ -353,7 +389,8 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     </table>
 </div>
 <hr>
-<div>
+
+<div id="ReferenceQueue">
     <h5>What is the Use of ReferenceQueue?</h5>
     <p>
       A <strong>ReferenceQueue</strong> in Java is a utility class used in conjunction with reference types like <code>WeakReference</code>, <code>SoftReference</code>, and <code>PhantomReference</code>. It provides a mechanism to track when a referent object is about to be or has been reclaimed by the garbage collector.
@@ -383,69 +420,8 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     </p>
 </div>
 <hr>
-<div>
-  <h5>Reference Types in Java</h5>
-  <p>
-    In Java, references are used to access objects stored in memory. The Java programming language provides four types of references to manage memory and the lifecycle of objects, especially in relation to garbage collection.
-  </p>
-  <b>Types of References</b>
-  <ul>
-    <li>
-      <strong>Strong Reference:</strong>
-      <p>The most commonly used type of reference. Any object that has a strong reference will not be eligible for garbage collection unless the reference is explicitly set to <code>null</code>.</p>
-      <pre>String str = "Hello, World!";</pre>
-    </li>
-    <li>
-      <strong>Weak Reference:</strong>
-      <p>Objects with weak references are eligible for garbage collection when no strong references exist. Weak references are used for objects like caches and mappings.</p>
-      <pre>WeakReference&lt;String&gt; weakRef = new WeakReference&lt;&gt;(new String("WeakReference"));</pre>
-    </li>
-    <li>
-      <strong>Soft Reference:</strong>
-      <p>Soft references allow objects to stay in memory as long as sufficient memory is available. They are useful for implementing memory-sensitive caches.</p>
-      <pre>SoftReference&lt;String&gt; softRef = new SoftReference&lt;&gt;(new String("SoftReference"));</pre>
-    </li>
-    <li>
-      <strong>Phantom Reference:</strong>
-      <p>Phantom references are used to schedule cleanup actions before an object is reclaimed by the garbage collector. They are created using the <code>PhantomReference</code> class.</p>
-      <pre>PhantomReference&lt;String&gt; phantomRef = new PhantomReference&lt;&gt;(new String("Phantom"), refQueue);</pre>
-    </li>
-  </ul>
-  <b>Summary</b>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Reference Type</th>
-        <th>Garbage Collection Eligibility</th>
-        <th>Use Case</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Strong Reference</td>
-        <td>Not collected until explicitly nullified</td>
-        <td>Default reference type</td>
-      </tr>
-      <tr>
-        <td>Weak Reference</td>
-        <td>Collected when no strong references exist</td>
-        <td>Caches, maps</td>
-      </tr>
-      <tr>
-        <td>Soft Reference</td>
-        <td>Collected when memory is low</td>
-        <td>Memory-sensitive caches</td>
-      </tr>
-      <tr>
-        <td>Phantom Reference</td>
-        <td>Collected after finalize action</td>
-        <td>Post-mortem cleanup</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<hr>
-<div>
+
+<div id="GC">
     <h5>What is a Garbage Collector?</h5>
     <p>
       In Java, the <strong>Garbage Collector (GC)</strong> is a component of the Java Virtual Machine (JVM) responsible for automatic memory management. Its primary role is to reclaim memory occupied by objects that are no longer reachable or needed by the application, ensuring efficient use of system resources and preventing memory leaks.
@@ -505,9 +481,11 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
       <li>Prevents common memory issues like leaks and dangling pointers.</li>
       <li>Improves developer productivity and application reliability.</li>
     </ul>
-  </div>
+
+</div>
 <hr>
-<div>
+
+<div id="How-GC">
     <h5>How Garbage Collection Process in Java</h5>
     <p>
       Garbage collection in Java is a mechanism to automatically manage memory by reclaiming memory occupied by objects that are no longer reachable. The garbage collection process is integral to the JVM's memory management, involving multiple memory areas and distinct phases.
@@ -573,9 +551,10 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     <p>
       The garbage collection process efficiently manages memory by reclaiming unused objects, promoting long-lived objects, and optimizing memory layout. It ensures the smooth functioning of Java applications while reducing the need for manual memory management.
     </p>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="GC-Run">
     <h5>Can We Force the Garbage Collector to Run?</h5>
     <p>
       In Java, it is not possible to force the garbage collector to run. The methods <code>System.gc()</code> and <code>Runtime.getRuntime().gc()</code> can be used to suggest that garbage collection should be performed, but these are merely hints to the JVM. The decision to perform garbage collection is entirely up to the JVM and its internal algorithms.
@@ -612,9 +591,10 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     <p>
       While <code>System.gc()</code> and <code>Runtime.getRuntime().gc()</code> can be used to suggest garbage collection, they do not force it. The JVM's garbage collector operates autonomously to optimize application performance and memory management.
     </p>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="MinorGC-MajorGC">
     <h5>What is MinorGC and MajorGC?</h5>
     <p>
       In Java, garbage collection is categorized based on the memory region it operates on. These terms, although commonly used, do not have formal definitions in the JVM specification or garbage collection research papers.
@@ -669,9 +649,10 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     <p>
       While MinorGC and MajorGC are widely used terms, they are not formally defined in the JVM specification. They provide a convenient way to describe garbage collection activity in different regions of the heap, helping developers understand and optimize memory management in Java applications.
     </p>
-  </div>
+</div>
 <hr>
-<div>
+
+<div id="memory-leak">
     <h5>What is a memory leak?</h5>
     <p>
         A memory leak in Java is a situation where some objects are no longer used by an application, but the Garbage Collector fails to recognize them as unused. 
@@ -713,7 +694,8 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="Heap-Dump-GraalVM">
   <h5> How to Generate and Analyze Heap Dump in GraalVM</h2>
 
   <div>
@@ -785,7 +767,8 @@ Java(TM) SE Runtime Environment Oracle GraalVM 17.0.12+8.1 (build 17.0.12+8-LTS-
   </div>
 </div>
 <hr>
-<div>
+
+<div id="handle-memory-leak">
   <h5>How you handled Memory leak in your project?</h5>
   <p>
     In one of our high-traffic microservices, we encountered an OutOfMemoryError (OOM) in production. 
@@ -889,3 +872,4 @@ sessionCache.entrySet().removeIf(entry -> entry.getValue().isExpired());
       </ul>
   </div>
 </div>
+<hr>
