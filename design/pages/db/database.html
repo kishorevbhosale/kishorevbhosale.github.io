@@ -5,7 +5,7 @@
             <h3>Why Choose Databases Over File Storage?</h3>
             <p>Yes, it's possible to create a software application without using databases by storing data in files.<br> 
                 <BR>
-                <img src="../../images/db2.PNG" alt="SS" style="display: block; margin: auto; width: 30%;">
+                <img src="../../images/db2.PNG" class="responsive-image">
                 However, this approach has significant limitations:
                 <ul>
                     <li><b>Concurrency: </b>Managing multiple users accessing the same file from different locations can lead to data corruption.</li>
@@ -80,7 +80,7 @@
                 </ul>
                 
             <br>
-            <img src="../../images/db.PNG" alt="SS" style="display: block; margin: auto; width: 30%;">
+            <img src="../../images/db.PNG" class="responsive-image">
             <hr>
            
             <h3>What is a Non-Relational Database?</h3>
@@ -134,7 +134,7 @@
             <h5>Examples of Non-Relational Databases:</h5>
 
             <div class="example">
-                <img src="../../images/db1.PNG" alt="SS" style="display: block; margin: auto; width: 40%;">
+                <img src="../../images/db1.PNG" class="responsive-image">
             </div>
 
             <h5>Advantages of Non-Relational Databases:</h5>
@@ -232,7 +232,7 @@
               <li>If there are joins between multiple tables then its good to keep such tables together on one shard.</li>
               <li>Example: User profiles on one shard, transactions on another.</li>
               <li>Databases : Salesforce, SAPA HANA</li>
-              <img src="../../images/vertical_partition.png" alt="lb" style="display: block; margin: auto; width: 35%;">
+              <img src="../../images/vertical_partition.png" class="responsive-image">
               <li>Primary key <b>EmployeeID</b> of the Employee table is added in both partitioned tables. This makes the data read and write easier, and the reconstruction of the table is performed efficiently.</li>
             </ul>
           
@@ -255,7 +255,7 @@
               <li>Data is partitioned based on a specific range of values for a key.</li>
               <li>Advantages: Simple and intuitive design.</li>
               <li>Disadvantages: Can lead to uneven load distribution (hotspots).</li>
-              <img src="../../images/horizontal_partitiong.png" alt="lb" style="display: block; margin: auto; width: 50%;">
+              <img src="../../images/horizontal_partitiong.png" class="responsive-image">
 
               
             </ul>
@@ -265,7 +265,7 @@
               <li>Data is distributed based on the hash value of a key.</li>
               <li>Advantages: Even load distribution and avoids hotspots.</li>
               <li>Disadvantages: Difficult to handle dynamic scaling or rebalancing.</li>
-              <img src="../../images/hash_sharding.png" alt="lb" style="display: block; margin: auto; width: 35%;">
+              <img src="../../images/hash_sharding.png" class="responsive-image">
             </ul>
           
             <h5>Consistent Hashing</h5>
