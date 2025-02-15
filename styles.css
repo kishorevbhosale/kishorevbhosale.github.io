@@ -293,37 +293,54 @@ h5 {
     margin-top: 20px;
 }
 
+/* Image Styling */
 .responsive-image {
     display: block;
     margin: auto;
-    width: 90%; /* Makes it responsive for all screen sizes */
-    max-width: 600px; /* Prevents it from being too large on desktops */
+    width: 95%; /* More flexible width */
+    max-width: 700px; /* Larger images for desktops */
     height: auto; /* Maintains aspect ratio */
     
     border: 3px solid #444; /* Subtle professional border */
-    border-radius: 10px; /* Slightly rounded corners for a modern look */
+    border-radius: 12px; /* Smooth rounded corners */
     
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
-    padding: 5px; /* Space between image and border */
-    background: #fff; /* Clean white background */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+    padding: 8px; /* Space between image and border */
+    background: #fff; /* Clean background */
     
-    transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover effects */
 }
 
+/* Hover Effect */
 .responsive-image:hover {
-    transform: scale(1.02); /* Slight zoom effect on hover for interactivity */
+    transform: scale(1.05); /* More noticeable zoom */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Deeper shadow for hover effect */
 }
 
-
+/* Container Styling */
 .image-container {
     display: flex;
     justify-content: center; /* Centers images */
-    align-items: center; /* Aligns images vertically */
-    gap: 24px; /* Adds space between images */
+    align-items: center;
+    gap: 30px; /* Increased space for better separation */
     flex-wrap: wrap; /* Allows wrapping on smaller screens */
     width: 100%;
     padding: 20px;
 }
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .responsive-image {
+        width: 90%; /* Slightly smaller for mobile */
+        max-width: 500px; /* Limits size on mobile */
+    }
+    
+    .image-container {
+        flex-direction: column; /* Stack images vertically */
+        gap: 15px; /* Reduced gap for compact layout */
+    }
+}
+
 
 
 
