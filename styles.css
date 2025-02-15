@@ -20,18 +20,18 @@ body {
     padding: 15px;
     font-size: 20px;
     font-weight: 600;
+    width: 100%;
 }
 
 .footer {
     font-size: 14px;
     padding: 12px;
     position: relative;
-    bottom: 0;
 }
 
 /* Sidebar Styling */
 .left-panel {
-    height: 100vh;
+    min-height: 100vh; /* Allows scrolling instead of fixed height */
     overflow-y: auto;
     background: linear-gradient(135deg, #ffffff 0%, #e3eaf5 100%);
     border-right: 2px solid #d1d9e6;
@@ -46,14 +46,15 @@ body {
     color: white;
     border-radius: 6px;
     font-weight: bold;
+    text-align: center;
 }
 
 /* Sidebar Links */
 .sidebar-link {
     display: flex;
     align-items: center;
-    padding: 8px 10px;
-    font-size: 0.95rem;
+    padding: 10px;
+    font-size: 1rem;
     font-weight: 500;
     color: #343a40;
     text-decoration: none;
@@ -72,21 +73,6 @@ body {
     color: #4b6cb7;
 }
 
-/* Accordion Styling */
-.accordion-button {
-    background: white;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-}
-
-.accordion-button:hover {
-    background: rgba(75, 108, 183, 0.2);
-}
-
-.accordion-button:focus {
-    box-shadow: none;
-}
-
 /* Collapsible Sections */
 .collapsible-header {
     background-color: #30475e;
@@ -103,21 +89,12 @@ body {
     background-color: #1e3446;
 }
 
-.collapsible-content {
-    display: none;
-    padding: 12px;
-    background-color: #e8f0fe;
-    border-radius: 6px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 12px;
-}
-
 /* Section Titles */
 .section-title {
     background: linear-gradient(135deg, #76aef1, #a8d0f0);
     padding: 15px;
     border-radius: 8px;
-    font-size: 1.8em;
+    font-size: 1.8rem;
     font-weight: 600;
     color: #063b6d;
     text-align: center;
@@ -128,21 +105,6 @@ body {
 .section-title:hover {
     transform: scale(1.03);
     background: linear-gradient(135deg, #619de3, #92c1f0);
-}
-
-/* Highlighted Points */
-.main-point {
-    background: #30475e;
-    color: #fff;
-    padding: 12px;
-    font-size: 1.2em;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background 0.3s ease;
-}
-
-.main-point:hover {
-    background: #1e3446;
 }
 
 /* Tables */
@@ -163,12 +125,8 @@ th {
     color: white;
 }
 
-tr:nth-child(even) {
-    background-color: #f7f9fc;
-}
-
 /* Responsive Table */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
     table {
         display: block;
         width: 100%;
@@ -223,7 +181,7 @@ code {
     background: linear-gradient(135deg, #4b6cb7, #182848);
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 12px 15px;
     font-weight: 600;
     border-radius: 6px;
     transition: background 0.3s ease;
@@ -245,4 +203,108 @@ html {
     background-color: black;
     border: none;
     margin: 15px 0;
+}
+
+hr {
+    border: none;
+    height: 6px;
+    background: linear-gradient(to right, #b71c1c, #880e4f);
+    border-radius: 4px;
+}
+
+/* Responsive Design for Mobile Screens */
+@media only screen and (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .header, .footer {
+        font-size: 18px;
+        padding: 12px;
+    }
+    
+    .left-panel {
+        padding: 15px;
+    }
+
+    .sidebar-title {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .btn-custom {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .custom-container {
+        width: 95%; /* Expands for smaller screens */
+    }
+}
+
+/* Full Compatibility for Very Small Screens */
+@media only screen and (max-width: 480px) {
+    .header, .footer {
+        font-size: 16px;
+        padding: 10px;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+        padding: 10px;
+    }
+}
+
+.custom-container {
+    font-family: Arial, sans-serif;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 15px;
+    max-width: 90%; /* Adjusts width based on screen size */
+    margin: auto;
+    background-color: #f8f9fa;
+}
+
+/* 📱 Mobile Optimization */
+@media only screen and (max-width: 768px) {
+    .custom-container {
+        max-width: 95%; /* Increases width for smaller screens */
+        padding: 12px; /* Reduces padding for better spacing */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .custom-container {
+        max-width: 98%; /* Uses almost full width on very small screens */
+        padding: 10px; /* Further reduces padding for compact design */
+        font-size: 14px; /* Adjusts font size for readability */
+    }
+}
+
+h5 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.3rem; /* Default size for desktops */
+    font-weight: normal;
+    color: #0056b3; /* Slightly darker blue for better readability */
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+}
+
+/* 📱 Mobile Optimization */
+@media only screen and (max-width: 768px) {
+    h5 {
+        font-size: 1.1rem; /* Slightly smaller for tablets & phones */
+        margin-top: 15px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    h5 {
+        font-size: 1rem; /* Even smaller for very small screens */
+        margin-top: 10px;
+        letter-spacing: 0.3px; /* Reduce spacing for better readability */
+    }
 }

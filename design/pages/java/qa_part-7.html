@@ -1,4 +1,60 @@
-<div>
+<div class="custom-container">
+    <ol>
+      <b>Java 8+ features:</b>
+      <li><a href="#new_features-java8">Newly Added Features in Java 8</a></li>
+      <li><a href="#lambda-expression">What is a Lambda Expression?</a></li>
+      <li><a href="#stream-api">What is Stream API in Java 8?</a></li>
+      <li><a href="#functional-interface">What is a Functional Interface in Java 8?</a></li>
+      <li><a href="#map-flatmap">When to Use map and flatMap in Java 8?</a></li>
+      <li><a href="#extend-functional-interface">Can We Extend a Functional Interface from Another Functional Interface?</a></li>
+      <li><a href="#functional-interface-before">What are functional interfaces already there before Java 8?</a></li>
+      <li><a href="#fi-java8">What are all functional interfaces introduced in Java 8?</a></li>
+      <li><a href="#stream">Stream Methods in Java 8</a></li>
+      <li><a href="#optional">What is the Optional Class in Java 8?</a></li>
+      <li><a href="#date-time">What is Date-Time API in Java 8?</a></li>
+      <li><a href="#default">What are Default Methods in Java 8?</a></li>
+      <li><a href="#completableFuture">What is CompletableFuture in Java 8?</a></li>
+      <li><a href="#completableFuture-future">Why Use CompletableFuture Instead of Future? </a></li>
+      <li><a href="#method-reference">What is Method Reference in Java 8?</a></li>
+      <li><a href="#jdeps">What is Java Class Dependency Analyzer (jdeps) in Java 8?</a></li>
+      <li><a href="#valueof">What does <b>String::valueOf</b> mean?</a></li>
+      <li><a href="#exception">Handling Checked Exceptions in Java Lambda Expressions</a></li>
+      <li><a href="#collection-stream">Difference Between Collections and Stream</a></li>
+      <li><a href="#run-call">Runnable vs Callable</a></li>
+    </ol>
+    <hr class="thin-line">
+    <ol>
+        <b>Programs:</b>
+        <li><a href="#find-dup">How to find duplicate elements in a Stream in Java?</a></li>
+        <li><a href="#count-occurance">Count occurrence of a given character in a string using Stream API in Java </a></li>
+        <li><a href="#slice">How to get slice of a Stream in Java? </a></li>
+        <li><a href="#reverse-parallel">How to reverse elements of a Parallel Stream in Java? </a></li>
+        <li><a href="#iterate-stream">Program to iterate over a Stream with indices in Java 8 </a></li>
+        <li><a href="#second-highest">Find the second highest number in a List </a></li>
+        <li><a href="#remove-dup">Remove duplicates from a List of Integers </a></li>
+        <li><a href="#partition-string">Partition a List of strings based on length </a></li>
+        <li><a href="#retrive-emp-name">You have a collection of employee objects. How would you retrieve the names of all employees? </a></li>
+        <li><a href="#txn-highest">You have a list of transactions. How would you find the transaction with the highest amount? </a></li>
+        <li><a href="#max-min">Find Maximum and Minimum Values in a List </a></li>
+        <li><a href="#emp-dept">Find the Employee of a Specific Department with the nth Highest Salary </a></li>
+        <li><a href="#non-rep">Find the First Non-Repeated Character in a String using Java Streams </a></li>
+        <li><a href="#first-rep">Finding the First Repeated Character in a String Using Stream Functions </a></li>
+        <li><a href="#sort-stream">Given a list of integers, sort all the values present in it using Stream functions? </a></li>
+        <li><a href="#desc">Given a list of integers, sort all the values present in it in descending order using Stream functions? </a></li>
+        <li><a href="#any-twice">Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct. </a></li>
+        <li><a href="#obj-map">How to Convert a List of Objects into a Map by Considering Duplicate Keys and Store Them in Sorted Order? </a></li>
+        <li><a href="#fre-count">Count Each Word frequency from a String </a></li>
+        <li><a href="#count-character">Print the Count of Each Character in a String </a></li>
+        <li><a href="#start-1">Find Numbers Starting with 1 Using Stream Functions </a></li>
+    </ol>
+    <hr class="thin-line">
+    <ol>
+        <li><a href="#fqa">frequently asked Interview Questions</a></li>
+    </ol>
+ </div>
+ <hr>
+
+<div id="new_features-java8">
     <h5>Newly Added Features in Java 8</h5>
     <ul>
         <li><strong>Lambda Expressions:</strong> Introduces functional programming in Java, enabling more concise and readable code for implementing functional interfaces.</li>
@@ -14,7 +70,8 @@
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="lambda-expression">
     <h5>What is a Lambda Expression?</h5>
     <p>
         A Lambda Expression is a concise way to represent an anonymous function in Java. It provides a clear and concise syntax for implementing functional interfaces (interfaces with a single abstract method). 
@@ -80,7 +137,8 @@ class Test {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="stream-api">
     <h5>What is Stream API in Java 8?</h5>
     <p>
         Stream API in Java 8 is a powerful tool introduced to process collections of data in a functional and declarative manner. It allows developers to perform operations like filtering, mapping, and reducing on data with minimal boilerplate code. Streams enable a more expressive way to handle data transformations and aggregations.
@@ -127,7 +185,8 @@ public class StreamAPIExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="functional-interface">
     <h5>What is a Functional Interface in Java 8?</h5>
     <p>
         A Functional Interface in Java 8 is an interface that contains exactly one abstract method. 
@@ -180,7 +239,8 @@ public class FunctionalInterfaceExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="map-flatmap">
     <h5>When to Use map and flatMap in Java 8?</h5>
     <p>
         Both <code>map</code> and <code>flatMap</code> are functions in the Stream API that allow transformation of elements in a stream, but they differ in how they handle nested structures.
@@ -234,7 +294,8 @@ System.out.println(flatList); // Output: [apple, banana, cherry, date, elderberr
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="extend-functional-interface">
     <h5>Can We Extend a Functional Interface from Another Functional Interface?</h5>
     <p>
         Yes, it is possible to extend a functional interface from another functional interface in Java. A functional interface can inherit from another functional interface, as long as it still maintains the rule of having exactly one abstract method.
@@ -281,26 +342,42 @@ public class FunctionalInterfaceExample {
     </ul>
 </div>
 <hr>
-<div>
-    <h5>Tell a few functional interfaces which are already there before Java 8?</h5>
+
+<div id="functional-interface-before">
+    <h5>What are functional interfaces already there before Java 8?</h5>
     <ul>
-        <li>Runnable</li>
-        <li>Callable</li>
-        <li>Comparator </li>
+        <li>Runnable: run()</li>
+        <li>Callable: call()</li>
+        <li>Comparator: comapreTo()</li>
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="fi-java8">
     <h5>What are all functional interfaces introduced in Java 8?</h5>
-    <ul>
-        <li>Function</li>
-        <li>Predicate</li>
-        <li>Consumer</li>
-        <li>Supplier </li>
-    </ul>
+    <ol>
+        <li><b>Predicate:</b> </li>
+        Return boolean value based on condition<br>
+        Example: <pre>Predicate &lt;Integer> isEven = num -> num % 2 == 0;</pre>
+        <li><b>Consumer:</b> </li>
+        Accepts a single input but does not return a result.<br>
+        Example: <pre>Consumer&lt;String> print = s -> System.out.println(s);</pre>
+        <li><b>Supplier:</b>  </li>
+        Does not take any arguments but returns a result.<br>
+        Example: <pre>Supplier&lt;Double> random = () -> Math.random();</pre>
+        <li><b>Function:</b> </li>
+        Accepts an argument and returns a result.<br>
+        Example: <pre>Function&lt;Integer, String> toString = num -> "Number: " + num;</pre>
+        <li><b>BiFunction:</b></li>
+        Takes two arguments and returns a result.<br>
+        Example: <pre>BiFunction&lt;Integer, Integer, Integer> sum = (a, b) -> a + b;</pre>
+        <li><b>BiPredicate</b></li>
+        <li><b>BiConsumer</b></li>
+    </ol>
 </div>
 <hr>
-<div>
+
+<div id="stream">
     <h5>Stream Methods in Java 8</h5>
     <p>Java 8 Stream API provides a wide variety of methods to work with collections in a functional style. Below are explanations and examples for each of the mentioned methods.</p>
 
@@ -474,7 +551,8 @@ System.out.println(sumOfEvens); // Output: 6
 
 </div>
 <hr>
-<div>
+
+<div id="optional">
     <h5>What is the Optional Class in Java 8?</h5>
     <p>
         The <code>Optional</code> class in Java 8 is a container object used to represent the presence or absence of a value. It helps to avoid <code>NullPointerException</code> by providing methods that allow the programmer to check if a value is present or not, and to handle cases where a value may be missing without directly dealing with <code>null</code>.
@@ -604,7 +682,8 @@ Optional&lt;String&gt; nullableOptional = Optional.ofNullable(null);
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="date-time">
     <h5>What is Date-Time API in Java 8?</h5>
     <p>
         The Date-Time API, introduced in Java 8 as part of the <code>java.time</code> package, is designed to overcome the limitations of the older <code>java.util.Date</code> and <code>java.util.Calendar</code> classes. The new API is more user-friendly, immutable, and thread-safe, and it follows the ISO-8601 standard for time representation.
@@ -671,7 +750,8 @@ public class DateTimeExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="default">
     <h5>What are Default Methods in Java 8?</h5>
     <p>
         Default methods, introduced in Java 8, allow developers to add concrete methods to interfaces without affecting the classes that implement the interface. They provide a way to add new functionality to interfaces without breaking existing code.
@@ -761,224 +841,8 @@ public class Main {
     </ul>
 </div>
 <hr>
-<div>
-    <h5>How to Find Duplicate Elements in a Stream in Java?</h5>
-    <pre>
-import java.util.*;
-import java.util.stream.*;
 
-public class FindDuplicates {
-    public static void main(String[] args) {
-        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 2, 4, 5, 1, 6, 7, 8, 5);
-
-        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
-        Set&lt;Integer&gt; duplicates = new HashSet&lt;&gt;();
-
-        numbers.stream()
-                .forEach(n -&gt; {
-                    if (!seen.add(n)) {
-                        duplicates.add(n);
-                    }
-                });
-
-        duplicates.forEach(n -&gt; System.out.println(&quot;Duplicate element: &quot; + n));
-    }
-}
-    </pre>
-
-    <b>Output:</b>
-    <pre>
-Duplicate element: 1
-Duplicate element: 2
-Duplicate element: 5
-    </pre>
-
-    <b>Explanation of Alternative Approach:</b>
-    <ul>
-        <li><code>seen.add(n)</code>: Adds the element to the <code>Set</code> and returns <code>false</code> if the element is already present.</li>
-        <li><code>duplicates.add(n)</code>: Adds the element to the <code>duplicates</code> set if it was already seen, indicating it’s a duplicate.</li>
-    </ul>
-</div>
-<hr>
-<div>
-    <h5>Count Occurrence of a Given Character in a String using Stream API in Java</h5>
-    <p>
-        You can use the Stream API to efficiently count the occurrences of a given character in a string by converting the string into a stream of characters and using the <code>filter()</code> method to count matches.
-    </p>
-
-    <b>Optimized and Easy Solution:</b>
-    <pre>
-import java.util.stream.*;
-
-public class CharacterCount {
-    public static void main(String[] args) {
-        String str = &quot;Java Stream API is awesome&quot;;
-        char targetChar = 'a';
-
-        // Using Stream API to count occurrences of the character
-        long count = str.chars()  // Convert string to an IntStream
-                        .filter(c -&gt; c == targetChar)  // Filter the characters that match the target
-                        .count();  // Count the matching characters
-
-        System.out.println(&quot;Occurrence of character '" + targetChar + "': &quot; + count);
-    }
-}
-    </pre>
-
-    <b>Explanation:</b>
-    <ul>
-        <li><code>str.chars()</code>: Converts the string into an <code>IntStream</code> of character codes (Unicode values of the characters in the string).</li>
-        <li><code>filter(c -&gt; c == targetChar)</code>: Filters the stream to keep only the characters that match the target character.</li>
-        <li><code>count()</code>: Counts the number of characters in the stream that passed the filter (i.e., the occurrences of the target character).</li>
-    </ul>
-
-    <b>Output:</b>
-    <pre>
-Occurrence of character 'a': 3
-    </pre>
-</div>
-<hr>
-<div>
-    <h5>How to Get Slice of a Stream in Java?</h5>
-    <p>
-        In Java, you can get a slice (a substream) of a stream by using the <code>skip()</code> and <code>limit()</code> methods. These methods allow you to select a specific portion of a stream by skipping elements and limiting the number of elements you want to process.
-    </p>
-
-    <b>Optimized Solution:</b>
-    <p>The most efficient and simple way to get a slice of a stream is by chaining the <code>skip()</code> and <code>limit()</code> methods:</p>
-    
-    <pre>
-import java.util.*;
-import java.util.stream.*;
-
-public class StreamSliceExample {
-    public static void main(String[] args) {
-        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-
-        // Get a slice of the stream from index 3 to index 7 (exclusive)
-        List&lt;Integer&gt; slicedList = numbers.stream()
-            .skip(3)  // Skip first 3 elements
-            .limit(5) // Limit the stream to the next 5 elements
-            .collect(Collectors.toList());
-
-        System.out.println(slicedList);  // Output: [4, 5, 6, 7, 8]
-    }
-}
-    </pre>
-
-    <b>Explanation of Code:</b>
-    <ul>
-        <li><code>skip(3)</code>: Skips the first 3 elements of the stream.</li>
-        <li><code>limit(5)</code>: Limits the stream to the next 5 elements after skipping 3.</li>
-        <li><code>collect(Collectors.toList())</code>: Collects the resulting stream into a list.</li>
-    </ul>
-
-    <b>Output:</b>
-    <pre>
-[4, 5, 6, 7, 8]
-    </pre>
-</div>
-<hr>
-<div>
-    <h5>How to Reverse Elements of a Parallel Stream in Java?</h5>
-    <p>
-        Reversing elements of a parallel stream in Java can be tricky because parallel streams process elements in parallel, which can affect the order. To reverse the elements, the most efficient and easy solution is to collect the elements into a list first, then reverse the list. 
-    </p>
-
-    <b>Optimized Solution:</b>
-    <ol>
-        <li>First, collect the elements from the parallel stream into a list using <code>Collectors.toList()</code>.</li>
-        <li>Then, use the <code>Collections.reverse()</code> method to reverse the list.</li>
-        <li>Finally, create a stream from the reversed list.</li>
-    </ol>
-
-    <b>Example:</b>
-    <pre>
-import java.util.*;
-import java.util.stream.*;
-
-public class ReverseParallelStream {
-    public static void main(String[] args) {
-        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
-
-        // Reverse the elements of a parallel stream
-        List&lt;Integer&gt; reversedList = numbers.parallelStream()
-                .collect(Collectors.toList()); // Collect to List
-
-        Collections.reverse(reversedList); // Reverse the List
-
-        // Create a new stream from the reversed list
-        reversedList.stream().forEach(System.out::println); // Output reversed elements
-    }
-}
-    </pre>
-
-    <b>Explanation of Code:</b>
-    <ul>
-        <li><code>numbers.parallelStream()</code>: Creates a parallel stream from the list.</li>
-        <li><code>Collectors.toList()</code>: Collects the stream elements into a <code>List</code>.</li>
-        <li><code>Collections.reverse(reversedList)</code>: Reverses the list in place.</li>
-        <li><code>reversedList.stream().forEach()</code>: Creates a stream from the reversed list and processes each element.</li>
-    </ul>
-
-    <b>Output:</b>
-    <pre>
-8
-7
-6
-5
-4
-3
-2
-1
-    </pre>
-
-    <b>Why This Solution is Optimized:</b>
-    <ul>
-        <li>Using <code>parallelStream()</code> ensures the stream is processed in parallel for performance improvement, while collecting the result ensures we can reverse it without affecting parallel processing.</li>
-        <li><code>Collections.reverse()</code> is an efficient, in-place reversal operation that does not require additional resources.</li>
-    </ul>
-</div>
-<hr>
-<div>
-    <h5>Program to Iterate Over a Stream with Indices in Java 8</h5>
-    <p>
-        Java 8 streams do not provide a direct way to work with indices, but you can achieve this by using the <code>IntStream</code> to generate indices and map them to elements in the stream. This approach is optimized and straightforward.
-    </p>
-
-    <b>Example Code:</b>
-    <pre>
-import java.util.stream.IntStream;
-import java.util.List;
-import java.util.Arrays;
-
-public class StreamWithIndices {
-    public static void main(String[] args) {
-        List&lt;String&gt; items = Arrays.asList(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;);
-
-        // Iterate with indices
-        IntStream.range(0, items.size())
-                 .forEach(index -&gt; System.out.println(&quot;Index: &quot; + index + &quot;, Value: &quot; + items.get(index)));
-    }
-}
-    </pre>
-
-    <b>Explanation of Code:</b>
-    <ul>
-        <li><code>IntStream.range(0, items.size())</code>: Generates a stream of indices from <code>0</code> to <code>items.size() - 1</code>.</li>
-        <li><code>forEach(index -&gt; ...)</code>: Iterates over the indices and retrieves the corresponding elements from the list using <code>items.get(index)</code>.</li>
-    </ul>
-
-    <b>Output:</b>
-    <pre>
-Index: 0, Value: A
-Index: 1, Value: B
-Index: 2, Value: C
-Index: 3, Value: D
-    </pre>
-</div>
-<hr>
-<div>
+<div id="completableFuture">
     <h5>What is CompletableFuture in Java 8?</h5>
     <p>
         <code>CompletableFuture</code> is a class introduced in Java 8 as part of the <code>java.util.concurrent</code> package. It provides a framework for asynchronous programming, enabling developers to write non-blocking and event-driven code. It is an enhancement of the <code>Future</code> interface, adding features for chaining, combining tasks, and handling exceptions.
@@ -1048,7 +912,8 @@ Result: HELLO, COMPLETABLEFUTURE!
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="completableFuture-future">
     <h5>Why Use CompletableFuture Instead of Future?</h5>
     <p>
         Java 8 introduced <code>CompletableFuture</code> as an enhanced version of the <code>Future</code> interface, addressing its limitations and providing more powerful and flexible tools for asynchronous programming.
@@ -1073,24 +938,92 @@ Result: HELLO, COMPLETABLEFUTURE!
     </ul>
 
     <b>Example Comparison:</b>
-    <h5>Using Future:</h5>
+    <b>Using Future: blocking main thread, no-chaning, we cant complete it manually and no exception handling</b>
     <pre>
 import java.util.concurrent.*;
 
-public class FutureExample {
+package com.java.java8;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.*;
+
+public class FutureLimitation {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future&lt;String&gt; future = executor.submit(() -&gt; {
-            Thread.sleep(1000);
-            return &quot;Future Result&quot;;
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        Future<List<Integer>> future1 = executor.submit(() -> {
+            System.out.println(Thread.currentThread().getName());
+            // block main thread
+            delay();
+            return Arrays.asList(1, 2, 3, 4);
         });
 
-        // Blocks until the result is available
-        String result = future.get();
-        System.out.println(result);
+        Future<List<Integer>> future2 = executor.submit(() -> {
+            System.out.println(Thread.currentThread().getName());
+            // block main thread
+            delay();
+            return Arrays.asList(1, 2, 3, 4);
+        });
+
+        Future<List<Integer>> future3 = executor.submit(() -> {
+            System.out.println(Thread.currentThread().getName());
+            // block main thread
+            delay();
+            return Arrays.asList(1, 2, 3, 4);
+        });
+
+        // can not combine || join || chain the features
+        List<Integer> list1 = future1.get();
+        List<Integer> list2 = future2.get();
+        List<Integer> list3 = future3.get();
+
+
+        System.out.println(list1);
+        System.out.println(list2);
+        System.out.println(list3);
+
+        // Cant handle exception
+        Future<List<Integer>> future4 = executor.submit(() -> {
+            System.out.println(10/0);
+            return Arrays.asList(1,2,3);
+
+        });
+
+        List<Integer> list4 = future4.get();
+
         executor.shutdown();
+
+    }
+
+    private static void delay(){
+        try {
+            Thread.sleep(30);
+        }catch (InterruptedException e){
+            e.getMessage();
+        }
     }
 }
+
+==========================================
+<b>output:</b>
+        pool-1-thread-2
+        pool-1-thread-1
+        pool-1-thread-3
+        [1, 2, 3, 4]
+        [1, 2, 3, 4]
+        [1, 2, 3, 4]
+        Exception in thread "main" java.util.concurrent.ExecutionException: java.lang.ArithmeticException: / by zero
+        at java.base/java.util.concurrent.FutureTask.report(FutureTask.java:122)
+        at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:191)
+        at com.java.java8.FutureLimitation.main(FutureLimitation.java:48)
+        Caused by: java.lang.ArithmeticException: / by zero
+        at com.java.java8.FutureLimitation.lambda$main$3(FutureLimitation.java:43)
+        at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+        at java.base/java.lang.Thread.run(Thread.java:842)
+
+
     </pre>
     <p><strong>Limitation:</strong> The <code>future.get()</code> call blocks the thread, which defeats asynchronous programming.</p>
 
@@ -1130,7 +1063,8 @@ public class CompletableFutureExample {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="method-reference">
     <h5>What is Method Reference in Java 8?</h5>
     <p>
         Method reference is a shorthand notation of a lambda expression to call a method directly. It is introduced in Java 8 and allows developers to refer to methods of a class or an object without invoking them. Method references make code more readable and concise by reducing boilerplate code.
@@ -1221,7 +1155,8 @@ public class ConstructorReference {
     </p>
 </div>
 <hr>
-<div>
+
+<div id="jdeps">
     <h5>What is Java Class Dependency Analyzer (jdeps) in Java 8?</h5>
     <p>
         The <strong>Java Class Dependency Analyzer</strong> (<code>jdeps</code>) is a command-line tool introduced in Java 8. It is used to analyze the dependencies of Java classes and provides insights into the packages and modules that a Java application depends on. This helps developers better understand the structure of their applications and identify potential issues, such as cyclic dependencies or unnecessary dependencies on internal APIs.
@@ -1282,8 +1217,9 @@ jdeps -jdkinternals myapp.jar
     </p>
 </div>
 <hr>
-<div>
-    <h5>What does <code>String::valueOf</code> mean?</h5>
+
+<div id="valueof">
+    <h5>What does <b>String::valueOf</b> mean?</h5>
     <p>
         The expression <code>String::valueOf</code> is a method reference in Java 8. It refers to the static <code>valueOf</code> method in the <code>String</code> class. The <code>valueOf</code> method is used to convert various types of data (such as primitives, objects, or arrays) into their string representation.
     </p>
@@ -1344,7 +1280,64 @@ public class LambdaExample {
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="exception">
+    <h5>Handling Checked Exceptions in Java Lambda Expressions</h5>
+    <p>
+        Java lambda expressions do not allow checked exceptions to be thrown directly. <br>
+        If a lambda throws a checked exception, it must be handled inside the lambda or wrapped in an unchecked exception.
+    </p>
+    <ul>
+        <li>Solution 1: Handling Exception Inside Lambda</li>
+        <li>Solution 2: Creating a Utility Method for Exception Handling</li>
+        <li>Solution 3: Throwing Checked Exception in Lambda (Unchecked Wrapper)</li>
+    </ul>
+    Following is Solution 3 example
+    <pre>
+package com.java.java8;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class LambdaCheckedException {
+    public static void main(String[] args) {
+        List<String> files = Arrays.asList("file1.txt", "file2.txt", "file3.txt", "missing.txt", "1");
+        files.forEach(handleCheckedException(file -> {
+            if ("missing.txt".equals(file)) {
+                throw new RuntimeException("File not found!");
+            }
+            System.out.println("Processing: " + file);
+        }));
+    }
+
+    public static <T> Consumer<T> handleCheckedException(CheckedConsumer<T> consumer) {
+        return value -> {
+            try {
+                consumer.accept(value);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface CheckedConsumer<T> {
+        void accept(T t) throws RuntimeException;
+    }
+}
+
+======================
+
+<b>Output:</b>
+Processing: file1.txt
+Processing: file2.txt
+Processing: file3.txt
+Exception in thread "main" java.lang.RuntimeException: File not found!
+    </pre>
+</div>
+
+<div id="collection-stream">
     <h5>Difference Between Collections and Stream</h5>
     <table border="1" cellspacing="0" cellpadding="5">
         <thead>
@@ -1404,8 +1397,320 @@ public class LambdaExample {
     </table>
 </div>
 <hr>
-<div>
-    <h5>Java 8 Program to Find the Second Highest Number in a List</h5>
+
+<div id="run-call">
+    <h5>Runnable vs Callable in Java</h5>
+    
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <tr style="background-color: #007bff; color: white;">
+            <th style="padding: 10px; border: 1px solid #ddd;">Feature</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Runnable</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Callable&lt;T&gt;</th>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><b>Method</b></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">public void run()</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">public T call() throws Exception</td>
+        </tr>
+        <tr style="background-color: #f1f1f1;">
+            <td style="padding: 10px; border: 1px solid #ddd;"><b>Return Type</b></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">void (No return value)</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">T (Returns a result)</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><b>Exception Handling</b></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Cannot throw checked exceptions</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Can throw checked exceptions</td>
+        </tr>
+        <tr style="background-color: #f1f1f1;">
+            <td style="padding: 10px; border: 1px solid #ddd;"><b>How to Execute?</b></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Thread / ExecutorService.submit(Runnable)</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">ExecutorService.submit(Callable&lt;T&gt;)</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><b>Use Case</b></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Tasks without a return value (e.g., logging, updates)</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Tasks that return results (e.g., fetching data)</td>
+        </tr>
+    </table>
+    <br>
+
+    <b>Example 1: Runnable (No Return Value)</b>
+    <pre>
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class RunnableExample {
+    public static void main(String[] args) {
+        Runnable task = () -> {
+            System.out.println("Running in thread: " + Thread.currentThread().getName());
+        };
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(task);
+        executor.shutdown();
+    }
+}
+    </pre>
+    <br>
+    <b>Example 2: Callable (Returns a Value)</b>
+    <pre>
+import java.util.concurrent.*;
+
+public class CallableExample {
+    public static void main(String[] args) {
+        Callable<String> task = () -> {
+            Thread.sleep(1000);
+            return "Hello from Callable!";
+        };
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future&lt;String&gt; future = executor.submit(task);
+
+        try {
+            System.out.println("Result: " + future.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+    }
+}
+    </pre>
+    <br>
+    <b>When to Use What?</b>
+    <ul>
+        <li><b>Use Runnable</b> when you just need to execute a task without a result.</li>
+        <li><b>Use Callable</b> when you need to return a result or handle checked exceptions.</li>
+    </ul>
+</div>
+<hr>
+
+<!--Programs section-->
+<div id="find-dup">
+    <h5>How to Find Duplicate Elements in a Stream in Java?</h5>
+    <pre>
+import java.util.*;
+import java.util.stream.*;
+
+public class FindDuplicates {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 2, 4, 5, 1, 6, 7, 8, 5);
+
+        Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+        Set&lt;Integer&gt; duplicates = new HashSet&lt;&gt;();
+
+        numbers.stream()
+                .forEach(n -&gt; {
+                    if (!seen.add(n)) {
+                        duplicates.add(n);
+                    }
+                });
+
+        duplicates.forEach(n -&gt; System.out.println(&quot;Duplicate element: &quot; + n));
+    }
+}
+    </pre>
+
+    <b>Output:</b>
+    <pre>
+Duplicate element: 1
+Duplicate element: 2
+Duplicate element: 5
+    </pre>
+
+    <b>Explanation of Alternative Approach:</b>
+    <ul>
+        <li><code>seen.add(n)</code>: Adds the element to the <code>Set</code> and returns <code>false</code> if the element is already present.</li>
+        <li><code>duplicates.add(n)</code>: Adds the element to the <code>duplicates</code> set if it was already seen, indicating it’s a duplicate.</li>
+    </ul>
+</div>
+<hr>
+
+<div id="count-occurance">
+    <h5>Count occurrence of a given character in a string using Stream API in Java </h5>
+    <p>
+        You can use the Stream API to efficiently count the occurrences of a given character in a string by converting the string into a stream of characters and using the <code>filter()</code> method to count matches.
+    </p>
+
+    <b>Optimized and Easy Solution:</b>
+    <pre>
+import java.util.stream.*;
+
+public class CharacterCount {
+    public static void main(String[] args) {
+        String str = &quot;Java Stream API is awesome&quot;;
+        char targetChar = 'a';
+
+        // Using Stream API to count occurrences of the character
+        long count = str.chars()  // Convert string to an IntStream
+                        .filter(c -&gt; c == targetChar)  // Filter the characters that match the target
+                        .count();  // Count the matching characters
+
+        System.out.println(&quot;Occurrence of character '" + targetChar + "': &quot; + count);
+    }
+}
+    </pre>
+
+    <b>Explanation:</b>
+    <ul>
+        <li><code>str.chars()</code>: Converts the string into an <code>IntStream</code> of character codes (Unicode values of the characters in the string).</li>
+        <li><code>filter(c -&gt; c == targetChar)</code>: Filters the stream to keep only the characters that match the target character.</li>
+        <li><code>count()</code>: Counts the number of characters in the stream that passed the filter (i.e., the occurrences of the target character).</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre>
+Occurrence of character 'a': 3
+    </pre>
+</div>
+<hr>
+
+<div id="slice">
+    <h5>How to get slice of a Stream in Java?</h5>
+    <p>
+        In Java, you can get a slice (a substream) of a stream by using the <code>skip()</code> and <code>limit()</code> methods. These methods allow you to select a specific portion of a stream by skipping elements and limiting the number of elements you want to process.
+    </p>
+
+    <b>Optimized Solution:</b>
+    <p>The most efficient and simple way to get a slice of a stream is by chaining the <code>skip()</code> and <code>limit()</code> methods:</p>
+    
+    <pre>
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamSliceExample {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        // Get a slice of the stream from index 3 to index 7 (exclusive)
+        List&lt;Integer&gt; slicedList = numbers.stream()
+            .skip(3)  // Skip first 3 elements
+            .limit(5) // Limit the stream to the next 5 elements
+            .collect(Collectors.toList());
+
+        System.out.println(slicedList);  // Output: [4, 5, 6, 7, 8]
+    }
+}
+    </pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>skip(3)</code>: Skips the first 3 elements of the stream.</li>
+        <li><code>limit(5)</code>: Limits the stream to the next 5 elements after skipping 3.</li>
+        <li><code>collect(Collectors.toList())</code>: Collects the resulting stream into a list.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre>
+[4, 5, 6, 7, 8]
+    </pre>
+</div>
+<hr>
+
+<div id="reverse-parallel">
+    <h5>How to reverse elements of a Parallel Stream in Java?</h5>
+    <p>
+        Reversing elements of a parallel stream in Java can be tricky because parallel streams process elements in parallel, which can affect the order. To reverse the elements, the most efficient and easy solution is to collect the elements into a list first, then reverse the list. 
+    </p>
+
+    <b>Optimized Solution:</b>
+    <ol>
+        <li>First, collect the elements from the parallel stream into a list using <code>Collectors.toList()</code>.</li>
+        <li>Then, use the <code>Collections.reverse()</code> method to reverse the list.</li>
+        <li>Finally, create a stream from the reversed list.</li>
+    </ol>
+
+    <b>Example:</b>
+    <pre>
+import java.util.*;
+import java.util.stream.*;
+
+public class ReverseParallelStream {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+
+        // Reverse the elements of a parallel stream
+        List&lt;Integer&gt; reversedList = numbers.parallelStream()
+                .collect(Collectors.toList()); // Collect to List
+
+        Collections.reverse(reversedList); // Reverse the List
+
+        // Create a new stream from the reversed list
+        reversedList.stream().forEach(System.out::println); // Output reversed elements
+    }
+}
+    </pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>numbers.parallelStream()</code>: Creates a parallel stream from the list.</li>
+        <li><code>Collectors.toList()</code>: Collects the stream elements into a <code>List</code>.</li>
+        <li><code>Collections.reverse(reversedList)</code>: Reverses the list in place.</li>
+        <li><code>reversedList.stream().forEach()</code>: Creates a stream from the reversed list and processes each element.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre>
+8
+7
+6
+5
+4
+3
+2
+1
+    </pre>
+
+    <b>Why This Solution is Optimized:</b>
+    <ul>
+        <li>Using <code>parallelStream()</code> ensures the stream is processed in parallel for performance improvement, while collecting the result ensures we can reverse it without affecting parallel processing.</li>
+        <li><code>Collections.reverse()</code> is an efficient, in-place reversal operation that does not require additional resources.</li>
+    </ul>
+</div>
+<hr>
+
+<div id="iterate-stream">
+    <h5>Program to iterate over a Stream with indices in Java 8</h5>
+    <p>
+        Java 8 streams do not provide a direct way to work with indices, but you can achieve this by using the <code>IntStream</code> to generate indices and map them to elements in the stream. This approach is optimized and straightforward.
+    </p>
+
+    <b>Example Code:</b>
+    <pre>
+import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Arrays;
+
+public class StreamWithIndices {
+    public static void main(String[] args) {
+        List&lt;String&gt; items = Arrays.asList(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;);
+
+        // Iterate with indices
+        IntStream.range(0, items.size())
+                 .forEach(index -&gt; System.out.println(&quot;Index: &quot; + index + &quot;, Value: &quot; + items.get(index)));
+    }
+}
+    </pre>
+
+    <b>Explanation of Code:</b>
+    <ul>
+        <li><code>IntStream.range(0, items.size())</code>: Generates a stream of indices from <code>0</code> to <code>items.size() - 1</code>.</li>
+        <li><code>forEach(index -&gt; ...)</code>: Iterates over the indices and retrieves the corresponding elements from the list using <code>items.get(index)</code>.</li>
+    </ul>
+
+    <b>Output:</b>
+    <pre>
+Index: 0, Value: A
+Index: 1, Value: B
+Index: 2, Value: C
+Index: 3, Value: D
+    </pre>
+</div>
+<hr>
+
+<div id="second-highest">
+    <h5>Find the second highest number in a List</h5>
    
     <pre>
 import java.util.*;
@@ -1437,8 +1742,9 @@ Second Highest Number: 35
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Java 8 Program to Remove Duplicates from a List of Integers</h5>
+
+<div id="remove-dup">
+    <h5>Remove duplicates from a List of Integers</h5>
     <pre>
 import java.util.*;
 import java.util.stream.*;
@@ -1465,8 +1771,9 @@ List without duplicates: [1, 2, 3, 4, 5, 6, 7, 8]
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Java 8 Program to Partition a List of Strings Based on Length</h5>
+
+<div id="partition-string">
+    <h5>Partition a List of strings based on length</h5>
     <pre>
 import java.util.*;
 import java.util.stream.*;
@@ -1495,7 +1802,8 @@ Strings with length 3 or less: [cat, dog, bat, rat]
 
 </div>
 <hr>
-<div>
+
+<div id="retrive-emp-name">
     <h5>You have a collection of employee objects. How would you retrieve the names of all employees? </h5>
     <pre>
 import java.util.*;
@@ -1543,7 +1851,8 @@ Employee Names: [Alice, Bob, Charlie]
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="txn-highest">
     <h5>You have a list of transactions. How would you find the transaction with the highest amount?</h5>
     <pre>
 Transaction maxTransaction = transactions.stream()
@@ -1552,8 +1861,9 @@ Transaction maxTransaction = transactions.stream()
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Java 8 Program to Find Maximum and Minimum Values in a List</h5>
+
+<div id="max-min">
+    <h5>Find Maximum and Minimum Values in a List</h5>
     <pre>
 import java.util.*;
 import java.util.stream.*;
@@ -1586,7 +1896,8 @@ Minimum value: 3
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="emp-dept">
     <h5>Find the Employee of a Specific Department with the nth Highest Salary</h5>
     <pre>
 import java.util.*;
@@ -1640,7 +1951,8 @@ Employee with second highest salary in IT: Employee{name=Bob, department=IT, sal
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="non-rep">
     <h5>Find the First Non-Repeated Character in a String using Java Streams</h5>
     <pre>
 import java.util.*;
@@ -1682,7 +1994,8 @@ First Non-Repeated Character: w
     </ul>
 </div>
 <hr>
-<div>
+
+<div id="first-rep">
     <h5>Finding the First Repeated Character in a String Using Stream Functions</h5>
     <pre>
 import java.util.*;
@@ -1719,7 +2032,8 @@ First repeated character: t
 
 </div>
 <hr>
-<div>
+
+<div id="sort-stream">
     <h5>Given a list of integers, sort all the values present in it using Stream functions?</h5>
     <pre>
 public class SortValues{
@@ -1738,7 +2052,8 @@ public class SortValues{
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="desc">
     <h5>Given a list of integers, sort all the values present in it in descending order using Stream functions?</h5>
     <pre>
 public class SortDescending{
@@ -1753,7 +2068,8 @@ public class SortDescending{
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="any-twice">
     <h5>Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.</h5>
     <pre>
 public boolean containsDuplicate(int[] nums) {
@@ -1782,7 +2098,8 @@ Output: false
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="obj-map">
     <h5>How to Convert a List of Objects into a Map by Considering Duplicate Keys and Store Them in Sorted Order?</h5>
     <pre>
 import java.util.*;
@@ -1838,8 +2155,9 @@ David: [Person{name=David, age=35}]
     </pre>
 </div>
 <hr>
-<div>
-    <h5>How to Count Each Element/Word from a String ArrayList in Java 8?</h5>
+
+<div id="fre-count">
+    <h5>Count Each Word frequency from a String</h5>
     <pre>
 import java.util.*;
 import java.util.stream.*;
@@ -1874,8 +2192,9 @@ orange: 1
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Program to Print the Count of Each Character in a String</h5>
+
+<div id="count-character">
+    <h5>Print the Count of Each Character in a String</h5>
     <pre>
 import java.util.*;
 import java.util.stream.*;
@@ -1909,7 +2228,8 @@ Character: d, Count: 1
     </pre>
 </div>
 <hr>
-<div>
+
+<div id="start-1">
     <h5>Find Numbers Starting with 1 Using Stream Functions</h5>
     <pre>
 import java.util.*;
@@ -1935,4 +2255,21 @@ public class FindNumbersStartingWithOne {
     <pre>
 Numbers starting with 1: [10, 15, 1, 100, 121]
     </pre>
+</div>
+<hr>
+
+<div id="fqa">
+    <h5>Some frequently asked Interview Questions</h5>
+    <ol>
+        <li>What is a Stream in Java?</li>
+        <li>Difference between Stream and Collection.</li>
+        <li>How does lazy evaluation work in streams?</li>
+        <li>What are intermediate and terminal operations?</li>
+        <li>How do you create a parallel stream?</li>
+        <li>How does reduce() work?</li>
+        <li>What is the difference between map() and flatMap()?</li>
+        <li>Can we reuse a Java stream?</li>
+        <li>Explain the concept of short-circuiting operations in streams.</li>
+        <li>How to handle checked exceptions in streams?</li>       
+    </ol>
 </div>

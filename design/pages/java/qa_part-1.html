@@ -1,12 +1,57 @@
-<!-- Platform Independence and JVM -->
-<div>
-    <h5>Q. Is Java platform-independent? How? Explain execution Flow</h5>
+<div class="custom-container">
+    <ol>
+      <b>Java : Basic</b>
+        <li><a href="#execution">Is Java platform-independent? How? Explain execution Flow</a></li>
+        <li><a href="#jvm-jre-jdk">Explain JVM, JRE and JDK</a></li>
+        <li><a href="#jit">What is JIT?</a></li>
+        <li><a href="#graalvm">What is GraalVM, and how is it different from the JIT compiler?</a></li>
+        <li><a href="#classloader">What is a classloader?</a></li>
+        <li><a href="#diff-jvm-jre-jdk">Difference between JDK JRE and JVM</a></li>
+        <li><a href="#memory-storage">What are the memory storages available with JVM?</a></li>
+        <li><a href="#main-not-static">What will happen if we don’t declare the main method as static?</a></li>
+        <li><a href="#data-types">Explain different data types in Java and its default value.</a></li>
+        <li><a href="#wrapper">What is the Wrapper class in Java, and why do we need it?</a></li>
+        <li><a href="#access-specifiers">Explain Access Specifiers and their types</a></li>
+        <li><a href="#varaible-types">Different types of Variables in Java</a></li>
+        <li><a href="#static-block">Explain the static block in Java.</a></li>
+        <li><a href="#static-instance">Difference Between Static (Class) Methods and Instance Methods in Java</a></li>
+        <li><a href="#new-instance">Difference between <b>new()</b> and <b>newInstance()</b>?</a></li>
+        <li><a href="#java-io">Explain Java I/O: Reader/Writer vs InputStream/OutputStream, File Streams, Buffered Streams, FilterStreams, and I/O Filters</a></li>
+        <li><a href="#java-input">How many ways can you take input from the console?</a></li>
+        <li><a href="#greater-than">Explain the difference between <b>&lt;&gt;</b> and <b>&gt;&gt;&gt;</b> operators.</a></li>
+        <li><a href="#covariant">What is Covariant Return Type in Java?</a></li>
+        <li><a href="#ser-dser">Explain Serialization and Deserialization in Java</a></li>
+        <li><a href="#str-strbuff-strbuild">Understanding String, StringBuilder, StringBuffer, and Java String Pool in Java</a></li>
+        <li><a href="#marker">What is a Marker Interface?</a></li>
+        <li><a href="#private-static">Can You Override Private or Static Methods in Java?</a></li>
+        <li><a href="#java-copy">Explain Shallow Copy vs. Deep Copy in Java</a></li>
+        <li><a href="#constructor">Explain in detail about Constructors in Java</a></li>
+        <li><a href="#pass-by-type">Does Java Use Pass-by-Value or Pass-by-Reference? </a></li>
+        <li><a href="#object-clone">What is Object Cloning in Java? </a></li>
+        <li><a href="#copy-array">How to copy an array in Java? </a></li>
+        <li><a href="#jagged">What do you understand by the jagged array? </a></li>
+        <li><a href="#object-class">What is the Object Class in Java? </a></li>
+        <li><a href="#cont-mem-loc">Contiguous memory locations are usually used for storing actual values in an array but not in ArrayList. Explain. </a></li>
+        <li><a href="#">What happens if the main method is not declared static? </a></li>
+        <li><a href="#call-constructor">Can a constructor call another constructor in the same class? </a></li>
+        <li><a href="#equal">Explain `==` vs `.equals()` in Java. </a></li>
+        <li><a href="#eql-hash">What is the Purpose of the <b>equals()</b> and <b>hashCode()</b> Methods? </a></li>
+        <li><a href="#heap-stack">Java Memory Management: Heap vs Stack </a></li>
+        <li><a href="#memory-object">How does Java handle memory management for objects? </a></li>
+        <li><a href="#final">Explain `final`, `finally`, and `finalize()` </a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="execution">
+    <h5>Is Java platform-independent? How? Explain execution Flow</h5>
     <p><b>Answer:</b> Java is platform-independent because it uses the concept of bytecode. Java code is compiled into bytecode by the Java compiler, which can then run on any platform with a compatible Java Virtual Machine (JVM). This "Write Once, Run Anywhere" feature is the core of Java's platform independence.</p>
     <img src="../../images/java-flow.PNG" style="display: block; margin: auto; width: 100%;" class="img-fluid">
 </div>
-  <hr>
-  <div>
-    <h5>Q. Explain JVM, JRE and JDK</h5>
+<hr>
+
+<div id="jvm-jre-jdk">
+    <h5>Explain JVM, JRE and JDK</h5>
     <img src="../../images/jvm_jre_jdk.PNG" style="display: block; margin: auto; width: 35%;" class="img-fluid"><br>
     
     <b>Java Virtual Machine (JVM): </b>
@@ -77,11 +122,11 @@
         </ul>
     </div>
 
-  </div>
-  <hr>
+</div>
+<hr>
 
-  <div>
-    <h5>Q. What is JIT?</h5>
+<div id="jit">
+    <h5>What is JIT?</h5>
     <div style="display: flex; justify-content: center; gap: 20px;">
         <img src="../../images/jvm_arch.PNG" style="width: 40%;" class="img-fluid">
         <img src="../../images/jit.PNG" style="width: 40%;" class="img-fluid">
@@ -129,11 +174,11 @@
           </li>
         </ul>
     </div>      
-  </div>
-  <hr>
+</div>
+<hr>
 
-  <div>
-    <h5>Q. What is GraalVM, and how is it different from the JIT compiler?</h5>
+<div id="graalvm">
+    <h5>What is GraalVM, and how is it different from the JIT compiler?</h5>
     <p>GraalVM is a high-performance runtime that enhances the execution of Java applications and supports multiple programming languages beyond Java, such as JavaScript, Python, Ruby, R, and even languages like C and C++. It is designed to integrate and optimize applications written in a variety of languages within a single runtime environment.</p>
     <b>Key Features of GraalVM:</b>
     <ul>
@@ -168,11 +213,11 @@
         <li>Improved Application Performance: Advanced optimizations make Java applications run faster, especially in long-running scenarios.</li>
     </ul>
     Faster startup times and low memory consumption make GraalVM a b choice for microservices in containerized environments.
-  </div>
-  <hr>
+</div>
+<hr>
 
-  <div>
-    <h5>Q. What is a classloader?</h5>
+<div id="classloader">
+    <h5>What is a classloader?</h5>
     <p><b>Answer:</b> A classloader is a subsystem of JVM responsible for loading class files. It converts bytecode into JVM-readable formats. Java has three types of classloaders:
     <p>When a request reaches the JVM, it first checks if the class is already loaded. If the class is not loaded, the JVM searches for it using class loaders. If the class cannot be found after all searches, a `ClassNotFoundException` is thrown.</p>
     <ul>
@@ -183,11 +228,11 @@
 
       </ul>
     </p>
-  </div>
-  <hr>
+</div>
+<hr>
 
-  <div>
-    <h5>Q. Difference between JDK JRE and JVM</h5>
+<div id="diff-jvm-jre-jdk">
+    <h5>Difference between JDK JRE and JVM</h5>
     <table border="1" cellpadding="10" cellspacing="0">
     <thead>
         <tr>
@@ -214,13 +259,13 @@
         </tr>
     </tbody>
     </table>
-  </div>
-  <hr>
+</div>
+<hr>
 
   
   <!-- Memory Management -->
-  <div>
-    <h5>Q. What are the memory storages available with JVM?</h5>
+  <div id="memory-storage">
+    <h5>What are the memory storages available with JVM?</h5>
     <p><b>Answer:</b> JVM memory is divided into the following areas:
       <ul>
         <li><b>Heap:</b> For storing objects and class instances.</li>
@@ -234,14 +279,15 @@
   <hr>
   
   <!-- Main Method -->
-  <div>
-    <h5>Q. What will happen if we don’t declare the main method as static?</h5>
+<div id="main-not-static">
+    <h5>What will happen if we don’t declare the main method as static?</h5>
     <p><b>Answer:</b> The program will fail to run because the JVM requires the <code>main</code> method to be static to invoke it without creating an object.</p>
-  </div>
-  <hr>
+</div>
+<hr>
+
   <!-- Data Types -->
-  <div>
-    <h5>Q. Explain different data types in Java and its default value.</h5>
+  <div id="data-types">
+    <h5>Explain different data types in Java and its default value.</h5>
     <p><b>Answer:</b> Java provides two categories of data types:
       <ul>
         <li><b>Primitive:</b> byte, short, int, long, float, double, char, boolean.</li>
@@ -329,9 +375,10 @@
     </ul>
   </div>
   <hr>
+
   <!-- Wrapper Classes -->
-  <div>
-    <h5>Q. What is the Wrapper class in Java, and why do we need it?</h5>
+  <div id="wrapper">
+    <h5>What is the Wrapper class in Java, and why do we need it?</h5>
         <p>
             In Java, <b>wrapper classes</b> are part of the <code>java.lang</code> package and provide an object representation for primitive data types. 
             Each primitive type (e.g., <code>int</code>, <code>double</code>, <code>char</code>) has a corresponding wrapper class 
@@ -420,9 +467,10 @@
         </ul>
   </div>
   <hr>
+
   <!-- Access Specifiers -->
   <div>
-    <h5>Q. Explain Access Specifiers and their types.</h5>
+    <h5>Explain Access Specifiers and their types.</h5>
     <p>
         Access specifiers in Java define the visibility and accessibility of classes, methods, and variables. 
         They control how and where these components can be accessed within the application. Java provides four 
@@ -486,8 +534,9 @@
     </ul> 
   </div>
   <hr>
-  <div>
-        <h5>Q. Different types of Variables in Java</h5>
+
+  <div id="varaible-types">
+        <h5>Different types of Variables in Java</h5>
         <p>
             Variables in Java are containers for storing data values. They can be classified into three main types based on where they are declared and how they are used:
             <b>Instance Variables</b>, <b>Static Variables</b>, and <b>Local Variables</b>. Each type has its specific scope, lifetime, and behavior.
@@ -593,8 +642,9 @@
         </table>
   </div>
   <hr>
-  <div>
-    <h5>Q. Explain the static block in Java.</h5>
+
+  <div id="static-block">
+    <h5>Explain the static block in Java.</h5>
         <p>
             In Java, a <b>static block</b> (also called a static initializer block) is a block of code that is executed when the class is loaded into memory. 
             It is used to initialize static variables or perform any setup that is required before the class is used. 
@@ -666,8 +716,9 @@
         </ul>
   </div>
   <hr>
-  <div>
-        <h5>Q. Difference Between Static (Class) Methods and Instance Methods in Java</h5>
+
+  <div id="static-instance">
+        <h5>Difference Between Static (Class) Methods and Instance Methods in Java</h5>
         <p>
             In Java, methods can either be <b>static</b> (class-level) or <b>instance</b> (object-level). 
             These two types of methods differ in their behavior, accessibility, and use cases.
@@ -723,8 +774,9 @@
         </ul>
   </div>
   <hr>
-  <div>
-    <h5>Q. Difference between <b>new()</b> and <b>newInstance()</b>?</h5>
+
+  <div id="new-instance">
+    <h5>Difference between <b>new()</b> and <b>newInstance()</b>?</h5>
         <p>
             In Java, both <code>new()</code> and <code>newInstance()</code> are used to create objects, 
             but they have different mechanisms and use cases. Below is a detailed explanation of each.
@@ -795,9 +847,10 @@
         </ul>
   </div>
   <hr>
+
   <!-- I/O Hierarchies -->
-  <div>
-    <h5>Q. Explain Java I/O: Reader/Writer vs InputStream/OutputStream, File Streams, Buffered Streams, FilterStreams, and I/O Filters</h5>
+  <div id="java-io">
+    <h5>Explain Java I/O: Reader/Writer vs InputStream/OutputStream, File Streams, Buffered Streams, FilterStreams, and I/O Filters</h5>
     <p>
         Java provides two main hierarchies for handling input and output: <b>Reader/Writer</b> and <b>InputStream/OutputStream</b>. 
         Additionally, various stream types such as <code>FileInputStream</code>, <code>FileOutputStream</code>, <code>BufferedInputStream</code>, and <code>BufferedOutputStream</code> enhance performance and functionality. 
@@ -913,8 +966,9 @@ public class BufferedStreamExample {
     </p>
   </div>
   <hr>
-  <div>
-    <h5>Q. How many ways can you take input from the console?</h5>
+
+  <div id="java-input">
+    <h5>How many ways can you take input from the console?</h5>
     <p>
         Java provides several ways to take input from the console. These methods differ in terms of simplicity, flexibility, and use cases. 
         Below are the commonly used approaches:
@@ -1078,9 +1132,10 @@ public class CommandLineExample {
     </p>
   </div>
   <hr>  
+
   <!-- Operators -->
-  <div>
-    <h5>Q. Explain the difference between <code>&gt;&gt;</code> and <code>&gt;&gt;&gt;</code> operators.</h5>
+  <div id="greater-than">
+    <h5>Explain the difference between <b>&lt;&gt;</b> and <b>&gt;&gt;&gt;</b> operators.</h5>
     <p><b>Answer:</b> 
       <ul>
         <li><code>&gt;&gt;</code>: Arithmetic right shift operator that retains the sign bit.</li>
@@ -1093,8 +1148,9 @@ public class CommandLineExample {
   </pre>
   </div>
   <hr>
+
   <!-- Covariant Return Type -->
-  <div>
+  <div id="covariant">
     <h5>What is Covariant Return Type in Java?</h5>
     <p>
         In Java, <b>Covariant Return Type</b> refers to the ability of an overriding method in a subclass 
@@ -1175,8 +1231,9 @@ public class CovariantReturnTypeExample {
     </p>
   </div>
   <hr>
-  <div>
-    <h5>Q. Explain Serialization and Deserialization in Java</h5>
+
+  <div id="ser-dser">
+    <h5>Explain Serialization and Deserialization in Java</h5>
     <p>
         Serialization and Deserialization are processes used in Java to save the state of an object to a medium (like a file or a network) and reconstruct the object from that medium, respectively.
     </p>
@@ -1341,8 +1398,9 @@ public class CustomSerializationExample {
     </p>
   </div>
   <hr>
-  <div>
-    <h5>Q. Understanding String, StringBuilder, StringBuffer, and Java String Pool in Java</h5>
+
+  <div id="str-strbuff-strbuild">
+    <h5>Understanding String, StringBuilder, StringBuffer, and Java String Pool in Java</h5>
 
     <b>What is String in Java?</b>
     <p>
@@ -1463,8 +1521,9 @@ public class CustomSerializationExample {
     </table>
 </div>
 <hr>
-<div>
-    <h5>Q. What is a Marker Interface?</h5>
+
+<div id="marker">
+    <h5>What is a Marker Interface?</h5>
     <p>
         A <b>Marker Interface</b> in Java is an interface that does not contain any methods or fields. It is an empty interface used to provide a "marker" or "tag" to a class. The presence of a marker interface indicates to the Java runtime or a specific framework that the class implementing the interface has a specific property or behavior.
     </p>
@@ -1527,8 +1586,9 @@ public class CustomSerializationExample {
     </pre>
 </div>
 <hr>
-<div>
-    <h5>Q. Can You Override Private or Static Methods in Java?</h5>
+
+<div id="private-static">
+    <h5>Can You Override Private or Static Methods in Java?</h5>
 
     <b>Private Methods</b>
     <p>
@@ -1592,8 +1652,9 @@ public class CustomSerializationExample {
     <p><b>Explanation:</b> The `display()` method in the `Child` class hides the `display()` method in the `Parent` class. Which method is called depends on the type of the reference at compile time.</p>
 </div>
 <hr>
-<div>
-    <h5>Q. Explain Shallow Copy vs. Deep Copy in Java</h5>
+
+<div id="java-copy">
+    <h5>Explain Shallow Copy vs. Deep Copy in Java</h5>
 
     <b>What is a Shallow Copy?</b>
     <p>
@@ -1672,8 +1733,9 @@ public class CustomSerializationExample {
 
 </div>
 <hr>
-  <div>
-    <h5>Q. Explain in detail about Constructors in Java</h5>
+
+  <div id="constructor">
+    <h5>Explain in detail about Constructors in Java</h5>
     <p>
         A <b>constructor</b> is a special method in Java used to initialize objects. It is invoked automatically when an object of a class is created. Constructors have the same name as the class and do not have a return type, not even void.
     </p>
@@ -1812,8 +1874,9 @@ public class CustomSerializationExample {
     </ul>
   </div>
   <hr>
-  <div>
-    <h5>Q. Does Java Use Pass-by-Value or Pass-by-Reference?</h5>
+
+  <div id="pass-by-type">
+    <h5>Does Java Use Pass-by-Value or Pass-by-Reference?</h5>
     <p>
         In Java, <b>everything is pass-by-value</b>. However, the way it behaves for primitive types and reference types can sometimes create confusion. Understanding how Java handles passing values and references is crucial to clearing this up.
     </p>
@@ -1921,8 +1984,9 @@ public class CustomSerializationExample {
     </table>
   </div>
 <hr>
-<div>
-    <h5>Q. What is Object Cloning in Java?</h5>
+
+<div id="object-clone">
+    <h5>What is Object Cloning in Java?</h5>
     <p>
         <b>Object Cloning</b> is the process of creating an exact copy of an object. In Java, this is done using the <code>clone()</code> method defined in the <code>Object</code> class. Cloning is primarily used when you want to create a copy of an object with the same state as the original.
     </p>
@@ -2132,19 +2196,20 @@ public class CustomSerializationExample {
         <li>Use deep cloning when the object contains mutable references, and full independence is required.</li>
     </ul>
 </div>
+<hr>
 
-  <hr>
   <!-- Arrays -->
-  <div>
-    <h5>Q. How to copy an array in Java?</h5>
+<div id="copy-array">>
+    <h5>How to copy an array in Java?</h5>
     <p><b>Answer:</b> Arrays can be copied using methods like <code>System.arraycopy()</code>, <code>Arrays.copyOf()</code>, or <code>clone()</code>.</p>
     <pre>int[] original = {1, 2, 3};
   int[] copy = Arrays.copyOf(original, original.length);
   </pre>
-  </div>
-  <hr>
-  <div>
-    <h5>Q. What do you understand by the jagged array?</h5>
+</div>
+<hr>
+
+<div id="jagged">
+    <h5>What do you understand by the jagged array?</h5>
     <p><b>Answer:</b> A jagged array is a multi-dimensional array where each row can have a different length.</p>
     <pre>int[][] jagged = {
       {1, 2},
@@ -2152,10 +2217,11 @@ public class CustomSerializationExample {
       {6}
   };
   </pre>
-  </div>
-  <hr>
-  <div>
-    <h5>q. What is the Object Class in Java?</h5>
+</div>
+<hr>
+
+<div id="object-class">
+    <h5>What is the Object Class in Java?</h5>
     <p>
         The <b>Object</b> class is the parent class of all classes in Java. Every class in Java either directly or indirectly inherits from the <code>Object</code> class. It is part of the <code>java.lang</code> package, so it is automatically imported into every Java program.
     </p>
@@ -2368,23 +2434,20 @@ class Example {
     </p>
 </div>
 <hr>
-<div>
-    <h5>Q. Contiguous memory locations are usually used for storing actual values in an array but not in ArrayList. Explain.</h5>
+
+<div id="cont-mem-loc">
+    <h5>Contiguous memory locations are usually used for storing actual values in an array but not in ArrayList. Explain.</h5>
     <p><b>Answer:</b> 
       <ul>
         <li>Arrays use contiguous memory locations to store values, ensuring efficient random access.</li>
         <li>ArrayLists store objects (not primitives) and use dynamic memory allocation. The elements themselves are references to objects, not contiguous memory locations.</li>
       </ul>
     </p>
-  </div>
-  <hr>
-  <div>
-    <h5>Q. What happens if the main method is not declared static?</h5>
-    <p><b>Answer:</b> If the main method is not static, the JVM cannot invoke it without creating an instance of the class, leading to a runtime error.</p>
-  </div>
-  <hr>
-  <div>
-    <h5>Q. Can a constructor call another constructor in the same class?</h5>
+</div>
+ <hr>
+
+  <div id="call-constructor">
+    <h5>Can a constructor call another constructor in the same class?</h5>
     <p><b>Answer:</b> Yes, using the <code>this()</code> keyword, one constructor can call another in the same class.</p>
     <pre>class Example {
       Example() {
@@ -2398,7 +2461,8 @@ class Example {
   </pre>
   </div>
   <hr>
-  <div>
+
+  <div id="equal">
     <h5>Explain `==` vs `.equals()` in Java. </h5>
     <table border="1" cellpadding="10" cellspacing="0">
         <thead>
@@ -2446,8 +2510,9 @@ class Example {
       
   </div>
   <hr>
-  <div>
-    <h5>What is the Purpose of the <code>equals()</code> and <code>hashCode()</code> Methods?</h5>
+
+  <div id="eql-hash">
+    <h5>What is the Purpose of the <b>equals()</b> and <b>hashCode()</b> Methods?</h5>
 
     <p>
         The <code>equals()</code> and <code>hashCode()</code> methods are fundamental methods in Java, defined in the <b>Object</b> class. They are essential for comparing objects and using objects in collections like <code>HashSet</code>, <code>HashMap</code>, or <code>HashTable</code>.
@@ -2588,7 +2653,8 @@ class Example {
     </table>
   </div>
   <hr>
-  <div>
+
+  <div id="heap-stack">
     <h5>Java Memory Management: Heap vs Stack</h5>
     <div>  
         <h6>1. Heap Memory</h6>
@@ -2642,12 +2708,14 @@ class Example {
       
   </div>
   <hr>
-  <div>
-    <h5>Q. How does Java handle memory management for objects?</h5>
+
+  <div id="memory-object">
+    <h5>How does Java handle memory management for objects?</h5>
     <p><b>Answer:</b> Java uses automatic garbage collection to manage memory. Objects no longer referenced are eligible for collection by the garbage collector.</p>
   </div>
   <hr>
-  <div>
+
+  <div id="final">
     <h5>Explain `final`, `finally`, and `finalize()`</h5>
     <table border="1" cellpadding="10" cellspacing="0">
         <thead>
@@ -2725,3 +2793,4 @@ class Example {
       </table>
       
   </div>
+  <hr>
