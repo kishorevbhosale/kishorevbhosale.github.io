@@ -1,8 +1,21 @@
-<div>
-    <h2 style="text-align: center;">Designing an ATM System</h2>
-    <hr>
+<h2 style="text-align: center;">Designing an ATM System</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#Requirements">Requirements </a></li>
+        <li><a href="#Sequnece">Sequnece Diagram </a></li>
+        <li><a href="#Design">Design Overview </a></li>
+        <li><a href="#Code">Code Implementation </a></li>
+        <li><a href="#Explanation">Explanation of Output </a></li>
+        <li><a href="#Considerations">Design Considerations </a></li>
+        <li><a href="#future">Extensions & Future Improvements </a></li>
+    </ol>
+</div>
+<hr>
 
+<div id="Requirements">
     <h5>Requirements:</h5>
+    <ul>
     <p>
         The ATM system should support the following operations:
         <ul>
@@ -16,13 +29,21 @@
             <li>User-friendly interface</li>
         </ul>
     </p>
-    <hr>
+    </ul>
+</div>
+<hr>
 
+<div id="Sequnece">
     <h5>Sequnece Diagram</h5>
+    <ul>
     <img src="../../../images/atm.png" alt="cache" style="display: block; margin: auto; width: 80%;">
-    <hr>
+    </ul>
+</div>
+<hr>
 
+<div id="Design">
     <h5>Design Overview:</h5>
+    <ul>
     <p>
         The low-level design for the ATM system involves several components that will interact with each other to handle various tasks such as authentication, balance inquiry, withdrawal, deposit, and cash dispensing.
         Below are the key components that need to be designed:
@@ -35,10 +56,14 @@
             <li><strong>BackendSystem:</strong> Simulates the bank's backend that validates user information and performs actions.</li>
         </ul>
     </p>
-    <hr>
+    </ul>
+</div>
+<hr>
 
+<div id="Code">
     <h5>Code Implementation:</h5>
-    <pre>
+    <ul>
+<pre>
 // BankAccount Class - Represents the user's bank account
 class BankAccount {
     private String accountNumber;
@@ -185,17 +210,17 @@ public class ATMSystemApp {
 </pre>
 <hr>
     
-    <h5>Sample Input:</h5>
-    <pre>
+    <b>Sample Input:</b>
+<pre>
     Authenticate user with card number "12345" and PIN "1234".
     Deposit 200 units.
     Withdraw 300 units.
     Withdraw 1000 units (which should fail due to insufficient balance).
-    </pre>
+</pre>
 
 
-    <h5>Sample Output:</h5>
-    <pre>
+    <b>Sample Output:</b>
+<pre>
     Authentication successful.
     Your current balance is: 1000.0
     Deposited: 200
@@ -203,9 +228,12 @@ public class ATMSystemApp {
     Dispensing cash: 300
     Your current balance is: 900.0
     Insufficient funds.
-    </pre>
-    <hr>
+</pre>
+    </ul>
+</div>
+<hr>
 
+<div id="Explanation">
     <h5>Explanation of Output:</h5>
     <ul>
         <li>The user is authenticated using card number "12345" and PIN "1234".</li>
@@ -214,8 +242,10 @@ public class ATMSystemApp {
         <li>The user successfully withdraws 300 units, reducing the balance to 900.0.</li>
         <li>When attempting to withdraw 1000 units, the system responds with "Insufficient funds" since the available balance is only 900.0.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="Considerations">
     <h5>Design Considerations:</h5>
     <ul>
         <li><strong>Concurrency:</strong> In a real-world scenario, we need to ensure that the ATM system handles multiple users accessing the machine simultaneously. This can be achieved through synchronized methods or other concurrency management techniques.</li>
@@ -223,8 +253,10 @@ public class ATMSystemApp {
         <li><strong>Bank System Integration:</strong> In the actual system, the backend system would need to interact with a real bank's backend API or database for account validation, transaction history, and other tasks.</li>
         <li><strong>Error Handling:</strong> The design assumes simple success/failure cases. In reality, more robust error handling (e.g., invalid input, transaction failures) should be included.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="future">
     <h5>Extensions & Future Improvements:</h5>
     <ul>
         <li>Implementing transaction history to keep track of deposits, withdrawals, and balance changes.</li>
@@ -232,5 +264,5 @@ public class ATMSystemApp {
         <li>Adding a display interface for users to view transaction details and confirmation.</li>
         <li>Handling advanced features such as PIN change, card blocking, and multi-ATM system integration.</li>
     </ul>
-    <hr>
 </div>
+<hr>

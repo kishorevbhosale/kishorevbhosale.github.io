@@ -29,6 +29,33 @@ body {
     position: relative;
 }
 
+.visitor-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: 15px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+    margin-left: 20px; /* Extra spacing from About Me button */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .visitor-counter {
+        font-size: 14px;
+        padding: 5px 12px;
+        margin-left: 12px; /* Reduce spacing for smaller screens */
+    }
+}
+
+
+
+
+
 /* Sidebar Styling */
 .left-panel {
     min-height: 100vh; /* Allows scrolling instead of fixed height */

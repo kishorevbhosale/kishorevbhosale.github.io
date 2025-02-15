@@ -1,15 +1,28 @@
-<div>
-    <h2 style="text-align: center;">Designing an LRU Cache in Java</h2>
-    <hr>
+<h2 style="text-align: center;">Designing an LRU Cache in Java</h2><br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#Requirements">Requirements </a></li>
+        <li><a href="#LLD">Low-Level Design </a></li>
+        <li><a href="#Sequnece">Sequnece Diagram</a></li>
+        <li><a href="#Code">Code Implementation </a></li>
+        <li><a href="#Explanation">Explanation of Output </a></li>
+        <li><a href="#Considerations">Design Considerations </a></li>
+        <li><a href="#future">Extensions & Future Improvements </a></li>
+    </ol>
+</div>
+<hr>
 
+<div id="Requirements">
     <h5>Requirements:</h5>
     <ul>
         <li><strong>put(key, value):</strong> Inserts a key-value pair, removing the least recently used item if at capacity.</li>
         <li><strong>get(key):</strong> Retrieves the value by key, marks it as most recently used, or returns -1 if the key does not exist.</li>
         <li>The cache should be thread-safe and efficient with O(1) for both operations.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="LLD">
     <h5>Low-Level Design:</h5>
     <ul>
         <li><strong>Data Structures:</strong>
@@ -26,13 +39,20 @@
         </li>
         <li><strong>Thread Safety:</strong> Use a ReentrantLock for synchronization.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="Sequnece">
     <h5>Sequnece Diagram</h5>
+    <ul>
     <img src="../../../images/cache_lld.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-    <hr>
+    </ul>
+</div>
+<hr>
 
+<div id="Code">
     <h5>Code Implementation:</h5>
+    <ul>
 <pre>
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -164,7 +184,7 @@ public class LRUCacheExample {
 }
 </pre>
 
-    <h5>Sample Input and Output:</h5>
+    <b>Sample Input and Output:</b>
     <p>Input:</p>
     <ul>
         <li>Put: (1, 10), (2, 20), (3, 30)</li>
@@ -180,7 +200,10 @@ public class LRUCacheExample {
         <li><code>Get key 5: 50</code></li>
     </ul>
     <hr>
+    </ul>
+</div>
 
+<div id="Explanation">
     <h5>Explanation of the Code:</h5>
     <ul>
         <li>The <code>Node</code> class represents an entry in the cache with pointers for the doubly linked list.</li>
@@ -189,21 +212,25 @@ public class LRUCacheExample {
         <li>The <code>get()</code> method retrieves the value and updates the usage order.</li>
         <li>Thread safety is ensured using a <code>ReentrantLock</code>.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="Considerations">
     <h5>Design Considerations:</h5>
     <ul>
         <li>Used a combination of HashMap and Doubly Linked List for O(1) operations.</li>
         <li>Ensured thread safety for concurrent access.</li>
         <li>Separated responsibilities for data management and usage tracking.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="future">
     <h5>Improvements & Extensions:</h5>
     <ul>
         <li>Support for bulk operations (e.g., bulk put or get).</li>
         <li>Instrumentation to track cache hit/miss rates.</li>
         <li>Custom eviction policies (e.g., MRU, LFU).</li>
     </ul>
-    <hr>
 </div>
+<hr>

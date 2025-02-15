@@ -1,7 +1,18 @@
-<div>
-    <h2 style="text-align: center;">Designing a Parking Lot System</h2>
-    <hr>
+<h2 style="text-align: center;">Designing a Parking Lot System</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#Requirements">Requirements </a></li>
+        <li><a href="#Sequnece">Sequnece Diagram </a></li>
+        <li><a href="#Components">Components </a></li>
+        <li><a href="#Code">Code Implementation </a></li>
+        <li><a href="#Explanation">Design Explanation </a></li>
+        <li><a href="#Considerations">Design Considerations </a></li>
+    </ol>
+</div>
+<hr>
 
+<div id="Requirements">
     <h5>Requirements:</h5>
     <ul>
         <li><strong>R1:</strong> The parking lot must accommodate up to 5,000 vehicles.</li>
@@ -17,12 +28,19 @@
         <li><strong>R11:</strong> Payments can be made by credit/debit card or cash.</li>
     </ul>
     <hr>
+</div>
 
+<div id="Sequnece">
     <h5>Sequnece Diagram</h5>
-    <img src="../../../images/sq-parking.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-    <hr>
+    <ul>    
+        <img src="../../../images/sq-parking.png" alt="cache" style="display: block; margin: auto; width: 100%;">
+    </ul>
+</div>
+<hr>
 
+<div id="Components">
     <h5>Components:</h5>
+    <ul>
     <p>
         The parking lot system can be divided into various components:
         <ul>
@@ -34,9 +52,13 @@
             <li><strong>DisplayBoard:</strong> Displays available parking spots and full status of the parking lot.</li>
         </ul>
     </p>
-    <hr>
+    </ul>
+</div>.
+<hr>
 
+<div id="Code">
     <h5>Code Implementation:</h5>
+    <ul>
 <pre>
 import java.util.ArrayList;
 import java.util.List;
@@ -258,7 +280,11 @@ public class ParkingLotSystem {
     }
 }
 </pre>
+    </ul>
+</div>
 <hr>
+
+<div id="Explanation">
     <h5>Design Explanation:</h5>
     <ul>
         <li><strong>Vehicle:</strong> Represents a vehicle, either a car, truck, van, or motorcycle.</li>
@@ -267,13 +293,15 @@ public class ParkingLotSystem {
         <li><strong>ParkingLot:</strong> Manages the parking spots and parking tickets. It checks if the parking lot is full and assigns spots based on vehicle type.</li>
         <li><strong>DisplayBoard:</strong> Updates the parking availability and shows if the parking lot is full.</li>
     </ul>
-    <hr>
+</div>
+<hr>
 
+<div id="Considerations">
     <h5>Design Considerations:</h5>
     <ul>
         <li><strong>Scalability:</strong> The system is designed to handle up to 5,000 vehicles and multiple spot types.</li>
         <li><strong>Extensibility:</strong> New vehicle types or parking spot types can be added easily by modifying enums and the logic.</li>
         <li><strong>Payment:</strong> The payment system can be extended to handle different payment methods.</li>
     </ul>
-<hr>
 </div>
+<hr>
