@@ -153,19 +153,36 @@ th {
     font-size: 15px;
 }
 
-/* Code Styling */
+/* Code Block Styling */
 pre {
-    background-color: #1e1e1e;
-    color: #f8f8f2;
+    background-color: #1e1e1e; /* Dark background for readability */
+    color: #f8f8f2; /* Light text for contrast */
     padding: 16px;
-    border-left: 5px solid #ffcc00;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Fira Code', monospace; /* Developer-friendly font */
     font-size: 15px;
-    white-space: pre-wrap;
-    overflow-x: auto;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    white-space: pre-wrap; /* Ensures text wraps correctly */
+    word-wrap: break-word; /* Prevents long words from breaking layout */
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
+    border-radius: 6px; /* Soft rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    line-height: 1.6; /* Better readability */
+    max-width: 100%; /* Ensures it doesn't overflow container */
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    pre {
+        font-size: 14px; /* Slightly smaller font for small screens */
+        padding: 12px; /* Adjusted padding */
+    }
+}
+
+/* Ensures text selection looks smooth */
+pre::selection {
+    background: #44475a;
+    color: #ffffff;
+}
+
 
 code {
     background-color: #f5f5f5;
