@@ -1,17 +1,42 @@
-<div>
-    <h3 class="section-title">Understanding Database Choices</h3>
+<h2 style="text-align: center;">Understanding Database Choices</h2>
+<br>
+<div class="custom-container">
+    <b>Based on Structure, Query and Scale</b>
+    <ol>
+        <li><a href="#key">Key Factors for Database Choice</a></li>
+        <li><a href="#caching">Caching Solutions</a></li>
+        <li><a href="#file">File Storage Options</a></li>
+        <li><a href="#Text">Text Search</a></li>
+        <li><a href="#Metrics">Metrics Storage </a></li>
+        <li><a href="#Analytics">Analytics Storage </a></li>
+    </ol>
+    <hr class="thin-line">
+    <b>Based on Scenarios</b>
+    <ol>
+        <li><a href="#structure">Structured vs. Unstructured Data</a></li>
+        <li><a href="#RDBMS">Relational Database (RDBMS) Scenarios</a></li>
+        <li><a href="#NoSQL">Document Database (NoSQL) Scenarios</a></li>
+        <li><a href="#Columnar">Columnar Database Scenarios</a></li>
+        <li><a href="#Combination">Combination of Databases</a></li>
+        <li><a href="#Low">Low-Scale Systems</a></li>
+    </ol>
+    <hr class="thin-line">
+    <li><a href="#conclusion">Conclusion : Key Takeaways</a></li>
+</div>
+<hr>
+    
    
-  <div>
+<div id="key">
     <h5>Key Factors for Database Choice</h5>
     <ul>
       <li><b>Structure of Data</b>: Whether the data is structured or unstructured.</li>
       <li><b>Query Patterns</b>: Type of queries performed, such as random reads, bulk reads, or sequential writes.</li>
       <li><b>Scale Requirements</b>: The scale of data and query loads the system needs to handle.</li>
     </ul>
-  </div>
+</div>
 <hr>
 
-  <div>
+<div id="caching">
     <h5>1. Caching Solutions</h5>
     <ul>
       <li><b>Purpose</b>: Reduce latency and prevent frequent database or remote service calls.</li>
@@ -30,10 +55,10 @@
         </ul>
       </li>
     </ul>
-  </div>
+</div>
 <hr>
 
-  <div>
+<div id="file">
     <h5>2. File Storage Options</h5>
     <ul>
       <li><b>Purpose</b>: Store large binary files like images, videos, and documents.</li>
@@ -51,10 +76,10 @@
         </ul>
       </li>
     </ul>
-  </div>
+</div>
 <hr>
 
-  <div>
+<div id="Text">
     <h5>3. Text Search</h5>
     <ul>
       <li><b>Purpose</b>: Provide efficient text-based search capabilities.</li>
@@ -79,10 +104,10 @@
         </ul>
       </li>
     </ul>
-  </div>
+</div>
 <hr>
 
-  <div>
+<div id="Metrics">
     <h5>4. Metrics Storage</h5>
     <ul>
       <li><b>Purpose</b>: Store and analyze application metrics like latency, CPU usage, etc.</li>
@@ -102,7 +127,7 @@
   </div>
 <hr>
 
-  <div>
+<div id="Analytics">
     <h5>5. Analytics Storage</h5>
     <ul>
       <li><b>Purpose</b>: Perform analytics on large datasets for insights and reporting.</li>
@@ -120,14 +145,12 @@
         </ul>
       </li>
     </ul>
-  </div>
 </div>
 <hr>
 
-<div>
-    <h3 class="section-title">Database Choice Based on Scenarios</h3>
+
   
-  <div>
+<div id="structure">
     <h5>1. Structured vs. Unstructured Data</h5>
     <ul>
       <li><b>Structured Data</b>: Relational databases are suitable when data can be modeled in tables with rows and columns (e.g., user profiles).</li>
@@ -136,7 +159,7 @@
   </div>
 <hr>
 
-  <div>
+  <div id="RDBMS">
     <h5>2. Relational Database (RDBMS) Scenarios</h5>
     <ul>
       <li><b>ACID Guarantees</b>: Required for applications like:
@@ -151,7 +174,7 @@
   </div>
 <hr>
 
-  <div>
+  <div id="NoSQL">
     <h5>3. Document Database (NoSQL) Scenarios</h5>
     <ul>
       <li><b>Purpose</b>: Handles wide variety of attributes and queries efficiently.</li>
@@ -166,7 +189,7 @@
   </div>
 <hr>
 
-  <div>
+  <div id="Columnar">
     <h5>4. Columnar Database Scenarios</h5>
     <ul>
       <li><b>Purpose</b>: Manages ever-increasing data with few query types but high volume.</li>
@@ -176,7 +199,7 @@
   </div>
 <hr>
 
-  <div>
+  <div id="Combination">
     <h5>5. Combination of Databases</h5>
     <ul>
       <li><b>Real-World Scenarios</b>: Often require multiple databases for specific needs:
@@ -196,7 +219,7 @@
   </div>
 <hr>
 
-  <div>
+  <div id="Low">
     <h5>6. Low-Scale Systems</h5>
     <ul>
       <li>If the system has a small dataset, few attributes, and limited queries, any database can be used.</li>
@@ -205,8 +228,8 @@
   </div>
 <hr>
 
-  <div>
-    <h5>7. Key Takeaways</h5>
+  <div id="conclusion">
+    <h5>Conclusion : Key Takeaways</h5>
     <ul>
       <li>Understand the structure of data (structured vs. unstructured).</li>
       <li>Identify if ACID guarantees are required for transactions.</li>

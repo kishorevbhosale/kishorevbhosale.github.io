@@ -1,183 +1,187 @@
-<div class="container">
+<h2 style="text-align: center;">Database</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#db-file">Why Choose Databases Over File Storage?</a></li>
+        <li><a href="#Essential">Why Databases Are Essential for Businesses?</a></li>
+        <li><a href="#Relational">What is a Relational Database? </a></li>
+        <li><a href="#Non-Relational">What is a Non-Relational Database? </a></li>
+        <li><a href="#Replication">What is Data Replication?</a></li>
+        <li><a href="#Partition">What is Data Partition/Sharding</a></li>
+        <li><a href="#Clustered">Clustered and Non-Clustered Indexes</a></li>
+        <li><a href="#diff">Comparison of Clustered vs. Non-Clustered Index</a></li>
+    </ol>
+</div>
+<hr>
 
-        <div class="content">
-            <h3 class="section-title">Database</h3>
-            <h3>Why Choose Databases Over File Storage?</h3>
-            <p>Yes, it's possible to create a software application without using databases by storing data in files.<br> 
-                <BR>
-                <img src="../../images/db2.PNG" class="responsive-image">
-                However, this approach has significant limitations:
-                <ul>
-                    <li><b>Concurrency: </b>Managing multiple users accessing the same file from different locations can lead to data corruption.</li>
-                    <li><b>Access Control: </b>It's difficult to enforce different access rights for different users.</li>
-                    <li><b>Scalability: </b>As the number of entries grows, performance declines, making it hard to scale.</li>
-                    <li><b>Search Efficiency: </b>Retrieving specific user data becomes slow and inefficient as the file size increases.</li>
-                </ul>
-                These limitations make databases a better choice for applications that require reliable, scalable, and efficient data management.
-            </p>
-            <h5>There are two basic types of databases:</h5>
-                <ul>
-                    <li>SQL (relational databases)</li>
-                    <li>NoSQL (non-relational databases)</li>
-                </ul>
-            <hr>
+<div id="db-file">
+    <h5>Why Choose Databases Over File Storage?</h5>
+    <p>Yes, it's possible to create a software application without using databases by storing data in files.<br>         
+        However, this approach has significant limitations:
+        <ul>
+            <li><b>Concurrency: </b>Managing multiple users accessing the same file from different locations can lead to data corruption.</li>
+            <li><b>Access Control: </b>It's difficult to enforce different access rights for different users.</li>
+            <li><b>Scalability: </b>As the number of entries grows, performance declines, making it hard to scale.</li>
+            <li><b>Search Efficiency: </b>Retrieving specific user data becomes slow and inefficient as the file size increases.</li>
+        </ul>
+        These limitations make databases a better choice for applications that require reliable, scalable, and efficient data management.
+    </p>
+    <b>There are two basic types of databases:</b>
+    <ul>
+        <li>SQL (relational databases)</li>
+        <li>NoSQL (non-relational databases)</li>
+    </ul>
+</div>
+<hr>
 
-            <h3>Why Databases Are Essential for Businesses?</h3>
-            
-            <p><ol>
-                <li><b>Handling Large Data: </b>Databases manage large volumes of data effectively, which is challenging with other tools.</li>
-                <li><b>Accurate Data Retrieval: </b>Databases use constraints to ensure you get accurate and consistent data whenever needed.</li>
-                <li><b>Easy Updates: </b>Updating data is straightforward with databases using Data Manipulation Language (DML).</li>
-                <li><b>Security: </b>Databases protect data by allowing access only to authorized users.</li>
-                <li><b>Data Integrity: </b>Databases maintain data accuracy and consistency through various constraints.</li>
-                <li><b>Availability: </b>Databases can be replicated across servers, ensuring data is always available and up-to-date.</li>
-                <li><b>Scalability: </b>Databases can be partitioned to manage large amounts of data across multiple nodes, enhancing scalability.</li>
-            </ol>
-            </p>
-           
-            <hr>
+<div id="Essential">
+    <h5>Why Databases Are Essential for Businesses?</h5>
+    <ol>
+        <li><b>Handling Large Data: </b>Databases manage large volumes of data effectively, which is challenging with other tools.</li>
+        <li><b>Accurate Data Retrieval: </b>Databases use constraints to ensure you get accurate and consistent data whenever needed.</li>
+        <li><b>Easy Updates: </b>Updating data is straightforward with databases using Data Manipulation Language (DML).</li>
+        <li><b>Security: </b>Databases protect data by allowing access only to authorized users.</li>
+        <li><b>Data Integrity: </b>Databases maintain data accuracy and consistency through various constraints.</li>
+        <li><b>Availability: </b>Databases can be replicated across servers, ensuring data is always available and up-to-date.</li>
+        <li><b>Scalability: </b>Databases can be partitioned to manage large amounts of data across multiple nodes, enhancing scalability.</li>
+    </ol>
+</div>
+<hr>
 
-            <h3>What is a Relational Database?</h3>
-            <p>A relational database is a type of database that organizes data into tables (relations) which can be linked—or related—based on common data attributes. Each table consists of rows (records) and columns (attributes), and relationships between tables are established using keys.</p>
-                
-                <h5>Why Relational Databases?</h5>
-                
-                <ul>
-                    <li><b>Structured Data:</b> Data is organized into tables with predefined schemas, making it easy to understand and manage.</li>
-                    <li><b>Flexibility: </b>In SQL, Data Definition Language (DDL) lets us easily modify the database, like changing tables or columns, even while the server is running and handling other queries.</li>
-                    <li><b>Concurrency: </b>Concurrency in databases ensures data consistency when many users access it simultaneously, using transactions to handle operations atomically and prevent issues like double bookings.</li>
-                    <li><b>Data Integrity:</b> Relationships between tables ensure data accuracy and reduce redundancy.</li>
-                    <li><b>Efficient Querying:</b> SQL (Structured Query Language) is used for complex queries, allowing for efficient data retrieval and manipulation.</li>
-                </ul>
-                
-            
-                <h5>ACID Properties</h5>
-                
-                <p>Relational databases ensure data reliability through the ACID properties:</p>
-                <ul>
-                    <li><b>Atomicity:</b> Transactions are all-or-nothing; if one part fails, the entire transaction is rolled back.</li>
-                    <li><b>Consistency:</b> Transactions bring the database from one valid state to another, maintaining database rules and constraints.</li>
-                    <li><b>Isolation:</b> Concurrent transactions do not interfere with each other, ensuring data integrity.</li>
-                    <li><b>Durability:</b> Once a transaction is committed, it remains permanent, even in case of system failures.</li>
-                </ul>
-                
-            
-                <h5>Examples</h5>
-                <div class="example">
-                <ul>
-                    <li><b>MySQL:</b> A popular open-source relational database used for web applications.</li>
-                    <li><b>PostgreSQL:</b> An open-source database known for its advanced features and standards compliance.</li>
-                    <li><b>Oracle Database:</b> A commercial database offering robust features for enterprise environments.</li>
-                </ul>
-                </div>
-            
-                <h5>Drawbacks</h5>
-                
-                <ul>
-                    <li><b>Scalability Issues:</b> Relational databases can struggle with very large datasets or high transaction volumes, often requiring complex scaling solutions.</li>
-                    <li><b>Complex Queries:</b> Handling complex queries across multiple tables can be resource-intensive and impact performance.</li>
-                    <li><b>Schema Rigidity:</b> Changes to the database schema (structure) can be challenging and disruptive.</li>
-                </ul>
-                
-            <br>
-            <img src="../../images/db.PNG" class="responsive-image">
-            <hr>
-           
-            <h3>What is a Non-Relational Database?</h3>
-                <p>A non-relational database, often referred to as NoSQL (Not Only SQL), is a type of database that stores and manages data in formats other than the traditional tabular structure used in relational databases. Non-relational databases are designed to handle large volumes of unstructured, semi-structured, or rapidly changing data, providing more flexibility and scalability compared to traditional relational databases.</p>
-                
-                <h5>Key Characteristics of Non-Relational Databases:</h5>
-                
-                    <ul>    
-                            <li><b>Flexible Schema:</b>
-                                <ul>
-                                    <li>Non-relational databases do not require a fixed schema, meaning data structures can be modified without downtime or complex migrations.</li>
-                                    <li>This flexibility allows for the storage of data in various formats, such as documents, key-value pairs, graphs, or wide-column stores.</li>
-                                </ul>
-                            </li>
-                            
-                        <li><b>Data Models:</b>
-                            <ul>
-                                <li><b>Document Stores:</b> Store data as JSON, BSON, or XML documents. Each document can have a unique structure.
-                                    <br><em>Example:</em> MongoDB, CouchDB.</li>
-                                <li><b>Key-Value Stores:</b> Data is stored as a collection of key-value pairs, where each key is unique and used to retrieve its corresponding value.
-                                    <br><em>Example:</em> Redis, DynamoDB.</li>
-                                <li><b>Column-Family Stores:</b> Data is stored in columns rather than rows, allowing for efficient retrieval of large datasets.
-                                    <br><em>Example:</em> Cassandra, HBase.</li>
-                                <li><b>Graph Databases:</b> Data is stored in nodes and edges, representing entities and their relationships, respectively.
-                                    <br><em>Example:</em> Neo4j, ArangoDB.</li>
-                            </ul>
-                        </li>
-                       
-                        <li><b>Horizontal Scalability:</b>
-                            <ul>
-                                <li>Non-relational databases are designed to scale out horizontally by distributing data across multiple servers or nodes.</li>
-                                <li>This is particularly useful for applications that require handling massive amounts of data or high traffic, as additional nodes can be added to the cluster to manage the load.</li>
-                            </ul>
-                        </li>
-                        
-                        <li><b>High Performance and Availability:</b>
-                            <ul>
-                                <li>Non-relational databases often prioritize performance and availability, making them suitable for real-time applications.</li>
-                                <li>Many NoSQL databases offer features like replication and sharding to ensure data is highly available and resilient to failures.</li>
-                            </ul>
-                        </li>
-                        
-                        <li><b>Handling Unstructured Data:</b>
-                            <ul>
-                                <li>These databases excel in managing unstructured or semi-structured data, such as logs, social media posts, IoT data, or multimedia files, which do not fit neatly into a relational table.</li>
-                            </ul>
-                        </li>
+<div id="Relational">
+    <h5>What is a Relational Database?</h5>
+        <p>A relational database is a type of database that organizes data into tables (relations) which can be linked—or related—based on common data attributes. Each table consists of rows (records) and columns (attributes), and relationships between tables are established using keys.</p>
+        <hr class="thin-line">
+        <b>Why Relational Databases?</b>
+        <ul>
+            <li><b>Structured Data:</b> Data is organized into tables with predefined schemas, making it easy to understand and manage.</li>
+            <li><b>Flexibility: </b>In SQL, Data Definition Language (DDL) lets us easily modify the database, like changing tables or columns, even while the server is running and handling other queries.</li>
+            <li><b>Concurrency: </b>Concurrency in databases ensures data consistency when many users access it simultaneously, using transactions to handle operations atomically and prevent issues like double bookings.</li>
+            <li><b>Data Integrity:</b> Relationships between tables ensure data accuracy and reduce redundancy.</li>
+            <li><b>Efficient Querying:</b> SQL (Structured Query Language) is used for complex queries, allowing for efficient data retrieval and manipulation.</li>
+        </ul>
+        <hr class="thin-line">
+        <b>ACID Properties</b>
+        <p>Relational databases ensure data reliability through the ACID properties:</p>
+        <ul>
+            <li><b>Atomicity:</b> Transactions are all-or-nothing; if one part fails, the entire transaction is rolled back.</li>
+            <li><b>Consistency:</b> Transactions bring the database from one valid state to another, maintaining database rules and constraints.</li>
+            <li><b>Isolation:</b> Concurrent transactions do not interfere with each other, ensuring data integrity.</li>
+            <li><b>Durability:</b> Once a transaction is committed, it remains permanent, even in case of system failures.</li>
+        </ul>
+        <hr class="thin-line">
+        <b>Examples</b>
+        <ul>
+            <li><b>MySQL:</b> A popular open-source relational database used for web applications.</li>
+            <li><b>PostgreSQL:</b> An open-source database known for its advanced features and standards compliance.</li>
+            <li><b>Oracle Database:</b> A commercial database offering robust features for enterprise environments.</li>
+        </ul>
+        <hr class="thin-line">
+        <b>Drawbacks</b>
+        <ul>
+            <li><b>Scalability Issues:</b> Relational databases can struggle with very large datasets or high transaction volumes, often requiring complex scaling solutions.</li>
+            <li><b>Complex Queries:</b> Handling complex queries across multiple tables can be resource-intensive and impact performance.</li>
+            <li><b>Schema Rigidity:</b> Changes to the database schema (structure) can be challenging and disruptive.</li>
+        </ul>
+</div>
+<hr>
+
+<div id="Non-Relational">
+    <h5>What is a Non-Relational Database?</h5>
+    <p>A non-relational database, often referred to as NoSQL (Not Only SQL), is a type of database that stores and manages data in formats other than the traditional tabular structure used in relational databases. Non-relational databases are designed to handle large volumes of unstructured, semi-structured, or rapidly changing data, providing more flexibility and scalability compared to traditional relational databases.</p>
+    <hr class="thin-line">
+    <b>Key Characteristics of Non-Relational Databases:</b>
+    <ul>    
+                <li><b>Flexible Schema:</b>
+                    <ul>
+                        <li>Non-relational databases do not require a fixed schema, meaning data structures can be modified without downtime or complex migrations.</li>
+                        <li>This flexibility allows for the storage of data in various formats, such as documents, key-value pairs, graphs, or wide-column stores.</li>
                     </ul>
-            
-
-            <h5>Examples of Non-Relational Databases:</h5>
-
-            <div class="example">
-                <img src="../../images/db1.PNG" class="responsive-image">
-            </div>
-
-            <h5>Advantages of Non-Relational Databases:</h5>
-            
-            <ul>
-                <li><b>Scalability:</b> Easily scale horizontally by adding more servers to distribute the load.</li>
-                <li><b>Flexibility:</b> No need for a predefined schema, allowing the database to evolve with changing application needs.</li>
-                <li><b>Performance:</b> Optimized for specific data models and use cases, often providing faster data retrieval for particular workloads.</li>
-                <li><b>Handling Large Volumes of Data:</b> Ideal for applications that generate large amounts of unstructured or semi-structured data.</li>
-                <li><b>Cost-Effective:</b> Many NoSQL databases are open-source and can be run on commodity hardware, reducing infrastructure costs.</li>
-            </ul>
-            
-            
-            <h5>Drawbacks of Non-Relational Databases:</h5>
-            
-            <ul>
-                <li><b>Lack of ACID Compliance:</b> Many NoSQL databases sacrifice ACID properties (Atomicity, Consistency, Isolation, Durability) for performance and scalability, which might not be suitable for all applications.</li>
-                <li><b>Complexity:</b> The flexibility and scalability of non-relational databases can add complexity in terms of data modeling, consistency management, and query optimization.</li>
-                <li><b>Limited Querying Capabilities:</b> Non-relational databases often lack the sophisticated querying capabilities of SQL, making complex queries more challenging to perform.</li>
-                <li><b>Eventual Consistency:</b> In distributed systems, non-relational databases may offer eventual consistency, meaning that data might not be immediately consistent across all nodes after an update.</li>
-            </ul>
-        
-        <hr>
-        <h3>Data Replication:</h3>
-            <h5>Replication:</h5>
+                </li>
+                
+            <li><b>Data Models:</b>
                 <ul>
-                    <li>The process of copying data across multiple servers or locations to improve reliability, availability, and performance.</li>
-                    <li>Ensures fault tolerance and faster data access for distributed systems.</li>
+                    <li><b>Document Stores:</b> Store data as JSON, BSON, or XML documents. Each document can have a unique structure.
+                        <br><em>Example:</em> MongoDB, CouchDB.</li>
+                    <li><b>Key-Value Stores:</b> Data is stored as a collection of key-value pairs, where each key is unique and used to retrieve its corresponding value.
+                        <br><em>Example:</em> Redis, DynamoDB.</li>
+                    <li><b>Column-Family Stores:</b> Data is stored in columns rather than rows, allowing for efficient retrieval of large datasets.
+                        <br><em>Example:</em> Cassandra, HBase.</li>
+                    <li><b>Graph Databases:</b> Data is stored in nodes and edges, representing entities and their relationships, respectively.
+                        <br><em>Example:</em> Neo4j, ArangoDB.</li>
                 </ul>
-            <h5>Synchronous vs Asynchronous Replication</h5>
+            </li>
+           
+            <li><b>Horizontal Scalability:</b>
                 <ul>
-                    <li>Synchronous Replication: Updates are applied to all replicas simultaneously, ensuring consistency but with higher latency.</li>
-                    <li>Asynchronous Replication: Updates are applied to the primary first and propagated to replicas later, allowing lower latency but with potential for temporary inconsistencies.</li>
+                    <li>Non-relational databases are designed to scale out horizontally by distributing data across multiple servers or nodes.</li>
+                    <li>This is particularly useful for applications that require handling massive amounts of data or high traffic, as additional nodes can be added to the cluster to manage the load.</li>
                 </ul>
-            <h5>Data Replication Models</h5>
+            </li>
+            
+            <li><b>High Performance and Availability:</b>
+                <ul>
+                    <li>Non-relational databases often prioritize performance and availability, making them suitable for real-time applications.</li>
+                    <li>Many NoSQL databases offer features like replication and sharding to ensure data is highly available and resilient to failures.</li>
+                </ul>
+            </li>
+            
+            <li><b>Handling Unstructured Data:</b>
+                <ul>
+                    <li>These databases excel in managing unstructured or semi-structured data, such as logs, social media posts, IoT data, or multimedia files, which do not fit neatly into a relational table.</li>
+                </ul>
+            </li>
+    </ul>
+    <hr class="thin-line">
+    <b>Examples of Non-Relational Databases:</b>
+    <img src="../../images/db1.PNG" class="responsive-image">
+    <br>
+    <hr class="thin-line">
+    <b>Advantages of Non-Relational Databases:</b>
+    <ul>
+        <li><b>Scalability:</b> Easily scale horizontally by adding more servers to distribute the load.</li>
+        <li><b>Flexibility:</b> No need for a predefined schema, allowing the database to evolve with changing application needs.</li>
+        <li><b>Performance:</b> Optimized for specific data models and use cases, often providing faster data retrieval for particular workloads.</li>
+        <li><b>Handling Large Volumes of Data:</b> Ideal for applications that generate large amounts of unstructured or semi-structured data.</li>
+        <li><b>Cost-Effective:</b> Many NoSQL databases are open-source and can be run on commodity hardware, reducing infrastructure costs.</li>
+    </ul>
+    <hr class="thin-line">
+    <b>Drawbacks of Non-Relational Databases:</b>
+    <ul>
+        <li><b>Lack of ACID Compliance:</b> Many NoSQL databases sacrifice ACID properties (Atomicity, Consistency, Isolation, Durability) for performance and scalability, which might not be suitable for all applications.</li>
+        <li><b>Complexity:</b> The flexibility and scalability of non-relational databases can add complexity in terms of data modeling, consistency management, and query optimization.</li>
+        <li><b>Limited Querying Capabilities:</b> Non-relational databases often lack the sophisticated querying capabilities of SQL, making complex queries more challenging to perform.</li>
+        <li><b>Eventual Consistency:</b> In distributed systems, non-relational databases may offer eventual consistency, meaning that data might not be immediately consistent across all nodes after an update.</li>
+    </ul>
+</div>
+<hr>
+
+<div id="Replication">
+    <h5>What is Data Replication?</h5>
+        <b>Replication:</b>
+            <ul>
+                <li>The process of copying data across multiple servers or locations to improve reliability, availability, and performance.</li>
+                <li>Ensures fault tolerance and faster data access for distributed systems.</li>
+            </ul>
+        <hr class="thin-line">
+
+        <b>Synchronous vs Asynchronous Replication</b>
+            <ul>
+                <li>Synchronous Replication: Updates are applied to all replicas simultaneously, ensuring consistency but with higher latency.</li>
+                <li>Asynchronous Replication: Updates are applied to the primary first and propagated to replicas later, allowing lower latency but with potential for temporary inconsistencies.</li>
+            </ul>
+        <hr class="thin-line">
+
+        <b>Data Replication Models</b>
             Describes how data is copied and maintained in the system. Common models include:
-                <ul>
-                    <li>Single Leader (Primary-Secondary) Replication</li>
-                    <li>Multi-Leader Replication</li>
-                    <li>Leaderless (Peer-to-Peer) Replication</li>
-                </ul>
-        
-            <h5>Single Leader (Primary-Secondary) Replication</h5>
+            <ul>
+                <li>Single Leader (Primary-Secondary) Replication</li>
+                <li>Multi-Leader Replication</li>
+                <li>Leaderless (Peer-to-Peer) Replication</li>
+            </ul>
+        <hr class="thin-line">
+
+        <b>Single Leader (Primary-Secondary) Replication</b>
             <ol>
                 <li>Primary-Secondary Replication</li>
                 <ul>
@@ -191,214 +195,236 @@
                     <li>Logical (Row-Based) Replication: Replicates only the modified rows rather than the entire operation.</li>
                 </ul>
             </ol>
-            
+        <hr class="thin-line">
 
-            <h5>Multi-Leader Replication</h5>
+        <b>Multi-Leader Replication</b>
+        <ul>
+            <li>Multiple nodes act as leaders and handle both read and write operations.</li>
+            <li>Updates are propagated among all leaders, increasing availability but requiring conflict resolution.</li>
+            <li><b>Last-Write-Wins (LWW):</b> The system resolves conflicts by keeping the most recent write based on a timestamp.</li>
+        </ul>
+        <hr class="thin-line">
+
+        <b>Leaderless (Peer-to-Peer) Replication</b>
+        <ul>
+            <li>No single leader; all nodes are equal and can handle read/write operations.</li>
+            <li>Updates are propagated to a subset or all nodes based on system configuration.</li>
+        </ul>
+</div>
+<hr>
+
+<div id="Partition">
+    <h5>What is Data Partition/Sharding</h5>
+
+    <b>What is Database Sharding</b>
+        <ul>
+            <li>To divide load among multiple nodes, we need to partition the data by a phenomenon known as <b>partitioning or sharding</b>.</li> 
+            <li>The partitioning must be balanced so that each partition receives about the same amount of data.</li>
+            <li>If partitioning is unbalanced, the majority of queries will fall into a few partitions.</li>
+            <li>Partitions that are heavily loaded will create a system bottleneck.</li>
+            <li>The efficacy of partitioning will be harmed because a significant portion of data retrieval queries will be sent to the nodes that carry the highly congested partitions. Such partitions are known as hotspots. </li>
+            <li>Generally, we use the following two ways to shard the data:</li>
             <ul>
-                <li>Multiple nodes act as leaders and handle both read and write operations.</li>
-                <li>Updates are propagated among all leaders, increasing availability but requiring conflict resolution.</li>
-                <li><b>Last-Write-Wins (LWW):</b> The system resolves conflicts by keeping the most recent write based on a timestamp.</li>
+                <li>Vertical sharding</li>
+                <li>Horizontal sharding</li>
             </ul>
+            <li>Patitioning enables efficient query execution, load balancing, and fault tolerance in distributed systems.</li>
+            <li>Partitioning splits large datasets into smaller, manageable pieces to improve performance and scalability.</li>
+        </ul>
+    <hr class="thin-line">
 
-            <h5>Leaderless (Peer-to-Peer) Replication</h5>
-            <ul>
-                <li>No single leader; all nodes are equal and can handle read/write operations.</li>
-                <li>Updates are propagated to a subset or all nodes based on system configuration.</li>
-            </ul>
-        <hr>
+    <b>Vertical Sharding</b>
+        <ul>
+            <li>Data is split by columns (fields) where specific tables or fields are assigned to different shards.</li>
+            <li>If there are joins between multiple tables then its good to keep such tables together on one shard.</li>
+            <li>Example: User profiles on one shard, transactions on another.</li>
+            <li>Databases : Salesforce, SAPA HANA</li>
+            <img src="../../images/vertical_partition.png" class="responsive-image"><br>
+            <li>Primary key <b>EmployeeID</b> of the Employee table is added in both partitioned tables. This makes the data read and write easier, and the reconstruction of the table is performed efficiently.</li>
+        </ul>
+    <hr class="thin-line">
 
-        <div>
-            <h3>Data Partition/Sharding</h3>
-
-            <h5>What is Database Sharding</h5>
+    <b>Horizontal Sharding</b>
+        <ul>
+            <li>Data is split by rows where specific subsets of data are distributed across shards.</li>
+            <li>Example: User IDs 1-1000 on one shard, 1001-2000 on another.</li>
+            <li>Database : MySQL with Sharding, MongoDB, Cassandra, DynamoDB </li>
+            <li>there are two strategies available:</li>
             <ul>
-                <li>To divide load among multiple nodes, we need to partition the data by a phenomenon known as <b>partitioning or sharding</b>.</li> 
-                <li>The partitioning must be balanced so that each partition receives about the same amount of data.</li>
-                <li>If partitioning is unbalanced, the majority of queries will fall into a few partitions.</li>
-                <li>Partitions that are heavily loaded will create a system bottleneck.</li>
-                <li>The efficacy of partitioning will be harmed because a significant portion of data retrieval queries will be sent to the nodes that carry the highly congested partitions. Such partitions are known as hotspots. </li>
-                <li>Generally, we use the following two ways to shard the data:</li>
-                <ul>
-                    <li>Vertical sharding</li>
-                    <li>Horizontal sharding</li>
-                </ul>
-                <li>Patitioning enables efficient query execution, load balancing, and fault tolerance in distributed systems.</li>
-                <li>Partitioning splits large datasets into smaller, manageable pieces to improve performance and scalability.</li>
-            </ul>
-
-            <h5>Vertical Sharding</h5>
-            <ul>
-              <li>Data is split by columns (fields) where specific tables or fields are assigned to different shards.</li>
-              <li>If there are joins between multiple tables then its good to keep such tables together on one shard.</li>
-              <li>Example: User profiles on one shard, transactions on another.</li>
-              <li>Databases : Salesforce, SAPA HANA</li>
-              <img src="../../images/vertical_partition.png" class="responsive-image">
-              <li>Primary key <b>EmployeeID</b> of the Employee table is added in both partitioned tables. This makes the data read and write easier, and the reconstruction of the table is performed efficiently.</li>
-            </ul>
-          
-            <h5>Horizontal Sharding</h5>
-            <ul>
-              <li>Data is split by rows where specific subsets of data are distributed across shards.</li>
-              <li>Example: User IDs 1-1000 on one shard, 1001-2000 on another.</li>
-              <li>Database : MySQL with Sharding, MongoDB, Cassandra, DynamoDB </li>
-              <li>there are two strategies available:</li>
-              <ul>
                 <li><b>Key-range based sharding</b></li>
                 <li><b>Hash based sharding</b></li>
-              </ul>
-                
-                
             </ul>
-          
-            <h5>Key-Range Based Sharding</h5>
-            <ul>
-              <li>Data is partitioned based on a specific range of values for a key.</li>
-              <li>Advantages: Simple and intuitive design.</li>
-              <li>Disadvantages: Can lead to uneven load distribution (hotspots).</li>
-              <img src="../../images/horizontal_partitiong.png" class="responsive-image">
+        </ul>
+    <hr class="thin-line">
 
-              
-            </ul>
-          
-            <h5>Hash-Based Sharding</h5>
-            <ul>
-              <li>Data is distributed based on the hash value of a key.</li>
-              <li>Advantages: Even load distribution and avoids hotspots.</li>
-              <li>Disadvantages: Difficult to handle dynamic scaling or rebalancing.</li>
-              <img src="../../images/hash_sharding.png" class="responsive-image">
-            </ul>
-          
-            <h5>Consistent Hashing</h5>
-            <ul>
-              <li>Partitions data using a hash function that maps data to a ring of nodes.</li>
-              <li>Advantages:
+    <b>Key-Range Based Sharding</b>
+        <ul>
+            <li>Data is partitioned based on a specific range of values for a key.</li>
+            <li>Advantages: Simple and intuitive design.</li>
+            <li>Disadvantages: Can lead to uneven load distribution (hotspots).</li><br>
+            <img src="../../images/horizontal_partitiong.png" class="responsive-image">
+        </ul>
+    <hr class="thin-line">
+  
+    <b>Hash-Based Sharding</b>
+        <ul>
+            <li>Data is distributed based on the hash value of a key.</li>
+            <li>Advantages: Even load distribution and avoids hotspots.</li>
+            <li>Disadvantages: Difficult to handle dynamic scaling or rebalancing.</li><br>
+            <img src="../../images/hash_sharding.png" class="responsive-image">
+        </ul>
+    <hr class="thin-line">
+  
+    <b>Consistent Hashing</b>
+        <ul>
+            <li>Partitions data using a hash function that maps data to a ring of nodes.</li>
+            <li>Advantages:
                 <ul>
-                  <li>Minimizes data movement when nodes are added or removed.</li>
-                  <li>Ensures a balanced distribution of data across nodes.</li>
+                <li>Minimizes data movement when nodes are added or removed.</li>
+                <li>Ensures a balanced distribution of data across nodes.</li>
                 </ul>
-              </li>
-              <li>Disadvantages:
+            </li>
+            <li>Disadvantages:
                 <ul>
-                  <li>Can be complex to implement.</li>
-                  <li>May require additional systems like virtual nodes for balancing.</li>
+                <li>Can be complex to implement.</li>
+                <li>May require additional systems like virtual nodes for balancing.</li>
                 </ul>
-              </li>
-            </ul>
-          
-            <h5>Rebalance the Partitions</h5>
-            <ul>
-              <li>Redistribute data when nodes are added or removed to ensure balanced load.</li>
-              <li>Strategies:
+            </li>
+        </ul>
+    <hr class="thin-line">
+  
+    <b>Rebalance the Partitions</b>
+        <ul>
+            <li>Redistribute data when nodes are added or removed to ensure balanced load.</li>
+            <li>Strategies:
                 <ul>
-                  <li>Avoid hash mod n: Prevents hash function changes with node count changes.</li>
-                  <li>Fixed number of partitions: Predefine partitions and map them to nodes.</li>
-                  <li>Dynamic partitioning: Adjust partitions dynamically based on load.</li>
-                  <li>Partition proportionally to nodes: Scale partitions relative to node capacity.</li>
+                <li>Avoid hash mod n: Prevents hash function changes with node count changes.</li>
+                <li>Fixed number of partitions: Predefine partitions and map them to nodes.</li>
+                <li>Dynamic partitioning: Adjust partitions dynamically based on load.</li>
+                <li>Partition proportionally to nodes: Scale partitions relative to node capacity.</li>
                 </ul>
-              </li>
-            </ul>
-          
-            <h5>Partitioning and Secondary Indexes</h5>
-            <ul>
-              <li>Secondary indexes must be partitioned to align with data partitions.</li>
-              <li>Strategies:
+            </li>
+        </ul>
+    <hr class="thin-line">
+  
+    <b>Partitioning and Secondary Indexes</b>
+        <ul>
+            <li>Secondary indexes must be partitioned to align with data partitions.</li>
+            <li>Strategies:
                 <ul>
-                  <li>Partition secondary indexes by document: Indexes stored with their associated data.</li>
-                  <li>Partition secondary indexes by the term: Indexes stored independently for faster lookups.</li>
+                <li>Partition secondary indexes by document: Indexes stored with their associated data.</li>
+                <li>Partition secondary indexes by the term: Indexes stored independently for faster lookups.</li>
                 </ul>
-              </li>
-            </ul>
-          
-            <h5>Request Routing</h5>
-            <ul>
-              <li>Routes queries to the correct partition or shard.</li>
-              <li>Tools like ZooKeeper help manage metadata and routing in distributed systems.</li>
-            </ul>
-          </div>
-
-        <hr>
-
-        <h3>Clustered and Non-Clustered Indexes</h3>
-
-        <p>Indexes in relational databases improve the speed of data retrieval. The two most common types of indexes are <b>Clustered Indexes</b> and <b>Non-Clustered Indexes</b>. Let's explore the differences between them with examples.</p>
-
-            <h5>1. Clustered Index in Relational Database</h5>
-            <p>A <b>Clustered Index</b> sorts and stores the data rows of the table based on the indexed column(s). Since the data is physically sorted in the order of the index, each table can only have one clustered index.</p>
-    
-            
-            <pre>
-                CREATE TABLE Employees (
-                EmployeeID INT PRIMARY KEY,
-                Name VARCHAR(100),
-                Department VARCHAR(50)
-                );
-            
-    
-                -- Creating a Clustered Index on the EmployeeID column (usually created by default for PRIMARY KEY)
-                CREATE CLUSTERED INDEX idx_EmployeeID ON Employees (EmployeeID);
-            </pre>
-            
-            <p>In this case, the table's data rows will be sorted by the <b><em>EmployeeID</em></b>, and the index itself holds the data. The data is physically reordered to match the index.</p>
-            <br>
-            <h5>2. Clustered Index in Non-Relational Database</h5>
-
-                <p>A <b>clustered index</b> determines the physical order of the data in the database. In a clustered index, the data is stored directly within the index structure. This type of index ensures that records are physically ordered based on the indexed field, which improves the performance of range queries.</p>
-
-                <div class="example">
-                    In MongoDB, the <b><em>_id</em></b> field is automatically indexed as a clustered index. This ensures that documents are stored in the order of their <b><em>_id</em></b> values. When querying based on <b><em>_id</em></b>, MongoDB can quickly locate and retrieve the relevant document due to the sorted nature of the index.
-                </div>
-            <br>
-            <h5>3. Non-Clustered Index in Relational Database</h5>
-            <p>A <b>Non-Clustered Index</b> does not affect the physical ordering of the data in the table. Instead, it creates a separate structure that holds the index and includes a pointer (reference) to the data rows. You can create multiple non-clustered indexes on a table.</p>
-            <div class="example">
-                -- Creating a Non-Clustered Index on the Name column
-                CREATE NONCLUSTERED INDEX idx_Name ON Employees (Name);
-            </div>
-            
-
-            <h5>4. Non-Clustered Index in Non-Relational Database</h2>
-
-                <p>A <b>non-clustered index</b> is separate from the actual data storage. It contains a sorted list of key values along with pointers (references) to the actual data. The data itself is not stored in any specific order, but the index helps in quickly locating the data associated with the indexed field.</p>
-
-                <div class="example">
-                    In MongoDB, you can create a non-clustered index on any field. For instance, if you create an index on the <b><em>username</em></b> field in a collection, the index stores sorted <b><em>username</em></b> values and pointers to the respective documents. This improves search performance on the <b><em>username</em></b> field without affecting the document's physical storage order.
-                </div>
-            
-            <p>In this example, the <b><em>Name</em></b> column is indexed in a separate structure. The actual data is still stored in the order of the clustered index (or the order in which it was inserted), but this index helps with faster lookups based on the <b><em>Name</em></b>.</p>
-            <hr>
-            <h5>Comparison of Clustered vs. Non-Clustered Index</h5>
-        
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>Clustered Index</th>
-                            <th>Non-Clustered Index</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Data Storage</td>
-                            <td>Physically reorders the table's rows to match the index.</td>
-                            <td>Stores a separate index structure with a pointer to the actual data rows.</td>
-                        </tr>
-                        <tr>
-                            <td>Number of Indexes per Table</td>
-                            <td>Only one per table (since the data can only be ordered one way).</td>
-                            <td>Multiple non-clustered indexes can exist on a table.</td>
-                        </tr>
-                        <tr>
-                            <td>Performance</td>
-                            <td>Faster for range queries (e.g., searching for a range of IDs).</td>
-                            <td>Useful for quick lookups based on specific columns.</td>
-                        </tr>
-                        <tr>
-                            <td>Primary Usage</td>
-                            <td>Often used for primary keys.</td>
-                            <td>Used for frequently queried columns that aren't the primary key.</td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div>
+            </li>
+        </ul>
+    <hr class="thin-line">
+  
+    <b>Request Routing</b>
+        <ul>
+            <li>Routes queries to the correct partition or shard.</li>
+            <li>Tools like ZooKeeper help manage metadata and routing in distributed systems.</li>
+        </ul>
 </div>
+<hr>
+
+<div id="Clustered">
+    <h5>Clustered and Non-Clustered Indexes</h5>
+    <p>Indexes in relational databases improve the speed of data retrieval. The two most common types of indexes are <b>Clustered Indexes</b> and <b>Non-Clustered Indexes</b>. Let's explore the differences between them with examples.</p>
+
+    <b>1. Clustered Index in Relational Database</b>
+        <ul>
+            <p>A <b>Clustered Index</b> sorts and stores the data rows of the table based on the indexed column(s). Since the data is physically sorted in the order of the index, each table can only have one clustered index.</p>
+    <pre>
+        CREATE TABLE Employees (
+        EmployeeID INT PRIMARY KEY,
+        Name VARCHAR(100),
+        Department VARCHAR(50)
+        );
+
+        -- Creating a Clustered Index on the EmployeeID column (usually created by default for PRIMARY KEY)
+        CREATE CLUSTERED INDEX idx_EmployeeID ON Employees (EmployeeID);
+    </pre>
+            <p>In this case, the table's data rows will be sorted by the <b><em>EmployeeID</em></b>, and the index itself holds the data. The data is physically reordered to match the index.</p>
+        </ul>
+    <hr class="thin-line">
+
+    <b>2. Clustered Index in Non-Relational Database</b>
+        <ul>
+            <p>
+                A <b>clustered index</b> determines the physical order of the data in the database.
+                In a clustered index, the data is stored directly within the index structure.
+            </p>
+            <p>
+                This type of index ensures that records are physically ordered based on the indexed field, which improves the performance of range queries.</br>
+                In MongoDB, the <b><em>_id</em></b> field is automatically indexed as a clustered index.
+                This ensures that documents are stored in the order of their <b><em>_id</em></b> values.<br>
+                When querying based on <b><em>_id</em></b>, MongoDB can quickly locate and retrieve the relevant document due to the sorted nature of the index.
+            </p>
+        </ul>
+    <hr class="thin-line">
+
+    <b>3. Non-Clustered Index in Relational Database</b>
+        <ul>
+            <p>A <b>Non-Clustered Index</b> does not affect the physical ordering of the data in the table. Instead, it creates a separate structure that holds the index and includes a pointer (reference) to the data rows. You can create multiple non-clustered indexes on a table.</p>
+<pre>
+    -- Creating a Non-Clustered Index on the Name column
+    CREATE NONCLUSTERED INDEX idx_Name ON Employees (Name);
+</pre>
+        </ul>
+    <hr class="thin-line">
+
+    <b>4. Non-Clustered Index in Non-Relational Database</b>
+        <ul>
+            <p>A <b>non-clustered index</b> is separate from the actual data storage. It contains a sorted list of key values along with pointers (references) to the actual data.<br>
+                 The data itself is not stored in any specific order, but the index helps in quickly locating the data associated with the indexed field.
+            </p>
+
+            <p>
+                In MongoDB, you can create a non-clustered index on any field. For instance, if you create an index on the <b><em>username</em></b> field in a collection, the index stores sorted <b><em>username</em></b> values and pointers to the respective documents.<br>
+                This improves search performance on the <b><em>username</em></b> field without affecting the document's physical storage order.
+            </p>
+        
+            <p>
+                In this example, the <b><em>Name</em></b> column is indexed in a separate structure.<br>
+                The actual data is still stored in the order of the clustered index (or the order in which it was inserted), but this index helps with faster lookups based on the <b><em>Name</em></b>.
+            </p>
+        </ul>
+</div>
+<hr>
+
+<div id="diff">
+    <h5>Comparison of Clustered vs. Non-Clustered Index</h5>   
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Clustered Index</th>
+                <th>Non-Clustered Index</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Data Storage</td>
+                <td>Physically reorders the table's rows to match the index.</td>
+                <td>Stores a separate index structure with a pointer to the actual data rows.</td>
+            </tr>
+            <tr>
+                <td>Number of Indexes per Table</td>
+                <td>Only one per table (since the data can only be ordered one way).</td>
+                <td>Multiple non-clustered indexes can exist on a table.</td>
+            </tr>
+            <tr>
+                <td>Performance</td>
+                <td>Faster for range queries (e.g., searching for a range of IDs).</td>
+                <td>Useful for quick lookups based on specific columns.</td>
+            </tr>
+            <tr>
+                <td>Primary Usage</td>
+                <td>Often used for primary keys.</td>
+                <td>Used for frequently queried columns that aren't the primary key.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 

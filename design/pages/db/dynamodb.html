@@ -1,72 +1,47 @@
-<h1 style="text-align: center;">DynamoDB</h1>
-<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+<h2 style="text-align: center;">DynamoDB</h2>
+<br>
+<div class="custom-container">
+    <b>About DynamoDB</b>
+    <ol>
+        <li><a href="#what">What is DynamoDB?</a></li>
+        <li><a href="#feature">DynamoDB Features</a></li>
+        <li><a href="#aws">AWS Value-added Services</a></li>
+        <li><a href="#when">DynamoDB: When to Use and When to Avoid</a></li>
+    </ol>
+    <hr class="thin-line">
 
-<h2 style="text-align: center;">What is SQL and NoSQL Databases</h2>
-<div>
-    <h5>1. Significance of Databases</h5>
-    <ul>
-      <li>Modern applications rely heavily on data.</li>
-      <li>Databases store data safely, even if the application or server crashes.</li>
-      <li>They help organize and store data in cost-effective ways.</li>
-      <li>Critical for creating reliable and smart applications.</li>
-    </ul>
+    <b>DynamoDB Basic Concepts</b>
+    <ol>
+      <li><a href="#basic">Tables, Items, Attributes, Primary-Key(Partition Key + Sort Key) </a></li>
+    </ol>
     <hr class="thin-line">
-    <h5>2. Types of Databases</h5>
-    <ul>
-      <li><strong>Relational Databases</strong></li>
-      <li><strong>NoSQL Databases</strong></li>
-    </ul>
-    <hr class="thin-line">
-    <h5>3. Relational Databases</h5>
-    <ul>
-      <li>Invented in the 1970s, examples include PostgreSQL, MySQL, and Oracle.</li>
-      <li>Data is stored in tables, and tables are connected by primary and foreign keys.</li>
-      <li>CRUD operations are performed using SQL.</li>
-      <li>Best for applications with structured data, like banking systems.</li>
-    </ul>
-    <b>Advantages of Relational Databases</b>
-    <ul>
-      <li>Great for naturally structured data.</li>
-      <li>Provide consistency, ensuring multiple applications get the same data.</li>
-      <li>SQL is widely known, making it easier for developers to learn and use.</li>
-    </ul>
-    <b>Limitations of Relational Databases</b>
-    <ul>
-      <li>Not ideal for unstructured or frequently changing data.</li>
-      <li>Strict consistency slows down horizontal scaling for large datasets.</li>
-      <li>Changing the schema frequently can be cumbersome in Agile development.</li>
-      <li>Impedance mismatch occurs when application data doesn't fit well with the relational schema.</li>
-    </ul>
-    <hr class="thin-line">
-    <h5>4. NoSQL Databases</h5>
-    <ul>
-      <li>Designed to address limitations of relational databases.</li>
-      <li>Offer speed, scalability, and flexibility with schema-less designs.</li>
-      <li>Examples include MongoDB and DynamoDB, widely used in social media and e-commerce platforms.</li>
-      <li>The term "NoSQL" means "Not Only SQL."</li>
-    </ul>
     
-    <b>Types of NoSQL Databases</b>
-    <ul>
-      <li><strong>Key-Value:</strong> Simple key-value pairs (e.g., Redis).</li>
-      <li><strong>Document-Based:</strong> Stores JSON-like documents (e.g., MongoDB).</li>
-      <li><strong>Graph-Based:</strong> Stores data as nodes and relationships (e.g., Neo4j).</li>
-      <li><strong>Column-Based:</strong> Stores data in columns (e.g., Cassandra).</li>
-    </ul>
-    
-    <b>Advantages of NoSQL Databases</b>
-    <ul>
-      <li>Fast at large scales due to horizontal scaling across machines.</li>
-      <li>Flexible data modeling closer to real-world use cases.</li>
-      <li>Easy to learn, making it suitable for small teams.</li>
-      <li>Many managed services available, reducing maintenance effort.</li>
-    </ul>
+    <b>DynamoDB Data Types</b>
+    <ol>
+      <li><a href="#types"> Scalar, Document, Set</a></li>
+    </ol>
+    <hr class="thin-line">
+    <b>DynamoDB Practical Approch</b>
+    <ol>
+      <li><a href="#Partitions">Understanding DynamoDB Partitions</a></li>
+      <li><a href="#pk">Primary Key and Range Key</a></li>
+      <li><a href="#Capacity">DynamoDB Capacity Units - Charges</a></li>
+      <li><a href="#query-scanning">Querying and Scanning in DynamoDB  </a></li>
+      <li><a href="#in-aws">Perform DynamoDB Tasks in AWS  </a></li>
+      <li><a href="#create-table">Creating Table in DynamoDB  </a></li>
+      <li><a href="#create-item">Creating Items in DynamoDB  </a></li>
+      <li><a href="#script-access">Python Script to access DynamoDB  </a></li>
+      <li><a href="#script-bulk">Python Script to insert bulk data into DynamoDB  </a></li>
+      <li><a href="#secondary">Secondary Index  </a></li>
+      <li><a href="#script-secondary">Python Script for Secondary Index  </a></li>
+      <li><a href="#monitor">CloudWatch Monitoring for DynamoDB  </a></li>
+      <li><a href="#insta">Use Case - Instagram Stories using DynamoDB  </a></li>
+    </ol>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
 
-<h2 style="text-align: center;">What is DynamoDB</h2>
-<div>
+<div id="what">
     <h5>What is DynamoDB?</h5>
     <p>
         Amazon DynamoDB is a key-value and document database, which delivers single-digit millisecond performance at any scale. 
@@ -75,7 +50,10 @@
         <li>White paper published - 2007</li>
         <li>First release - 2012</li>
     </p>
-    <hr class="thin-line">
+</div>
+<hr class="thin-line">
+
+<div id="feature">
     <h5>DynamoDB Features</h5>
     <ul>
       <li><b>Fully Managed:</b>
@@ -122,7 +100,10 @@
         </ul>
       </li>
     </ul>
-    <hr class="thin-line">
+</div>
+<hr class="thin-line">
+
+<div id="aws">
     <h5>AWS Value-added Services</h5>
     <ul>
         <li>
@@ -157,7 +138,10 @@
             </ul>
         </li>
     </ul>
-    <hr class="thin-line">
+</div>
+<hr class="thin-line">
+
+<div id="when">
     <h5>DynamoDB: When to Use and When to Avoid</h5>
     <ul>
         <li><b>When to Use DynamoDB</b>
@@ -189,11 +173,11 @@
         </li>
     </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
 
+<hr>
 
-<h2 style="text-align: center;">DynamoDB Basic Concepts</h2>
-<div>
+<div id="basic">
+  <h2 style="text-align: center;">DynamoDB Basic Concepts</h2>
     <ul>
         <li><b>Tables:</b>
           <ul>
@@ -249,11 +233,10 @@
         </li>
       </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-
-<h2 style="text-align: center;">Data Types</h2>
-<div>
+<div id="types">
+  <h2 style="text-align: center;">Data Types</h2>
     <ul>
         <li><b>Scalar Types:</b>
           <ul>
@@ -328,10 +311,10 @@
         </li>
       </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">Understanding DynamoDB Partitions</h2>
-<div>
+<div id="Partitions">
+  <h2 style="text-align: center;">Understanding DynamoDB Partitions</h2>
     <ul>
         <li><strong>How DynamoDB Distributes Data:</strong>
           <ul>
@@ -350,10 +333,10 @@
         </li>
     </ul>
 </div>    
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">Primary Key and Range Key</h2>
-<div>
+<div id="pk">
+  <h2 style="text-align: center;">Primary Key and Range Key</h2>
     <h5>Why Do We Need a Primary Key?</h5>
         <ul>
         <li>A primary key is like the key in a key-value store (like a hash map).</li>
@@ -417,10 +400,10 @@
         </ul>
 
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">DynamoDB Capacity Units - Charges</h2>
-<div>
+<div id="Capacity">
+  <h2 style="text-align: center;">DynamoDB Capacity Units - Charges</h2>
     <h5>How DynamoDB Charges</h5>
     <ul>
       <li>DynamoDB charges based on the frequency of <b>reads</b> and <b>writes</b>, not the storage used.</li>
@@ -494,11 +477,11 @@
       </li>
     </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">Querying and Scanning in DynamoDB</h2>
-<div>
-    <h5>Options for Reading Data</h5>
+<div id="query-scanning">
+  <h2 style="text-align: center;">Querying and Scanning in DynamoDB</h2>
+  <h5>Options for Reading Data</h5>
     <ul>
       <li><b>Querying:</b> Faster and more efficient way to retrieve data.</li>
       <li><b>Scanning:</b> Slower but useful for specific use cases like copying entire tables.</li>
@@ -549,12 +532,11 @@
       </li>
     </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-
-<h2 style="text-align: center;">Perform DynamoDB Tasks in AWS</h2>
-<div>
-        <b>1. Find DynamoDB Service</b>
+<div id="in-aws">
+  <h2 style="text-align: center;">Perform DynamoDB Tasks in AWS</h2>
+  <b>1. Find DynamoDB Service</b>
         <ul>
           <li>Log in to your AWS Management Console.</li>
           <li>In the AWS Management Console, search for "DynamoDB" in the search bar at the top of the page.</li>
@@ -602,12 +584,11 @@
           <li>Confirm the deletion by typing the table name when prompted.</li>
         </ul>        
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-
-<h2 style="text-align: center;">Creating Table in DynamoDB</h2>
-<div>
-    
+<div id="create-table">
+  <h2 style="text-align: center;">Creating Table in DynamoDB</h2>
+  
     <ul>
         <li> Using AWS command Line</li>
             <pre>
@@ -621,12 +602,11 @@ AttributeName=userId,KeyType=HASH \
             </pre>
     </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-
-<h2 style="text-align: center;">Creating Items in DynamoDB</h2>
-<div>
-    <ul>
+<div id="create-item">
+  <h2 style="text-align: center;">Creating Items in DynamoDB</h2>
+  <ul>
         <li>
           <b>1. Using the PutItem API</b>
           <ul>
@@ -703,12 +683,11 @@ AttributeName=userId,KeyType=HASH \
         </li>
       </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-
-<h2 style="text-align: center;">Python Script to access DynamoDB</h2>
-<div>
-    <p>
+<div id="script-access">
+  <h2 style="text-align: center;">Python Script to access DynamoDB</h2>
+  <p>
         Perform following task using python:
         <ul>
             <li>Create a table.</li>
@@ -804,11 +783,11 @@ AttributeName=userId,KeyType=HASH \
       <li><strong>Response:</strong> "Table deleted successfully!"</li>
     </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">Python Script to insert bulk data into DynamoDB</h2>
-<div>
-    <ul>
+<div id="script-bulk">
+  <h2 style="text-align: center;">Python Script to insert bulk data into DynamoDB</h2>
+  <ul>
         <li>DynamoDB has a limit of 25 items per batch, and each batch cannot exceed 16 MB in size.</li>
     </ul>
 <pre>
@@ -872,11 +851,11 @@ AttributeName=userId,KeyType=HASH \
     Total items in the table: 500
 </pre>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">Secondary Index</h2>
-<div>
-<p>
+<div id="secondary">
+  <h2 style="text-align: center;">Secondary Index</h2>
+  <p>
     Querying on the primary key is fast, but it can only give us a limited set of access patterns. <br>
     The scan can give us any access pattern, but it is slow and costly.<br>
     There is a third option, using a secondary index, which is relatively cheap and provides us with more access patterns.
@@ -1068,12 +1047,11 @@ AttributeName=userId,KeyType=HASH \
     </li>
   </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-
-<h2 style="text-align: center;">Python Script for Secondary Index</h2>
-<div>
-    Write script for following tasks:
+<div id="script-secondary">
+  <h2 style="text-align: center;">Python Script for Secondary Index</h2>
+  Write script for following tasks:
     <ul>
         <li>Create a table.</li>
         <li>Add items to the table.</li>
@@ -1274,11 +1252,11 @@ AttributeName=userId,KeyType=HASH \
   </pre>
 
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">CloudWatch Monitoring for DynamoDB</h2>
-<div>
-    The following technologies are available for logging and monitoring AWS services:
+<div id="monitor">
+  <h2 style="text-align: center;">CloudWatch Monitoring for DynamoDB</h2>
+  The following technologies are available for logging and monitoring AWS services:
     <ul>
         <li>CloudWatch alarms</li>
         <li>CloudWatch logs</li>
@@ -1363,11 +1341,11 @@ AttributeName=userId,KeyType=HASH \
       <li>Unsubscribe or delete the SNS topic if it's no longer needed.</li>
     </ul>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
 
-<h2 style="text-align: center;">Use Case - Instagram Stories using DynamoDB</h2>
-<div>
-    <p>To create a DynamoDB database for the Instagram Stories feature, follow these steps:</p>
+<div id="insta">
+  <h2 style="text-align: center;">Use Case - Instagram Stories using DynamoDB</h2>
+  <p>To create a DynamoDB database for the Instagram Stories feature, follow these steps:</p>
     <p>
         We will design a DynamoDB database to store and manage Instagram stories. The project involves three primary steps:
         <ul>
@@ -1491,4 +1469,4 @@ remove_expired_stories()
 
     </pre>
 </div>
-<hr style="border: 0; height: 10px; background-color: #4e3f3c; margin: 20px 0;">
+<hr>
