@@ -1,0 +1,179 @@
+<h2 style="text-align: center;">Servlet & Servlet Container</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#intro">Introduction : What is servlet and servlet container</a></li>
+        <li><a href="#manage">How a Servlet Container Manages Requests</a></li>
+        <li><a href="#code">Understand by code</a></li>
+        <li><a href="#spring">Problems of Servlets & Servlet Containers Solved by Spring Framework</a></li>
+        <li><a href="#servlet-spring">How Spring Uses Servlet Concepts</a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="intro">
+    <h5>Introduction : What is servlet and servlet container</h5>
+    <ul>
+        <li><b>Servlet</b>: A Servlet is a Java class that extends the capabilities of a server by handling HTTP requests and generating responses.</li>
+        <li><b>Servlet Container</b>: Lifecycle of a Servlet is managed by Servlet Container</li>
+        <li><b>Responsibilities of a Servlet Container</b>:</li>
+            <ul>
+                <li>Manages Servlet Lifecycle (loading, initialization, execution, and destruction)</li>
+                <li>Handles HTTP Requests & Responses</li>
+                <li>Manages Multithreading (each request is handled in a separate thread)</li>
+                <li>Provides Security (authentication, authorization, HTTPS support)</li>
+                <li>Manages Session Handling (cookies, session tracking)</li>
+                <li>Handles Deployment & Configuration (web.xml or annotations)</li>
+            </ul>
+        <li><b>Popular Servlet Containers</b>: Tomcat, Jetty, GlassFish </li>
+    </ul>
+</div>
+<hr>
+
+<div id="manage">
+    <h5>How a Servlet Container Manages Requests</h5>
+    <img src="../../../images/servlet.png" class="responsive-image"><br>
+    <b>Request Handling Flow:</b>
+    <ul>
+        <li>Client sends a request (e.g., http://example.com/login).</li>
+        <li>Servlet Container receives the request and checks the servlet mapping.</li>
+        <li>Container creates a new thread to handle the request.</li>
+        <li>Servlet’s service() method is called, which delegates the request to doGet() or doPost().</li>
+        <li>Servlet generates a response, which is sent back to the client.</li>
+    </ul>
+    <b>Multithreading in Servlet Containers</b>
+    <ul>
+        <li>Each request is handled in a separate thread.</li>
+        <li>This improves performance and scalability.</li>
+        <li>Servlets must be thread-safe (avoid shared mutable data).</li>
+    </ul>
+</div>
+<hr>
+
+<div id="code">
+    <h5>Understand by code</h5>
+    <b>Servlet:</b>
+    <pre>
+@WebServlet("/hello") // URL Mapping
+public class HelloServlet extends HttpServlet {
+    
+    protected void <b>doGet</b>(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Logic - return response
+    }
+}
+    </pre>
+    <b>web.xml</b>
+    <pre>
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.HelloServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+    </pre>
+</div>
+<hr>
+
+<div id="spring">
+    <h5>Problems of Servlets & Servlet Containers Solved by Spring Framework</h5>
+    <ol>
+        <li><b>Manual Object Creation & Dependency Management</b></li>
+            <b>Problem:</b>
+            <ul>
+                <li>Servlets require manual object creation and dependency management using <b>new</b> keyword.</li>
+                <li>Managing dependencies in large applications leads to <b>tight coupling</b> and hard-to-maintain code.</li>
+            </ul>
+            <b>Solution</b>
+            <ul>
+                <li>Spring’s Dependency Injection (DI) allows automatic injection of dependencies using @Autowired, making the application loosely coupled and easy to maintain.</li>
+            </ul>
+            </ul>
+        <hr class="thin-line">
+        <li><b>Boilerplate Code in Servlets</b></li>
+            <b>Problem</b>
+            <ul>
+                <li>Servlets require a lot of boilerplate code (e.g., handling request parameters, writing responses, exception handling).</li>
+                <li>Every servlet must extend HttpServlet and override doGet() or doPost().</li>
+                    
+            </ul>
+            <b>Solution</b>
+            <ul>
+                <li>Spring MVC simplifies request handling with @RequestMapping and @RestController</li>
+                <li>No need to override doGet() manually.</li>
+                <li>Response is automatically handled.</li>
+            </ul>
+        <hr class="thin-line">
+        <li><b>Complex Request Handling & Mapping</b></li>
+            <b>Problem</b>
+            <ul>
+                <li>In Servlets, handling different HTTP methods (GET, POST, etc.) requires checking request types manually inside doGet() or doPost().</li>
+                <li>URL mappings are defined in web.xml, making it difficult to manage in large applications.</li>
+            </ul>
+            <b>Solution</b>
+            <ul>
+                <li>Spring MVC simplifies request mapping with @GetMapping, @PostMapping, etc.</li>
+                <li>No need for web.xml or @WebServlet</li>
+            </ul>z
+        <hr class="thin-line">
+        <li><b>Session & State Management Complexity</b></li>
+            <b>Problem</b>
+                <ul>
+                    <li>Managing session attributes (HttpSession) is manual in servlets.</li>
+                    <li>Developers must explicitly store/retrieve session data.</li>
+                </ul>
+            <b>Solution</b>
+                <ul>
+                    <li>Spring provides built-in session management using @SessionAttributes.</li>
+                    <pre>
+@SessionAttributes("user")
+public class UserController {
+    @ModelAttribute("user")
+    public User setUser() {
+        return new User();
+    }
+}
+                    </pre>
+                    <li>Spring manages session automatically.No need for HttpSession boilerplate code.</li>
+                </ul>
+        <hr class="thin-line">
+        <li><b>Exception Handling</b></li>
+        <b>Problem</b>
+                <ul>
+                    <li>In Servlets, handling exceptions requires try-catch blocks inside every method or web.xml error pages.</li>
+                </ul>
+            <b>Solution</b>
+                <ul>
+                    <li>Spring provides global exception handling using @ControllerAdvice.</li>
+                    <li>Centralized exception handling without modifying every servlet.</li>
+                    <pre>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;String> handleException(Exception e) {
+        return new ResponseEntity&lt;>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+                        
+                    </pre>
+                </ul>
+        <li><b>Hard-to-Test Servlets</b></li>
+        <li><b>No Built-in Security in Servlets</b></li>
+    </ol>
+</div>
+<hr>
+
+<div id="servlet-spring">
+    <h5>How Spring Uses Servlet Concepts</h5>
+    <img src="../../../images/servlet-spring.png" class="responsive-image"><br>
+    <ul>
+        <li>Spring MVC (Model-View-Controller) is built on top of Servlets.</li>
+        <li>The DispatcherServlet acts as a front controller, processing incoming requests.</li>
+        <li>Spring Boot internally uses Tomcat (or Jetty) as an embedded Servlet Container.</li>
+    </ul>
+</div>

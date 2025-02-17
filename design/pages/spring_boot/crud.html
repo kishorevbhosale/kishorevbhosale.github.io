@@ -1,0 +1,335 @@
+<h2 style="text-align: center;">Create Spring Boot CRUD Application</h2>
+<br>
+<div class="custom-container">
+    <ol>
+        <li><a href="#step">Steps to create application</a></li>
+        <li><a href="#arch">Layred Architecture in Spring Boot</a></li>
+        <li><a href="#project">Spring Boot project structure</a></li>
+        <li><a href="#code">Explanation of Each class</a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="step">
+    <h5>Steps to create application</h5>
+    <b>Steps:</b>
+    <ol>
+        <li>Open URL:  <a href="https://start.spring.io/">https://start.spring.io/</a></li>
+        <li>Select Project Type : Maven (default) or Gradle</li>
+        <li>Choose Language: Java (default), Kotlin, or Groovy</li>
+        <li>Spring Boot Version: Choose the latest stable version (e.g., 3.x.x)</li>
+        <li>Fill Project Metadata</li>
+        <li>Select Dependencies (like Spring Web, Spring Data JPA, MySQL Driver)</li><br>
+        <img src="../../../images/spring-start.png" class="responsive-image"><br>
+        <li>Click Generate to download the .zip file.</li>
+        <li>Extract the project and open it in an IDE (IntelliJ IDEA, Eclipse, or VS Code).</li><br>
+        <img src="../../../images/spring-ide.png" class="responsive-image">
+    </ol>
+</div>
+<hr>
+
+<div id="arch">
+    <h5>Layred Architecture in Spring Boot</h5>
+    <img src="../../../images/spring-layred-arch.png" class="responsive-image">
+</div>
+<hr>
+
+<div id="project">
+    <h5>Spring Boot project structure</h5>
+    <ul>
+        <p>
+            Here is the Spring Boot project structure based on the CRUD application using DTO, Controller, Service, Repository, Entity, and H2 Database:
+        </p>
+    <pre>
+        spring-boot-crud/
+        │── src/
+        │   ├── main/
+        │   │   ├── java/com/example/demo/
+        │   │   │   ├── controller/
+        │   │   │   │   ├── UserController.java
+        │   │   │   ├── dto/
+        │   │   │   │   ├── UserRequestDTO.java
+        │   │   │   │   ├── UserResponseDTO.java
+        │   │   │   ├── entity/
+        │   │   │   │   ├── User.java
+        │   │   │   ├── repository/
+        │   │   │   │   ├── UserRepository.java
+        │   │   │   ├── service/
+        │   │   │   │   ├── UserService.java
+        │   │   │   ├── DemoApplication.java
+        │   ├── resources/
+        │   │   ├── application.properties
+        │   │   ├── data.sql  (Optional: Preload Data)
+        │── pom.xml
+        │── README.md
+    </pre>
+    </ul>
+</div>
+<hr>
+
+<div id="code">
+    <h5>Explanation of Each Class</h5>
+    <b>Controller</b>
+    <ul>
+        <p>
+            Handles HTTP requests.
+        </p>
+        <pre>
+            import com.preparationzone.learnspringboot.dto.UserRequestDTO;
+            import com.preparationzone.learnspringboot.dto.UserResponseDTO;
+            import com.preparationzone.learnspringboot.service.UserService;
+            import jakarta.validation.Valid;
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.web.bind.annotation.*;
+            
+            import java.util.List;
+            
+            @RestController
+            @RequestMapping("/api/users")
+            public class UserController {
+                @Autowired
+                private UserService userService;
+            
+                // Create User
+                @PostMapping
+                public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+                    return userService.createUser(userRequestDTO);
+                }
+            
+                // Get All Users
+                @GetMapping
+                public List<UserResponseDTO> getAllUsers() {
+                    return userService.getAllUsers();
+                }
+            
+                // Get User by ID
+                @GetMapping("/{id}")
+                public UserResponseDTO getUserById(@PathVariable Long id) {
+                    return userService.getUserById(id);
+                }
+            
+                // Update User
+                @PutMapping("/{id}")
+                public UserResponseDTO updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO userRequestDTO) {
+                    return userService.updateUser(id, userRequestDTO);
+                }
+            
+                // Delete User
+                @DeleteMapping("/{id}")
+                public void deleteUser(@PathVariable Long id) {
+                    userService.deleteUser(id);
+                }
+            }
+            
+            
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>DTO's</b>
+    <ul>
+        <p>
+            Used to transfer request and response data.
+        </p>
+        <b>UserRequestDTO</b>
+        <pre>
+            import jakarta.validation.constraints.Email;
+            import jakarta.validation.constraints.NotBlank;
+            import lombok.Getter;
+            import lombok.Setter;
+            
+            @Getter
+            @Setter
+            public class UserRequestDTO {
+                @NotBlank(message = "Name is required")
+                private String name;
+            
+                @NotBlank(message = "Email is required")
+                @Email(message = "Invalid email format")
+                private String email;
+            }
+        </pre><br>
+        <b>UserResponseDTO</b>
+        <pre>
+            import lombok.AllArgsConstructor;
+            import lombok.Getter;
+            import lombok.Setter;
+
+            @Getter
+            @Setter
+            @AllArgsConstructor
+            public class UserResponseDTO {
+                private Long id;
+                private String name;
+                private String email;
+            }
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Entity Class</b>
+    <ul>
+        <p>Defines the database structure.</p>
+        <pre>
+            import jakarta.persistence.*;
+            import lombok.*;
+            
+            @Entity
+            @Table(name = "users")
+            @Getter
+            @Setter
+            @NoArgsConstructor
+            @AllArgsConstructor
+            public class User {
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+            
+                @Column(nullable = false)
+                private String name;
+            
+                @Column(nullable = false, unique = true)
+                private String email;
+            }
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Repository Layer</b>
+    <ul>
+        <p>
+            Handles database operations.
+        </p>
+        <pre>
+            import com.preparationzone.learnspringboot.entity.User;
+            import org.springframework.data.jpa.repository.JpaRepository;
+            import java.util.Optional;
+            
+            public interface UserRepository extends JpaRepository<User, Long> {
+                Optional<User> findByEmail(String email);
+            }
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Service Layer</b>
+    <ul>
+        <p>
+            Implements business logic.
+        </p>
+        <pre>
+            import com.preparationzone.learnspringboot.dto.UserRequestDTO;
+            import com.preparationzone.learnspringboot.dto.UserResponseDTO;
+            import com.preparationzone.learnspringboot.entity.User;
+            import com.preparationzone.learnspringboot.repository.UserRepository;
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.stereotype.Service;
+            
+            import java.util.List;
+            import java.util.stream.Collectors;
+            
+            @Service
+            public class UserService {
+                @Autowired
+                private UserRepository userRepository;
+            
+                // Create User
+                public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
+                    User user = new User();
+                    user.setName(userRequestDTO.getName());
+                    user.setEmail(userRequestDTO.getEmail());
+                    user = userRepository.save(user);
+                    return new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
+                }
+            
+                // Get All Users
+                public List&lt;UserResponseDTO> getAllUsers() {
+                    return userRepository.findAll()
+                            .stream()
+                            .map(user -> new UserResponseDTO(user.getId(), user.getName(), user.getEmail()))
+                            .collect(Collectors.toList());
+                }
+            
+                // Get User by ID
+                public UserResponseDTO getUserById(Long id) {
+                    User user = userRepository.findById(id)
+                            .orElseThrow(() -> new RuntimeException("User not found"));
+                    return new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
+                }
+            
+                // Update User
+                public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
+                    User user = userRepository.findById(id)
+                            .orElseThrow(() -> new RuntimeException("User not found"));
+                    user.setName(userRequestDTO.getName());
+                    user.setEmail(userRequestDTO.getEmail());
+                    userRepository.save(user);
+                    return new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
+                }
+            
+                // Delete User
+                public void deleteUser(Long id) {
+                    userRepository.deleteById(id);
+                }
+            }
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>Main Application Class</b>
+    <ul>
+        <pre>
+            import org.springframework.boot.SpringApplication;
+            import org.springframework.boot.autoconfigure.SpringBootApplication;
+            
+            @SpringBootApplication
+            public class LearnspringbootApplication {
+            
+                public static void main(String[] args) {
+                    SpringApplication.run(LearnspringbootApplication.class, args);
+                }
+            
+            }
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>application.properties</b>
+    <ul>
+        <pre>
+        # H2 Database Configuration
+        spring.datasource.url=jdbc:h2:mem:testdb
+        spring.datasource.driverClassName=org.h2.Driver
+        spring.datasource.username=sa
+        spring.datasource.password=
+        spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+        spring.jpa.hibernate.ddl-auto=update
+        spring.h2.console.enabled=true
+
+        # Show SQL Queries
+        spring.jpa.show-sql=true
+
+        server.port=8081
+        </pre>
+    </ul>
+    <hr class="thin-line">
+
+    <b>How to run and test</b>
+    <ul>
+        <li><b>Run command : </b></li>
+        <pre>
+            $ mvn spring-boot:run
+        </pre>
+        <li><b>H2 Console URL: http://localhost:8081/h2-console</b></li>
+        <li><b>JDBC URL: jdbc:h2:mem:testdb</b></li>
+        <li><b>Access API Endpoints:</b></li>
+        <ul>
+            <pre>
+        POST /api/users
+        GET /api/users
+        PUT /api/users/{id}
+        DELETE /api/users/{id}
+            </pre>
+        </ul>
+    </ul>
+</div>
