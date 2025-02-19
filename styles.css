@@ -212,12 +212,12 @@ pre::selection {
 
 
 code {
-    background-color: #f5f5f5;
+    background-color: #3d3d3d;
     padding: 2px 4px;
     border-radius: 4px;
     font-family: 'Courier New', monospace;
     font-size: 13px;
-    color: #0c0c0c;
+    color: #f8f8f2;
 }
 
 /* Buttons */
@@ -330,7 +330,7 @@ hr {
 
 h5 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.3rem; /* Default size for desktops */
+    font-size: 1.4rem; /* Default size for desktops */
     font-weight: normal;
     color: #0056b3; /* Slightly darker blue for better readability */
     letter-spacing: 0.5px;
@@ -386,6 +386,76 @@ h5 {
 }
 
 
+.pdf-container {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Ensures PDF fits properly */
+.pdf-container embed {
+    width: 100%;
+    height: 100%;
+}
 
 
+.blog-list {
+    counter-reset: list-counter;
+    padding: 0;
+    list-style: none;
+}
 
+.blog-list li {
+    counter-increment: list-counter;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-left: 5px solid #007bff;
+    transition: all 0.3s ease-in-out;
+}
+
+.blog-list li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.15);
+    border-left-color: #0056b3;
+}
+
+.blog-list li::before {
+    content: counter(list-counter);
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: #007bff;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.blog-list a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #333;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.blog-list a:hover {
+    color: #007bff;
+}

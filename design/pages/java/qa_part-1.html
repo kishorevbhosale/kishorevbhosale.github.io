@@ -1,6 +1,7 @@
 <h2 style="text-align: center;">Java Basics</h2>
 <br>
 <div class="custom-container">
+    <h5>Table of Contents</h5>
     <ol>
         <li><a href="#execution">Is Java platform-independent? How? Explain execution Flow</a></li>
         <li><a href="#jvm-jre-jdk">Explain JVM, JRE and JDK</a></li>
@@ -79,7 +80,7 @@
             </ul>
     </div>        
     <img src="../../../images/jvm.PNG" class="responsive-image">
-    <br>
+    <hr class="thin-line">
 
     <b>Java Runtime Environment (JRE): </b>
     <div>  
@@ -97,7 +98,8 @@
           <li><b>Best For:</b> Users who only need to run Java applications, not develop them.</li>  
         </ul>  
     </div>
-    <br>
+    
+    <hr class="thin-line">
 
     <b>Java Development Kit (JDK): </b>
     <div>
@@ -182,12 +184,14 @@
 <div id="graalvm">
     <h5>What is GraalVM, and how is it different from the JIT compiler?</h5>
     <p>GraalVM is a high-performance runtime that enhances the execution of Java applications and supports multiple programming languages beyond Java, such as JavaScript, Python, Ruby, R, and even languages like C and C++. It is designed to integrate and optimize applications written in a variety of languages within a single runtime environment.</p>
+    <hr class="thin-line">
     <b>Key Features of GraalVM:</b>
     <ul>
-        <li>Polyglot Support: GraalVM allows seamless interoperability between supported languages. For example, Java code can invoke Python or JavaScript functions directly, enabling diverse language ecosystems in a single application.</li>
-        <li>Ahead-of-Time (AOT) Compilation: Unlike traditional Just-In-Time (JIT) compilation, GraalVM offers AOT compilation through its Native Image feature. This generates a standalone, platform-specific executable with fast startup times and reduced memory usage, making it ideal for microservices and serverless deployments.</li>
-        <li>High-Performance JIT Compiler: GraalVM replaces the standard JIT compiler in the JVM (C2) with its own compiler, which provides enhanced optimization for Java applications. This includes better inlining, escape analysis, and reduced overhead, resulting in significant performance improvements.</li>
+        <li><b>Polyglot Support:</b> GraalVM allows seamless interoperability between supported languages. For example, Java code can invoke Python or JavaScript functions directly, enabling diverse language ecosystems in a single application.</li>
+        <li><b>Ahead-of-Time (AOT) Compilation:</b> Unlike traditional Just-In-Time (JIT) compilation, GraalVM offers AOT compilation through its Native Image feature. This generates a standalone, platform-specific executable with fast startup times and reduced memory usage, making it ideal for microservices and serverless deployments.</li>
+        <li><b>High-Performance JIT Compiler:</b> GraalVM replaces the standard JIT compiler in the JVM (C2) with its own compiler, which provides enhanced optimization for Java applications. This includes better inlining, escape analysis, and reduced overhead, resulting in significant performance improvements.</li>
     </ul>
+    <hr class="thin-line">
     <b>How it Works:</b>
     <ul>
         <li><b>Static Analysis of Code:</b>
@@ -208,6 +212,7 @@
 
         </li>
     </ul>
+    <hr class="thin-line">
     <b>Advantages of GraalVM:</b>
     <ul>
         <li>Faster Startup Times: GraalVM's native image reduces cold-start latency, particularly useful for cloud and serverless environments.</li>
@@ -471,7 +476,7 @@
   <hr>
 
   <!-- Access Specifiers -->
-  <div>
+  <div id="access-specifiers">
     <h5>Explain Access Specifiers and their types.</h5>
     <p>
         Access specifiers in Java define the visibility and accessibility of classes, methods, and variables. 
@@ -563,7 +568,8 @@
     }
             </pre>
         </ul>
-    
+        <hr class="thin-line">
+
         <b>2. Static Variables</b>
         <p>
             Static variables are declared with the <code>static</code> keyword. They belong to the class rather than any specific instance, 
@@ -583,6 +589,7 @@
     }
             </pre>
         </ul>
+        <hr class="thin-line">
     
         <b>3. Local Variables</b>
         <p>
@@ -602,6 +609,7 @@
     }
             </pre>
         </ul>
+        <hr class="thin-line">
     
         <b>Difference Between Variable Types</b>
         <table border="1">

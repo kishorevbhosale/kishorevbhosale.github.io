@@ -1,0 +1,139 @@
+<h2 style="text-align: center;">understanding of Maven</h2>
+<br>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#intro">What is maven? </a></li>
+        <li><a href="#pom">Understanding of pom.xml</a></li>
+        <li><a href="#"> </a></li>
+        <li><a href="#"> </a></li>
+        <li><a href="#"> </a></li>
+        <li><a href="#"> </a></li>
+    </ol>
+</div>
+<hr>
+
+<div id="intro">
+    <h5>What is maven?</h5>
+    <ul>
+        <li>Maven is a powerful project management tool.</li>
+        <li>It uses the <b>pom.xml</b> file, where POM stands for Project Object Model.</li>
+        <li>It manages project builds, dependencies, and documentation.</li>
+        <li>When a Maven command is executed, it looks for the <code>pom.xml</code> file.</li>
+        <li>In Maven, we specify <b>what</b> to do.</li>
+        <li>In Ant, we specify both <b>what</b> to do and <b>how</b> to do it.</li>
+    </ul>
+</div>
+<hr>
+
+<div id="pom">
+    <h5>Understanding of pom.xml</h5>
+    <ul>
+    <b>schema:</b><br>
+    <b>xmlns and xsi:schemaLocation</b> define the XML namespace and schema for Maven POM files. These attributes are standard for all Maven pom.xml files.
+    <pre>
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    </pre>
+    <hr class="thin-line">
+
+    <b>Model Version:</b><br>This specifies the version of the POM model
+    <pre>
+&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    </pre>
+    <hr class="thin-line">
+
+    <b>Uniquely identifies the project:</b>
+    <pre>
+&lt;groupId&gt;com.example&lt;/groupId&gt;
+&lt;artifactId&gt;spring-boot-app&lt;/artifactId&gt;
+&lt;version&gt;1.0.0&lt;/version&gt;
+&lt;packaging&gt;jar&lt;/packaging&gt;
+&lt;name&gt;spring-boot-app&lt;/name&gt;
+&lt;description&gt;Spring Boot Application&lt;/description&gt;
+    </pre>
+    <hr class="thin-line">
+
+    <b>Parent POM (Spring Boot Starter Parent)</b>
+    <pre>
+&lt;!-- Parent Spring Boot Starter --&gt;
+&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;3.2.2&lt;/version&gt;
+    &lt;relativePath/&gt; 
+&lt;/parent&gt;
+    </pre>
+    <p>
+        The parent section allows you to inherit configurations from another POM.<br>
+        Here, it's inheriting from the Spring Boot starter parent, which provides default configurations for Spring Boot applications.
+    </p>
+    <hr class="thin-line">
+
+    <b>Properties</b>
+    <pre>
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    </pre>
+    <p>
+        The properties section allows you to define project-specific properties.<br>
+        <b>java.version</b> specifies the Java version to be used for this project (Java 17 here)
+    </p>
+
+    <hr class="thin-line">
+
+    <b>Dependencies</b>
+    <pre>
+&lt;dependencies&gt;
+    &lt;!-- Spring Boot Starter Web --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+     &lt;!-- Spring Boot Starter JPA --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+     &lt;!-- H2 Database (In-memory database for testing) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+        &lt;artifactId&gt;h2&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+
+     &lt;!-- Spring Boot Starter Test (For unit testing) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+    </pre>
+    <hr class="thin-line">
+
+</ul>
+    <pre>
+        
+        
+
+        ===============================================================
+         &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;!-- Spring Boot Maven Plugin --&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+
+     &lt;/project&gt;
+        
+    </pre>
+    
+</div>
