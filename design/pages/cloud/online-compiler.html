@@ -34,6 +34,17 @@
     <div class="compiler-container">
         <h2 class="text-center">Online Code Compiler</h2>
 
+        <!-- Language Selection Dropdown -->
+        <div class="mb-3">
+            <label for="language" class="form-label">Select Language:</label>
+            <select id="language" class="form-select">
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="javascript">JavaScript</option>
+            </select>
+        </div>
+
         <!-- Compiler Frame (Fully Fitted) -->
         <div id="compilerFrame" class="border rounded">
             <iframe id="compilerIframe" src="https://onecompiler.com/embed/python"></iframe>
