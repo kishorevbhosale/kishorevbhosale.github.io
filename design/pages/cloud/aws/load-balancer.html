@@ -1,0 +1,79 @@
+<div>
+    <h5><b>Step 1: Create a Security Group for Load Balancer</b></h5>
+    <ul>
+        <li>Go to AWS Management Console &rarr; EC2 Dashboard.</li>
+        <li>Click on <b>Security Groups</b> under "Network & Security".</li>
+        <li>Click <b>Create Security Group</b>.</li>
+        <li>Add a rule to allow <b>HTTP (80)</b> from <b>Anywhere (0.0.0.0/0)</b>.</li>
+        <li>Save the security group.</li>
+    </ul>
+</div>
+<hr>
+
+<div>
+    <h5><b>Step 2: Launch Two EC2 Instances</b></h5>
+    <ul>
+        <li>Go to <b>EC2 Dashboard</b> &rarr; Click <b>Launch Instance</b>.</li>
+        <li>Select <b>Amazon Linux 2</b> (or any preferred AMI).</li>
+        <li>Choose <b>t2.micro</b> instance type and click <b>Next</b>.</li>
+        <li>Configure instance details and add to <b>Default VPC</b>.</li>
+        <li>Under <b>Security Group</b>, choose the one created earlier.</li>
+        <li>Launch two identical instances and note their <b>Private IPs</b>.</li>
+    </ul>
+</div>
+<hr>
+
+<div>
+    <h5><b>Step 3: Install Web Server on EC2 Instances</b></h5>
+    <ul>
+        <li>Connect to each instance via SSH.</li>
+        <li>Run the following commands:</li>
+        <li><b>sudo yum update -y</b></li>
+        <li><b>sudo yum install httpd -y</b></li>
+        <li><b>echo "Welcome to Instance 1" > /var/www/html/index.html</b></li>
+        <li><b>sudo systemctl start httpd</b></li>
+        <li><b>sudo systemctl enable httpd</b></li>
+        <li>Repeat the above steps for the second instance.</li>
+    </ul>
+</div>
+<hr>
+
+<div>
+    <h5><b>Step 4: Create a Target Group</b></h5>
+    <ul>
+        <li>Go to <b>EC2 Dashboard</b> &rarr; Click <b>Target Groups</b>.</li>
+        <li>Click <b>Create Target Group</b> and choose <b>Instances</b>.</li>
+        <li>Name it (e.g., <b>my-target-group</b>).</li>
+        <li>Choose <b>HTTP (80)</b> as the protocol.</li>
+        <li>Select the VPC where your EC2 instances are running.</li>
+        <li>Click <b>Next</b> and register both EC2 instances.</li>
+        <li>Click <b>Create</b>.</li>
+    </ul>
+</div>
+<hr>
+
+<div>
+    <h5><b>Step 5: Create an Application Load Balancer</b></h5>
+    <ul>
+        <li>Go to <b>EC2 Dashboard</b> &rarr; Click <b>Load Balancers</b>.</li>
+        <li>Click <b>Create Load Balancer</b> &rarr; Select <b>Application Load Balancer</b>.</li>
+        <li>Enter a name (e.g., <b>my-alb</b>).</li>
+        <li>Choose <b>Internet-facing</b> and <b>IPv4</b>.</li>
+        <li>Select at least two Availability Zones.</li>
+        <li>Attach the previously created <b>Security Group</b>.</li>
+        <li>Choose <b>HTTP (80)</b> as the listener.</li>
+        <li>Select the previously created <b>Target Group</b>.</li>
+        <li>Click <b>Create Load Balancer</b>.</li>
+    </ul>
+</div>
+<hr>
+
+<div>
+    <h5><b>Step 6: Test the Load Balancer</b></h5>
+    <ul>
+        <li>Go to <b>Load Balancers</b> and copy the <b>DNS Name</b> of the ALB.</li>
+        <li>Paste it into a browser and refresh multiple times.</li>
+        <li>You should see responses from both EC2 instances alternately.</li>
+    </ul>
+</div>
+<hr>

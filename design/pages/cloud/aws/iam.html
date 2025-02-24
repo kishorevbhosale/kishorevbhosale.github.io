@@ -1,0 +1,76 @@
+<h2 style="text-align: center;">AWS IAM (Identity and Access Management)</h2>
+<br>
+<div class="custom-container">
+  <h5>Table of Contents</h5>
+  <ol>
+    <li><a href="#Quick-Revision"> AWS IAM (Identity and Access Management) – Quick Revision</a></li>
+    <li><a href="#Key Concepts">IAM Key Concepts</a></li>
+    <li><a href="#Policies">IAM Policies</a></li>
+    <li><a href="#Roles">IAM Roles</a></li>
+    <li><a href="#Best Practices">IAM Best Practices</a></li>
+  </ol>
+</div>
+<hr>
+
+<div id="Quick-Revision">
+    <h5>1. What is AWS IAM?</h5>
+    <p>AWS IAM is a service that helps you securely manage access to AWS resources.</p>
+</div>
+<hr>
+
+<div id="Key Concepts">
+
+    <h5>2. IAM Key Concepts</h5>
+    <ul>
+        <li><strong>Users:</strong> Individual identities with long-term credentials.</li>
+        <li><strong>Groups:</strong> Collection of IAM users for easier policy management.</li>
+        <li><strong>Roles:</strong> Used for granting temporary permissions.</li>
+        <li><strong>Policies:</strong> JSON documents defining permissions.</li>
+        <li><strong>Identity Providers (IdP):</strong> Used for federated authentication.</li>
+        <li><strong>IAM Credentials:</strong> Passwords, access keys, security tokens.</li>
+    </ul>
+</div>
+<hr>
+
+<div id="Policies">
+    <h5>3. IAM Policies</h5>
+    <ul>
+        <li>Written in JSON.</li>
+        <li><strong>Types:</strong>
+            <ul>
+                <li><strong>Managed Policies:</strong> AWS-managed or customer-managed.</li>
+                <li><strong>Inline Policies:</strong> Directly attached to a user, group, or role.</li>
+                <li><strong>Service Control Policies (SCPs):</strong> Used in AWS Organizations.</li>
+                <li><strong>Permissions Boundaries:</strong> Limit the maximum permissions an entity can have.</li>
+                <li><strong>Session Policies:</strong> Temporary permissions assigned to a session.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<hr>
+
+<div id="Roles">
+    <h5>4. IAM Roles</h5>
+    <ul>
+        <li>Used for granting permissions <strong>without long-term credentials</strong>.</li>
+        <li><strong>Common use cases:</strong>
+            <ul>
+                <li><strong>EC2 Instance Role:</strong> Grant AWS access to EC2.</li>
+                <li><strong>Cross-Account Access:</strong> Assume a role in another AWS account.</li>
+                <li><strong>AWS Services Role:</strong> AWS Lambda, ECS, etc.</li>
+                <li><strong>Federated Access:</strong> Using SSO or external IdPs.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<hr>
+
+<div id="Best Practices">
+    <h5>5. IAM Best Practices</h5>
+    <ul>
+        <li>✅ <strong>Enable MFA</strong> for users, especially root users.</li>
+        <li>✅ <strong>Use IAM roles</strong> instead of access keys.</li>
+        <li>✅ <strong>Grant least privilege</strong> (principle of least privilege).</li>
+        <li>✅ <strong>Rotate credentials</strong> regularly.</li>
+    </ul>
+</div>

@@ -1,0 +1,218 @@
+<h2 style="text-align: center;">AWS IAM (Identity and Access Management)</h2>
+<br>
+<div class="custom-container">
+  <h5>Table of Contents</h5>
+            <li><a href="#on-demand-instances">On-Demand Instances </a></li>
+            <li><a href="#reserved-instances">Reserved Instances (RIs)  </a></li>
+            <li><a href="#savings-plans">Savings Plans  </a></li>
+            <li><a href="#spot-instances">Spot Instances  </a></li>
+            <li><a href="#dedicated-hosts">Dedicated Hosts </a></li>
+            <li><a href="#dedicated-instances">Dedicated Instances </a></li>
+            <li><a href="#capacity-reservations">Capacity Reservations   </a></li>
+            <li><a href="#Practice Question Answer">EC2 Instance Purchase Options - Exam MCQs</a></li>
+        </ol>
+    </div>
+    <hr>
+
+    <div id="on-demand-instances">
+      <h5>On-Demand Instances</h5>
+      <ul>
+        <li>Pay for compute capacity by the second or hour with no long-term commitments.</li>
+        <li>Best for short-term, unpredictable workloads or testing environments.</li>
+        <li>No upfront payment and no long-term contract.</li>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="reserved-instances">
+      <h5>Reserved Instances (RIs)</h5>
+      <ul>
+        <li>Commit to a 1- or 3-year term for significant discounts (up to 72% off On-Demand pricing).</li>
+        <li>Types:</li>
+        <ul>
+          <li><b>Standard RIs:</b> Biggest discount but less flexibility.</li>
+          <li><b>Convertible RIs:</b> Allow changing instance attributes but offer lower discounts.</li>
+          <li><b>Scheduled RIs:</b> Reserve capacity for specific recurring schedules.</li>
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="savings-plans">
+      <h5>Savings Plans</h5>
+      <ul>
+        <li>Flexible pricing model offering lower costs based on a committed spend per hour for 1 or 3 years.</li>
+        <li>Types:</li>
+        <ul>
+          <li><b>Compute Savings Plan:</b> Applies to any EC2 instance, regardless of region, instance family, OS, or tenancy.</li>
+          <li><b>EC2 Instance Savings Plan:</b> Applies to a specific instance family and region for better discounts.</li>
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="spot-instances">
+      <h5>Spot Instances</h5>
+      <ul>
+        <li>Up to 90% cheaper than On-Demand instances.</li>
+        <li>Ideal for fault-tolerant and flexible workloads like batch processing, big data, and CI/CD.</li>
+        <li>Instances can be terminated by AWS when capacity is needed.</li>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="dedicated-hosts">
+      <h5>Dedicated Hosts</h5>
+      <ul>
+        <li>Physical servers dedicated to your use, allowing compliance with licensing and regulatory requirements.</li>
+        <li>Best for enterprises with strict compliance needs.</li>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="dedicated-instances">
+      <h5>Dedicated Instances</h5>
+      <ul>
+        <li>Run on hardware that is physically dedicated to a single customer, but without the management features of Dedicated Hosts.</li>
+        <li>Useful for security or regulatory requirements.</li>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="capacity-reservations">
+      <h5>Capacity Reservations</h5>
+      <ul>
+        <li>Reserve capacity in a specific Availability Zone without any long-term commitment.</li>
+        <li>Can be combined with RIs or Savings Plans for cost savings.</li>
+      </ul>
+    </div>
+    <hr>
+    
+    <div id="Practice Question Answer">
+        <div>
+            <h5>EC2 Instance Purchase Options - Exam MCQs</h5>
+            
+            <div class="question">
+              <p><strong>1. Which EC2 purchase option provides the highest discount for long-term workloads?</strong></p>
+              <ul>
+                <li>A) On-Demand</li>
+                <li>B) Reserved Instances </li>
+                <li>C) Spot Instances</li>
+                <li>D) Dedicated Hosts</li>
+              </ul>
+              <p><strong>Answer:</strong> B) Reserved Instances</p>
+              <p><strong>Explanation:</strong> Reserved Instances offer up to 72% discount over On-Demand pricing when committing to a 1- or 3-year term.</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>2. What is the main advantage of using Spot Instances?</strong></p>
+              <ul>
+                <li>A) Provides consistent performance</li>
+                <li>B) Reduces cost by up to 90% </li>
+                <li>C) Guaranteed availability</li>
+                <li>D) Always available in all regions</li>
+              </ul>
+              <p><strong>Answer:</strong> B) Reduces cost by up to 90%</p>
+              <p><strong>Explanation:</strong> Spot Instances are ideal for workloads that are fault-tolerant and can handle interruptions.</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>3. Which EC2 purchase option is best for an application that runs only for a few hours every week at a predictable time?</strong></p>
+              <ul>
+                <li>A) On-Demand</li>
+                <li>B) Spot Instances</li>
+                <li>C) Scheduled Reserved Instances </li>
+                <li>D) Dedicated Instances</li>
+              </ul>
+              <p><strong>Answer:</strong> C) Scheduled Reserved Instances</p>
+              <p><strong>Explanation:</strong> Scheduled Reserved Instances allow reserving capacity for specific time slots in a week, making them cost-effective.</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>4. What happens when AWS needs Spot Instance capacity back?</strong></p>
+              <ul>
+                <li>A) AWS provides a 2-minute warning before terminating the instance </li>
+                <li>B) AWS moves the instance to another region</li>
+                <li>C) AWS automatically converts it into an On-Demand instance</li>
+                <li>D) AWS pauses the instance and resumes later</li>
+              </ul>
+              <p><strong>Answer:</strong> A) AWS provides a 2-minute warning before terminating the instance</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>5. What is the key difference between Dedicated Hosts and Dedicated Instances?</strong></p>
+              <ul>
+                <li>A) Dedicated Hosts allow using existing software licenses </li>
+                <li>B) Dedicated Instances provide more flexibility in instance types</li>
+                <li>C) Dedicated Hosts are more cost-effective</li>
+                <li>D) Dedicated Instances allow multi-tenancy</li>
+              </ul>
+              <p><strong>Answer:</strong> A) Dedicated Hosts allow using existing software licenses</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>6. How can a company ensure that a critical EC2 instance always has available capacity in a specific AZ?</strong></p>
+              <ul>
+                <li>A) Purchase Spot Instances</li>
+                <li>B) Use a Capacity Reservation </li>
+                <li>C) Use a Compute Savings Plan</li>
+                <li>D) Use Reserved Instances</li>
+              </ul>
+              <p><strong>Answer:</strong> B) Use a Capacity Reservation</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>7. What is the best EC2 purchase option for a disaster recovery environment that must always be available?</strong></p>
+              <ul>
+                <li>A) Spot Instances</li>
+                <li>B) Reserved Instances </li>
+                <li>C) On-Demand</li>
+                <li>D) Savings Plans</li>
+              </ul>
+              <p><strong>Answer:</strong> B) Reserved Instances</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>8. Which EC2 instance type is best for unpredictable workloads that need flexibility?</strong></p>
+              <ul>
+                <li>A) On-Demand </li>
+                <li>B) Spot Instances</li>
+                <li>C) Reserved Instances</li>
+                <li>D) Dedicated Hosts</li>
+              </ul>
+              <p><strong>Answer:</strong> A) On-Demand</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>9. What happens if a company purchases a Compute Savings Plan?</strong></p>
+              <ul>
+                <li>A) They must use the same instance type</li>
+                <li>B) The discount applies to any EC2 usage </li>
+                <li>C) It only applies to a specific region</li>
+                <li>D) The savings are refundable</li>
+              </ul>
+              <p><strong>Answer:</strong> B) The discount applies to any EC2 usage</p>
+            </div>
+            <hr class="thin-line">
+            
+            <div class="question">
+              <p><strong>10. Which EC2 pricing model provides the most flexibility without long-term commitment?</strong></p>
+              <ul>
+                <li>A) On-Demand </li>
+                <li>B) Spot Instances</li>
+                <li>C) Reserved Instances</li>
+                <li>D) Dedicated Hosts</li>
+              </ul>
+              <p><strong>Answer:</strong> A) On-Demand</p>
+            </div>
+          </div>
+          
+    </div>

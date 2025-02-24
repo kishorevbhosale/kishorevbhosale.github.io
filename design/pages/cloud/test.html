@@ -3,121 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VM Startup Script in GCP for Certification</title>
+    <title>Text-to-Speech Player</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        code {
-            background-color: #eee;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-        .question {
-            background-color: #e6f7ff;
-            padding: 10px;
-            border-left: 5px solid #2196F3;
-            margin-bottom: 20px;
-        }
-        .answer {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-left: 5px solid #4CAF50;
-        }
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { margin: 5px; padding: 10px 15px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>VM Startup Script in GCP</h1>
-        <p>VM startup scripts in GCP allow users to configure virtual machines during the boot process. This is critical in automating setup processes such as installing software or running commands on newly created instances. Here's a detailed guide to understanding VM startup scripts in GCP, including certification-focused information.</p>
+    <h2>Click to Read Aloud</h2>
+    <p id="content">Elastic Network Interface (ENI) is a virtual network adapter in AWS that can be attached to EC2 instances.</p>
+    
+    <button id="play">🔊 Play</button>
+    <button id="pause">⏸ Pause</button>
+    <button id="resume">▶ Resume</button>
+    <button id="stop">⏹ Stop</button>
 
-        <h2>Key Points for GCP Certification</h2>
-        <ul>
-            <li><strong>What is a startup script?</strong>: A startup script is a bash script that runs when a VM instance starts. It automates tasks such as installing software, configuring environments, or pulling code from a repository.</li>
-            <li><strong>Where to specify a startup script:</strong>
-                <ul>
-                    <li>You can provide a startup script directly in the GCP Console, via the `gcloud` command-line tool, or by specifying a script stored in Google Cloud Storage.</li>
-                </ul>
-            </li>
-            <li><strong>Example startup script:</strong>
-                <pre>
-#!/bin/bash
-# Update packages
-apt-get update
+    <script>
+        // Initialize SpeechSynthesis API
+        var speech = new SpeechSynthesisUtterance();
+        speech.lang = "en-US"; // Set language (Change for different languages)
+        speech.rate = 1; // Set speed (1 is normal)
+        speech.pitch = 1; // Set pitch (1 is normal)
 
-# Install nginx
-apt-get install -y nginx
+        // Event Listeners for buttons
+        document.getElementById("play").addEventListener("click", function() {
+            speech.text = document.getElementById("content").innerText;
+            window.speechSynthesis.speak(speech);
+        });
 
-# Start nginx service
-systemctl start nginx
-                </pre>
-            </li>
-            <li><strong>Attaching a startup script to a VM</strong>:
-                <ul>
-                    <li>In the GCP Console: Add the script in the "Metadata" section when creating a new VM instance.</li>
-                    <li>Using `gcloud` CLI: <code>gcloud compute instances create my-vm --metadata startup-script='#!/bin/bash ...'</code></li>
-                </ul>
-            </li>
-            <li><strong>Persistent Disks and Startup Scripts:</strong> Persistent disks can store data that a startup script might require after a reboot.</li>
-            <li><strong>Metadata Server:</strong> The metadata server provides key instance information to the VM, like custom metadata and instance attributes that can be accessed via <code>http://metadata.google.internal</code>.</li>
-            <li><strong>Startup Script Logging:</strong> Startup scripts log to <code>/var/log/syslog</code> or <code>/var/log/messages</code> depending on the Linux distribution. For debugging, this is a key place to check.</li>
-            <li><strong>API Access Scopes and IAM:</strong> The script may require specific permissions (e.g., read/write access to Google Cloud Storage or BigQuery). Ensure the instance has the necessary IAM roles and API scopes configured.</li>
-        </ul>
+        document.getElementById("pause").addEventListener("click", function() {
+            window.speechSynthesis.pause();
+        });
 
-        <h2>Common Certification Questions & Answers</h2>
+        document.getElementById("resume").addEventListener("click", function() {
+            window.speechSynthesis.resume();
+        });
 
-        <div class="question">
-            <strong>Question 1:</strong> How do you configure a VM instance to run a script upon startup in Google Cloud?
-        </div>
-        <div class="answer">
-            <strong>Answer:</strong> You can configure a VM to run a startup script by either providing the script in the "Custom Metadata" field during instance creation in the GCP Console, using the `gcloud compute instances create` command with the `--metadata` flag, or storing the script in Google Cloud Storage and referencing it via metadata.
-        </div>
-
-        <div class="question">
-            <strong>Question 2:</strong> Where can you check if the startup script executed successfully on a Google Compute Engine instance?
-        </div>
-        <div class="answer">
-            <strong>Answer:</strong> The logs for the startup script execution can be found in <code>/var/log/syslog</code> (for Debian/Ubuntu) or <code>/var/log/messages</code> (for RHEL/CentOS). The metadata server also keeps track of script execution statuses.
-        </div>
-
-        <div class="question">
-            <strong>Question 3:</strong> Can a startup script be stored in Google Cloud Storage and used for a VM in GCP? If so, how do you specify it?
-        </div>
-        <div class="answer">
-            <strong>Answer:</strong> Yes, a startup script can be stored in Google Cloud Storage. You specify the script by adding a custom metadata entry: <code>startup-script-url=gs://bucket-name/script-name</code>. The VM will download and execute the script at boot time.
-        </div>
-
-        <div class="question">
-            <strong>Question 4:</strong> What are the common use cases for startup scripts in GCP?
-        </div>
-        <div class="answer">
-            <strong>Answer:</strong> Common use cases include automatically installing packages, configuring the environment, pulling the latest application code from repositories, setting up database connections, and starting services like web servers or application servers.
-        </div>
-
-        <div class="question">
-            <strong>Question 5:</strong> What is the difference between a startup script and a shutdown script in GCP?
-        </div>
-        <div class="answer">
-            <strong>Answer:</strong> A startup script runs during the boot process of a VM instance, while a shutdown script is executed when the instance is stopped or terminated. Both can be used to automate tasks, but they are triggered at different stages of the VM lifecycle.
-        </div>
-
-    </div>
+        document.getElementById("stop").addEventListener("click", function() {
+            window.speechSynthesis.cancel();
+        });
+    </script>
 
 </body>
 </html>

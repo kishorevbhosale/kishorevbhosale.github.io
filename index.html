@@ -11,7 +11,7 @@
     <meta property="og:description" content="Revise, prepare, and excel in backend development and system design interviews.">
     <meta property="og:image" content="images/tech-banner.jpg">
     <meta property="og:url" content="https://www.preparationzone.com/">
-    <title>Tech Preparation Zone | Backend & System Design Interviews</title>
+    <title>Basic Java Interview QA</title>
 
     <!-- Bootstrap 5.3 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -21,6 +21,8 @@
 
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 
 </head>
 
@@ -76,7 +78,7 @@
                                         <div id="collapseJavaQA" class="accordion-collapse collapse" aria-labelledby="headingJavaQA" data-bs-parent="#javaSubsections">
                                             <div class="accordion-body">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="design/pages/java/qa_part-1.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> List-1 - Basic Java</a></li>
+                                                    <li><a href="design/pages/java/java-interview-guide-basic-java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Basic Java Interview</a></li>
                                                     <li><a href="design/pages/java/qa_part-2.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i> List-2 - OOPs</a></li>
                                                     <li><a href="design/pages/java/qa_part-3.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> List-3 - MultiThreading</a></li>
                                                     <li><a href="design/pages/java/qa_part-4.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bug"></i> List-4 - Exception Handling</a></li>
@@ -342,7 +344,7 @@
                     </div>
 
                     
-                    <!-- Cloud Section -->
+                    <!-- Cloud Section 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingCloud">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCloud" aria-expanded="false" aria-controls="collapseCloud">
@@ -351,12 +353,39 @@
                         </h2>
                         <div id="collapseCloud" class="accordion-collapse collapse" aria-labelledby="headingCloud" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
+                                <div class="accordion" id="cloudSubsections"></div>
+
+                               
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingAWS">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCloud" aria-expanded="false" aria-controls="collapseCloud">
+                                            <i class="bi bi-clipboard-check me-2"></i> AWS
+                                        </button>
+                                    </h2>
+                                    <div id="collapseCloud" class="accordion-collapse collapse" aria-labelledby="headingAWS" data-bs-parent="#cloudSubsections">
+                                        <div class="accordion-body">
+                                            <ul class="list-unstyled">
+                                                <li><a href="design/pages/cloud/aws/Regions_Availability_Zones.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Regions_Availability_Zones</a></li>
+                                                <li><a href="design/pages/cloud/aws/load-balancer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Load Balancer</a></li>
+
+                                                <li><a href="design/pages/cloud/aws/iam.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> IAM</a></li>
+                                                <li><a href="design/pages/cloud/aws/ec2_instance_purchasing_options.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> EC2 Instance Purchasing Options</a></li>
+                                                <li><a href="design/pages/cloud/test.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> Test</a></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <ul class="list-unstyled">
+                                    <li><a href="design/pages/cloud/test.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Mike Test</a></li>
+
                                     <li><a href="design/pages/cloud/sns_lambda.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> AWS: SNS and Lambda Example</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                -->
 
                     <!-- API Design Section -->
                     <div class="accordion-item">
@@ -373,6 +402,7 @@
                             </div>
                         </div>
                     </div>
+            
 
                     <!-- Papers -->
                     <div class="accordion-item">
