@@ -1,0 +1,484 @@
+<div class="custom-container">
+<h3 class="toc-title">Table of Contents</h3>
+<ol class="toc-list">
+<li><a href="#ec2-basics">Amazon EC2 Basics</a></li>
+<li><a href="#instance-types">EC2 Instance Types</a></li>
+<li><a href="#launching-instances">Launching EC2 Instances</a></li>
+<li><a href="#amis">Amazon Machine Images (AMIs)</a></li>
+<li><a href="#billing-models">Billing and Provisioning Models</a>
+<ol>
+<li><a href="#on-demand">On-Demand</a></li>
+<li><a href="#spot">Spot Instances</a></li>
+<li><a href="#reserved">Reserved Instances (RIs)</a></li>
+<li><a href="#dedicated-hosts">Dedicated Hosts</a></li>
+<li><a href="#dedicated-instances">Dedicated Instances</a></li>
+</ol>
+</li>
+<li><a href="#networking">Networking</a>
+<ol>
+<li><a href="#ip-addresses">IP Addresses</a></li>
+<li><a href="#enis">Elastic Network Interfaces (ENIs)</a></li>
+<li><a href="#ena">Enhanced Networking (ENA)</a></li>
+<li><a href="#efa">Elastic Fabric Adapter (EFA)</a></li>
+<li><a href="#eni-ena-efa-compare">ENI vs ENA vs EFA</a></li>
+</ol>
+</li>
+<li><a href="#placement-groups">Placement Groups</a></li>
+<li><a href="#iam-roles">IAM Roles</a></li>
+<li><a href="#bastion-hosts">Bastion/Jump Hosts</a></li>
+<li><a href="#monitoring">Monitoring EC2</a>
+<ol>
+<li><a href="#status-checks">EC2 Status Checks</a></li>
+<li><a href="#cloudwatch-agent">Unified CloudWatch Agent</a></li>
+</ol>
+</li>
+<li><a href="#logging-auditing">Logging and Auditing (CloudTrail)</a></li>
+<li><a href="#tags-resource-groups">Tags & Resource Groups</a></li>
+<li><a href="#high-availability">High Availability Approaches for Compute</a></li>
+<li><a href="#migration">Migration</a>
+<ol>
+<li><a href="#vm-import-export">VM Import/Export</a></li>
+<li><a href="#aws-sms">AWS Server Migration Service (SMS)</a></li>
+</ol>
+</li>
+<li><a href="#management-tools">Management Tools</a></li>
+</ol>
+</div>
+<hr>
+<h3 id="ec2-basics">Amazon EC2 Basics</h3>
+<ul>
+<li><strong>Definition:</strong> Web service providing resizable compute capacity (virtual servers called "instances").</li>
+<li><strong>AMIs:</strong> Preconfigured templates for instances (OS, software).</li>
+<li><strong>Supported OS:</strong> Amazon Linux, Ubuntu, Windows Server, MacOS, RHEL, SUSE, Fedora, Debian, CentOS, Gentoo, Oracle Linux, FreeBSD.</li>
+<li><strong>ECUs:</strong> EC2 Compute Units, measure integer processing power.</li>
+<li><strong>Control:</strong> Full OS-level control (root/admin access).</li>
+<li><strong>Key Pairs:</strong> Public (AWS stored) & Private (user stored) for secure connection.
+<ul>
+<li>Windows AMIs: Private key for password retrieval.</li>
+<li>Linux AMIs: Private key for SSH.</li>
+</ul>
+</li>
+<li><strong>Metadata & User Data:</strong>
+<ul>
+<li><strong>User Data:</strong> Script supplied at instance launch (max 16KB), run once at startup. Not encrypted.</li>
+<li><strong>Instance Metadata:</strong> Data about the instance itself. Not encrypted.</li>
+<li><strong>Access:</strong> Both available at <code>http://169.254.169.254/latest/meta-data/</code> and <code>http://169.254.169.254/latest/user-data</code> (link-local address, accessible only from instance).</li>
+<li><strong>Tool:</strong> Instance Metadata Query tool simplifies querying.</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="instance-types">EC2 Instance Types</h3>
+<ul>
+<li>Optimized for different use cases (CPU, memory, storage, networking).</li>
+<li><strong>Categories:</strong>
+<ul>
+<li><strong>General Purpose:</strong> Balance of resources (e.g., T, M series).</li>
+<li><strong>Compute Optimized:</strong> High-performance processors (e.g., C series).</li>
+<li><strong>Memory Optimized:</strong> Large in-memory data sets (e.g., R, X, Z series, High Memory).</li>
+<li><strong>Accelerated Computing:</strong> Hardware accelerators/co-processors (e.g., P, G, F, VT series).</li>
+<li><strong>Storage Optimized:</strong> Low latency, high I/O performance NVMe SSDs (e.g., I, D, H series).</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="launching-instances">Launching EC2 Instances</h3>
+<ul>
+<li>Choose an AMI.</li>
+<li>Auto-assign Public IP (default uses subnet setting).</li>
+<li>Add to Placement Group (optional).</li>
+<li>Assign IAM Role (more secure than storing credentials).</li>
+<li>Enable Termination Protection (prevents accidental termination).</li>
+<li>Monitoring: Basic (5-min, default) or Detailed (1-min, chargeable).</li>
+<li>Tenancy: Shared or Dedicated.</li>
+<li>T2/T3 Unlimited: Allows bursting past CPU baseline (chargeable).</li>
+<li>Add User Data script.</li>
+<li>Join to a directory (Windows only).</li>
+<li>Enable Elastic GPU (Windows only).</li>
+<li>Storage: Add volumes, choose type, encrypt non-root volumes (root can be encrypted at launch).</li>
+<li>Tags: Optional, for management.</li>
+<li>Security Group: Select existing or create new.</li>
+<li>Key Pair: Required for SSH access (or use <code>AmazonEC2RoleforSSM</code> for Systems Manager).</li>
+<li>EFS: Can mount a shared filesystem to multiple EC2 instances.</li>
+</ul>
+<hr>
+
+<h3 id="amis">Amazon Machine Images (AMIs)</h3>
+<ul>
+<li>Provides info to launch an instance:
+<ul>
+<li>Template for root volume (OS, apps).</li>
+<li>Launch permissions.</li>
+<li>Block device mapping.</li>
+</ul>
+</li>
+<li><strong>Regional:</strong> Can only launch from region stored, but can be copied to other regions.</li>
+<li><strong>Volume Types:</strong>
+<ul>
+<li><strong>EBS:</strong> Persistent storage, created from S3 snapshots.</li>
+<li><strong>Instance Store:</strong> Ephemeral (non-persistent), data lost on shutdown, created from S3 templates.</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="billing-models">Billing and Provisioning Models</h3>
+<h4 id="on-demand">On-Demand</h4>
+<ul>
+<li>Pay-as-you-go, no upfront commitment.</li>
+<li>Low cost, flexible, ideal for unpredictable workloads, dev/test.</li>
+</ul>
+<h4 id="spot">Spot Instances</h4>
+<ul>
+<li>Up to 90% discount on unused EC2 capacity.</li>
+<li>Ideal for stateless, fault-tolerant, flexible apps (big data, containers, CI/CD, web servers, HPC, test/dev).</li>
+<li><strong>Pricing:</strong> Determined by long-term supply/demand trends (no bidding required in new model).</li>
+<li><strong>Interruption:</strong> 2-minute notice when instances are about to be reclaimed. Not interrupted by higher bids.</li>
+<li><strong>Optimization:</strong> Diversify across multiple capacity pools (instance family, size, AZ, region).</li>
+<li><strong>Spot Fleet:</strong> Use <code>RequestSpotFleet</code> API for large-scale requests.</li>
+<li>Can stop/hibernate instead of terminating on interruption.</li>
+</ul>
+<h4 id="reserved">Reserved Instances (RIs)</h4>
+<ul>
+<li>Purchase usage in advance (1 or 3 years) for significant discounts.</li>
+<li>Provides capacity reservation if used in a specific AZ (Zonal RI).</li>
+<li>AWS Billing automatically applies discounted rates.</li>
+<li><strong>Types:</strong> Standard, Convertible, Scheduled.
+<ul>
+<li><strong>Standard:</strong> 1 or 3 years, charged whether on/off.</li>
+<li><strong>Scheduled:</strong> Reserved for specific recurring periods (1 year term).</li>
+<li><strong>Convertible:</strong> Allows changing instance family, OS, tenancy, payment options (vs. Standard which only allows AZ/size change within same type for Linux).</li>
+</ul>
+</li>
+<li>Ideal for steady-state workloads, predictable usage, and applications needing reserved capacity.</li>
+<li>Upfront payments reduce hourly rate.</li>
+<li>Can switch AZ within same region; change instance size within same instance type (Linux only).</li>
+<li>Billed whether running or not.</li>
+<li>Can be sold on AWS Marketplace.</li>
+<li>Can be used in Auto Scaling Groups and Placement Groups.</li>
+<li>Shared across accounts with Consolidated Billing.</li>
+</ul>
+<h4 id="dedicated-hosts">Dedicated Hosts</h4>
+<ul>
+<li>Physical servers dedicated to your use.</li>
+<li>Control over instance deployment on host.</li>
+<li>Available On-Demand or with Dedicated Host Reservation.</li>
+<li>Useful for server-bound software licenses (per-core, per-socket, per-VM).</li>
+<li>Each host runs only one EC2 instance size/type.</li>
+<li>Good for regulatory compliance, licensing, predictable performance, complete isolation.</li>
+<li>Most expensive option; billed per host.</li>
+</ul>
+<h4 id="dedicated-instances">Dedicated Instances</h4>
+<ul>
+<li>Virtualized instances on hardware dedicated to you.</li>
+<li>Uses physically dedicated EC2 servers but without host-level visibility/controls of Dedicated Hosts.</li>
+<li>Billed per instance (additional $2/hour/region).</li>
+<li>May share hardware with other non-dedicated instances in same account.</li>
+<li>Available as On-Demand, RIs, Spot.</li>
+</ul>
+<div class="table-responsive-wrapper">
+<table class="styled-table">
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Dedicated Instances</th>
+<th>Dedicated Hosts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enables dedicated physical servers</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Per instance billing ($2/region fee)</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Per host billing</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Visibility of sockets, cores, host ID</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Affinity between host and instance</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Targeted instance placement</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Automatic instance placement</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Add capacity using allocation request</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Billing Notes:</strong></p>
+<ul>
+<li>Instances billed when in running state; stop/terminate to avoid charges.</li>
+<li>Linux instances billed by the second; others by the hour.</li>
+<li>Data transfer between instances in different regions is charged.</li>
+<li>Regional Data Transfer rates apply if instances are in different AZs OR if Public/Elastic IPs are used (charged once).</li>
+</ul>
+<hr>
+
+<h3 id="networking">Networking</h3>
+<ul>
+<li><strong>Default Limits (per region/specified):</strong>
+<ul>
+<li>EC2-Classic/VPC Elastic IPs: 5 each</li>
+<li>VPCs: 5</li>
+<li>Subnets per VPC: 200</li>
+<li>Security Groups per VPC: 500</li>
+<li>Rules per VPC Security Group: 50</li>
+<li>VPC Security Groups per ENI: 5</li>
+<li>Network Interfaces: 350</li>
+<li>Network ACLs per VPC: 200, Rules per NACL: 20</li>
+<li>Route Tables per VPC: 200, Entries per RT: 50</li>
+<li>Active VPC peering connections: 50, Outstanding requests: 25</li>
+<li>Unaccepted VPC peering connection expiry: 168 hours.</li>
+</ul>
+</li>
+</ul>
+<h4 id="ip-addresses">IP Addresses</h4>
+<ul>
+<li><strong>Public IP:</strong> Auto-assigned in public subnets, lost on stop/start. No charge. Cannot be moved.</li>
+<li><strong>Private IP:</strong> Auto-assigned to all instances, retained on stop/start.</li>
+<li><strong>Elastic IP (EIP):</strong> Static public IP. Retained on stop. Can be remapped between instances/ENIs.
+<ul>
+<li>Limit: 5 per region (soft limit).</li>
+<li>Charge: When not used (associated with a running instance).</li>
+<li>Regional only. Can be tagged.</li>
+<li>Secondary IPs useful for HA (multiple websites, standby instances).</li>
+<li>Can associate a private IPv4 with an EIP.</li>
+<li>IPs remain attached to ENI when detached/reassigned.</li>
+</ul>
+</li>
+<li><strong>BYOIP (Bring Your Own IP):</strong> Bring publicly routable IPv4/IPv6 ranges from on-premises to AWS. You own the range, AWS advertises it. Not available in all regions/resources.</li>
+<li><strong>Exam Tip:</strong> Stop/start EC2 to move to different physical host if status checks fail or for maintenance.</li>
+<li><strong>Modifiable when stopped:</strong> Instance type, user data, kernel, RAM disk.</li>
+</ul>
+<div class="table-responsive-wrapper">
+<table class="styled-table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Public IP address</td>
+<td>Lost when instance is stopped; used in Public Subnets; no charge; associated with private IP; cannot be moved.</td>
+</tr>
+<tr>
+<td>Private IP address</td>
+<td>Retained when instance is stopped; used in Public and Private Subnets.</td>
+</tr>
+<tr>
+<td>Elastic IP address</td>
+<td>Static Public IP; charged if not used; associated with private IP; can be moved between instances/ENAs.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h4 id="enis">Elastic Network Interfaces (ENIs)</h4>
+<ul>
+<li>Logical networking component in a VPC, representing a virtual network card.</li>
+<li>Attributes: Primary/secondary private IPv4s, EIPs, public IPv4, IPv6s, security groups, MAC address, source/destination check flag, description.</li>
+<li>Cannot increase bandwidth by teaming multiple ENIs.</li>
+<li><code>eth0</code> is primary, cannot be moved/detached.</li>
+<li>Can add additional ENIs (number depends on instance type).</li>
+<li>Bound to an AZ; can specify subnet/AZ.</li>
+<li><strong>Attachment:</strong>
+<ul>
+<li>Hot attached: to running instances.</li>
+<li>Warm-attached: to stopped instances.</li>
+<li>Cold-attached: when instance is launched.</li>
+</ul>
+</li>
+<li>If 2nd ENI added, AWS won't assign public IP to <code>eth0</code> (need EIP).</li>
+<li>Default interfaces terminate with instance; manually added ones don't by default (can change behavior).</li>
+</ul>
+
+<h4 id="ena">Enhanced Networking (ENA)</h4>
+<ul>
+<li>Higher bandwidth, PPS, lower inter-instance latency.</li>
+<li>Enabled using Elastic Network Adapter (ENA).</li>
+<li>Use if PPS rate is ceilinged (VIF driver limit).</li>
+<li>Uses SR-IOV (direct access to network adapters).</li>
+<li>Requires HVM AMI with drivers; available for certain instance types; VPC only.</li>
+</ul>
+
+<h4 id="efa">Elastic Fabric Adapter (EFA)</h4>
+<ul>
+<li>ENA with added capabilities; supports OS bypass.</li>
+<li>Allows applications to access network interface without OS involvement for each message.</li>
+<li>Enhances performance of inter-instance communications at scale.</li>
+<li><strong>Use Cases:</strong> HPC (Message Passing Interface - MPI), Machine Learning (NVIDIA NCCL).</li>
+<li>Offers on-premises HPC cluster performance with cloud elasticity.</li>
+<li>Optional EC2 networking feature, no additional cost.</li>
+</ul>
+
+<h4 id="eni-ena-efa-compare">ENI vs ENA vs EFA</h4>
+<ul>
+<li><strong>ENI:</strong> Basic adapter, no high-performance needs, all instance types.</li>
+<li><strong>ENA:</strong> Higher bandwidth/lower latency, limited HVM instance types.</li>
+<li><strong>EFA:</strong> HPC, MPI/ML, tightly coupled apps, all instance types.</li>
+</ul>
+<hr>
+
+<h3 id="placement-groups">Placement Groups</h3>
+<ul>
+<li>Logical grouping of instances.</li>
+<li><strong>Types:</strong>
+<ul>
+<li><strong>Cluster:</strong> Low-latency, high-throughput group in a <strong>single AZ</strong>. Recommended for apps with high inter-instance traffic.</li>
+<li><strong>Spread:</strong> Instances spread across <strong>distinct underlying hardware</strong>. Reduces simultaneous failure risk. Max 7 instances per group per AZ. Can span multiple AZs.</li>
+<li><strong>Partition:</strong> Divides group into logical segments (partitions) with <strong>distinct hardware racks</strong> (own network/power). Isolates hardware failure impact. For large distributed/replicated workloads (HDFS, HBase, Cassandra). Not supported for Dedicated Hosts.</li>
+</ul>
+</li>
+<li><strong>Performance:</strong> Best with private IPs (10/25 Gbps); public IPs limit to 5 Gbps.</li>
+<li>Recommended to use homogenous instance types.</li>
+<li>Can use RIs at instance level, but cannot reserve capacity for the group itself.</li>
+<li>Name must be unique per account/region.</li>
+<li>Cannot merge PGs; instance in one PG at a time.</li>
+<li>On-Demand Capacity Reservation & Zonal RIs can be used by instances in a PG, but don't explicitly reserve PG capacity.</li>
+<li>Instances with host tenancy cannot be launched in PGs.</li>
+</ul>
+<hr>
+
+<h3 id="iam-roles">IAM Roles</h3>
+<ul>
+<li>More secure than storing access keys on instances.</li>
+<li>Allow EC2 to interact with other AWS services (S3, DynamoDB).</li>
+<li>Easier to manage, more secure.</li>
+<li>Can be attached/modified/replaced at launch or anytime via CLI/SDK/console.</li>
+<li>Only one IAM role per EC2 instance at a time.</li>
+<li>Universal (can be used in any region).</li>
+</ul>
+<hr>
+
+<h3 id="bastion-hosts">Bastion/Jump Hosts</h3>
+<ul>
+<li>EC2 instances configured to access VPC instances for management.</li>
+<li>Use SSH or RDP protocols.</li>
+<li>Require specific security group permissions.</li>
+<li>Can use auto-assigned public IPs or EIPs.</li>
+<li>Restrict access via security group IP/CIDR rules.</li>
+<li>Use Auto Scaling Groups for HA (set min to 1 for replacement).</li>
+<li>Best practice: Deploy Linux bastion hosts in two AZs, use ASG, and EIPs.</li>
+<li><strong>Alternative:</strong> AWS Systems Manager Session Manager (more secure, no SSH keys needed).</li>
+</ul>
+<hr>
+
+<h3 id="monitoring">Monitoring EC2</h3>
+<ul>
+<li>EC2 status checks performed every minute (Pass/Fail).</li>
+<li>Overall status: OK (all pass) or Impaired (one or more fail).</li>
+</ul>
+<h4 id="status-checks">EC2 Status Checks</h4>
+<ul>
+<li><strong>System Status Checks (<code>StatusCheckFailed_System</code>):</strong> Problems requiring AWS involvement (network loss, power loss, physical host issues).</li>
+<li><strong>Instance Status Checks (<code>StatusCheckFailed_Instance</code>):</strong> Problems requiring your involvement (failed system checks, incorrect config, exhausted memory, corrupted filesystem, incompatible kernel).</li>
+<li>Cannot be disabled/deleted.</li>
+<li>Can create CloudWatch alarms to monitor and perform actions:
+<ul>
+<li>Recover instance (only for <code>StatusCheckFailed_System</code>, specific types).</li>
+<li>Stop instance (EBS-backed only).</li>
+<li>Terminate instance (if termination protection disabled).</li>
+<li>Reboot instance (best practice to use EC2 reboot vs. OS reboot).</li>
+</ul>
+</li>
+<li><strong>CloudWatch Monitoring Frequency:</strong> Standard (5 mins), Detailed (1 min, chargeable).</li>
+</ul>
+<h4 id="cloudwatch-agent">Unified CloudWatch Agent</h4>
+<ul>
+<li>Collects more system-level metrics from EC2 (in-guest metrics) and on-premises servers.</li>
+<li>Retrieves custom metrics via StatsD (Linux/Windows) and collectd (Linux only).</li>
+<li>Collects logs from EC2 and on-premises servers (Linux/Windows).</li>
+<li>Install manually or integrate with SSM.</li>
+</ul>
+<hr>
+
+<h3 id="logging-auditing">Logging and Auditing (CloudTrail)</h3>
+<ul>
+<li>Amazon EC2 & EBS integrated with AWS CloudTrail.</li>
+<li>CloudTrail records all API calls (console, code) for EC2/EBS as events.</li>
+<li>Create a trail for continuous delivery of events to S3 (indefinite storage).</li>
+<li>If no trail, view recent 90 days in CloudTrail Event history.</li>
+<li>Helps determine who, what, when, where (IP), and how requests were made.</li>
+</ul>
+<hr>
+
+<h3 id="tags-resource-groups">Tags & Resource Groups</h3>
+<ul>
+<li><strong>Tags:</strong> Metadata (key/optional value) assigned to AWS resources.</li>
+<li>Used for management, identification, organization, search, filtering.</li>
+<li>Strategies: Cost allocation, security (IAM policies), automation.</li>
+<li>Enforce tagging via AWS Config rules or custom scripts.</li>
+<li>Most resources support up to 50 tags.</li>
+<li><strong>Resource Groups:</strong> Mappings of AWS assets defined by tags.</li>
+<li>Create custom consoles to consolidate metrics, alarms, config details based on tags.</li>
+</ul>
+<hr>
+
+<h3 id="high-availability">High Availability Approaches For Compute</h3>
+<ul>
+<li>Up-to-date AMIs for rapid failover.</li>
+<li>Copy AMIs to other regions for safety/DR.</li>
+<li>Prefer horizontally scalable architectures (spread risk).</li>
+<li>Reserved Instances: Only way to guarantee resource availability.</li>
+<li>Auto Scaling & Elastic Load Balancing: Automated recovery (maintain min instances).</li>
+<li>Amazon Route 53 health checks: "Self-healing" traffic redirection.</li>
+</ul>
+<hr>
+
+<h3 id="migration">Migration</h3>
+<h4 id="vm-import-export">VM Import/Export</h4>
+<ul>
+<li>Tool for migrating VMware, Microsoft, XEN VMs to/from AWS.</li>
+<li>Supports Windows and Linux.</li>
+<li>VMware ESX VMDKs (OVA for export), Citrix XEN VHD, Microsoft Hyper-V VHD.</li>
+<li>API/CLI only (not console).</li>
+<li>Stop VM before generating images.</li>
+<li>AWS VM connector plugin for vCenter: Migrates VMs to S3, converts to EC2 AMI, tracks progress in vCenter.</li>
+</ul>
+<h4 id="aws-sms">AWS Server Migration Service (SMS)</h4>
+<ul>
+<li>Agent-less service for migrating thousands of on-premises workloads to AWS.</li>
+<li>Automates, schedules, tracks incremental replications of live server volumes.</li>
+<li>Migrates VMware vSphere or Microsoft Hyper-V/SCVMM VMs to AWS.</li>
+<li>Replicates VMs to AWS, syncs volumes, creates periodic AMIs.</li>
+<li>Minimizes cutover downtime.</li>
+<li>Supports Windows and Linux.</li>
+<li>Uses Server Migration Connector (virtual appliance) in on-premises environment.</li>
+</ul>
+<hr>
+
+<h3 id="management-tools">Management Tools</h3>
+<ul>
+<li>AWS Systems Manager (for managing instances).</li>
+<li>AWS OpsWorks (manage instances using Chef/Puppet).</li>
+<li>AWS Config (record configuration items, track changes).</li>
+</ul>
+<hr>
