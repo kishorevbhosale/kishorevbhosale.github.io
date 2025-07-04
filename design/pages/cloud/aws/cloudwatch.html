@@ -1,0 +1,255 @@
+<div class="custom-container">
+<h3 class="toc-title">Table of Contents</h3>
+<ol class="toc-list">
+<li><a href="#cw-overview">Amazon CloudWatch Overview</a></li>
+<li><a href="#cw-metrics">Metrics</a>
+<ol>
+<li><a href="#metrics-basics">Metrics Basics</a></li>
+<li><a href="#metrics-retention">Metric Data Retention</a></li>
+<li><a href="#custom-metrics">Custom Metrics</a></li>
+<li><a href="#high-res-metrics">High-Resolution Metrics</a></li>
+<li><a href="#namespaces">Namespaces</a></li>
+<li><a href="#dimensions">Dimensions</a></li>
+<li><a href="#statistics">Statistics</a></li>
+</ol>
+</li>
+<li><a href="#cw-alarms">CloudWatch Alarms</a></li>
+<li><a href="#cw-logs">CloudWatch Logs</a>
+<ol>
+<li><a href="#cw-logs-features">Features</a></li>
+<li><a href="#cw-logs-agent">CloudWatch Logs Agent (Unified Agent)</a></li>
+</ol>
+</li>
+<li><a href="#cw-events">CloudWatch Events (Amazon EventBridge)</a></li>
+<li><a href="#cw-apis">Useful API Actions</a></li>
+<li><a href="#cw-ct-compare">CloudWatch vs. CloudTrail Comparison</a></li>
+<li><a href="#cw-exam-tips">Important Exam Tips & Tricks</a></li>
+</ol>
+</div>
+<hr>
+
+<h3 id="cw-overview">Amazon CloudWatch Overview</h3>
+<ul>
+<li><strong>Definition:</strong> A monitoring service for AWS cloud resources and applications running on AWS.</li>
+<li><strong>Core Functions:</strong> Collects and tracks metrics, collects and monitors log files, and sets alarms.</li>
+<li><strong>Benefits:</strong>
+<ul>
+<li>Gain system-wide visibility into resource utilization.</li>
+<li>Monitor application performance.</li>
+<li>Monitor operational health.</li>
+</ul>
+</li>
+<li><strong>Access:</strong> Via API, CLI, AWS SDKs, and AWS Management Console.</li>
+<li>Integrates with AWS IAM for access control.</li>
+<li>Can automatically react to changes in your AWS resources.</li>
+<li><strong>Monitors resources such as:</strong> EC2 instances, DynamoDB tables, RDS DB instances, custom metrics, and log files.</li>
+</ul>
+<hr>
+
+<h3 id="cw-metrics">Metrics</h3>
+<h4 id="metrics-basics">Metrics Basics</h4>
+<ul>
+<li><strong>Fundamental concept in CloudWatch.</strong></li>
+<li>Represents a time-ordered set of data points published to CloudWatch.</li>
+<li>AWS services automatically send metrics to CloudWatch. You can also send your own custom metrics.</li>
+<li>Metrics exist within a region.</li>
+<li>Metrics cannot be deleted but automatically expire after 15 months.</li>
+<li>Uniquely defined by a name, a namespace, and zero or more dimensions.</li>
+</ul>
+
+<h4 id="metrics-retention">Metric Data Retention</h4>
+<ul>
+<li>Data points &lt; 60 seconds (high-resolution): Available for 3 hours.</li>
+<li>Data points 60 seconds (1 minute): Available for 15 days.</li>
+<li>Data points 300 seconds (5 minutes): Available for 63 days.</li>
+<li>Data points 3600 seconds (1 hour): Available for 455 days (15 months).</li>
+</ul>
+
+<h4 id="custom-metrics">Custom Metrics</h4>
+<ul>
+<li>Publish your own metrics to CloudWatch using AWS CLI or API (PutMetricData).</li>
+<li>View statistical graphs in the console.</li>
+<li>Each data point has an associated timestamp.</li>
+<li>Can publish an aggregated set of data points called a statistic set.</li>
+<li>Every PutMetricData call for a custom metric is charged.</li>
+</ul>
+
+<h4 id="high-res-metrics">High-Resolution Metrics</h4>
+<ul>
+<li><strong>Standard Resolution:</strong> 1-minute granularity (default for AWS services).</li>
+<li><strong>High Resolution:</strong> 1-second granularity (for custom metrics).</li>
+<li>When published, stored with 1-second resolution. Can be retrieved with periods of 1, 5, 10, 30 seconds, or any multiple of 60 seconds.</li>
+<li>Provides more immediate insight into sub-minute activity.</li>
+<li>Higher charges for more frequent PutMetricData calls and for high-resolution alarms (10 or 30-second periods).</li>
+</ul>
+
+<h4 id="namespaces">Namespaces</h4>
+<ul>
+<li>A container for CloudWatch metrics.</li>
+<li>Isolates metrics from different applications to prevent mistaken aggregation.</li>
+<li>Examples: AWS/EC2, AWS/S3, AWS/Lambda, MyApplication/WebTier.</li>
+</ul>
+
+<h4 id="dimensions">Dimensions</h4>
+<ul>
+<li>Further clarifies what a metric is and what data it stores.</li>
+<li>Up to 10 dimensions per metric, each defined by a name and value pair.</li>
+<li>Syntax for CLI:
+<ul>
+<li>put-metric-data: MyName=MyValue</li>
+<li>get-metric-statistics or put-metric-alarm: Name=MyName,Value=MyValue</li>
+</ul>
+</li>
+<li>If a metric has multiple dimensions, you must specify a value for every defined dimension when using get-metric-statistics.</li>
+</ul>
+
+<h4 id="statistics">Statistics</h4>
+<ul>
+<li>Aggregations of metric data points over specified periods.</li>
+<li>Provided by CloudWatch based on custom data or AWS service data.</li>
+<li><strong>Types:</strong>
+<ul>
+<li>Minimum: Lowest value.</li>
+<li>Maximum: Highest value.</li>
+<li>Sum: Total of all values.</li>
+<li>Average: Sum / SampleCount.</li>
+<li>SampleCount: Number of data points.</li>
+<li>pNN.NN (Percentiles): Value of the specified percentile (e.g., p99 for 99th percentile). Not available for negative values.</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="cw-alarms">CloudWatch Alarms</h3>
+<ul>
+<li>Monitor a single metric over a specified time period.</li>
+<li>Initiate one or more specified actions based on the metric's value relative to a threshold.</li>
+<li>Actions include: Notification to an Amazon SNS topic or an Auto Scaling policy.</li>
+<li>Can be added to dashboards.</li>
+<li>Alarms invoke actions for sustained state changes only (not just being in a state). The state must be maintained for a specified number of periods.</li>
+<li>High-resolution alarms can have periods of 10 or 30 seconds (higher charge).</li>
+</ul>
+<hr>
+
+<h3 id="cw-logs">CloudWatch Logs</h3>
+<ul>
+<li><strong>Purpose:</strong> Monitor and troubleshoot systems and applications using existing system, application, and custom log files.</li>
+<li>Centralizes logs from EC2 instances, AWS CloudTrail, Route 53, and other sources.</li>
+<li><strong>Features:</strong>
+<ul>
+<li>Monitor logs from EC2 instances (application and system logs, can trigger notifications).</li>
+<li>Monitor CloudTrail Logged Events (create alarms based on API activity).</li>
+<li><strong>Log Retention:</strong> By default, logs are retained indefinitely. Configurable per log group from 1 day to 10 years.</li>
+<li>Used for real-time application/system monitoring and long-term log retention.</li>
+<li>Metric Filters: Scan log data to generate CloudWatch metrics. (<strong>Exam Tip!</strong>)</li>
+<li>Subscription Filters: Send log data to a subscriber (e.g., Lambda for real-time processing, Kinesis Data Streams).</li>
+<li>Export logs to S3 (via CreateExportTask, can take hours).</li>
+<li>For near real-time or persistent logs, consider Kinesis Firehose for supported destinations, or Kinesis Data Streams with Lambda/KCL for custom real-time processing.</li>
+</ul>
+</li>
+</ul>
+
+<h4 id="cw-logs-agent">CloudWatch Logs Agent (Unified Agent)</h4>
+<ul>
+<li>Provides an automated way to send log data and system-level metrics to CloudWatch Logs from EC2 instances and on-premises servers.</li>
+<li><strong>Unified Agent Capabilities:</strong>
+<ul>
+<li>Collects in-guest metrics (e.g., memory, disk utilization) from EC2 instances across OS.</li>
+<li>Collects system-level metrics from on-premises servers (hybrid environments).</li>
+<li>Retrieves custom metrics from applications/services using StatsD (Linux/Windows) and collectd (Linux only) protocols.</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="cw-events">CloudWatch Events (Amazon EventBridge)</h3>
+<ul>
+<li><strong>Definition:</strong> Delivers a near real-time stream of system events that describe changes in AWS resources.</li>
+<li>Can schedule automated actions that self-trigger at certain times using cron or rate expressions.</li>
+<li>Can match events (based on patterns) and route them to one or more target functions or streams.</li>
+<li><strong>Targets include:</strong> EC2 instances, Lambda functions, Kinesis Data Streams, Kinesis Data Firehose, CloudWatch Logs, ECS tasks, Systems Manager Run Command/Automation, AWS Batch jobs, Step Functions state machines, CodePipeline, CodeBuild, SNS topics, SQS queues.</li>
+<li>Note: CloudWatch Events has been largely superseded by Amazon EventBridge, which offers enhanced features like event buses, schema registry, and SaaS integrations. For exam purposes, often "CloudWatch Events" refers to the core functionality now part of EventBridge.</li>
+</ul>
+<hr>
+
+<h3 id="cw-apis">Useful API Actions (for Developer Associate Exam)</h3>
+<ul>
+<li><code>GetMetricData</code>: Retrieve up to 500 different metrics in a single request.</li>
+<li><code>PutMetricData</code>: Publishes metric data points to CloudWatch. Creates the metric if it doesn't exist.</li>
+<li><code>GetMetricStatistics</code>: Gets aggregated statistics (Min, Max, Sum, Avg, SampleCount, Percentiles) for a specified metric over a period. Max 1,440 data points per call.</li>
+<li><code>PutMetricAlarm</code>: Creates or updates an alarm associated with a metric, metric math expression, or anomaly detection model.</li>
+</ul>
+<hr>
+
+<h3 id="cw-ct-compare">CloudWatch vs. CloudTrail Comparison</h3>
+<div class="table-responsive-wrapper">
+<table class="styled-table">
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>AWS CloudWatch</th>
+<th>AWS CloudTrail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Primary Focus</strong></td>
+<td>Performance monitoring, operational health, resource utilization.</td>
+<td>Auditing, governance, compliance, security analysis.</td>
+</tr>
+<tr>
+<td><strong>What it Logs</strong></td>
+<td>Logs events across AWS services (operational data, application logs, metrics).</td>
+<td>Logs API activity across AWS services (actions, who did what).</td>
+</tr>
+<tr>
+<td><strong>Level of Detail</strong></td>
+<td>Higher-level comprehensive monitoring and events.</td>
+<td>More low-level, granular API activity.</td>
+</tr>
+<tr>
+<td><strong>Data Origin</strong></td>
+<td>Metrics from services, custom metrics, application logs.</td>
+<td>API calls made by users, roles, or AWS services.</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Logs stored to CloudWatch Logs (configurable retention). Metrics stored for 15 months.</td>
+<td>Logs delivered to S3 (indefinite storage). Event History (console) for 90 days.</td>
+</tr>
+<tr>
+<td><strong>Alarms</strong></td>
+<td>Native alarming capabilities based on metrics and log patterns.</td>
+<td>No native alarming; integrates with CloudWatch Logs to create alarms.</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Charges for metrics, logs ingestion/storage, alarms.</td>
+<td>Charges for management events (after free tier) and data events. S3 storage costs.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<h3 id="cw-exam-tips">Important Exam Tips & Tricks</h3>
+<ul>
+<li><strong>"How is my application performing?"</strong> &rarr; CloudWatch.</li>
+<li><strong>"Who did what, when, where?"</strong> &rarr; CloudTrail.</li>
+<li><strong>Metrics Granularity:</strong> Standard (1 min) vs. High-Resolution (1 sec). Know the cost implications of high-resolution metrics and alarms.</li>
+<li><strong>Metrics Retention:</strong> Remember the 15-month retention for metrics, with decreasing granularity over time.</li>
+<li><strong>Namespaces & Dimensions:</strong> Crucial for organizing and filtering metrics. Understand how to use them to uniquely identify a metric.</li>
+<li><strong>Alarms:</strong> Alarms only trigger for sustained state changes. They don't just trigger if a metric is above a threshold, but if it stays above for a defined period.</li>
+<li><strong>CloudWatch Logs:</strong>
+<ul>
+<li>Centralized logging.</li>
+<li>Metric Filters: Extract metrics from logs.</li>
+<li>Subscription Filters: Stream logs to other services (Lambda, Kinesis).</li>
+<li>Log retention is configurable per log group.</li>
+</ul>
+</li>
+<li><strong>Unified CloudWatch Agent:</strong> Collects both logs and in-guest metrics (memory, disk, etc.) from EC2 and on-premises servers. This is key for getting OS-level visibility beyond basic EC2 metrics.</li>
+<li><strong>CloudWatch Events (EventBridge):</strong> Focus on event-driven architectures and scheduled tasks (cron/rate expressions). It's a router for events.</li>
+<li><strong>API Calls:</strong> Be familiar with PutMetricData (send data) and GetMetricStatistics (retrieve aggregated data).</li>
+<li><strong>Custom Metrics Cost:</strong> Be aware that publishing custom metrics incurs costs, especially high-resolution ones.</li>
+</ul>

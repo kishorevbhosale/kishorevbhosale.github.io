@@ -1,0 +1,319 @@
+<div class="custom-container">
+<h3 class="toc-title">Table of Contents</h3>
+<ol class="toc-list">
+<li><a href="#ec-overview">Amazon ElastiCache Overview</a></li>
+<li><a href="#ec-core-concepts">Core Concepts</a></li>
+<li><a href="#ec-engine-compare">ElastiCache Engine Comparison (Memcached vs. Redis)</a></li>
+<li><a href="#memcached">Memcached Specifics</a></li>
+<li><a href="#redis">Redis Specifics</a>
+<ol>
+<li><a href="#redis-cluster-disabled">Clustering Mode Disabled</a></li>
+<li><a href="#redis-cluster-enabled">Clustering Mode Enabled</a></li>
+<li><a href="#redis-multi-az">Multi-AZ Failover</a></li>
+</ol>
+</li>
+<li><a href="#caching-strategies">Caching Strategies</a>
+<ol>
+<li><a href="#lazy-loading">Lazy Loading</a></li>
+<li><a href="#write-through">Write-Through</a></li>
+<li><a href="#stale-data-ttl">Dealing with Stale Data (TTL)</a></li>
+</ol>
+</li>
+<li><a href="#ec-monitoring">Monitoring and Reporting</a>
+<ol>
+<li><a href="#memcached-metrics">Memcached Metrics</a></li>
+<li><a href="#redis-metrics">Redis Metrics</a></li>
+</ol>
+</li>
+<li><a href="#ec-logging-auditing">Logging and Auditing</a></li>
+<li><a href="#ec-auth-access">Authorization and Access Control</a></li>
+<li><a href="#ec-charges">Charges</a></li>
+<li><a href="#ec-ha">High Availability for ElastiCache</a></li>
+<li><a href="#ec-exam-tips">Important Exam Tips & Tricks</a></li>
+</ol>
+</div>
+<hr>
+
+<h3 id="ec-overview">Amazon ElastiCache Overview</h3>
+<ul>
+<li><strong>Definition:</strong> Fully managed implementations of two popular in-memory data stores: Redis and Memcached.</li>
+<li>Makes it easy to deploy and run Memcached or Redis protocol-compliant server nodes in the cloud.</li>
+<li><strong>Purpose:</strong> Significantly improve latency and throughput for read-heavy or compute-intensive application workloads.</li>
+<li>Best for scenarios where the DB load is based on Online Analytics Processing (OLAP) transactions.</li>
+<li>Offers push-button scalability for memory, writes, and reads.</li>
+<li>In-memory key/value store: Not persistent in the traditional sense (though Redis offers persistence).</li>
+<li>Billing: By node size and hours of use.</li>
+<li>Can be On-Demand or Reserved Instances (but not Spot Instances). (<strong>Exam Tip!</strong>)</li>
+<li>Can be used for storing session state.</li>
+</ul>
+<hr>
+
+<h3 id="ec-core-concepts">Core Concepts</h3>
+<ul>
+<li><strong>Node:</strong> Fixed-sized chunk of secure, network-attached RAM; smallest building block. Each node has its own DNS name and port. Failed nodes are automatically replaced.</li>
+<li><strong>Cluster:</strong> Collection of one or more nodes using the same caching engine.</li>
+<li><strong>Endpoint:</strong> A node or cluster’s unique address, used by applications to connect.</li>
+<li><strong>Maintenance Windows:</strong> Can be defined for software patching.</li>
+</ul>
+<hr>
+
+<h3 id="ec-engine-compare">ElastiCache Engine Comparison (Memcached vs. Redis)</h3>
+<div class="table-responsive-wrapper">
+<table class="styled-table">
+<thead>
+<tr>
+<th>Feature</th>
+<th>Memcached</th>
+<th>Redis (General)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Simpler, no-frills.</td>
+<td>More complex data types and features.</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>No.</td>
+<td>Yes (in-transit and at-rest).</td>
+</tr>
+<tr>
+<td><strong>HIPAA Compliance</strong></td>
+<td>No.</td>
+<td>Yes.</td>
+</tr>
+<tr>
+<td><strong>Multi-threading</strong></td>
+<td>Yes (can run large nodes with multiple cores/threads).</td>
+<td>No (single-threaded).</td>
+</tr>
+<tr>
+<td><strong>Clustering Support</strong></td>
+<td>Yes (for partitioning data).</td>
+<td>Yes (cluster mode enabled for sharding).</td>
+</tr>
+<tr>
+<td><strong>Complex Data Types</strong></td>
+<td>No (simple key-value pairs).</td>
+<td>Yes (sorted sets, lists, hashes).</td>
+</tr>
+<tr>
+<td><strong>High Availability (Replication)</strong></td>
+<td>No native replication.</td>
+<td>Yes (master/replica replication).</td>
+</tr>
+<tr>
+<td><strong>Multi-AZ Failover</strong></td>
+<td>No native auto-failover. (Can place nodes in different AZs for distribution).</td>
+<td>Yes, with auto-failover.</td>
+</tr>
+<tr>
+<td><strong>Backup and Restore</strong></td>
+<td>No (and no snapshots).</td>
+<td>Yes (automatic and manual snapshots to S3).</td>
+</tr>
+<tr>
+<td><strong>Pub/Sub Capability</strong></td>
+<td>No.</td>
+<td>Yes.</td>
+</tr>
+<tr>
+<td><strong>Persistence</strong></td>
+<td>No (purely in-memory).</td>
+<td>Yes (can be used as a persistent datastore).</td>
+</tr>
+<tr>
+<td><strong>Scaling</strong></td>
+<td>Scale in/out (add/remove nodes); scale up/down (change node type).</td>
+<td>Scales by adding shards (cluster mode enabled); can add read replicas.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Key Use Cases for ElastiCache (General):</strong></p>
+<ul>
+<li>Web session store (e.g., storing user session info for load-balanced web servers).</li>
+<li>Database caching (offload reads from RDS/DynamoDB).</li>
+<li>Leaderboards (live leaderboards for mobile apps).</li>
+<li>Streaming data dashboards (landing spot for sensor data).</li>
+<li>Caching results of computationally intensive calculations.</li>
+</ul>
+<hr>
+
+<h3 id="memcached">Memcached Specifics</h3>
+<ul>
+<li>Simplest model, widely adopted memory object caching system.</li>
+<li>Multi-threaded.</li>
+<li>Scales out/in by adding/removing nodes (horizontal scaling).</li>
+<li>Scales up/down by changing node family/type (vertical scaling).</li>
+<li>Ideal front-end for data stores (RDS, DynamoDB).</li>
+<li>Use Cases: Cache DB contents, dynamically generated web pages, transient session data, high-frequency counters.</li>
+<li>Limits: Max 100 nodes per region, 1-20 nodes per cluster (soft limits).</li>
+<li>Integrates with SNS for node failure/recovery notifications.</li>
+<li>Supports auto-discovery for nodes.</li>
+<li>No native multi-AZ failover or replication. Data loss on node failure.</li>
+<li>Does not support snapshots or backup/restore.</li>
+<li>Nodes in a cluster can span AZs, but this is for distribution, not failover.</li>
+</ul>
+<hr>
+
+<h3 id="redis">Redis Specifics</h3>
+<ul>
+<li>Open-source in-memory key-value store.</li>
+<li>Supports more complex data structures (sorted sets, lists, hashes).</li>
+<li>Data can be persistent (can be used as a datastore).</li>
+<li>Not multi-threaded.</li>
+<li>Scales by adding shards (in cluster mode), not just nodes.</li>
+<li>Supports master/replica replication and multi-AZ for cross-AZ redundancy.</li>
+<li>Supports automatic failover and backup/restore.</li>
+<li>A Redis shard is a subset of the cluster’s keyspace, containing a primary node and 0+ read replicas.</li>
+<li>Supports automatic and manual snapshots (to S3). Backups include cluster data and metadata.</li>
+<li>You can restore data by creating a new Redis cluster from a backup.</li>
+<li>During backup, no CLI/API operations on the cluster.</li>
+<li>Automated backups are enabled by default (deleted with Redis deletion).</li>
+<li>Snapshots can be moved between regions by exporting them before moving.</li>
+</ul>
+
+<h4 id="redis-cluster-disabled">Clustering Mode Disabled (Redis)</h4>
+<ul>
+<li>Only one shard.</li>
+<li>One shard can have one read/write primary node and 0-5 read-only replicas.</li>
+<li>Replicas can be distributed over multiple AZs in the same region.</li>
+<li>Replication from primary is asynchronous.</li>
+</ul>
+
+<h4 id="redis-cluster-enabled">Clustering Mode Enabled (Redis)</h4>
+<ul>
+<li>Can have up to 15 shards.</li>
+<li>Each shard can have one primary node and 0-5 read-only replicas.</li>
+<li>Snapshots are best taken from read replicas to minimize impact on primary.</li>
+</ul>
+
+<h4 id="redis-multi-az">Multi-AZ Failover (Redis)</h4>
+<ul>
+<li>ElastiCache detects failures and automatically promotes the replica with the lowest replica lag.</li>
+<li>DNS records remain the same but point to the new primary's IP.</li>
+<li>Other replicas sync with the new primary.</li>
+<li>Enabling both cluster mode and multi-AZ failover provides a fully automated, fault-tolerant Redis implementation.</li>
+</ul>
+<hr>
+
+<h3 id="caching-strategies">Caching Strategies</h3>
+<ul>
+<li>These strategies define how data is loaded into and updated in the cache.</li>
+</ul>
+<h4 id="lazy-loading">Lazy Loading (Cache Aside)</h4>
+<ul>
+<li>Loads data into the cache only when necessary (on a cache miss).</li>
+<li>Flow: Application checks cache &rarr; if miss, fetches from DB &rarr; writes to cache &rarr; returns data.</li>
+<li>Benefit: Avoids filling cache with unrequested data.</li>
+<li>Drawback: Data in cache can become stale if not combined with TTL or other strategies. Initial requests for data will have higher latency (cache miss).</li>
+</ul>
+<h4 id="write-through">Write-Through</h4>
+<ul>
+<li>Cache is updated whenever a new write or update is made to the underlying database.</li>
+<li>Flow: Application writes to cache &rarr; cache writes to DB &rarr; returns success.</li>
+<li>Benefit: Cache data remains up-to-date.</li>
+<li>Drawback: Can add wait time to write operations. Without TTL, can end up with a lot of cached data that is never read.</li>
+</ul>
+<h4 id="stale-data-ttl">Dealing with Stale Data – Time to Live (TTL)</h4>
+<ul>
+<li>Specifies the number of seconds until a key (data) expires in the cache.</li>
+<li>Mitigates drawbacks of Lazy Loading and Write-Through by ensuring data is periodically refreshed.</li>
+<li>Lazy Loading treats an expired key as a cache miss, prompting retrieval from DB and writing back with a new TTL.</li>
+</ul>
+<hr>
+
+<h3 id="ec-monitoring">Monitoring and Reporting</h3>
+<ul>
+<li>All ElastiCache actions are logged by AWS CloudTrail (auditing).</li>
+<li>CloudWatch provides metrics for performance insight.</li>
+</ul>
+<h4 id="memcached-metrics">Memcached Metrics (CloudWatch)</h4>
+<ul>
+<li>CPUUtilization: Host-level (can be high due to multi-threading). Scale up/out if too high.</li>
+<li>SwapUsage: Host-level (should not exceed 50 MB). Increase ConnectionOverhead if high.</li>
+<li>Evictions: Cache engine metric. Scale up/out if high.</li>
+<li>CurrConnections: Cache engine metric. Investigate application behavior if increasing.</li>
+</ul>
+<h4 id="redis-metrics">Redis Metrics (CloudWatch)</h4>
+<ul>
+<li>EngineCPUUtilization: Redis engine thread CPU (since Redis is single-threaded).</li>
+<li>MemoryFragmentationRatio: Memory allocation efficiency (recommended > 1.0).</li>
+<li>CacheHits: Successful read lookups.</li>
+<li>CacheMisses: Unsuccessful read lookups.</li>
+<li>CacheHitRate: Usage efficiency (if low, keys are evicted/expired).</li>
+<li>CurrConnections: Number of client connections (excluding replicas).</li>
+</ul>
+<hr>
+
+<h3 id="ec-logging-auditing">Logging and Auditing</h3>
+<ul>
+<li>All Amazon ElastiCache actions are logged by AWS CloudTrail.</li>
+<li>Log entries provide identity information (root, IAM user, role, other AWS service).</li>
+</ul>
+<hr>
+
+<h3 id="ec-auth-access">Authorization and Access Control</h3>
+<ul>
+<li>Access controlled by VPC security groups and subnet groups (when deployed in a VPC).</li>
+<li>Subnet Groups: Collection of subnets designated for your ElastiCache Cluster. Required for VPC deployment.</li>
+<li>Cannot move an existing ElastiCache Cluster from outside VPC into a VPC.</li>
+<li>When not in VPC (legacy), Cache Security Groups control access (link to EC2 Security Groups).</li>
+<li>Use identity-based policies (IAM) for fine-grained access.</li>
+<li>Redis supports Redis Auth (requiring a token/password for clients).</li>
+</ul>
+<hr>
+
+<h3 id="ec-charges">Charges</h3>
+<ul>
+<li>Pricing per Node-hour consumed. Partial hours billed as full.</li>
+<li>No charge for data transfer between EC2 and ElastiCache within the same Availability Zone.</li>
+</ul>
+<hr>
+
+<h3 id="ec-ha">High Availability for ElastiCache</h3>
+<ul>
+<li><strong>Memcached:</strong>
+<ul>
+<li>Does not support replication; node failure results in data loss.</li>
+<li>Minimize data loss by using multiple nodes and launching them across multiple AZs.</li>
+</ul>
+</li>
+<li><strong>Redis:</strong>
+<ul>
+<li>Use multiple nodes in each shard and distribute across multiple AZs.</li>
+<li>Enable Multi-AZ on the replication group for automatic failover if primary nodes fail.</li>
+<li>Schedule regular backups of your Redis cluster.</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="ec-exam-tips">Important Exam Tips & Tricks</h3>
+<ul>
+<li><strong>Managed Service:</strong> ElastiCache is fully managed; you don't manage the underlying servers.</li>
+<li>In-Memory: Primarily for caching, not persistent storage (though Redis has persistence options).</li>
+<li>No Spot Instances: Cannot use Spot Instances for ElastiCache. (<strong>Exam Tip!</strong>)</li>
+<li>Memcached vs. Redis (Key Differences!): This is a very common exam topic.
+<ul>
+<li>Memcached: Simpler, multi-threaded, scales horizontally (add/remove nodes), no replication/persistence/HA.</li>
+<li>Redis: More features (complex data types, Pub/Sub, persistence, encryption), single-threaded, master/replica replication, Multi-AZ failover, snapshots.</li>
+</ul>
+</li>
+<li>Redis Persistence: Remember Redis can persist data to S3 via snapshots, making it usable as a durable in-memory datastore.</li>
+<li>Redis Scaling: Redis scales by adding shards (in cluster mode) and read replicas.</li>
+<li>Access Control: Access is primarily via Security Groups and Subnet Groups within a VPC. IAM policies control who can manage ElastiCache resources.</li>
+<li>Caching Strategies (Lazy Loading vs. Write-Through):
+<ul>
+<li>Lazy Loading (Cache Aside): Read-through, good for avoiding filling cache with unused data, but initial read latency is higher, and data can become stale.</li>
+<li>Write-Through: Writes to cache and DB simultaneously, ensures cache is always fresh, but adds write latency.</li>
+<li>TTL mitigates stale data issues for both.</li>
+</ul>
+</li>
+<li>DAX vs. ElastiCache: DAX is a specific caching service for DynamoDB only, supports write-through caching only (no lazy loading). ElastiCache is general-purpose. (<strong>Exam Tip!</strong>)</li>
+<li>Data Loss (Memcached): Be aware that Memcached node failure leads to data loss due to no replication.</li>
+<li>CloudTrail: All ElastiCache API calls are logged in CloudTrail.</li>
+</ul>
+<hr>

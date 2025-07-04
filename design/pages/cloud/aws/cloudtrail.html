@@ -1,0 +1,176 @@
+<div class="custom-container">
+<h3 class="toc-title">Table of Contents</h3>
+<ol class="toc-list">
+<li><a href="#ct-overview">AWS CloudTrail Overview</a></li>
+<li><a href="#ct-trails">CloudTrail Trails</a></li>
+<li><a href="#ct-event-types">Event Types (Management vs. Data)</a></li>
+<li><a href="#ct-log-storage-encryption">Log File Storage & Encryption</a></li>
+<li><a href="#ct-log-consolidation">Log Consolidation (Multiple Accounts)</a></li>
+<li><a href="#ct-integration">Integration with CloudWatch Logs</a></li>
+<li><a href="#ct-integrity">Log File Integrity Validation</a></li>
+<li><a href="#ct-cw-compare">CloudWatch vs. CloudTrail Comparison</a></li>
+<li><a href="#ct-exam-tips">Important Exam Tips & Tricks</a></li>
+</ol>
+</div>
+<hr>
+
+<h3 id="ct-overview">AWS CloudTrail Overview</h3>
+<ul>
+<li><strong>Definition:</strong> A web service that records activity (API calls) made on your AWS account.</li>
+<li><strong>Purpose:</strong> Enables governance, compliance, and operational/risk auditing of your AWS account.</li>
+<li>Provides visibility into user activity by recording actions taken.</li>
+<li>API history enables security analysis, resource change tracking, and compliance auditing.</li>
+<li><strong>Records API calls made via:</strong>
+<ul>
+<li>AWS Management Console</li>
+<li>AWS SDKs</li>
+<li>AWS Command Line Interface (CLI)</li>
+<li>Higher-level AWS services (e.g., CloudFormation, EC2, S3).</li>
+</ul>
+</li>
+<li><strong>Records details like:</strong> Identity of API caller, time of call, source IP, request parameters, response elements.</li>
+<li><strong>Default State:</strong> CloudTrail is enabled on your AWS account when you create it. (<strong>Exam Tip!</strong>)</li>
+<li><strong>Event History:</strong> By default, CloudTrail records 90 days of management events in the CloudTrail Event History (viewable in console). A trail is needed for longer retention and S3 delivery.</li>
+<li>CloudTrail is per AWS account and regional when you create a trail, but a single trail can apply to all regions.</li>
+</ul>
+<hr>
+
+<h3 id="ct-trails">CloudTrail Trails</h3>
+<ul>
+<li>A configuration that delivers log files to an Amazon S3 bucket.</li>
+<li><strong>Two types of trails:</strong>
+<ul>
+<li><strong>Trail that applies to all regions:</strong> Records events in all regions and delivers to a single S3 bucket. (Recommended for centralized logging).</li>
+<li><strong>Trail that applies to a single region:</strong> Records events only in that specific region. Additional single-region trails can use the same or different S3 buckets.</li>
+</ul>
+</li>
+<li><strong>Event Selectors:</strong> Allow you to filter which events a trail logs (e.g., specific event names, read/write type, resources).</li>
+</ul>
+<hr>
+
+<h3 id="ct-event-types">Event Types (Management vs. Data)</h3>
+<ul>
+<li>Trails can be configured to log Management Events and/or Data Events.</li>
+<li><strong>Management Events (Control Plane Operations):</strong>
+<ul>
+<li>Provide insight into management operations performed on resources in your AWS account.</li>
+<li>Examples: Configuring security (<code>IAM AttachRolePolicy</code>), registering devices (<code>EC2 CreateDefaultVpc</code>), configuring routing rules (<code>EC2 CreateSubnet</code>), setting up logging (<code>CloudTrail CreateTrail</code>).</li>
+<li>Non-API events (e.g., console sign-in) can also be included.</li>
+<li>Charged: Management events are typically free for a certain volume, then charged.</li>
+</ul>
+</li>
+<li><strong>Data Events (Data Plane Operations):</strong>
+<ul>
+<li>Provide insight into resource operations performed on or within a resource.</li>
+<li>Examples: Amazon S3 object-level API activity (<code>GetObject</code>, <code>DeleteObject</code>, <code>PutObject</code>), AWS Lambda function execution activity (<code>Invoke</code> API).</li>
+<li>Charged: Data events incur additional charges and are not logged by default. You must explicitly enable them. (<strong>Exam Tip!</strong>)</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="ct-log-storage-encryption">Log File Storage & Encryption</h3>
+<ul>
+<li>CloudTrail log files are delivered to an Amazon S3 bucket.</li>
+<li><strong>Default Encryption:</strong> Log files are encrypted at rest using S3 Server-Side Encryption (SSE-S3) by default.</li>
+<li><strong>Optional Encryption:</strong> You can enable encryption using SSE-KMS for additional security (using your own KMS key).</li>
+<li>A single KMS key can be used to encrypt log files for trails applied to all regions.</li>
+</ul>
+<hr>
+
+<h3 id="ct-log-consolidation">Log Consolidation (Multiple Accounts)</h3>
+<ul>
+<li>You can consolidate logs from multiple AWS accounts into a single S3 bucket for centralized auditing.</li>
+<li>Steps:
+<ol>
+<li>Turn on CloudTrail in the paying account.</li>
+<li>Create an S3 bucket policy that allows cross-account access (write permissions from other accounts).</li>
+<li>Turn on CloudTrail in the other accounts and configure them to use the S3 bucket in the paying account.</li>
+</ol>
+</li>
+</ul>
+<hr>
+
+<h3 id="ct-integration">Integration with CloudWatch Logs</h3>
+<ul>
+<li>You can integrate CloudTrail with CloudWatch Logs to deliver captured events to a CloudWatch Logs log stream.</li>
+<li>This enables:
+<ul>
+<li>Real-time monitoring: Create CloudWatch Alarms based on specific API calls or patterns in the logs.</li>
+<li>Longer retention: Configure custom retention periods for logs in CloudWatch Logs.</li>
+<li>Metrics: Create CloudWatch Metrics from log data.</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="ct-integrity">Log File Integrity Validation</h3>
+<ul>
+<li>Feature that allows you to determine whether a CloudTrail log file was unchanged, deleted, or modified since CloudTrail delivered it to S3.</li>
+<li>Uses cryptographic hashing (SHA-256) and digital signing for validation.</li>
+<li>Crucial for compliance and forensic analysis.</li>
+</ul>
+<hr>
+
+<h3 id="ct-cw-compare">CloudWatch vs. CloudTrail Comparison</h3>
+<div class="table-responsive-wrapper">
+<table class="styled-table">
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>AWS CloudWatch</th>
+<th>AWS CloudTrail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Primary Focus</strong></td>
+<td>Performance monitoring, operational health, resource utilization.</td>
+<td>Auditing, governance, compliance, security analysis.</td>
+</tr>
+<tr>
+<td><strong>What it Logs</strong></td>
+<td>Logs events across AWS services (operational data, application logs, metrics).</td>
+<td>Logs API activity across AWS services (actions, events).</td>
+</tr>
+<tr>
+<td><strong>Level of Detail</strong></td>
+<td>Higher-level comprehensive monitoring and events.</td>
+<td>More low-level, granular API activity.</td>
+</tr>
+<tr>
+<td><strong>Data Origin</strong></td>
+<td>Metrics from services, custom metrics, application logs.</td>
+<td>API calls made by users, roles, or AWS services.</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Logs stored to CloudWatch Logs (configurable retention). Metrics stored for 15 months.</td>
+<td>Logs delivered to S3 (indefinite storage). Event History (console) for 90 days.</td>
+</tr>
+<tr>
+<td><strong>Alarms</strong></td>
+<td>Native alarming capabilities based on metrics and log patterns.</td>
+<td>No native alarming; integrates with CloudWatch Logs to create alarms.</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Charges for metrics, logs ingestion/storage, alarms.</td>
+<td>Charges for management events (after free tier) and data events. S3 storage costs.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<h3 id="ct-exam-tips">Important Exam Tips & Tricks</h3>
+<ul>
+<li><strong>"Who did what, when, where?"</strong> If a question asks about auditing, security analysis, compliance, or tracking changes made to your AWS environment, think CloudTrail.</li>
+<li><strong>"How is my application performing?"</strong> If a question asks about performance, resource utilization, application health, or operational insights, think CloudWatch.</li>
+<li>Default Behavior: CloudTrail is enabled by default for your account, but to get logs delivered to S3 for long-term storage and detailed analysis, you must create a trail. The console's Event History only shows 90 days.</li>
+<li>Data Events vs. Management Events: Data events are not logged by default and cost more. You need to explicitly enable them for S3 object-level actions or Lambda invokes.</li>
+<li>Encryption: Logs are SSE-S3 encrypted by default; SSE-KMS is an option.</li>
+<li>Log Integrity: Remember the log file integrity validation feature for compliance.</li>
+<li>Centralized Logging: Know the process for setting up cross-account CloudTrail logging to a central S3 bucket.</li>
+<li>Real-time Alarms: To get real-time alerts from CloudTrail events, you must integrate CloudTrail with CloudWatch Logs and then create CloudWatch Alarms on specific log patterns.</li>
+</ul>
