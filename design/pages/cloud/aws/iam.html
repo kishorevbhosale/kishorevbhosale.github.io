@@ -1,76 +1,273 @@
-<h2 style="text-align: center;">AWS IAM (Identity and Access Management)</h2>
-<br>
 <div class="custom-container">
-  <h5>Table of Contents</h5>
-  <ol>
-    <li><a href="#Quick-Revision"> AWS IAM (Identity and Access Management) – Quick Revision</a></li>
-    <li><a href="#Key Concepts">IAM Key Concepts</a></li>
-    <li><a href="#Policies">IAM Policies</a></li>
-    <li><a href="#Roles">IAM Roles</a></li>
-    <li><a href="#Best Practices">IAM Best Practices</a></li>
-  </ol>
+<h3 class="toc-title">Table of Contents</h3>
+<ol class="toc-list">
+<li><a href="#iam-overview">AWS Identity and Access Management (IAM) Overview</a></li>
+<li><a href="#iam-elements">IAM Core Elements</a></li>
+<li><a href="#auth-methods">Authentication Methods</a></li>
+<li><a href="#iam-users">IAM Users</a></li>
+<li><a href="#iam-groups">IAM Groups</a></li>
+<li><a href="#iam-roles">IAM Roles</a></li>
+<li><a href="#iam-policies">IAM Policies</a>
+<ol>
+<li><a href="#policy-types">Inline vs. Managed Policies</a></li>
+<li><a href="#policy-evaluation">Policy Evaluation Logic</a></li>
+</ol>
+</li>
+<li><a href="#instance-profiles">IAM Instance Profiles</a></li>
+<li><a href="#sts">AWS Security Token Service (STS)</a></li>
+<li><a href="#identity-federation">Identity Federation & Cross-Account Access</a></li>
+<li><a href="#iam-best-practices">IAM Best Practices</a></li>
+<li><a href="#exam-tips">Important Exam Tips & Tricks</a></li>
+</ol>
 </div>
 <hr>
 
-<div id="Quick-Revision">
-    <h5>1. What is AWS IAM?</h5>
-    <p>AWS IAM is a service that helps you securely manage access to AWS resources.</p>
-</div>
+<h3 id="iam-overview">AWS Identity and Access Management (IAM) Overview</h3>
+<ul>
+<li><strong>Definition:</strong> A web service that securely controls individual and group access to AWS resources.</li>
+<li>Manages: Users, Groups, Access Policies, Roles, User Credentials, Password Policies, MFA, API keys.</li>
+<li>Provides centralized control and enables shared access to your AWS account.</li>
+<li><strong>Default Access:</strong> New users are created with NO access to any AWS services by default; permissions must be explicitly granted.</li>
+<li><strong>Granular Permissions:</strong> Allows applying highly specific permissions.</li>
+<li><strong>Not for Application-level Authentication:</strong> IAM is for AWS resource access, not for authenticating end-users of your application (use Cognito for that).</li>
+<li><strong>Global Service:</strong> IAM is universal (global) and does not apply to specific regions. (<strong>Exam Tip!</strong>)</li>
+<li><strong>Consistency:</strong> IAM is eventually consistent. Changes replicate across data centers globally. (<strong>Exam Tip!</strong>)</li>
+<li><strong>Root Account:</strong> The account created during AWS setup; has complete Admin access by default.
+<ul>
+<li><strong>Best Practice:</strong> Do not use the root account for daily tasks; use it only for billing and initial setup. Create an IAM user with administrative permissions instead.</li>
+</ul>
+</li>
+<li><strong>Power User Access:</strong> Allows all permissions except managing IAM groups and users.</li>
+<li>Integrates with many AWS services and supports PCI DSS compliance.</li>
+<li>AWS recommends using SDKs for programmatic API calls to IAM.</li>
+</ul>
 <hr>
 
-<div id="Key Concepts">
-
-    <h5>2. IAM Key Concepts</h5>
-    <ul>
-        <li><strong>Users:</strong> Individual identities with long-term credentials.</li>
-        <li><strong>Groups:</strong> Collection of IAM users for easier policy management.</li>
-        <li><strong>Roles:</strong> Used for granting temporary permissions.</li>
-        <li><strong>Policies:</strong> JSON documents defining permissions.</li>
-        <li><strong>Identity Providers (IdP):</strong> Used for federated authentication.</li>
-        <li><strong>IAM Credentials:</strong> Passwords, access keys, security tokens.</li>
-    </ul>
-</div>
+<h3 id="iam-elements">IAM Core Elements</h3>
+<ul>
+<li><strong>Principals:</strong> An entity that can take an action on an AWS resource (IAM users, roles, federated users, applications).</li>
+<li><strong>Requests:</strong> Sent by principals via Console, CLI, SDKs, or APIs. Include actions, resources, principal info, and request context (IP, user agent, SSL status).</li>
+<li><strong>Authentication:</strong> Verifying the principal's identity.
+<ul>
+<li>Console: Username/password.</li>
+<li>API/CLI: Access key ID and secret access key.</li>
+</ul>
+</li>
+<li><strong>Authorization:</strong> IAM checks policies against request context to determine if the request is allowed or denied.</li>
+<li><strong>Actions:</strong> Operations a principal can perform on a resource (e.g., <code>s3:GetObject</code>, <code>ec2:RunInstances</code>). Defined by each service.</li>
+<li><strong>Resources:</strong> Entities within a service (e.g., S3 buckets, EC2 instances, IAM users).</li>
+</ul>
 <hr>
 
-<div id="Policies">
-    <h5>3. IAM Policies</h5>
-    <ul>
-        <li>Written in JSON.</li>
-        <li><strong>Types:</strong>
-            <ul>
-                <li><strong>Managed Policies:</strong> AWS-managed or customer-managed.</li>
-                <li><strong>Inline Policies:</strong> Directly attached to a user, group, or role.</li>
-                <li><strong>Service Control Policies (SCPs):</strong> Used in AWS Organizations.</li>
-                <li><strong>Permissions Boundaries:</strong> Limit the maximum permissions an entity can have.</li>
-                <li><strong>Session Policies:</strong> Temporary permissions assigned to a session.</li>
-            </ul>
-        </li>
-    </ul>
-</div>
+<h3 id="auth-methods">Authentication Methods</h3>
+<ul>
+<li><strong>Console Password:</strong> For interactive sign-in to the AWS Management Console.</li>
+<li><strong>Access Keys:</strong> (Access Key ID + Secret Access Key) for programmatic calls (API, CLI, SDK).
+<ul>
+<li>Can assign two active access keys per user.</li>
+<li>Secret access key is shown only at creation time; must be regenerated if lost. (<strong>Exam Tip!</strong>)</li>
+<li>Can disable keys temporarily.</li>
+<li>Users can be given permission to change their own keys via IAM policy.</li>
+</ul>
+</li>
+<li><strong>Server Certificates:</strong> SSL/TLS certificates used with some AWS services. AWS recommends ACM for most cases.</li>
+<li><strong>Multi-Factor Authentication (MFA):</strong> Adds an extra layer of security.
+<ul>
+<li>Uses a device generating random, single-use codes.</li>
+<li>Can authenticate via Console, AWS API (STS requests), or AWS CLI (<code>aws sts get-session-token</code>).</li>
+<li><strong>Best Practice:</strong> Enable MFA for all users, especially privileged ones (Root, Admin).</li>
+</ul>
+</li>
+</ul>
 <hr>
 
-<div id="Roles">
-    <h5>4. IAM Roles</h5>
-    <ul>
-        <li>Used for granting permissions <strong>without long-term credentials</strong>.</li>
-        <li><strong>Common use cases:</strong>
-            <ul>
-                <li><strong>EC2 Instance Role:</strong> Grant AWS access to EC2.</li>
-                <li><strong>Cross-Account Access:</strong> Assume a role in another AWS account.</li>
-                <li><strong>AWS Services Role:</strong> AWS Lambda, ECS, etc.</li>
-                <li><strong>Federated Access:</strong> Using SSO or external IdPs.</li>
-            </ul>
-        </li>
-    </ul>
-</div>
+<h3 id="iam-users">IAM Users</h3>
+<ul>
+<li>Represents a person or service.</li>
+<li>Can have programmatic access (access keys) and/or console access (password).</li>
+<li>By default, no permissions.</li>
+<li>Root account credentials (email/password) have full, unrestricted admin permissions.</li>
+<li>Can create "service accounts" for applications.</li>
+<li>Limit: Up to 5000 users per AWS account.</li>
+<li>Each user has a friendly name and an ARN.</li>
+<li><strong>Best Practice:</strong> Create individual IAM accounts for users; do not share accounts.</li>
+<li>Password policies can be defined (length, complexity) and applied account-wide.</li>
+</ul>
 <hr>
 
-<div id="Best Practices">
-    <h5>5. IAM Best Practices</h5>
-    <ul>
-        <li>✅ <strong>Enable MFA</strong> for users, especially root users.</li>
-        <li>✅ <strong>Use IAM roles</strong> instead of access keys.</li>
-        <li>✅ <strong>Grant least privilege</strong> (principle of least privilege).</li>
-        <li>✅ <strong>Rotate credentials</strong> regularly.</li>
-    </ul>
-</div>
+<h3 id="iam-groups">IAM Groups</h3>
+<ul>
+<li>Collections of IAM users.</li>
+<li>Policies are attached to groups to grant permissions to all users within the group.</li>
+<li><strong>Not an identity:</strong> Cannot be a principal in an IAM policy. (<strong>Exam Tip!</strong>)</li>
+<li><strong>No nesting:</strong> Groups cannot contain other groups.</li>
+<li><strong>Best Practice:</strong> Use the principle of least privilege.</li>
+</ul>
+<hr>
+
+<h3 id="iam-roles">IAM Roles</h3>
+<ul>
+<li>Created and then "assumed" by trusted entities (IAM users, AWS services, federated users).</li>
+<li>Define a set of permissions for making AWS service requests.</li>
+<li><strong>Purpose:</strong> Delegate permissions without using permanent credentials (passwords, access keys).</li>
+<li><strong>Temporary Credentials:</strong> When a role is assumed, it provides temporary security credentials that automatically expire. (<strong>Exam Tip!</strong>)</li>
+<li>Can be assumed via console, CLI, SDK, API.</li>
+<li><strong>IAM Roles with EC2 Instances:</strong>
+<ul>
+<li>Grant applications running on EC2 permissions to make AWS API requests using instance profiles.</li>
+<li>Only one role can be assigned to an EC2 instance at a time. (<strong>Exam Tip!</strong>)</li>
+<li>Can be assigned at launch or any time afterward.</li>
+<li>Applications retrieve temporary credentials from the instance metadata.</li>
+</ul>
+</li>
+<li><strong>Role Delegation:</strong> Involves a Permissions Policy (grants permissions) and a Trust Policy (specifies who can assume the role).</li>
+</ul>
+<hr>
+
+<h3 id="iam-policies">IAM Policies</h3>
+<ul>
+<li>JSON documents that define permissions (allowed or denied actions).</li>
+<li>Can be applied to users, groups, and roles.</li>
+<li><strong>Default:</strong> All permissions are implicitly denied by default.</li>
+<li><strong>Most Restrictive:</strong> The most restrictive policy is applied.</li>
+<li>IAM Policy Simulator: Tool to test and validate policy effects.</li>
+<li><code>Condition</code> element: Used to apply further conditional logic.</li>
+</ul>
+
+<h4 id="policy-types">Inline vs. Managed Policies</h4>
+<ul>
+<li><strong>Managed Policy:</strong>
+<ul>
+<li>Created and administered by AWS (AWS Managed Policies) or by you (Customer Managed Policies).</li>
+<li>Standalone: Have their own ARN.</li>
+<li>Can be attached to multiple users, groups, or roles.</li>
+<li>AWS Managed Policies: Designed for common use cases (e.g., AdministratorAccess, S3FullAccess). You cannot change their permissions.</li>
+<li>Customer Managed Policies: You create and administer; can be customized. Recommended over inline policies.</li>
+</ul>
+</li>
+<li><strong>Inline Policy:</strong>
+<ul>
+<li>Embedded directly within a single user, group, or role.</li>
+<li>Strict 1:1 relationship: Deleted when the entity it's embedded in is deleted.</li>
+<li>Useful when you want to ensure permissions are not inadvertently assigned elsewhere.</li>
+<li>AWS generally recommends Managed Policies over Inline Policies.</li>
+</ul>
+</li>
+</ul>
+
+<h4 id="policy-evaluation">Policy Evaluation Logic</h4>
+<ul>
+<li><strong>Default Deny:</strong> By default, all requests are denied.</li>
+<li><strong>Explicit Allow:</strong> An explicit <code>"Allow"</code> statement in any applicable policy (identity-based or resource-based) overrides the default deny.</li>
+<li><strong>Explicit Deny:</strong> An explicit <code>"Deny"</code> statement in any policy (identity-based, resource-based, permissions boundary, SCP, session policy) always overrides any allows. (<strong>Crucial Exam Point!</strong>)</li>
+<li><strong>Order of Evaluation:</strong>
+<ol>
+<li>Explicit Deny (highest precedence).</li>
+<li>Explicit Allow.</li>
+<li>Implicit Deny (default).</li>
+</ol>
+</li>
+<li><strong>Permissions Boundaries:</strong> Advanced feature setting maximum permissions an identity-based policy can grant to an IAM entity (user or role). Can implicitly deny.</li>
+<li><strong>AWS Organizations Service Control Policies (SCPs):</strong> Specify maximum permissions for an organization or OU. Can implicitly deny.</li>
+<li><strong>Session Policies:</strong> Advanced policies passed as parameters when creating temporary sessions for roles/federated users. Can implicitly deny.</li>
+</ul>
+<hr>
+
+<h3 id="instance-profiles">IAM Instance Profiles</h3>
+<ul>
+<li><strong>Container for an IAM role</strong> used to pass role information to an EC2 instance at launch.</li>
+<li>Can contain only one IAM role, but a role can be in multiple instance profiles.</li>
+<li>Console handles creation transparently; CLI/API require manual creation.</li>
+</ul>
+<hr>
+
+<h3 id="sts">AWS Security Token Service (STS)</h3>
+<ul>
+<li><strong>Definition:</strong> Web service to request temporary, limited-privilege credentials.</li>
+<li>For IAM users or federated users.</li>
+<li><strong>Global Service:</strong> By default, requests go to a global endpoint (<code>https://sts.amazonaws.com</code>), but can use regional endpoints for lower latency. Credentials work globally regardless of endpoint.</li>
+<li>Integrates with CloudTrail for auditing.</li>
+<li><strong>Advantages of Temporary Credentials:</strong>
+<ul>
+<li>No need to distribute/embed long-term credentials.</li>
+<li>Provide access to AWS resources without creating permanent IAM identities.</li>
+<li>Limited lifetime (minutes to hours), no explicit rotation/revocation needed.</li>
+</ul>
+</li>
+<li><strong>STS API Actions (for Developer Associate Exam):</strong>
+<ul>
+<li><code>AssumeRole</code>: Used by IAM users to assume a role (can be used with MFA).</li>
+<li><code>AssumeRoleWithSAML</code>: For users authenticated via SAML.</li>
+<li><code>AssumeRoleWithWebIdentity</code>: For users authenticated via Web Identity Providers (e.g., Google, Facebook).</li>
+<li><code>GetSessionToken</code>: Used by IAM users or root account users to get temporary credentials (can be used with MFA).</li>
+<li><code>GetFederationToken</code>: Used by IAM users or root account users for federation.</li>
+</ul>
+</li>
+<li>AWS recommends using Cognito for identity federation with Internet identity providers.</li>
+</ul>
+<hr>
+
+<h3 id="identity-federation">Identity Federation & Cross-Account Access</h3>
+<ul>
+<li><strong>Identity Federation:</strong> Allows secure access to AWS resources without creating IAM user accounts.
+<ul>
+<li>AD/SAML 2.0: Grants temporary access based on AD credentials; users don't need to be in IAM. Enables SSO.</li>
+<li>Mobile Apps: Use Facebook/Amazon/Google/OpenID providers.</li>
+</ul>
+</li>
+<li><strong>Cross-Account Access:</strong> Allows users from one AWS account to access resources in another.
+<ul>
+<li>Useful for multi-account environments (dev/prod).</li>
+<li>Achieved by:
+<ul>
+<li>Resource-based policy on the target resource in the other account.</li>
+<li>OR assuming a role (identity-based policy) within the target account.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+<h3 id="iam-best-practices">IAM Best Practices</h3>
+<ul>
+<li>Lock away your AWS account root user access keys.</li>
+<li>Use roles to delegate permissions. (<strong>Exam Tip!</strong>)</li>
+<li>Grant least privilege (give only necessary permissions).</li>
+<li>Use AWS managed policies initially, then customer managed policies for customization (prefer over inline).</li>
+<li>Validate your policies (using Policy Simulator).</li>
+<li>Configure a strong password policy.</li>
+<li>Enable MFA for all users, especially privileged ones. (<strong>Exam Tip!</strong>)</li>
+<li>Use roles for applications running on EC2 instances. (<strong>Exam Tip!</strong>)</li>
+<li>Do not share access keys.</li>
+<li>Rotate credentials regularly.</li>
+<li>Remove unnecessary credentials.</li>
+<li>Use policy conditions for extra security.</li>
+<li>Monitor activity in your AWS account (CloudTrail).</li>
+</ul>
+<hr>
+
+<h3 id="exam-tips">Important Exam Tips & Tricks</h3>
+<ul>
+<li><strong>IAM is Global:</strong> Not region-specific.</li>
+<li><strong>Eventually Consistent:</strong> Be aware of potential propagation delays for IAM changes.</li>
+<li><strong>Root User:</strong> Only for billing and initial setup. Never for daily tasks. Always enable MFA.</li>
+<li><strong>Default Deny:</strong> If no explicit allow, access is denied. An explicit deny always wins.</li>
+<li><strong>Access Keys:</strong> Generated once, must be stored securely. Regenerate if lost. Not for console login.</li>
+<li><strong>Roles vs. Users vs. Groups:</strong>
+<ul>
+<li>Users: Individual human or service identities.</li>
+<li>Groups: Collections of users (for easier permission management), cannot be principals.</li>
+<li>Roles: For delegation and temporary access, assumed by trusted entities (users, services, federated identities). No long-term credentials.</li>
+</ul>
+</li>
+<li><strong>EC2 Instance Roles:</strong> Best practice for EC2 instances to interact with other AWS services. Only one role per instance.</li>
+<li><strong>Temporary Credentials:</strong> Always associated with roles and STS. Understand their benefits (limited lifetime, no distribution).</li>
+<li><strong>Policy Types:</strong> Differentiate between AWS Managed, Customer Managed, and Inline policies. Know when to use each.</li>
+<li><strong>Policy Evaluation Order:</strong> Deny > Allow > Implicit Deny.</li>
+<li><strong>STS API Calls:</strong> Know the purpose of <code>AssumeRole</code>, <code>GetSessionToken</code>, and their federation counterparts.</li>
+<li><strong>Cross-Account Access:</strong> Understand how roles and resource-based policies enable this.</li>
+<li><strong>MFA:</strong> Crucial for security, know how it integrates with console, CLI, and API.</li>
+<li><strong>CloudTrail:</strong> Always logs IAM API calls, essential for auditing.</li>
+</ul>
+<hr>
