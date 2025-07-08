@@ -107,57 +107,36 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     // Disable right-click context menu
-//     document.addEventListener("contextmenu", function (event) {
-//         event.preventDefault();
-//     });
-//     // Disable Shift + Click, Ctrl + Click, Middle Mouse Click (to prevent opening in new tab)
-//     document.addEventListener("click", function (event) {
-//         if (event.button === 1 || event.ctrlKey || event.shiftKey || event.metaKey) {
-//             event.preventDefault();
-//         }
-//     });
-//     // Handle internal link clicks to load content dynamically
-//     const links = document.querySelectorAll(".nav-link");
-// });
+document.addEventListener("DOMContentLoaded", function () {
+    // Disable right-click context menu
+    document.addEventListener("contextmenu", function (event) {
+        event.preventDefault();
+    });
+    // Disable Shift + Click, Ctrl + Click, Middle Mouse Click (to prevent opening in new tab)
+    document.addEventListener("click", function (event) {
+        if (event.button === 1 || event.ctrlKey || event.shiftKey || event.metaKey) {
+            event.preventDefault();
+        }
+    });
+    // Handle internal link clicks to load content dynamically
+    const links = document.querySelectorAll(".nav-link");
+});
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     let count = localStorage.getItem("visitorCount");
-//     if (!count) {
-//         count = 1;
-//     } else {
-//         count = parseInt(count) + 1;
-//     }
-//     localStorage.setItem("visitorCount", count);
-//     document.getElementById("visitor-count").innerText = count;
-// });
+document.addEventListener("DOMContentLoaded", function () {
+    let count = localStorage.getItem("visitorCount");
+    if (!count) {
+        count = 1;
+    } else {
+        count = parseInt(count) + 1;
+    }
+    localStorage.setItem("visitorCount", count);
+    document.getElementById("visitor-count").innerText = count;
+});
 
 
 
-const routeMap = {
-    "/java/basic-java/": "/design/pages/java/basic-java.html",
-    "/java/qa-part-6/": "/design/pages/java/qa_part-6.html",
-    "/java/qa-part-5/": "/design/pages/java/qa_part-5.html",
 
-    // Add all mappings here
-};
 
-function loadPage(event) {
-    event.preventDefault();
-    const link = event.currentTarget;
-    const urlPath = new URL(link.href).pathname;
-
-    const actualFilePath = routeMap[urlPath];
-    if (!actualFilePath) return alert("Page not found");
-
-    fetch(actualFilePath)
-        .then(res => res.text())
-        .then(html => {
-            document.getElementById("content").innerHTML = html;
-            history.pushState({ path: urlPath }, '', urlPath);
-        });
-}
 
 
 // Quiz Questions Array
