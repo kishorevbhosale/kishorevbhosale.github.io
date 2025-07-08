@@ -4,50 +4,160 @@ function toggleCollapsible(event) {
     content.style.display = (content.style.display === "block") ? "none" : "block";
 }
 
+// function loadPage(event) {
+//     event.preventDefault();
+//     const link = event.currentTarget;
+//     const pageUrl = link.getAttribute('href');
+
+//     // Load content dynamically
+//     fetch(pageUrl)
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('content').innerHTML = data;
+
+//             // Update the browser URL
+//             history.pushState({ pageUrl }, '', pageUrl);
+
+//             // Scroll to content
+//             document.querySelector('.right-panel').scrollIntoView({ behavior: 'smooth' });
+//         })
+//         .catch(error => {
+//             console.error('Error loading page:', error);
+//         });
+// }
+
+// function loadPage(event) {
+//     event.preventDefault();
+//     const link = event.currentTarget;
+//     const pageUrl = link.getAttribute('href');
+
+//     // Ensure we use an absolute path for the URL (no repetition)
+//     const absoluteUrl = '/' + pageUrl.replace(/^\/+/, '');
+
+//     // Load content into the right panel
+//     fetch(pageUrl)
+//         .then(response => response.text())
+//         .then(data => {
+//             document.getElementById('content').innerHTML = data;
+
+//             // Update browser URL without repetition
+//             history.pushState({ pageUrl }, '', absoluteUrl);
+
+//             // Smooth scroll to content
+//             document.querySelector('.right-panel').scrollIntoView({ behavior: 'smooth' });
+//         })
+//         .catch(error => {
+//             console.error('Error loading page:', error);
+//         });
+// }
+
+
+// window.addEventListener('popstate', (event) => {
+//     if (event.state && event.state.pageUrl) {
+//         fetch(event.state.pageUrl)
+//             .then(response => response.text())
+//             .then(data => {
+//                 document.getElementById('content').innerHTML = data;
+//             })
+//             .catch(error => {
+//                 console.error('Error loading page:', error);
+//             });
+//     }
+// });
+
 function loadPage(event) {
     event.preventDefault();
     const link = event.currentTarget;
     const pageUrl = link.getAttribute('href');
-    // Fetch the content from the page and insert it into the right panel
+
+    // Load content dynamically
     fetch(pageUrl)
         .then(response => response.text())
         .then(data => {
             document.getElementById('content').innerHTML = data;
-            // Scroll to the right panel smoothly
-            const rightPanel = document.querySelector('.right-panel');
-            rightPanel.scrollIntoView({ behavior: 'smooth' });
+            history.pushState({ pageUrl }, '', `#${pageUrl}`);
+            document.querySelector('.right-panel').scrollIntoView({ behavior: 'smooth' });
         })
         .catch(error => {
             console.error('Error loading page:', error);
         });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Disable right-click context menu
-    document.addEventListener("contextmenu", function (event) {
-        event.preventDefault();
-    });
-    // Disable Shift + Click, Ctrl + Click, Middle Mouse Click (to prevent opening in new tab)
-    document.addEventListener("click", function (event) {
-        if (event.button === 1 || event.ctrlKey || event.shiftKey || event.metaKey) {
-            event.preventDefault();
-        }
-    });
-    // Handle internal link clicks to load content dynamically
-    const links = document.querySelectorAll(".nav-link");
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    let count = localStorage.getItem("visitorCount");
-    if (!count) {
-        count = 1;
-    } else {
-        count = parseInt(count) + 1;
+// Handle browser navigation
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.pageUrl) {
+        fetch(event.state.pageUrl)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('content').innerHTML = data;
+            });
     }
-    localStorage.setItem("visitorCount", count);
-    document.getElementById("visitor-count").innerText = count;
 });
 
+// Load initial content if hash present
+window.addEventListener('DOMContentLoaded', () => {
+    const hashPath = window.location.hash.substring(1); // Remove '#'
+    if (hashPath) {
+        fetch(hashPath)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('content').innerHTML = data;
+            });
+    }
+});
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     // Disable right-click context menu
+//     document.addEventListener("contextmenu", function (event) {
+//         event.preventDefault();
+//     });
+//     // Disable Shift + Click, Ctrl + Click, Middle Mouse Click (to prevent opening in new tab)
+//     document.addEventListener("click", function (event) {
+//         if (event.button === 1 || event.ctrlKey || event.shiftKey || event.metaKey) {
+//             event.preventDefault();
+//         }
+//     });
+//     // Handle internal link clicks to load content dynamically
+//     const links = document.querySelectorAll(".nav-link");
+// });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     let count = localStorage.getItem("visitorCount");
+//     if (!count) {
+//         count = 1;
+//     } else {
+//         count = parseInt(count) + 1;
+//     }
+//     localStorage.setItem("visitorCount", count);
+//     document.getElementById("visitor-count").innerText = count;
+// });
+
+
+
+const routeMap = {
+    "/java/basic-java/": "/design/pages/java/basic-java.html",
+    "/java/qa-part-6/": "/design/pages/java/qa_part-6.html",
+    "/java/qa-part-5/": "/design/pages/java/qa_part-5.html",
+
+    // Add all mappings here
+};
+
+function loadPage(event) {
+    event.preventDefault();
+    const link = event.currentTarget;
+    const urlPath = new URL(link.href).pathname;
+
+    const actualFilePath = routeMap[urlPath];
+    if (!actualFilePath) return alert("Page not found");
+
+    fetch(actualFilePath)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("content").innerHTML = html;
+            history.pushState({ path: urlPath }, '', urlPath);
+        });
+}
 
 
 // Quiz Questions Array
