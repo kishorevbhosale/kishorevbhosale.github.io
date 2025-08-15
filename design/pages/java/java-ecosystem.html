@@ -1,31 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scalability in Systems</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../common/styles.css" rel="stylesheet">
-    
-    <script>
-        // Function to include an external HTML file
-        function loadHTML(file, elementId) {
-            fetch(file)
-                .then(response => response.text())
-                .then(data => document.getElementById(elementId).innerHTML = data)
-                .catch(error => console.error('Error loading HTML:', error));
-        }
-    </script>
-</head>
-
-<body onload="loadHTML('../../common/navbar.html', 'navbar-placeholder')">
-    <!-- Navbar Placeholder -->
-    <div id="navbar-placeholder"></div>
+<h2 style="text-align: center;">Java Ecosystem - Internal</h2>
+<br>
 
     <div class="container">
         <div class="content">
-            <h3 class="section-title">What is meant by Java is platform independent?</h3>
+            <h5>What is meant by Java is platform independent?</h5>
             <p>The statement "Java is platform-independent" refers to Java's ability to run the same compiled code on any operating system or platform without needing to be rewritten or recompiled. 
                 This characteristic is a core feature of Java, achieved through the use of the Java Virtual Machine (JVM).
             </p>
@@ -50,7 +28,7 @@
             <br>
             
             
-            <h3 class="section-title">Explain what is JVM?</h3>
+            <h5>Explain what is JVM?</h5>
             <p>The JVM interprets and executes Java bytecode, making it possible to run Java programs on any device or operating system that has a compatible JVM implementation.
             <h5>Overview of JVM</h5>
             <ol>
@@ -69,7 +47,7 @@
             </ol>
             <img src="../../images/jvm.PNG" alt="Vertical Scaling Diagram">
             <br>
-            <h3 class="section-title">What is Java Hotspot?</h3>
+            <h5>What is Java Hotspot?</h5>
             The JVM is named HotSpot because it continuously monitors the program's performance to identify hot spots—code paths that are frequently executed. 
             These frequently executed code paths are then compiled into highly optimized native machine code to enhance execution speed.
             <br><br>
@@ -98,7 +76,7 @@
                 </li>
             </ul>
             <br>
-            <h3 class="section-title">Explain what is JIT?</h3>
+            <h5>Explain what is JIT?</h5>
                 <ul>
                     <li><strong>Just-In-Time (JIT) Compiler Overview:</strong>
                         <ul>
@@ -151,12 +129,3 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2024 | Kishor Bhosale | Revise, prepare, and excel in tech interviews.</p>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
