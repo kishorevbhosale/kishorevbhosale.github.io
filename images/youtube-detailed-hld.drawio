@@ -1,0 +1,102 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="YouTube AWS Architecture" id="youtube-aws-architecture">
+    <mxGraphModel dx="1000" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- User -->
+        <mxCell id="user" value="User" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="10" y="80" width="80" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- CloudFront -->
+        <mxCell id="cloudfront" value="Amazon CloudFront\n(CDN)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffbb33;strokeColor=#e08e0b;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="140" y="80" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ALB -->
+        <mxCell id="alb" value="AWS Application\nLoad Balancer" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;fillColor=#00B0F0;strokeColor=#006699;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="320" y="80" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Web Servers -->
+        <mxCell id="webservers" value="Web Servers\nEC2 / EKS / Beanstalk" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;fillColor=#6aa84f;strokeColor=#38761d;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="520" y="40" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- App Servers -->
+        <mxCell id="appservers" value="Application Servers\nECS / EKS / EC2" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;fillColor=#607d8b;strokeColor=#455a64;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="520" y="130" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Upload Storage -->
+        <mxCell id="s3upload" value="Amazon S3\nUpload Storage" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f9f;strokeColor=#333;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="740" y="20" width="130" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- MediaConvert -->
+        <mxCell id="mediaconvert" value="AWS MediaConvert\n(Encoder)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;fillColor=#7f8c8d;strokeColor=#2c3e50;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="740" y="130" width="130" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Blob Storage -->
+        <mxCell id="s3blob" value="Amazon S3\nBlob Storage" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f9f;strokeColor=#333;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="900" y="140" width="130" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- DynamoDB -->
+        <mxCell id="dynamodb" value="Amazon DynamoDB\nVideo Metadata" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f9f;strokeColor=#333;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="520" y="230" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- RDS -->
+        <mxCell id="rds" value="Amazon RDS / DynamoDB\nUser Data" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f9f;strokeColor=#333;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="740" y="230" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="user" target="cloudfront">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="cloudfront" target="alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="alb" target="webservers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="webservers" target="appservers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="appservers" target="s3upload" edgeStyle="elbowEdgeStyle" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="appservers" target="mediaconvert" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="mediaconvert" target="s3blob" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="s3blob" target="cloudfront" >
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="appservers" target="dynamodb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" edge="1" parent="1" source="appservers" target="rds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
