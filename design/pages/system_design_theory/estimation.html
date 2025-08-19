@@ -1,337 +1,351 @@
-<div class="container">
+<h2 style="text-align: center;">Back of the envelope estimation</h2>
+<br>
+<div class="custom-container">
+  <h5>Table of Contents</h5>
+  <ol>
+    <li><a href="#Why Use Back-of-the-Envelope Estimation?">Why Use Back-of-the-Envelope Estimation?</a></li>
+    <li><a href="#Prerequisites for Effective Estimation">Prerequisites for Effective Estimation</a></li>
+    <li><a href="#Power of Two Table: From Byte to Petabyte">Power of Two Table: From Byte to Petabyte</a></li>
+    <li><a href="#Latency Numbers Every Programmer Should Know">Latency Numbers Every Programmer Should Know</a></li>
+    <li><a href="#Twitter QPS and Storage Estimation">Twitter QPS and Storage Estimation</a></li>
+    <li><a href="#Estimation of Image Results Page Generation">Estimation of Image Results Page Generation</a></li>
 
-        <div class="content">
-                
-                <p>Back-of-the-envelope estimation involves making quick, rough calculations to estimate system capacity or performance early in the design process.
-                    Though informal, it can offer valuable insights into whether a system can meet its expected demands.
-                </p>
-                <img src="../../images/estimation.PNG" alt="DNS" style="display: block; margin: auto; width: 50%;">
-                <h3 class="section-title">Why Use Back-of-the-Envelope Estimation?</h3>
-                    <ul>
-                        <li>Early Assessment: Helps in assessing the feasibility of a system design before committing significant resources.</li>
-                        <li>Quick Decision Making: Facilitates faster decision-making by providing rough estimates that guide further exploration.</li>
-                        <li>Initial Budgeting: Assists in early budgeting by estimating the resources needed, such as computing power, storage, and network bandwidth.</li>
-                    </ul>
-                <br>
+  </ol>
+</div>
+<hr>
+<div id="Back-of-the-envelope estimation?">
+    <p>Back-of-the-envelope estimation involves making quick, rough calculations to estimate system capacity or performance early in the design process.
+        Though informal, it can offer valuable insights into whether a system can meet its expected demands.
+    </p>
+    <img src="../../images/estimation.jpg" alt="estimation" class="responsive-image">
+</div>
+<hr>
 
-                <h3 class="section-title">Prerequisites for Effective Estimation</h3>
-                    <p>Before performing a back-of-the-envelope estimation, it's essential to gather key information that will impact the accuracy of your calculations.</p>
+<div id="Why Use Back-of-the-Envelope Estimation?">
+    <h5>👉 Why Use Back-of-the-Envelope Estimation?</h5>
+    <ul>
+        <li>Early Assessment: Helps in assessing the feasibility of a system design before committing significant resources.</li>
+        <li>Quick Decision Making: Facilitates faster decision-making by providing rough estimates that guide further exploration.</li>
+        <li>Initial Budgeting: Assists in early budgeting by estimating the resources needed, such as computing power, storage, and network bandwidth.</li>
+    </ul>
+</div>
+<hr>
 
-                    <h5>1. Understand the System Architecture</h5>
-                    <ul>
-                        <li>Components Involved: Identify the core components of the system, such as servers, databases, caches, and load balancers.</li>
-                        <li>Interactions Between Components: Understand how these components interact, including the data flow and communication patterns.</li>
-                    </ul>
-                
-                    <h5>2. Identify the Critical Metrics</h5>
-                    <ul>
-                        <li>Throughput: The number of transactions or requests the system must handle per second, minute, or hour.</li>
-                        <li>Latency: The acceptable delay between a request and the response.</li>
-                        <li>Storage Requirements: The amount of data that needs to be stored, including current data and projected growth.</li>
-                        <li>Bandwidth: The data transfer rate required between different components or between the system and its users.</li>
-                    </ul>
-                
-                    <h5>3. Determine the User Behavior</h5>
-                    <ul>
-                        <li>Number of Users: Estimate the total number of users who will access the system.</li>
-                        <li>User Activity Patterns: Understand when users are most active and how they interact with the system (e.g., peak usage times, frequency of requests).</li>
-                        <li>Request Size and Frequency: Estimate the size of requests and the frequency at which they are made.</li>
-                    </ul>
-                
-                    <h5>4. Consider the Data Size</h5>
-                    <ul>
-                        <li>Average Data Size per Transaction: Estimate the size of data processed in each transaction, such as request size, response size, and any associated metadata.</li>
-                        <li>Total Data Size: Calculate the total volume of data the system needs to manage, including raw data, metadata, logs, and backups.</li>
-                    </ul>
-                
-                    <h5>5. Estimate the Processing Power</h5>
-                    <ul>
-                        <li>CPU Requirements: Estimate the number of CPU cycles required to process each request.</li>
-                        <li>Memory Requirements: Assess how much memory is needed to handle data processing and caching.</li>
-                    </ul>
-                
-                    <h5>6. Evaluate Network Requirements</h5>
-                    <ul>
-                        <li>Network Traffic: Calculate the expected amount of network traffic between different components and between users and the system.</li>
-                        <li>Bandwidth Allocation: Determine the bandwidth needed to ensure smooth data transfer without bottlenecks.</li>
-                    </ul>
-                
-                    <h5>7. Plan for Scalability</h5>
-                    <ul>
-                        <li>Load Balancing: Consider how the system will distribute traffic across multiple servers.</li>
-                        <li>Horizontal vs. Vertical Scaling: Decide whether to scale out (add more servers) or scale up (enhance existing server capacity).</li>
-                        <li>Redundancy and Fault Tolerance: Account for the need for backup systems to ensure high availability.</li>
-                    </ul>
+<div id="Prerequisites for Effective Estimation">
+    <h5>👉 Prerequisites for Effective Estimation</h5>
+    <p>Before performing a back-of-the-envelope estimation, it's essential to gather key information that will impact the accuracy of your calculations.</p>
 
-                <br>
-               
-            
-                <h3 class="section-title">Power of Two Table: From Byte to Petabyte</h5>
+    <h6>1. Understand the System Architecture</h6>
+    <ul>
+        <li>Components Involved: Identify the core components of the system, such as servers, databases, caches, and load balancers.</li>
+        <li>Interactions Between Components: Understand how these components interact, including the data flow and communication patterns.</li>
+    </ul>
+    <hr class="thin-line">
+    <h6>2. Identify the Critical Metrics</h6>
+    <ul>
+        <li>Throughput: The number of transactions or requests the system must handle per second, minute, or hour.</li>
+        <li>Latency: The acceptable delay between a request and the response.</li>
+        <li>Storage Requirements: The amount of data that needs to be stored, including current data and projected growth.</li>
+        <li>Bandwidth: The data transfer rate required between different components or between the system and its users.</li>
+    </ul>
+    <hr class="thin-line">
+    <h6>3. Determine the User Behavior</h6>
+    <ul>
+        <li>Number of Users: Estimate the total number of users who will access the system.</li>
+        <li>User Activity Patterns: Understand when users are most active and how they interact with the system (e.g., peak usage times, frequency of requests).</li>
+        <li>Request Size and Frequency: Estimate the size of requests and the frequency at which they are made.</li>
+    </ul>
+    <hr class="thin-line">
+    <h6>4. Consider the Data Size</h6>
+    <ul>
+        <li>Average Data Size per Transaction: Estimate the size of data processed in each transaction, such as request size, response size, and any associated metadata.</li>
+        <li>Total Data Size: Calculate the total volume of data the system needs to manage, including raw data, metadata, logs, and backups.</li>
+    </ul>
+    <hr class="thin-line">
+    <h6>5. Estimate the Processing Power</h6>
+    <ul>
+        <li>CPU Requirements: Estimate the number of CPU cycles required to process each request.</li>
+        <li>Memory Requirements: Assess how much memory is needed to handle data processing and caching.</li>
+    </ul>
+    <hr class="thin-line">
+    <h6>6. Evaluate Network Requirements</h6>
+    <ul>
+        <li>Network Traffic: Calculate the expected amount of network traffic between different components and between users and the system.</li>
+        <li>Bandwidth Allocation: Determine the bandwidth needed to ensure smooth data transfer without bottlenecks.</li>
+    </ul>
+    <hr class="thin-line">
+    <h6>7. Plan for Scalability</h6>
+    <ul>
+        <li>Load Balancing: Consider how the system will distribute traffic across multiple servers.</li>
+        <li>Horizontal vs. Vertical Scaling: Decide whether to scale out (add more servers) or scale up (enhance existing server capacity).</li>
+        <li>Redundancy and Fault Tolerance: Account for the need for backup systems to ensure high availability.</li>
+    </ul>
+</div>
+<hr>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Unit</th>
-                                <th>Power of 2</th>
-                                <th>Bytes</th>
-                                <th>Conversion</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Byte (B)</td>
-                                <td>2<sup>0</sup></td>
-                                <td>1</td>
-                                <td>-</td>
-                                <td>The smallest unit of digital information storage.</td>
-                            </tr>
-                            <tr>
-                                <td>Kilobyte (KB)</td>
-                                <td>2<sup>10</sup></td>
-                                <td>1,024</td>
-                                <td>1 KB = 2<sup>10</sup> B</td>
-                                <td>1,024 bytes, often used to measure small text files or low-resolution images.</td>
-                            </tr>
-                            <tr>
-                                <td>Megabyte (MB)</td>
-                                <td>2<sup>20</sup></td>
-                                <td>1,048,576</td>
-                                <td>1 MB = 2<sup>10</sup> KB</td>
-                                <td>1,024 kilobytes, commonly used to measure medium-sized files like images or MP3s.</td>
-                            </tr>
-                            <tr>
-                                <td>Gigabyte (GB)</td>
-                                <td>2<sup>30</sup></td>
-                                <td>1,073,741,824</td>
-                                <td>1 GB = 2<sup>10</sup> MB</td>
-                                <td>1,024 megabytes, used for larger files such as videos or software applications.</td>
-                            </tr>
-                            <tr>
-                                <td>Terabyte (TB)</td>
-                                <td>2<sup>40</sup></td>
-                                <td>1,099,511,627,776</td>
-                                <td>1 TB = 2<sup>10</sup> GB</td>
-                                <td>1,024 gigabytes, often used for data storage in hard drives and databases.</td>
-                            </tr>
-                            <tr>
-                                <td>Petabyte (PB)</td>
-                                <td>2<sup>50</sup></td>
-                                <td>1,125,899,906,842,624</td>
-                                <td>1 PB = 2<sup>10</sup> TB</td>
-                                <td>1,024 terabytes, typically used in large-scale data centers and cloud storage.</td>
-                            </tr>
-                        </tbody>
-                    </table>    
-                <br>
+<div id="Power of Two Table: From Byte to Petabyte">
+    <h5>👉 Power of Two Table: From Byte to Petabyte</h5>
+    <table>
+        <thead>
+            <tr>
+                <th>Unit</th>
+                <th>Power of 2</th>
+                <th>Bytes</th>
+                <th>Conversion</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Byte (B)</td>
+                <td>2<sup>0</sup></td>
+                <td>1</td>
+                <td>-</td>
+                <td>The smallest unit of digital information storage.</td>
+            </tr>
+            <tr>
+                <td>Kilobyte (KB)</td>
+                <td>2<sup>10</sup></td>
+                <td>1,024</td>
+                <td>1 KB = 2<sup>10</sup> B</td>
+                <td>1,024 bytes, often used to measure small text files or low-resolution images.</td>
+            </tr>
+            <tr>
+                <td>Megabyte (MB)</td>
+                <td>2<sup>20</sup></td>
+                <td>1,048,576</td>
+                <td>1 MB = 2<sup>10</sup> KB</td>
+                <td>1,024 kilobytes, commonly used to measure medium-sized files like images or MP3s.</td>
+            </tr>
+            <tr>
+                <td>Gigabyte (GB)</td>
+                <td>2<sup>30</sup></td>
+                <td>1,073,741,824</td>
+                <td>1 GB = 2<sup>10</sup> MB</td>
+                <td>1,024 megabytes, used for larger files such as videos or software applications.</td>
+            </tr>
+            <tr>
+                <td>Terabyte (TB)</td>
+                <td>2<sup>40</sup></td>
+                <td>1,099,511,627,776</td>
+                <td>1 TB = 2<sup>10</sup> GB</td>
+                <td>1,024 gigabytes, often used for data storage in hard drives and databases.</td>
+            </tr>
+            <tr>
+                <td>Petabyte (PB)</td>
+                <td>2<sup>50</sup></td>
+                <td>1,125,899,906,842,624</td>
+                <td>1 PB = 2<sup>10</sup> TB</td>
+                <td>1,024 terabytes, typically used in large-scale data centers and cloud storage.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
 
+<div id="Latency Numbers Every Programmer Should Know">
+    <h5>👉 Latency Numbers Every Programmer Should Know</h5>
+    <table>
+      <tr>
+        <th>Time Unit</th>
+        <th>Seconds (s)</th>
+        <th>Microseconds (μs)</th>
+        <th>Nanoseconds (ns)</th>
+      </tr>
+      <tr>
+        <td>1 Nanosecond</td>
+        <td>10<sup>-9</sup> s</td>
+        <td>10<sup>-3</sup> μs</td>
+        <td>1 ns</td>
+      </tr>
+      <tr>
+        <td>1 Microsecond</td>
+        <td>10<sup>-6</sup> s</td>
+        <td>1 μs</td>
+        <td>1,000 ns</td>
+      </tr>
+      <tr>
+        <td>1 Millisecond</td>
+        <td>10<sup>-3</sup> s</td>
+        <td>1,000 μs</td>
+        <td>1,000,000 ns</td>
+      </tr>
+    </table>
 
-                <h3 class="section-title">Latency Numbers Every Programmer Should Know</h5>
-                        <table>
-                          <tr>
-                            <th>Time Unit</th>
-                            <th>Seconds (s)</th>
-                            <th>Microseconds (μs)</th>
-                            <th>Nanoseconds (ns)</th>
-                          </tr>
-                          <tr>
-                            <td>1 Nanosecond</td>
-                            <td>10<sup>-9</sup> s</td>
-                            <td>10<sup>-3</sup> μs</td>
-                            <td>1 ns</td>
-                          </tr>
-                          <tr>
-                            <td>1 Microsecond</td>
-                            <td>10<sup>-6</sup> s</td>
-                            <td>1 μs</td>
-                            <td>1,000 ns</td>
-                          </tr>
-                          <tr>
-                            <td>1 Millisecond</td>
-                            <td>10<sup>-3</sup> s</td>
-                            <td>1,000 μs</td>
-                            <td>1,000,000 ns</td>
-                          </tr>
-                        </table>
-                
+    <table>
+        <thead>
+            <tr>
+                <th>Operation</th>
+                <th>Latency</th>
+                <th>Power of 10</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>L1 Cache Access</td>
+                <td>~0.5 ns</td>
+                <td>10<sup>-9</sup> seconds</td>
+                <td>Accessing data from the L1 cache, the fastest and closest storage to the CPU cores.</td>
+            </tr>
+            <tr>
+                <td>L2 Cache Access</td>
+                <td>~7 ns</td>
+                <td>10<sup>-9</sup> seconds</td>
+                <td>Accessing data from the L2 cache, which is slightly slower but larger than L1 cache.</td>
+            </tr>
+            <tr>
+                <td>RAM Access</td>
+                <td>~100 ns</td>
+                <td>10<sup>-7</sup> seconds</td>
+                <td>Accessing data from the main memory (RAM), which is slower than the CPU caches.</td>
+            </tr>
+            <tr>
+                <td>SSD Random Read</td>
+                <td>~150 μs</td>
+                <td>10<sup>-6</sup> seconds</td>
+                <td>Random read access from an SSD, faster than HDD but slower than RAM.</td>
+            </tr>
+            <tr>
+                <td>HDD Random Read</td>
+                <td>~10 ms</td>
+                <td>10<sup>-3</sup> seconds</td>
+                <td>Random read access from a traditional hard disk drive (HDD), significantly slower than SSD.</td>
+            </tr>
+            <tr>
+                <td>Network Round Trip (within data center)</td>
+                <td>~500 μs</td>
+                <td>10<sup>-6</sup> seconds</td>
+                <td>Time taken for a round trip within a data center, typically involving multiple switches.</td>
+            </tr>
+            <tr>
+                <td>Network Round Trip (between data centers)</td>
+                <td>~150 ms</td>
+                <td>10<sup>-3</sup> seconds</td>
+                <td>Time taken for a round trip between geographically distant data centers.</td>
+            </tr>
+            <tr>
+                <td>Read 1 MB from SSD</td>
+                <td>~1 ms</td>
+                <td>10<sup>-3</sup> seconds</td>
+                <td>Time to read 1 MB of sequential data from an SSD, faster than random reads.</td>
+            </tr>
+            <tr>
+                <td>Read 1 MB from HDD</td>
+                <td>~20 ms</td>
+                <td>10<sup>-3</sup> seconds</td>
+                <td>Time to read 1 MB of sequential data from an HDD, slower than SSDs.</td>
+            </tr>
+            <tr>
+                <td>Send 1 KB over 1 Gbps Network</td>
+                <td>~10 μs</td>
+                <td>10<sup>-6</sup> seconds</td>
+                <td>Time to send 1 KB of data over a 1 Gbps network, not including additional network overhead.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Operation</th>
-                                <th>Latency</th>
-                                <th>Power of 10</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>L1 Cache Access</td>
-                                <td>~0.5 ns</td>
-                                <td>10<sup>-9</sup> seconds</td>
-                                <td>Accessing data from the L1 cache, the fastest and closest storage to the CPU cores.</td>
-                            </tr>
-                            <tr>
-                                <td>L2 Cache Access</td>
-                                <td>~7 ns</td>
-                                <td>10<sup>-9</sup> seconds</td>
-                                <td>Accessing data from the L2 cache, which is slightly slower but larger than L1 cache.</td>
-                            </tr>
-                            <tr>
-                                <td>RAM Access</td>
-                                <td>~100 ns</td>
-                                <td>10<sup>-7</sup> seconds</td>
-                                <td>Accessing data from the main memory (RAM), which is slower than the CPU caches.</td>
-                            </tr>
-                            <tr>
-                                <td>SSD Random Read</td>
-                                <td>~150 µs</td>
-                                <td>10<sup>-6</sup> seconds</td>
-                                <td>Random read access from an SSD, faster than HDD but slower than RAM.</td>
-                            </tr>
-                            <tr>
-                                <td>HDD Random Read</td>
-                                <td>~10 ms</td>
-                                <td>10<sup>-3</sup> seconds</td>
-                                <td>Random read access from a traditional hard disk drive (HDD), significantly slower than SSD.</td>
-                            </tr>
-                            <tr>
-                                <td>Network Round Trip (within data center)</td>
-                                <td>~500 µs</td>
-                                <td>10<sup>-6</sup> seconds</td>
-                                <td>Time taken for a round trip within a data center, typically involving multiple switches.</td>
-                            </tr>
-                            <tr>
-                                <td>Network Round Trip (between data centers)</td>
-                                <td>~150 ms</td>
-                                <td>10<sup>-3</sup> seconds</td>
-                                <td>Time taken for a round trip between geographically distant data centers.</td>
-                            </tr>
-                            <tr>
-                                <td>Read 1 MB from SSD</td>
-                                <td>~1 ms</td>
-                                <td>10<sup>-3</sup> seconds</td>
-                                <td>Time to read 1 MB of sequential data from an SSD, faster than random reads.</td>
-                            </tr>
-                            <tr>
-                                <td>Read 1 MB from HDD</td>
-                                <td>~20 ms</td>
-                                <td>10<sup>-3</sup> seconds</td>
-                                <td>Time to read 1 MB of sequential data from an HDD, slower than SSDs.</td>
-                            </tr>
-                            <tr>
-                                <td>Send 1 KB over 1 Gbps Network</td>
-                                <td>~10 µs</td>
-                                <td>10<sup>-6</sup> seconds</td>
-                                <td>Time to send 1 KB of data over a 1 Gbps network, not including additional network overhead.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                <br>
+<div id="Twitter QPS and Storage Estimation">
+    <h5>👉 Twitter QPS and Storage Estimation</h5>
+    <h6><u>Assumptions</u></h6>
+    <ul>
+        <li>300 million monthly active users</li>
+        <li>50% of users use Twitter daily</li>
+        <li>Users post 2 tweets per day on average</li>
+        <li>10% of tweets contain media</li>
+        <li>Data is stored for 5 years</li>
+    </ul>
+    <hr class="thin-line">
+    <h6><u>QPS Estimate</u></h6>
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Calculation</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td>Daily Active Users (DAU)</td>
+            <td>300 million * 50%</td>
+            <td>150 million</td>
+        </tr>
+        <tr>
+            <td>Tweets QPS</td>
+            <td>150 million * 2 tweets / 24 hours / 3600 seconds</td>
+            <td>~3500</td>
+        </tr>
+        <tr>
+            <td>Peak QPS</td>
+            <td>2 * QPS</td>
+            <td>~7000</td>
+        </tr>
+    </table>
+    <hr class="thin-line">
+    <h6><u>Media Storage Estimation</u></h6>
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Calculation</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td>Average Tweet Size</td>
+            <td>tweet_id (64 bytes) + text (140 bytes) + media (1 MB)</td>
+            <td>1 MB</td>
+        </tr>
+        <tr>
+            <td>Daily Media Storage</td>
+            <td>150 million * 2 tweets * 10% * 1 MB</td>
+            <td>30 TB per day</td>
+        </tr>
+        <tr>
+            <td>5-Year Media Storage</td>
+            <td>30 TB * 365 days * 5 years</td>
+            <td>~55 PB</td>
+        </tr>
+    </table>
+</div>
+<hr>
 
+<div id="Estimation of Image Results Page Generation">
+    <h5>👉 Estimation of Image Results Page Generation</h5>
+    <h6>Assumptions:</h6>
+    <ul>
+        <li>Time per image generation: 100 ms (0.1 seconds)</li>
+        <li>Number of thumbnails: 30</li>
+    </ul>
 
-                
+    <h6>Serial Processing:</h6>
+    <p>In serial processing, each thumbnail is generated one after the other. The total time is the sum of the time taken to generate each thumbnail.</p>
 
-                <h3 class="section-title">Twitter QPS and Storage Estimation</h3>
-                        <h5><u>Assumptions</u></h5>
-                        <ul>
-                            <li>300 million monthly active users</li>
-                            <li>50% of users use Twitter daily</li>
-                            <li>Users post 2 tweets per day on average</li>
-                            <li>10% of tweets contain media</li>
-                            <li>Data is stored for 5 years</li>
-                        </ul>
+    <p>Total Time (Serial) = Time per Image * Number of Images</p>
+    <p>Total Time (Serial) = 100 ms * 30 = 3000 ms = 3 seconds</p>
 
-                        <h5><u>QPS Estimate</u></h5>
-                        <table>
-                            <tr>
-                                <th>Description</th>
-                                <th>Calculation</th>
-                                <th>Result</th>
-                            </tr>
-                            <tr>
-                                <td>Daily Active Users (DAU)</td>
-                                <td>300 million * 50%</td>
-                                <td>150 million</td>
-                            </tr>
-                            <tr>
-                                <td>Tweets QPS</td>
-                                <td>150 million * 2 tweets / 24 hours / 3600 seconds</td>
-                                <td>~3500</td>
-                            </tr>
-                            <tr>
-                                <td>Peak QPS</td>
-                                <td>2 * QPS</td>
-                                <td>~7000</td>
-                            </tr>
-                        </table>
+    <h6>Parallel Processing:</h6>
+    <p>In parallel processing, all thumbnails are generated simultaneously. The total time is essentially the time taken to generate a single thumbnail, as all are done concurrently.</p>
 
-                        <br>
-                        <h5><u>Media Storage Estimation</u></h5>
-                        <table>
-                            <tr>
-                                <th>Description</th>
-                                <th>Calculation</th>
-                                <th>Result</th>
-                            </tr>
-                            <tr>
-                                <td>Average Tweet Size</td>
-                                <td>tweet_id (64 bytes) + text (140 bytes) + media (1 MB)</td>
-                                <td>1 MB</td>
-                            </tr>
-                            <tr>
-                                <td>Daily Media Storage</td>
-                                <td>150 million * 2 tweets * 10% * 1 MB</td>
-                                <td>30 TB per day</td>
-                            </tr>
-                            <tr>
-                                <td>5-Year Media Storage</td>
-                                <td>30 TB * 365 days * 5 years</td>
-                                <td>~55 PB</td>
-                            </tr>
-                        </table>
-                </br>
+    <p>Total Time (Parallel) = Time per Image</p>
+    <p>Total Time (Parallel) = 100 ms = 0.1 seconds</p>
 
-                
-                <h3 class="section-title">Estimation of Image Results Page Generation</h3>
-                    <h5>Assumptions:</h6>
-                    <ul>
-                        <li>Time per image generation: 100 ms (0.1 seconds)</li>
-                        <li>Number of thumbnails: 30</li>
-                    </ul>
-
-                    <h5>Serial Processing:</h6>
-                    <p>In serial processing, each thumbnail is generated one after the other. The total time is the sum of the time taken to generate each thumbnail.</p>
-
-                    <p>Total Time (Serial) = Time per Image * Number of Images</p>
-                    <p>Total Time (Serial) = 100 ms * 30 = 3000 ms = 3 seconds</p>
-
-                    <h5>Parallel Processing:</h6>
-                    <p>In parallel processing, all thumbnails are generated simultaneously. The total time is essentially the time taken to generate a single thumbnail, as all are done concurrently.</p>
-
-                    <p>Total Time (Parallel) = Time per Image</p>
-                    <p>Total Time (Parallel) = 100 ms = 0.1 seconds</p>
-
-                    <h5>Estimation Summary:</h6>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Processing Method</th>
-                                <th>Total Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Serial Processing</td>
-                                <td>3 seconds</td>
-                            </tr>
-                            <tr>
-                                <td>Parallel Processing</td>
-                                <td>0.1 seconds</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-        </div>
+    <h6>Estimation Summary:</h6>
+    <table>
+        <thead>
+            <tr>
+                <th>Processing Method</th>
+                <th>Total Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Serial Processing</td>
+                <td>3 seconds</td>
+            </tr>
+            <tr>
+                <td>Parallel Processing</td>
+                <td>0.1 seconds</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
