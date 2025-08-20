@@ -1,26 +1,38 @@
-<div>
-    <h2 style="text-align: center;">Chat Application : WhatsApp</h2>
-    <hr>
+<h2 style="text-align: center;">Chat Application : WhatsApp</h2>
+<br>
+<div class="custom-container">
+  <h5>Table of Contents</h5>
+  <ol>
+      <li><a href="#functional-requirements">Functional Requirements</a></li>
+      <li><a href="#non-functional-requirements">Non-Functional Requirements</a></li>
+      <li><a href="#estimation">Estimation</a></li>
+      <li><a href="#high-level-design">High Level Design</a></li>
+      <li><a href="#followup-questions">Followup Questions and Answers</a></li>
+  </ol>
+</div>
+<hr>
 
-    <h5>Functional Requirements</h5>
+    <h5 id="functional-requirements">Functional Requirements</h5>
     <ul>
-        <li>Should support one-on-one chats</li>
-        <li>Should support group chats</li>
-        <li>Should have image, video and file-sharing capabilities</li>
-        <li>Should indicate read/receipt of messages</li>
-        <li>Show indicate last seen time of users</li>
+        <li>1:1 chat</li>
+        <li>Group chat</li>
+        <li>Media/file sharing (images, video, docs)</li>
+        <li>Read receipts & delivery status</li>
+        <li>Presence (last seen, online/offline)</li>
     </ul>
     <hr>
 
-    <h5>Non-Functional Requirements:</h5>
+    <h5 id="non-functional-requirements">Non-Functional Requirements</h5>
     <ul>
-        <li>Should have very very low latency</li>
-        <li>Should be always available</li>
-        <li>There shouldn’t be any lags</li>
-        <li>Should be highly scalable</li>
+        <li>Low latency (less than 100ms for text messages)</li>
+        <li>High availability (global users, 24/7 uptime)</li>
+        <li>Scalability (2B+ users, 100B+ messages/day)</li>
+        <li>Durability (messages must not be lost)</li>
+        <li>Security (E2E encryption, TLS, secure storage)</li>
     </ul>
     <hr>
-    <h5>Estimation:</h5>
+    
+    <h5 id="estimation">Estimation</h5>
     <p>
         As of early 2025, WhatsApp reportedly handles 100 billion messages per day.This figure includes text messages, media, and voice/video calls.
     </p>
@@ -39,10 +51,18 @@
     </ul>
     <hr>
 
-    <h3> High level design:</h3>
-    <img src="../../../images/whatsapp.png" alt="cache" style="display: block; margin: auto; width: 80%;">
+    <h5 id="high-level-design">High Level Design</h5>
+    <img src="../../../images/whatsapp.png" alt="whatsapp" class="responsive-image">
     <br>
+    <hr class="thin-line">
     <ol>
+      <li><b>Client Layer</b></li>
+      <ul>
+        <li>Mobile apps (iOS/Android) maintain persistent WebSocket connections with backend.</li>
+        <li>Uses end-to-end encryption (Signal Protocol).</li>
+      </ul>
+      <hr class="thin-line">
+      
         <li><b>Connection with a WebSocket server:</b></li>
         <ul>
             <li>Each active WhatsApp device connects to a WebSocket server using the WebSocket protocol.</li>
@@ -52,12 +72,13 @@
             <li>A WebSocket manager oversees the mapping of servers, ports, and users.</li>
             <li>The mapping data is stored and managed using a cluster of the data store, with Redis being used for this purpose</li>.
         </ul>
-        
-        <li><b>Send or receive messages:</b></li>
+        <hr class="thin-line">
+
+        <li><b>Message Flow (1:1 chat)</b></li>
         <p>The system performs the following steps to send messages from user A to user B:</p>
         <ul>
-            <li> User A sends a message via their connected WebSocket server.</li>
-            <li>User A's WebSocket server queries the WebSocket manager to find the server connected to User B.</li>
+            <li>User A sends message → WebSocket Server A.</li>
+            <li>WebSocket Server A queries WebSocket Manager → finds User B’s connected server.</li>
             <li>If User B is online, the WebSocket manager provides the details of User B's WebSocket server to User A's WebSocket server.</li>
             <li>User A's WebSocket server sends the message to the message service, which stores it in a <b>MySQL database</b> for processing in first-in-first-out (FIFO) order.</li>
             <li>Messages are deleted from the <b>MySQL database</b> once delivered to the recipient.</li>
@@ -71,6 +92,8 @@
                 <li>If users are connected to the same server, calls to the WebSocket manager are avoided.</li>
             </ul>
         </ul>
+        <hr class="thin-line">
+
         <li><b>Send or receive media files:</b></li>
         <ul>
             <li>Media files are compressed and encrypted on the device side.</li>
@@ -79,7 +102,9 @@
             <li>The asset service sends the media file ID to the receiver via the message service.</li>
             <li>The receiver uses the ID to download the media file from the blob storage.</li>
             <li>Content is loaded onto a CDN if the asset service receives a high number of requests for specific content.</li>
-        </ul>      
+        </ul>  
+        <hr class="thin-line">
+
         <li><b>Support for group messages:</b></li>
         <div>
             <ul>
@@ -155,6 +180,13 @@
                   </li>
                 </ul>
               </li>
+              <li><b>Additional Services - think on it</b>
+                <ul>
+                  <li>Presence Service → Tracks last seen & online status (stored in Redis).</li>
+                  <li>Delivery Receipts Service → Updates ticks (✓ sent, ✓✓ delivered, ✓✓ blue read).</li>
+                  <li>Monitoring + Logging → Elastic + Grafana + Prometheus.</li>
+                </ul>
+              </li>
             </ul>
         </div> 
     </ol>
@@ -199,6 +231,117 @@
             </ul>
           </li>
         </ul>
-      </div>
-<hr>
+    </div>
+    <hr>
+    <h5 id="followup-questions">Followup Questions and Answers</h5>
+      <h6>1. Why do we need a WebSocket Manager when WebSocket servers can talk to each other?</h6>
+      <ol>
+        <li><b>Trap:</b> Interviewer checks if you understand scaling and mapping of billions of connections.</li>
+        <li><b>Answer:</b> Without a centralized manager, servers don’t know which user is connected to which server. 
+            A WebSocket Manager (with Redis/Consistent Hashing) efficiently maintains user-to-server mapping, enabling quick message routing. 
+            Direct server-to-server queries would add latency and complexity at scale.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>2. How do you ensure message ordering across servers?</h6>
+      <ol>
+        <li><b>Trap:</b> Interviewer wants to see if you rely only on Kafka or think about sequencing.</li>
+        <li><b>Answer:</b> Use a <b>sequencer</b> (centralized or distributed with logical clocks) to assign increasing message IDs. 
+            Kafka preserves ordering within a partition, so partition messages by (chatId or groupId). 
+            This ensures strict FIFO order for each conversation or group.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>3. What happens if the WebSocket Manager itself fails?</h6>
+      <ol>
+        <li><b>Trap:</b> Checks if you thought about single point of failure.</li>
+        <li><b>Answer:</b> WebSocket Manager must be <b>replicated</b> with leader-election (e.g., Raft/ZooKeeper/Etcd). 
+            Clients cache recent mappings, so even if the manager is temporarily unavailable, servers can still route messages until recovery.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>4. How do you scale group chats with millions of users (like WhatsApp Broadcast)?</h6>
+      <ol>
+        <li><b>Trap:</b> They want to test group fan-out design.</li>
+        <li><b>Answer:</b> Don’t push to every user directly from one server. Instead:
+          <ul>
+            <li>Use Kafka (or Pulsar) for fan-out via partitions.</li>
+            <li>Each user’s WebSocket server consumes messages relevant to its connected users.</li>
+            <li>For very large groups, use <b>sharding + multicast trees</b> to reduce fan-out cost.</li>
+          </ul>
+        </li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>5. Why store messages in MySQL and not just Kafka?</h6>
+      <ol>
+        <li><b>Trap:</b> Checks if you confuse persistence with pub-sub.</li>
+        <li><b>Answer:</b> Kafka is a log, not a long-term store. 
+            MySQL (or Cassandra) provides <b>durable, queryable history</b> for compliance, replay, and recovery. 
+            Kafka retains only for short TTL, while MySQL ensures permanent storage (e.g., 30 days or more).</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>6. How do you deliver messages to offline users?</h6>
+      <ol>
+        <li><b>Trap:</b> Interviewer checks push notification handling.</li>
+        <li><b>Answer:</b> Store undelivered messages in durable DB (MySQL/Cassandra). 
+            When the user reconnects, fetch from DB and deliver. 
+            If still offline, trigger push notification via APNS/FCM. 
+            Expire after policy (30 days).</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>7. How do you achieve low latency across continents?</h6>
+      <ol>
+        <li><b>Trap:</b> Latency ≠ just WebSocket optimization.</li>
+        <li><b>Answer:</b> Deploy geo-distributed WebSocket servers. 
+            Use <b>GeoDNS</b> / Anycast for nearest-region routing. 
+            Redis clusters and Kafka clusters replicated across regions (with conflict resolution) ensure messages stay close to users.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>8. How do you ensure exactly-once delivery?</h6>
+      <ol>
+        <li><b>Trap:</b> Messaging systems usually give at-least-once or at-most-once.</li>
+        <li><b>Answer:</b> Use <b>idempotent message IDs</b> + <b>deduplication at receiver side</b>. 
+            Store delivery receipts. If a duplicate arrives, ignore based on messageId. 
+            This simulates exactly-once semantics on top of at-least-once infra.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>9. Why use Redis for caching user-server mappings?</h6>
+      <ol>
+        <li><b>Trap:</b> Checks if you know alternatives.</li>
+        <li><b>Answer:</b> Redis provides in-memory, distributed, and fast lookups (sub-ms). 
+            Alternatives like Consistent Hashing or gossip protocols exist, but Redis supports TTLs, pub-sub, and replication, making it ideal.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>10. How do you handle media messages differently from text?</h6>
+      <ol>
+        <li><b>Trap:</b> They check if you know bandwidth/storage issues.</li>
+        <li><b>Answer:</b> Media files are uploaded to <b>Blob storage/CDN</b>. 
+            Only references (fileId, hash) are shared via WebSocket/DB. 
+            This avoids duplicating heavy payloads in message queues or DB.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>11. How do you prevent one slow consumer in a group from delaying others?</h6>
+      <ol>
+        <li><b>Trap:</b> Classic backpressure problem.</li>
+        <li><b>Answer:</b> Use Kafka consumer groups per user. 
+            Each user’s queue is independent. 
+            Slow consumer does not affect others because partition offset is tracked separately.</li>
+      </ol>
+      <hr class="thin-line">
+
+      <h6>12. How do you ensure security (end-to-end encryption) with this architecture?</h6>
+      <ol>
+        <li><b>Trap:</b> Tests if you confuse encryption in transit with E2E.</li>
+        <li><b>Answer:</b> Messages are encrypted on sender’s device using recipient’s public key (Signal Protocol). 
+            WebSocket servers, Kafka, MySQL only see ciphertext. 
+            Only recipient’s device can decrypt, ensuring E2E security.</li>
+      </ol>
+      <hr class="thin-line">
       
