@@ -466,3 +466,56 @@ h5 {
 input[type="radio"]:checked.correct + label { color: green; }
 input[type="radio"]:checked.wrong + label { color: red; }
 .explanation { display: none; margin-top: 5px; font-style: italic; }
+
+/* Sidebar */
+.left-panel {
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 70px;
+  border-right: 1px solid #dee2e6;
+}
+.sidebar-link {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s, color 0.3s;
+}
+.sidebar-link:hover {
+  background: #4b6cb7;
+  color: #fff !important;
+}
+
+/* Right panel content */
+.right-panel {
+  padding: 20px;
+}
+
+
+/* Scrollbar */
+.left-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.left-panel::-webkit-scrollbar-thumb {
+  background: #4b6cb7;
+  border-radius: 10px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .left-panel {
+    display: none;
+  }
+  .left-panel.show {
+    display: block;
+    position: fixed;
+    top: 0; left: 0;
+    width: 75%;
+    height: 100%;
+    z-index: 1050;
+    background: #fff;
+  }
+  .right-panel {
+    padding: 15px;
+  }
+}

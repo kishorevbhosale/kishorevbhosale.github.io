@@ -124,8 +124,8 @@
           <li><b>Includes:</b> 
             <ul>
               <li>Java Runtime Environment (JRE) – Required for running Java applications.</li>
-              <li><code>javac</code> – Java compiler to convert source code into bytecode.</li>
-              <li><code>jdb</code> – Java debugger for debugging applications.</li>
+              <li><b>javac</b> – Java compiler to convert source code into bytecode.</li>
+              <li><b>jdb</b> – Java debugger for debugging applications.</li>
               <li>Additional development tools and utilities.</li>
             </ul>
           </li>
@@ -167,12 +167,12 @@
         <ul>
           <li><b>Profiler:</b> Identifies recurring code blocks by maintaining a counter to track method calls. 
               <ul>
-                <li><b>Example:</b> In the given code, <code>myMethod()</code> is called repeatedly, and the profiler tracks these calls.</li>
+                <li><b>Example:</b> In the given code, <b>myMethod()</b> is called repeatedly, and the profiler tracks these calls.</li>
               </ul>
           </li>
           <li><b>JIT Compilation:</b> Once a method call exceeds a predefined threshold, the JIT compiler converts it into native code for faster execution.
               <ul>
-                <li><b>Example:</b> After multiple calls to <code>myMethod()</code>, the JIT compiler compiles it into native code to speed up execution.</li>
+                <li><b>Example:</b> After multiple calls to <b>myMethod()</b>, the JIT compiler compiles it into native code to speed up execution.</li>
               </ul>
           </li>
           <li><b>C1 and C2 Compilers:</b> 
@@ -180,16 +180,16 @@
                 <li>C1 (client) compiler handles levels 1-3 optimizations.</li>
                 <li>C2 (server) compiler handles level 4 optimization for more intensive tasks.</li>
               </ul>
-              <b>Example:</b> C1 optimizes the frequent calls in <code>myMethod()</code>, while C2 handles more complex tasks if the method is used intensively.
+              <b>Example:</b> C1 optimizes the frequent calls in <b>myMethod()</b>, while C2 handles more complex tasks if the method is used intensively.
           </li>
           <li><b>Code Cache:</b> Frequently called methods are stored in a limited memory section called the code cache for quicker access.
               <ul>
-                <li><b>Example:</b> After JIT compiles <code>myMethod()</code>, the code is stored in the cache for faster subsequent execution.</li>
+                <li><b>Example:</b> After JIT compiles <b>myMethod()</b>, the code is stored in the cache for faster subsequent execution.</li>
               </ul>
           </li>
           <li><b>Efficiency:</b> The JIT compiler optimizes code to balance performance, only caching methods that provide significant performance gains.
               <ul>
-                <li><b>Example:</b> Only <code>myMethod()</code> will be cached if it’s called frequently, avoiding unnecessary caching of less used methods.</li>
+                <li><b>Example:</b> Only <b>myMethod()</b> will be cached if it’s called frequently, avoiding unnecessary caching of less used methods.</li>
               </ul>
           </li>
         </ul>
@@ -247,7 +247,7 @@
         <li><b>Bootstrap ClassLoader:</b> Loads core Java classes.(jdk/jre/lib/*)</li>
         <li><b>Extension ClassLoader:</b> Loads classes from the extension directory.(jdk/jre/ext/*)</li>
         <li><b>Application ClassLoader:</b> Loads classes from the application's classpath.</li>
-        <img src="../../images/classloader.PNG" class="responsive-image">
+        <img src="../../images/classloader.png" class="responsive-image">
 
       </ul>
     </p>
@@ -304,7 +304,7 @@
   <!-- Main Method -->
 <div id="main-not-static">
     <h5>What will happen if we don’t declare the main method as static?</h5>
-    <p><b>Answer:</b> The program will fail to run because the JVM requires the <code>main</code> method to be static to invoke it without creating an object.</p>
+    <p><b>Answer:</b> The program will fail to run because the JVM requires the <b>main</b> method to be static to invoke it without creating an object.</p>
 </div>
 <hr>
 
@@ -394,7 +394,7 @@
     <b>Notes</b>
     <ul>
         <li><b>Local Variables</b>: Local variables must be explicitly initialized before use; they do not have default values.</li>
-        <li><b>Null for Non-Primitive Types</b>: Non-primitive types like <code>String</code> or objects always default to <code>null</code>.</li>
+        <li><b>Null for Non-Primitive Types</b>: Non-primitive types like <b>String</b> or objects always default to <b>null</b>.</li>
     </ul>
   </div>
   <hr>
@@ -403,9 +403,9 @@
   <div id="wrapper">
     <h5>What is the Wrapper class in Java, and why do we need it?</h5>
         <p>
-            In Java, <b>wrapper classes</b> are part of the <code>java.lang</code> package and provide an object representation for primitive data types. 
-            Each primitive type (e.g., <code>int</code>, <code>double</code>, <code>char</code>) has a corresponding wrapper class 
-            (e.g., <code>Integer</code>, <code>Double</code>, <code>Character</code>). 
+            In Java, <b>wrapper classes</b> are part of the <b>java.lang</b> package and provide an object representation for primitive data types. 
+            Each primitive type (e.g., <b>int</b>, <b>double</b>, <b>char</b>) has a corresponding wrapper class 
+            (e.g., <b>Integer</b>, <b>Double</b>, <b>Character</b>). 
             These classes "wrap" the primitive data type in an object, allowing primitives to be treated as objects.
         </p>
     
@@ -452,7 +452,7 @@
         <b>Why Do We Need Wrapper Classes?</b>
         <ul>
             <li>
-                <b>Working with Collections:</b> Java Collections (e.g., <code>ArrayList</code>, <code>HashMap</code>) can only store objects, 
+                <b>Working with Collections:</b> Java Collections (e.g., <b>ArrayList</b>, <b>HashMap</b>) can only store objects, 
                 not primitive data types. Wrapper classes allow primitives to be converted into objects (via autoboxing) so they can be used 
                 with collections.
                 <pre>
@@ -463,8 +463,8 @@
             <li>
                 <b>Utility Methods:</b> Wrapper classes provide utility methods for conversions, parsing, and operations. For instance:
                 <ul>
-                    <li>Converting a <code>String</code> to a primitive: <code>Integer.parseInt()</code>, <code>Double.valueOf()</code>.</li>
-                    <li>Getting the maximum or minimum value of a data type: <code>Integer.MAX_VALUE</code>, <code>Double.MIN_VALUE</code>.</li>
+                    <li>Converting a <b>String</b> to a primitive: <b>Integer.parseInt()</b>, <b>Double.valueOf()</b>.</li>
+                    <li>Getting the maximum or minimum value of a data type: <b>Integer.MAX_VALUE</b>, <b>Double.MIN_VALUE</b>.</li>
                 </ul>
             </li>
             <li>
@@ -476,8 +476,8 @@
                 </pre>
             </li>
             <li>
-                <b>Default Values in Collections:</b> A wrapper class allows <code>null</code> values, which can be useful in certain scenarios, 
-                unlike primitive types that cannot represent <code>null</code>.
+                <b>Default Values in Collections:</b> A wrapper class allows <b>null</b> values, which can be useful in certain scenarios, 
+                unlike primitive types that cannot represent <b>null</b>.
             </li>
             <li>
                 <b>Immutable Objects:</b> Wrapper classes are immutable. Once created, their value cannot be changed, ensuring thread safety 
@@ -510,7 +510,7 @@
             <td><b>public</b></td>
             <td>Accessible everywhere</td>
             <td>
-                The <code>public</code> specifier allows the member (class, method, or variable) to be accessed 
+                The <b>public</b> specifier allows the member (class, method, or variable) to be accessed 
                 from any other class or package.
             </td>
         </tr>
@@ -518,7 +518,7 @@
             <td><b>private</b></td>
             <td>Accessible only within the same class</td>
             <td>
-                The <code>private</code> specifier restricts access to the member so it is only visible within 
+                The <b>private</b> specifier restricts access to the member so it is only visible within 
                 the class where it is declared. It ensures encapsulation.
             </td>
         </tr>
@@ -526,7 +526,7 @@
             <td><b>protected</b></td>
             <td>Accessible within the same package and subclasses</td>
             <td>
-                The <code>protected</code> specifier allows the member to be accessed within the same package 
+                The <b>protected</b> specifier allows the member to be accessed within the same package 
                 and by subclasses (even if they are in different packages).
             </td>
         </tr>
@@ -588,7 +588,7 @@
 
         <b>2. Static Variables</b>
         <p>
-            Static variables are declared with the <code>static</code> keyword. They belong to the class rather than any specific instance, 
+            Static variables are declared with the <b>static</b> keyword. They belong to the class rather than any specific instance, 
             meaning all objects of the class share the same static variable.
         </p>
         <ul>
@@ -638,7 +638,7 @@
             <tr>
                 <td><b>Declaration</b></td>
                 <td>Declared inside the class but outside methods or blocks.</td>
-                <td>Declared with the <code>static</code> keyword inside the class.</td>
+                <td>Declared with the <b>static</b> keyword inside the class.</td>
                 <td>Declared inside methods, constructors, or blocks.</td>
             </tr>
             <tr>
@@ -752,12 +752,12 @@
     
         <b>Static (Class) Methods</b>
         <p>
-            Static methods are declared with the <code>static</code> keyword. They belong to the class rather than any specific object, 
+            Static methods are declared with the <b>static</b> keyword. They belong to the class rather than any specific object, 
             meaning they can be called directly using the class name without creating an instance of the class.
         </p>
         <ul>
-            <li><b>Declaration:</b> Declared using the <code>static</code> keyword.</li>
-            <li><b>Access:</b> Accessed using the class name (e.g., <code>ClassName.methodName()</code>).</li>
+            <li><b>Declaration:</b> Declared using the <b>static</b> keyword.</li>
+            <li><b>Access:</b> Accessed using the class name (e.g., <b>ClassName.methodName()</b>).</li>
             <li><b>Access to Members:</b> Can access only <b>static variables</b> and other <b>static methods</b> directly.</li>
             <li><b>Use Case:</b> Used for utility methods or operations that do not depend on instance variables.</li>
             <li><b>Example:</b></li>
@@ -780,8 +780,8 @@
             They require an instance of the class to be invoked and can access instance variables and methods directly.
         </p>
         <ul>
-            <li><b>Declaration:</b> Do not use the <code>static</code> keyword.</li>
-            <li><b>Access:</b> Accessed using an object of the class (e.g., <code>objectName.methodName()</code>).</li>
+            <li><b>Declaration:</b> Do not use the <b>static</b> keyword.</li>
+            <li><b>Access:</b> Accessed using an object of the class (e.g., <b>objectName.methodName()</b>).</li>
             <li><b>Access to Members:</b> Can access both <b>instance</b> and <b>static</b> variables and methods.</li>
             <li><b>Use Case:</b> Used for operations that require data specific to an object.</li>
             <li><b>Example:</b></li>
@@ -804,20 +804,20 @@
   <div id="new-instance">
     <h5>Difference between <b>new()</b> and <b>newInstance()</b>?</h5>
         <p>
-            In Java, both <code>new()</code> and <code>newInstance()</code> are used to create objects, 
+            In Java, both <b>new()</b> and <b>newInstance()</b> are used to create objects, 
             but they have different mechanisms and use cases. Below is a detailed explanation of each.
         </p>
     
-        <b><code>new()</code></b>
+        <b><b>new()</b></b>
         <ul>
             <li>
-                <b>Definition:</b> The <code>new()</code> keyword is used to create a new instance of a class at compile time.
+                <b>Definition:</b> The <b>new()</b> keyword is used to create a new instance of a class at compile time.
             </li>
             <li>
                 <b>How it Works:</b> Allocates memory for the object and invokes the constructor explicitly.
             </li>
             <li>
-                <b>Syntax:</b> <code>ClassName obj = new ClassName();</code>
+                <b>Syntax:</b> <b>ClassName obj = new ClassName();</b>
             </li>
             <li>
                 <b>Usage:</b> Preferred when the class to instantiate is known at compile time.
@@ -838,16 +838,16 @@
             </li>
         </ul>
     
-        <b><code>newInstance()</code></b>
+        <b><b>newInstance()</b></b>
         <ul>
             <li>
-                <b>Definition:</b> The <code>newInstance()</code> method is used to create an object dynamically at runtime using reflection.
+                <b>Definition:</b> The <b>newInstance()</b> method is used to create an object dynamically at runtime using reflection.
             </li>
             <li>
-                <b>How it Works:</b> It uses the <code>Class</code> class or <code>Constructor</code> class to invoke the no-argument constructor.
+                <b>How it Works:</b> It uses the <b>Class</b> class or <b>Constructor</b> class to invoke the no-argument constructor.
             </li>
             <li>
-                <b>Syntax:</b> <code>ClassName obj = Class.forName("ClassName").newInstance();</code>
+                <b>Syntax:</b> <b>ClassName obj = Class.forName("ClassName").newInstance();</b>
             </li>
             <li>
                 <b>Usage:</b> Useful when the class name is determined dynamically at runtime.
@@ -879,31 +879,31 @@
     <h5>Explain Java I/O: Reader/Writer vs InputStream/OutputStream, File Streams, Buffered Streams, FilterStreams, and I/O Filters</h5>
     <p>
         Java provides two main hierarchies for handling input and output: <b>Reader/Writer</b> and <b>InputStream/OutputStream</b>. 
-        Additionally, various stream types such as <code>FileInputStream</code>, <code>FileOutputStream</code>, <code>BufferedInputStream</code>, and <code>BufferedOutputStream</code> enhance performance and functionality. 
+        Additionally, various stream types such as <b>FileInputStream</b>, <b>FileOutputStream</b>, <b>BufferedInputStream</b>, and <b>BufferedOutputStream</b> enhance performance and functionality. 
         FilterStreams and I/O Filters add processing capabilities to the streams. Below is a detailed explanation of these concepts.
     </p>
 
     <b>1. Reader/Writer vs InputStream/OutputStream</b>
     <ul>
         <li>
-            <b>Reader/Writer:</b> This hierarchy is designed for handling character data (text). Classes like <code>FileReader</code> and <code>FileWriter</code> are part of this hierarchy. 
+            <b>Reader/Writer:</b> This hierarchy is designed for handling character data (text). Classes like <b>FileReader</b> and <b>FileWriter</b> are part of this hierarchy. 
             It supports Unicode and is ideal for reading and writing text files.
         </li>
         <li>
-            <b>InputStream/OutputStream:</b> This hierarchy deals with byte data (binary). Classes like <code>FileInputStream</code> and <code>FileOutputStream</code> fall under this category. 
+            <b>InputStream/OutputStream:</b> This hierarchy deals with byte data (binary). Classes like <b>FileInputStream</b> and <b>FileOutputStream</b> fall under this category. 
             It is suitable for handling binary files such as images, videos, and executables.
         </li>
-        <li><b>Key Difference:</b> Use <code>Reader/Writer</code> for character streams and <code>InputStream/OutputStream</code> for byte streams.</li>
+        <li><b>Key Difference:</b> Use <b>Reader/Writer</b> for character streams and <b>InputStream/OutputStream</b> for byte streams.</li>
     </ul>
 
     <b>2. FileInputStream and FileOutputStream</b>
     <ul>
         <li>
-            <b>FileInputStream:</b> A class in the <code>InputStream</code> hierarchy used to read raw byte data from a file. 
+            <b>FileInputStream:</b> A class in the <b>InputStream</b> hierarchy used to read raw byte data from a file. 
             It is ideal for reading binary files (e.g., images, PDFs).
         </li>
         <li>
-            <b>FileOutputStream:</b> A class in the <code>OutputStream</code> hierarchy used to write raw byte data to a file. 
+            <b>FileOutputStream:</b> A class in the <b>OutputStream</b> hierarchy used to write raw byte data to a file. 
             It is useful for writing binary data to files.
         </li>
         <li><b>Example:</b></li>
@@ -931,11 +931,11 @@ public class FileStreamExample {
     <b>3. BufferedInputStream and BufferedOutputStream</b>
     <ul>
         <li>
-            <b>BufferedInputStream:</b> Adds a buffer to the <code>InputStream</code> for efficient reading of large data. 
+            <b>BufferedInputStream:</b> Adds a buffer to the <b>InputStream</b> for efficient reading of large data. 
             It reduces the number of I/O operations by reading chunks of data into a buffer.
         </li>
         <li>
-            <b>BufferedOutputStream:</b> Adds a buffer to the <code>OutputStream</code> for efficient writing of large data. 
+            <b>BufferedOutputStream:</b> Adds a buffer to the <b>OutputStream</b> for efficient writing of large data. 
             Data is collected in a buffer and written to the file in larger chunks.
         </li>
         <li><b>Purpose:</b> Improves performance by minimizing direct disk I/O operations.</li>
@@ -964,8 +964,8 @@ public class BufferedStreamExample {
     <b>4. FilterStreams</b>
     <ul>
         <li>
-            <b>Definition:</b> FilterStreams are a subclass of <code>InputStream</code> and <code>OutputStream</code> that allow filtering or modifying data as it is read or written. 
-            Examples include <code>DataInputStream</code>, <code>DataOutputStream</code>, and <code>PushbackInputStream</code>.
+            <b>Definition:</b> FilterStreams are a subclass of <b>InputStream</b> and <b>OutputStream</b> that allow filtering or modifying data as it is read or written. 
+            Examples include <b>DataInputStream</b>, <b>DataOutputStream</b>, and <b>PushbackInputStream</b>.
         </li>
         <li><b>Purpose:</b> Used to process raw data streams for specific use cases, such as reading primitive data types or implementing custom filters.</li>
     </ul>
@@ -976,10 +976,10 @@ public class BufferedStreamExample {
             <b>Definition:</b> I/O Filters are used to modify or filter the data being read or written. They are often implemented by chaining streams together.
         </li>
         <li>
-            <b>Example:</b> <code>BufferedInputStream</code> and <code>BufferedOutputStream</code> are examples of filter streams used to add buffering capabilities.
+            <b>Example:</b> <b>BufferedInputStream</b> and <b>BufferedOutputStream</b> are examples of filter streams used to add buffering capabilities.
         </li>
         <li>
-            <b>Custom Filters:</b> You can create custom filters by extending <code>FilterInputStream</code> or <code>FilterOutputStream</code>.
+            <b>Custom Filters:</b> You can create custom filters by extending <b>FilterInputStream</b> or <b>FilterOutputStream</b>.
         </li>
         <li>Filter can compress data before writing it or decompress it while reading.</li>
     </ul>
@@ -1000,10 +1000,10 @@ public class BufferedStreamExample {
         Below are the commonly used approaches:
     </p>
 
-    <b>1. Using <code>Scanner</code> Class</b>
+    <b>1. Using <b>Scanner</b> Class</b>
     <ul>
         <li>
-            <b>Description:</b> The <code>Scanner</code> class is the most common and user-friendly way to read input from the console.
+            <b>Description:</b> The <b>Scanner</b> class is the most common and user-friendly way to read input from the console.
         </li>
         <li>
             <b>Features:</b> Allows reading of various data types like integers, strings, doubles, etc.
@@ -1031,13 +1031,13 @@ public class ScannerExample {
         </li>
     </ul>
 
-    <b>2. Using <code>BufferedReader</code> Class</b>
+    <b>2. Using <b>BufferedReader</b> Class</b>
     <ul>
         <li>
-            <b>Description:</b> <code>BufferedReader</code> provides efficient reading of text data using a buffer.
+            <b>Description:</b> <b>BufferedReader</b> provides efficient reading of text data using a buffer.
         </li>
         <li>
-            <b>Features:</b> Requires more code compared to <code>Scanner</code> but offers better performance for large inputs.
+            <b>Features:</b> Requires more code compared to <b>Scanner</b> but offers better performance for large inputs.
         </li>
         <li>
             <b>Example:</b>
@@ -1062,10 +1062,10 @@ public class BufferedReaderExample {
         </li>
     </ul>
 
-    <b>3. Using <code>Console</code> Class</b>
+    <b>3. Using <b>Console</b> Class</b>
     <ul>
         <li>
-            <b>Description:</b> The <code>Console</code> class is part of the <code>java.io</code> package and is specifically designed for console input and output.
+            <b>Description:</b> The <b>Console</b> class is part of the <b>java.io</b> package and is specifically designed for console input and output.
         </li>
         <li>
             <b>Features:</b> Does not work in IDEs; works only in command-line environments.
@@ -1092,10 +1092,10 @@ public class ConsoleExample {
         </li>
     </ul>
 
-    <b>4. Using <code>DataInputStream</code></b>
+    <b>4. Using <b>DataInputStream</b></b>
     <ul>
         <li>
-            <b>Description:</b> The <code>DataInputStream</code> class is an older way to take input. It is less preferred due to limited functionality and lack of ease.
+            <b>Description:</b> The <b>DataInputStream</b> class is an older way to take input. It is less preferred due to limited functionality and lack of ease.
         </li>
         <li>
             <b>Features:</b> Requires manual parsing of input data.
@@ -1122,7 +1122,7 @@ public class DataInputStreamExample {
         </li>
     </ul>
 
-    <b>5. Using <code>Command-Line Arguments</code></b>
+    <b>5. Using <b>Command-Line Arguments</b></b>
     <ul>
         <li>
             <b>Description:</b> Inputs are passed as arguments when running the program from the command line.
@@ -1152,8 +1152,8 @@ public class CommandLineExample {
     <b>Summary</b>
     <p>
         Java offers multiple ways to take console input depending on your requirements. 
-        For beginner-friendly input, use <code>Scanner</code>. For efficient reading, choose <code>BufferedReader</code>. 
-        If you're working in a command-line environment, <code>Console</code> is a good option. For legacy systems, you may encounter <code>DataInputStream</code>, 
+        For beginner-friendly input, use <b>Scanner</b>. For efficient reading, choose <b>BufferedReader</b>. 
+        If you're working in a command-line environment, <b>Console</b> is a good option. For legacy systems, you may encounter <b>DataInputStream</b>, 
         and command-line arguments are best for static input.
     </p>
   </div>
@@ -1164,8 +1164,8 @@ public class CommandLineExample {
     <h5>Explain the difference between <b>&lt;&gt;</b> and <b>&gt;&gt;&gt;</b> operators.</h5>
     <p><b>Answer:</b> 
       <ul>
-        <li><code>&gt;&gt;</code>: Arithmetic right shift operator that retains the sign bit.</li>
-        <li><code>&gt;&gt;&gt;</code>: Logical right shift operator that does not retain the sign bit, filling it with zero.</li>
+        <li><b>&gt;&gt;</b>: Arithmetic right shift operator that retains the sign bit.</li>
+        <li><b>&gt;&gt;&gt;</b>: Logical right shift operator that does not retain the sign bit, filling it with zero.</li>
       </ul>
     </p>
     <pre>int x = -8; // Binary: 11111111111111111111111111111000
@@ -1272,7 +1272,7 @@ public class CovariantReturnTypeExample {
 
     <ul>
         <li>
-            To serialize an object in Java, the class must implement the <code>java.io.Serializable</code> interface.
+            To serialize an object in Java, the class must implement the <b>java.io.Serializable</b> interface.
         </li>
         <li>
             Serializable is a marker interface (does not have any methods) that indicates a class can be serialized.
@@ -1291,7 +1291,7 @@ public class CovariantReturnTypeExample {
             During deserialization, the object's state is recreated using the byte stream and the class definition.
         </li>
         <li>
-            If a field is marked as <code>transient</code>, its value will not be restored and will be set to its default value.
+            If a field is marked as <b>transient</b>, its value will not be restored and will be set to its default value.
         </li>
     </ul>
 
@@ -1341,12 +1341,12 @@ public class SerializationExample {
 }
     </pre>
     <p>
-        <b>Output:</b> After deserialization, the <code>age</code> field will show its default value (0), as it was marked <code>transient</code>.
+        <b>Output:</b> After deserialization, the <b>age</b> field will show its default value (0), as it was marked <b>transient</b>.
     </p>
 
     <b>Custom Serialization Code</b>
     <p>
-        You can customize the serialization process by defining <code>writeObject</code> and <code>readObject</code> methods in your class.
+        You can customize the serialization process by defining <b>writeObject</b> and <b>readObject</b> methods in your class.
     </p>
     <pre>
 import java.io.*;
@@ -1400,7 +1400,7 @@ public class CustomSerializationExample {
 }
     </pre>
     <p>
-        <b>Output:</b> Even though the <code>age</code> field is marked as <code>transient</code>, it will be properly serialized and deserialized because of the custom implementation.
+        <b>Output:</b> Even though the <b>age</b> field is marked as <b>transient</b>, it will be properly serialized and deserialized because of the custom implementation.
     </p>
 
     <b>Advantages of Serialization</b>
@@ -1420,7 +1420,7 @@ public class CustomSerializationExample {
     <b>Summary</b>
     <p>
         <b>Serialization</b> and <b>Deserialization</b> are essential features in Java for persisting and transferring objects. 
-        By customizing the process using <code>writeObject</code> and <code>readObject</code>, developers can control how data is serialized, especially for transient fields or fields requiring special handling.
+        By customizing the process using <b>writeObject</b> and <b>readObject</b>, developers can control how data is serialized, especially for transient fields or fields requiring special handling.
     </p>
   </div>
   <hr>
@@ -1560,7 +1560,7 @@ public class CustomSerializationExample {
     <b>Examples of Marker Interfaces</b>
     <ul>
         <li><b>Serializable:</b> Classes implementing this interface can be serialized (converted to a byte stream).</li>
-        <li><b>Cloneable:</b> Classes implementing this interface allow the cloning of their objects using the <code>Object.clone()</code> method.</li>
+        <li><b>Cloneable:</b> Classes implementing this interface allow the cloning of their objects using the <b>Object.clone()</b> method.</li>
     </ul>
 
     <b>Custom Marker Interface Example</b>
@@ -1770,7 +1770,7 @@ public class CustomSerializationExample {
     <ul>
         <li>Constructors are used to initialize an object's state.</li>
         <li>They are automatically called during object creation.</li>
-        <li>They cannot have a return type, including <code>void</code>.</li>
+        <li>They cannot have a return type, including <b>void</b>.</li>
         <li>If no constructor is defined, Java provides a default no-argument constructor.</li>
     </ul>
 
@@ -1807,7 +1807,7 @@ public class CustomSerializationExample {
 
     <b>Calling a Constructor Inside Another Constructor</b>
     <p>
-        In Java, you can call one constructor from another using the <b><code>this()</code></b> keyword. This process is known as <b>constructor chaining</b>. It helps avoid code duplication and ensures consistent initialization logic.
+        In Java, you can call one constructor from another using the <b><b>this()</b></b> keyword. This process is known as <b>constructor chaining</b>. It helps avoid code duplication and ensures consistent initialization logic.
     </p>
     <h5>Example:</h5>
     <pre>
@@ -1881,8 +1881,8 @@ public class CustomSerializationExample {
             </tr>
             <tr>
                 <td>Return Type</td>
-                <td>No return type (not even <code>void</code>).</td>
-                <td>Must have a return type (e.g., <code>void</code>, <code>int</code>).</td>
+                <td>No return type (not even <b>void</b>).</td>
+                <td>Must have a return type (e.g., <b>void</b>, <b>int</b>).</td>
             </tr>
             <tr>
                 <td>Invocation</td>
@@ -1895,7 +1895,7 @@ public class CustomSerializationExample {
     <b>Key Points to Remember</b>
     <ul>
         <li>Constructors can be overloaded (multiple constructors in a class with different parameter lists).</li>
-        <li>They cannot be inherited by a subclass, but a subclass can call the parent class constructor using <code>super()</code>.</li>
+        <li>They cannot be inherited by a subclass, but a subclass can call the parent class constructor using <b>super()</b>.</li>
         <li>Static constructors are not allowed in Java because constructors are specific to an object instance.</li>
     </ul>
   </div>
@@ -1914,7 +1914,7 @@ public class CustomSerializationExample {
 
     <b>Behavior for Primitive Types</b>
     <p>
-        For primitive types (e.g., <code>int</code>, <code>double</code>), the method receives a copy of the value. Any modifications to the value inside the method do not affect the original variable.
+        For primitive types (e.g., <b>int</b>, <b>double</b>), the method receives a copy of the value. Any modifications to the value inside the method do not affect the original variable.
     </p>
     <h5>Example:</h5>
     <pre>
@@ -1931,7 +1931,7 @@ public class CustomSerializationExample {
         }
     </pre>
 
-    <p><b>Explanation:</b> The method <code>modifyPrimitive()</code> changes only the local copy of the variable. The original <code>x</code> remains unchanged.</p>
+    <p><b>Explanation:</b> The method <b>modifyPrimitive()</b> changes only the local copy of the variable. The original <b>x</b> remains unchanged.</p>
 
     <b>Behavior for Reference Types</b>
     <p>
@@ -1957,7 +1957,7 @@ public class CustomSerializationExample {
         }
     </pre>
 
-    <p><b>Explanation:</b> The method <code>modifyObject()</code> changes the state of the object that the reference <code>d</code> points to. Therefore, the original object's state is affected.</p>
+    <p><b>Explanation:</b> The method <b>modifyObject()</b> changes the state of the object that the reference <b>d</b> points to. Therefore, the original object's state is affected.</p>
 
     <h5>Can We Change the Reference Itself?</h5>
     <p>
@@ -1984,7 +1984,7 @@ public class CustomSerializationExample {
         }
     </pre>
 
-    <p><b>Explanation:</b> In the method <code>changeReference()</code>, the local reference <code>obj</code> is reassigned to a new object, but the original reference <code>d</code> in the calling code remains unaffected.</p>
+    <p><b>Explanation:</b> In the method <b>changeReference()</b>, the local reference <b>obj</b> is reassigned to a new object, but the original reference <b>d</b> in the calling code remains unaffected.</p>
 
     <b>Summary</b>
     <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
@@ -2014,7 +2014,7 @@ public class CustomSerializationExample {
 <div id="object-clone">
     <h5>What is Object Cloning in Java?</h5>
     <p>
-        <b>Object Cloning</b> is the process of creating an exact copy of an object. In Java, this is done using the <code>clone()</code> method defined in the <code>Object</code> class. Cloning is primarily used when you want to create a copy of an object with the same state as the original.
+        <b>Object Cloning</b> is the process of creating an exact copy of an object. In Java, this is done using the <b>clone()</b> method defined in the <b>Object</b> class. Cloning is primarily used when you want to create a copy of an object with the same state as the original.
     </p>
 
     <b>How Does Object Cloning Work?</b>
@@ -2022,11 +2022,11 @@ public class CustomSerializationExample {
         To enable cloning, a class must:
     </p>
     <ul>
-        <li>Implement the <code>Cloneable</code> interface, which is a marker interface indicating the class supports cloning.</li>
-        <li>Override the <code>clone()</code> method from the <code>Object</code> class.</li>
+        <li>Implement the <b>Cloneable</b> interface, which is a marker interface indicating the class supports cloning.</li>
+        <li>Override the <b>clone()</b> method from the <b>Object</b> class.</li>
     </ul>
     <p>
-        If the <code>Cloneable</code> interface is not implemented, the JVM throws a <code>CloneNotSupportedException</code> when <code>clone()</code> is invoked.
+        If the <b>Cloneable</b> interface is not implemented, the JVM throws a <b>CloneNotSupportedException</b> when <b>clone()</b> is invoked.
     </p>
 
     <b>Example of Object Cloning</b>
@@ -2180,7 +2180,7 @@ public class CustomSerializationExample {
         Cloned address: New York
         Original address after modification: New York
     </pre>
-    <p><b>Explanation:</b> In deep cloning, a new <code>Address</code> object is created for the clone, ensuring complete independence.</p>
+    <p><b>Explanation:</b> In deep cloning, a new <b>Address</b> object is created for the clone, ensuring complete independence.</p>
 
     <b>Key Differences Between Shallow Cloning and Deep Cloning</b>
     <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
@@ -2227,7 +2227,7 @@ public class CustomSerializationExample {
   <!-- Arrays -->
 <div id="copy-array">>
     <h5>How to copy an array in Java?</h5>
-    <p><b>Answer:</b> Arrays can be copied using methods like <code>System.arraycopy()</code>, <code>Arrays.copyOf()</code>, or <code>clone()</code>.</p>
+    <p><b>Answer:</b> Arrays can be copied using methods like <b>System.arraycopy()</b>, <b>Arrays.copyOf()</b>, or <b>clone()</b>.</p>
     <pre>int[] original = {1, 2, 3};
   int[] copy = Arrays.copyOf(original, original.length);
   </pre>
@@ -2249,14 +2249,14 @@ public class CustomSerializationExample {
 <div id="object-class">
     <h5>What is the Object Class in Java?</h5>
     <p>
-        The <b>Object</b> class is the parent class of all classes in Java. Every class in Java either directly or indirectly inherits from the <code>Object</code> class. It is part of the <code>java.lang</code> package, so it is automatically imported into every Java program.
+        The <b>Object</b> class is the parent class of all classes in Java. Every class in Java either directly or indirectly inherits from the <b>Object</b> class. It is part of the <b>java.lang</b> package, so it is automatically imported into every Java program.
     </p>
     <p>
-        The <code>Object</code> class provides basic methods that are essential for all objects, such as comparing objects, cloning, getting class information, and more.
+        The <b>Object</b> class provides basic methods that are essential for all objects, such as comparing objects, cloning, getting class information, and more.
     </p>
 
     <b>Methods in the Object Class</b>
-    <p>The following are the key methods provided by the <code>Object</code> class:</p>
+    <p>The following are the key methods provided by the <b>Object</b> class:</p>
 
     <table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">
         <thead>
@@ -2268,7 +2268,7 @@ public class CustomSerializationExample {
         </thead>
         <tbody>
             <tr>
-                <td><code>toString()</code></td>
+                <td><b>toString()</b></td>
                 <td>
                     Returns a string representation of the object. By default, it returns the class name followed by the hash code.
                 </td>
@@ -2291,7 +2291,7 @@ class Example {
                 </td>
             </tr>
             <tr>
-                <td><code>equals(Object obj)</code></td>
+                <td><b>equals(Object obj)</b></td>
                 <td>
                     Compares the current object with the specified object. By default, it checks reference equality. This method can be overridden for custom equality logic.
                 </td>
@@ -2322,9 +2322,9 @@ class Example {
                 </td>
             </tr>
             <tr>
-                <td><code>hashCode()</code></td>
+                <td><b>hashCode()</b></td>
                 <td>
-                    Returns an integer hash code value for the object. This is used for hashing-based collections like <code>HashMap</code> or <code>HashSet</code>.
+                    Returns an integer hash code value for the object. This is used for hashing-based collections like <b>HashMap</b> or <b>HashSet</b>.
                 </td>
                 <td>
                     <pre>
@@ -2349,7 +2349,7 @@ class Example {
                 </td>
             </tr>
             <tr>
-                <td><code>getClass()</code></td>
+                <td><b>getClass()</b></td>
                 <td>
                     Returns the runtime class of the object. It is useful for reflection.
                 </td>
@@ -2365,9 +2365,9 @@ class Example {
                 </td>
             </tr>
             <tr>
-                <td><code>clone()</code></td>
+                <td><b>clone()</b></td>
                 <td>
-                    Creates a shallow copy of the object. The class must implement the <code>Cloneable</code> interface; otherwise, a <code>CloneNotSupportedException</code> is thrown.
+                    Creates a shallow copy of the object. The class must implement the <b>Cloneable</b> interface; otherwise, a <b>CloneNotSupportedException</b> is thrown.
                 </td>
                 <td>
                     <pre>
@@ -2393,7 +2393,7 @@ class Example implements Cloneable {
                 </td>
             </tr>
             <tr>
-                <td><code>finalize()</code></td>
+                <td><b>finalize()</b></td>
                 <td>
                     Called by the garbage collector before the object is destroyed. It is rarely used in modern Java development.
                 </td>
@@ -2415,7 +2415,7 @@ class Example {
                 </td>
             </tr>
             <tr>
-                <td><code>wait()</code>, <code>notify()</code>, <code>notifyAll()</code></td>
+                <td><b>wait()</b>, <b>notify()</b>, <b>notifyAll()</b></td>
                 <td>
                     These methods are used for inter-thread communication. They must be called within synchronized blocks.
                 </td>
@@ -2456,7 +2456,7 @@ class Example {
 
     <b>Summary</b>
     <p>
-        The <code>Object</code> class provides fundamental methods required by all Java objects. It is designed to be overridden in custom classes for enhanced functionality, such as custom equality, hash code logic, or string representation.
+        The <b>Object</b> class provides fundamental methods required by all Java objects. It is designed to be overridden in custom classes for enhanced functionality, such as custom equality, hash code logic, or string representation.
     </p>
 </div>
 <hr>
@@ -2474,7 +2474,7 @@ class Example {
 
   <div id="call-constructor">
     <h5>Can a constructor call another constructor in the same class?</h5>
-    <p><b>Answer:</b> Yes, using the <code>this()</code> keyword, one constructor can call another in the same class.</p>
+    <p><b>Answer:</b> Yes, using the <b>this()</b> keyword, one constructor can call another in the same class.</p>
     <pre>class Example {
       Example() {
           this(42); // Calls parameterized constructor
@@ -2541,12 +2541,12 @@ class Example {
     <h5>What is the Purpose of the <b>equals()</b> and <b>hashCode()</b> Methods?</h5>
 
     <p>
-        The <code>equals()</code> and <code>hashCode()</code> methods are fundamental methods in Java, defined in the <b>Object</b> class. They are essential for comparing objects and using objects in collections like <code>HashSet</code>, <code>HashMap</code>, or <code>HashTable</code>.
+        The <b>equals()</b> and <b>hashCode()</b> methods are fundamental methods in Java, defined in the <b>Object</b> class. They are essential for comparing objects and using objects in collections like <b>HashSet</b>, <b>HashMap</b>, or <b>HashTable</b>.
     </p>
 
-    <b>1. Purpose of <code>equals()</code></b>
+    <b>1. Purpose of <b>equals()</b></b>
     <p>
-        The <code>equals()</code> method is used to compare the equality of two objects. By default, the implementation in the <b>Object</b> class checks for reference equality, meaning it checks if the two objects point to the same memory location. This method is often overridden to provide custom equality logic based on the object's state.
+        The <b>equals()</b> method is used to compare the equality of two objects. By default, the implementation in the <b>Object</b> class checks for reference equality, meaning it checks if the two objects point to the same memory location. This method is often overridden to provide custom equality logic based on the object's state.
     </p>
 
     <h5>Default Implementation</h5>
@@ -2556,7 +2556,7 @@ class Example {
     }
     </pre>
 
-    <h5>Example of Overriding <code>equals()</code></h5>
+    <h5>Example of Overriding <b>equals()</b></h5>
     <pre>
     class Person {
         private String name;
@@ -2585,12 +2585,12 @@ class Example {
     }
     </pre>
 
-    <b>2. Purpose of <code>hashCode()</code></b>
+    <b>2. Purpose of <b>hashCode()</b></b>
     <p>
-        The <code>hashCode()</code> method returns an integer hash code value for the object. This value is used in hashing-based collections like <code>HashMap</code>, <code>HashSet</code>, and <code>HashTable</code> to determine the bucket where the object will be stored.
+        The <b>hashCode()</b> method returns an integer hash code value for the object. This value is used in hashing-based collections like <b>HashMap</b>, <b>HashSet</b>, and <b>HashTable</b> to determine the bucket where the object will be stored.
     </p>
     <p>
-        If two objects are considered equal (via <code>equals()</code>), their hash codes must also be equal. However, two objects with the same hash code do not necessarily have to be equal (this is known as a hash collision).
+        If two objects are considered equal (via <b>equals()</b>), their hash codes must also be equal. However, two objects with the same hash code do not necessarily have to be equal (this is known as a hash collision).
     </p>
 
     <h5>Default Implementation</h5>
@@ -2598,7 +2598,7 @@ class Example {
     public native int hashCode();
     </pre>
 
-    <h5>Example of Overriding <code>hashCode()</code></h5>
+    <h5>Example of Overriding <b>hashCode()</b></h5>
     <pre>
     class Person {
         private String name;
@@ -2632,10 +2632,10 @@ class Example {
     }
     </pre>
 
-    <b>3. Relationship Between <code>equals()</code> and <code>hashCode()</code></b>
+    <b>3. Relationship Between <b>equals()</b> and <b>hashCode()</b></b>
     <ul>
-        <li>If two objects are equal according to <code>equals()</code>, they must have the same <code>hashCode()</code>.</li>
-        <li>If two objects have the same <code>hashCode()</code>, they are not guaranteed to be equal (this is called a hash collision).</li>
+        <li>If two objects are equal according to <b>equals()</b>, they must have the same <b>hashCode()</b>.</li>
+        <li>If two objects have the same <b>hashCode()</b>, they are not guaranteed to be equal (this is called a hash collision).</li>
         <li>Overriding one of these methods usually requires overriding the other to maintain consistency.</li>
     </ul>
 
@@ -2645,10 +2645,10 @@ class Example {
     </p>
     <ul>
         <li>
-            <b>HashMap:</b> Uses <code>hashCode()</code> to find the bucket for an object and <code>equals()</code> to check for key equality within the bucket.
+            <b>HashMap:</b> Uses <b>hashCode()</b> to find the bucket for an object and <b>equals()</b> to check for key equality within the bucket.
         </li>
         <li>
-            <b>HashSet:</b> Uses <code>hashCode()</code> to identify duplicate elements and <code>equals()</code> to confirm equality.
+            <b>HashSet:</b> Uses <b>hashCode()</b> to identify duplicate elements and <b>equals()</b> to confirm equality.
         </li>
     </ul>
 
@@ -2664,13 +2664,13 @@ class Example {
         </thead>
         <tbody>
             <tr>
-                <td><code>equals()</code></td>
+                <td><b>equals()</b></td>
                 <td>Checks for equality between two objects.</td>
                 <td>Checks reference equality (same memory location).</td>
                 <td>When you want to compare objects based on their state or content.</td>
             </tr>
             <tr>
-                <td><code>hashCode()</code></td>
+                <td><b>hashCode()</b></td>
                 <td>Returns a hash code value for the object.</td>
                 <td>Generates a unique hash code based on memory address.</td>
                 <td>When using the object in hashing-based collections (e.g., HashMap, HashSet).</td>
