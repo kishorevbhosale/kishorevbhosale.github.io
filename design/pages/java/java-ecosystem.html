@@ -1,331 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
+<title>Java Ecosystem Interview Guide</title>
+<meta name="description"
+    content="A complete Java Ecosystem Interview Guide covering JVM, JIT, Hotspot, Platform Independence, and related concepts.">
+<meta name="keywords" content="Java Ecosystem, JVM, JIT, Hotspot, Platform Independence, Java Interview">
+<meta name="robots" content="index, follow">
 
-<head>
-
-    <title>Java Ecosystem Interview Guide</title>
-    <meta name="description"
-        content="A complete Java Ecosystem Interview Guide covering JVM, JIT, Hotspot, Platform Independence, and related concepts.">
-    <meta name="keywords" content="Java Ecosystem, JVM, JIT, Hotspot, Platform Independence, Java Interview">
-    <meta name="robots" content="index, follow">
-
-    <script type="application/ld+json">
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Java Ecosystem Interview Guide",
   "description": "A complete Java Ecosystem Interview Guide covering JVM, JIT, Hotspot, Platform Independence, and related concepts.",
-  "url": "https://www.preparationzone.com/java-ecosystem.html"
+  "url": "https://www.preparationzone.com/#design/pages/java/java-ecosystem.html"
 }
 </script>
 
-</head>
+<h2 style="text-align: center;">Java Ecosystem - Internal</h2>
+<br>
 
-<body>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#what-is-meant-by-java-is-platform-independent">What is meant by Java is platform
+                independent?</a></li>
+        <li><a href="#how-java-achieves-platform-independence">How Java Achieves Platform Independence</a></li>
+        <li><a href="#write-once-run-anywhere:">Write Once, Run Anywhere:</a></li>
+        <li><a href="#explain-what-is-jvm">Explain what is JVM?</a></li>
+        <li><a href="#What is Java Hotspot?">What is Java Hotspot?</a></li>
+        <li><a href="#explain-what-is-jit">Explain what is JIT?</a></li>
+    </ol>
+</div>
+<hr>
 
-    <h2 style="text-align: center;">Java Ecosystem - Internal</h2>
-    <br>
-
-    <div class="custom-container">
-        <h5>Table of Contents</h5>
-        <ol>
-            <li><a href="#what-is-meant-by-java-is-platform-independent">What is meant by Java is platform
-                    independent?</a></li>
-            <li><a href="#how-java-achieves-platform-independence">How Java Achieves Platform Independence</a></li>
-            <li><a href="#write-once-run-anywhere:">Write Once, Run Anywhere:</a></li>
-            <li><a href="#explain-what-is-jvm">Explain what is JVM?</a></li>
-            <li><a href="#overview-of-jvm">Overview of JVM</a></li>
-            <li><a href="#jvm-architecture">JVM Architecture</a></li>
-            <li><a href="#what-is-java-hotspot">What is Java Hotspot?</a></li>
-            <li><a href="#explain-what-is-jit">Explain what is JIT?</a></li>
-        </ol>
-    </div>
-    <hr>
-
-    <div id="what-is-meant-by-java-is-platform-independent">
-        <h5>What is meant by Java is platform independent?</h5>
-        <p>The statement "Java is platform-independent" refers to Java's ability to run the same compiled code on any
-            operating system or platform without needing to be rewritten or recompiled.
-            This characteristic is a core feature of Java, achieved through the use of the Java Virtual Machine (JVM).
+<div id="what-is-meant-by-java-is-platform-independent">
+    <h5>What is meant by Java is platform independent?</h5>
+    <p>The statement "Java is platform-independent" refers to Java's ability to run the same compiled code on any
+        operating system or platform without needing to be rewritten or recompiled.
+        This characteristic is a core feature of Java, achieved through the use of the Java Virtual Machine (JVM).
+    </p>
+</div>
+<hr>
+<div id="how-java-achieves-platform-independence">
+    <h5>How Java Achieves Platform Independence</h5>
+    <ol>
+        <li><b>Java Source Code Compilation:</b></li>
+        <p>When you write a Java program, you write it in a human-readable form, known as source code. This source
+            code is saved with a .java file extension.
+            The Java compiler (javac) then compiles this source code into an intermediate form called bytecode. This
+            bytecode is saved in a file with a .class extension.</p>
+        <li><b>Bytecode:</b></li>
+        <p>Java bytecode is a low-level, platform-independent set of instructions designed to be executed by the
+            JVM.
+            Unlike machine code, which is specific to a particular processor and operating system, bytecode is not
+            tied to any one machine or architecture.
         </p>
-    </div>
-    <hr>
-    <div id="how-java-achieves-platform-independence">
-        <h5>How Java Achieves Platform Independence</h5>
-        <ol>
-            <li><b>Java Source Code Compilation:</b></li>
-            <p>When you write a Java program, you write it in a human-readable form, known as source code. This source
-                code is saved with a .java file extension.
-                The Java compiler (javac) then compiles this source code into an intermediate form called bytecode. This
-                bytecode is saved in a file with a .class extension.</p>
-            <li><b>Bytecode:</b></li>
-            <p>Java bytecode is a low-level, platform-independent set of instructions designed to be executed by the
-                JVM.
-                Unlike machine code, which is specific to a particular processor and operating system, bytecode is not
-                tied to any one machine or architecture.
-            </p>
-            <li><b>Java Virtual Machine (JVM):</b></li>
-            <p>The JVM is a software-based engine that reads and executes the Java bytecode.
-                Each operating system or platform has its own JVM implementation (e.g., Windows, macOS, Linux), but they
-                all understand and execute the same bytecode in the same way.
-                This means that as long as a device or platform has a compatible JVM, it can run Java bytecode, making
-                the program effectively platform-independent.
-            </p>
-        </ol>
-    </div>
-    <hr>
-    <div id="write-once-run-anywhere:">
-        <h5>Write Once, Run Anywhere:</h5>
-        <p>This is a common phrase used to describe Java's platform independence.
-            You can write your Java program once, compile it to bytecode, and then run it on any platform that has a
-            JVM—whether it's Windows, Linux, macOS, or even mobile devices like Android.
+        <li><b>Java Virtual Machine (JVM):</b></li>
+        <p>The JVM is a software-based engine that reads and executes the Java bytecode.
+            Each operating system or platform has its own JVM implementation (e.g., Windows, macOS, Linux), but they
+            all understand and execute the same bytecode in the same way.
+            This means that as long as a device or platform has a compatible JVM, it can run Java bytecode, making
+            the program effectively platform-independent.
         </p>
-    </div>
-    <hr>
-    <div id="explain-what-is-jvm">
-        <h5>Explain what is JVM?</h5>
-        <p>The JVM interprets and executes Java bytecode, making it possible to run Java programs on any device or
-            operating system that has a compatible JVM implementation.
-        <b>Overview of JVM</b>
-        <ol>
-            <p>The JVM is an abstract computing machine that provides a runtime environment to execute Java bytecode.
-                It is part of the Java Runtime Environment (JRE) and is responsible for converting bytecode into machine
-                code that the host operating system's processor can execute.
-                The JVM abstracts the underlying hardware and operating system, allowing Java programs to run on any
-                platform without modification, as long as a compatible JVM is available.
-            </p>
-        </ol>
-        <b>JVM Architecture</b>
-        The Java Virtual Machine consists of three components:
-        <ol>
-            <li>Class Loader Subsystem</li>
-            <li>Runtime Data Area</li>
-            <li>Execution Engine</li>
-            <li>Native Method Interface (JNI)</li>
-        </ol>
-        <img alt="Vertical Scaling Diagram" src="../../images/jvm.PNG" />
-        <hr>
-        <h5>What is Java Hotspot?</h5>
-        The JVM is named HotSpot because it continuously monitors the program's performance to identify hot spots—code
-        paths that are frequently executed.
-        These frequently executed code paths are then compiled into highly optimized native machine code to enhance
-        execution speed.
-        
-        <img alt="Vertical Scaling Diagram" src="../../images/java-version.PNG" />
-        <ul>
-            <li><strong>Java HotSpot Client VM:</strong>
-                <ul>
-                    <li>Optimized for quick startup and low memory usage.</li>
-                    <li>Ideal for client environments where fast application launch is critical.</li>
-                    <li>Tuned to reduce application startup time and minimize memory footprint.</li>
-                </ul>
-            </li>
-            <li><strong>Java HotSpot Server VM:</strong>
-                <ul>
-                    <li>Focused on maximizing peak performance for long-running server applications.</li>
-                    <li>Prioritizes operating speed over startup time, making it suitable for server environments.</li>
-                    <li>Utilizes a different compiler optimized for high-performance execution.</li>
-                </ul>
-            </li>
-            <li><strong>Commonality:</strong>
-                <ul>
-                    <li>Both VMs share the same Java HotSpot runtime environment but differ in their compilers.</li>
-                    <li>On 64-bit JDKs, only the Java HotSpot Server VM is supported.</li>
-                </ul>
-            </li>
-        </ul>
-        <br />
-        <h5>Explain what is JIT?</h5>
-        <ul>
-            <li><strong>Just-In-Time (JIT) Compiler Overview:</strong>
-                <ul>
-                    <li>The JIT compiler is a component of the Java Virtual Machine (JVM) that improves the performance
-                        of Java applications.</li>
-                    <li>It translates Java bytecode into native machine code at runtime, enabling faster execution by
-                        eliminating the need for interpretation.</li>
-                </ul>
-            </li><br />
-            <li><strong>How JIT Compiler Works:</strong>
-                <ul>
-                    <li>Initially, the JVM interprets the bytecode line by line.</li>
-                    <li>As the application runs, the JIT compiler identifies frequently executed code sections (hot
-                        spots).</li>
-                    <li>These hot spots are compiled into native machine code, which the CPU can execute directly.</li>
-                    <li>Once compiled, the native code is stored in memory for subsequent executions, speeding up
-                        performance.</li>
-                </ul>
-            </li><br />
-            <li><strong>Types of JIT Compilation:</strong>
-                <ul>
-                    <li><strong>Method-Level Compilation:</strong> The entire method is compiled into native code when
-                        it becomes hot.</li>
-                    <li><strong>On-Stack Replacement (OSR):</strong> Allows the JVM to switch from interpreted code to
-                        compiled code within a loop, improving performance in long-running loops.</li>
-                </ul>
-            </li><br />
-            <li><strong>Benefits of JIT Compilation:</strong>
-                <ul>
-                    <li>Significantly improves the execution speed of Java applications by reducing the overhead of
-                        interpretation.</li>
-                    <li>Applies runtime optimizations, such as inlining methods and eliminating dead code, to enhance
-                        performance.</li>
-                    <li>Adapts to the actual workload of the application, optimizing code paths that are most frequently
-                        used.</li>
-                </ul>
-            </li><br />
-            <li><strong>JIT Compiler Optimization Techniques:</strong>
-                <ul>
-                    <li><strong>Inlining:</strong> Frequently called methods are inserted directly into the calling
-                        code, reducing the overhead of method calls.</li>
-                    <li><strong>Loop Unrolling:</strong> Reduces the overhead of loop control code by repeating the loop
-                        body multiple times.</li>
-                    <li><strong>Dead Code Elimination:</strong> Removes code that will never be executed, streamlining
-                        the execution process.</li>
-                </ul>
-            </li><br />
-            <li><strong>JIT Compilation vs. Interpretation:</strong>
-                <ul>
-                    <li>JIT compilation produces faster execution times than interpretation because native code runs
-                        directly on the CPU.</li>
-                    <li>Interpretation is useful for quick startup, while JIT compilation enhances performance during
-                        sustained execution.</li>
-                </ul>
-            </li><br />
-            <li><strong>JIT Compiler in the Java HotSpot VM:</strong>
-                <ul>
-                    <li>The Java HotSpot VM includes both a client and a server JIT compiler, each optimized for
-                        different use cases.</li>
-                    <li>The client compiler focuses on reducing startup time, while the server compiler emphasizes peak
-                        performance.</li>
-                </ul>
-            </li>
-        </ul>
+    </ol>
+</div>
+<hr>
+<div id="write-once-run-anywhere:">
+    <h5>Write Once, Run Anywhere:</h5>
+    <p>This is a common phrase used to describe Java's platform independence.
+        You can write your Java program once, compile it to bytecode, and then run it on any platform that has a
+        JVM—whether it's Windows, Linux, macOS, or even mobile devices like Android.
+    </p>
+</div>
+<hr>
+<div id="explain-what-is-jvm">
+    <h5>Explain what is JVM?</h5>
+    <p>The JVM interprets and executes Java bytecode, making it possible to run Java programs on any device or
+        operating system that has a compatible JVM implementation.
+    </p>
+    <b>Overview of JVM</b>
+    <ol>
+        <p>The JVM is an abstract computing machine that provides a runtime environment to execute Java bytecode.
+            It is part of the Java Runtime Environment (JRE) and is responsible for converting bytecode into machine
+            code that the host operating system's processor can execute.
+            The JVM abstracts the underlying hardware and operating system, allowing Java programs to run on any
+            platform without modification, as long as a compatible JVM is available.
         </p>
-    </div>
+    </ol>
+    <b>JVM Architecture</b><br>
+    The Java Virtual Machine consists of three components:
+    <ol>
+        <li>Class Loader Subsystem</li>
+        <li>Runtime Data Area</li>
+        <li>Execution Engine</li>
+        <li>Native Method Interface (JNI)</li>
+    </ol>
+    <img src="../../images/jvm.PNG" class="responsive-image">
     <hr>
-    <div id="overview-of-jvm">
-        <h5>Overview of JVM</h5>
-        <ol>
-            <p>The JVM is an abstract computing machine that provides a runtime environment to execute Java bytecode.
-                It is part of the Java Runtime Environment (JRE) and is responsible for converting bytecode into machine
-                code that the host operating system's processor can execute.
-                The JVM abstracts the underlying hardware and operating system, allowing Java programs to run on any
-                platform without modification, as long as a compatible JVM is available.
-            </p>
-        </ol>
-    </div>
-    <hr>
-    <div id="jvm-architecture">
-        <h5>JVM Architecture</h5>
-        <ol>
-            <li>Class Loader Subsystem</li>
-            <li>Runtime Data Area</li>
-            <li>Execution Engine</li>
-            <li>Native Method Interface (JNI)</li>
-        </ol>
-        <img alt="Vertical Scaling Diagram" src="../../images/jvm.PNG" />
-        <br />
-    </div>
-    <hr>
-    <div id="what-is-java-hotspot">
-        <h5>What is Java Hotspot?</h5>
-        <br />
-        <br />
-        <img alt="Vertical Scaling Diagram" src="../../images/java-version.PNG" />
-        <ul>
-            <li><strong>Java HotSpot Client VM:</strong>
-                <ul>
-                    <li>Optimized for quick startup and low memory usage.</li>
-                    <li>Ideal for client environments where fast application launch is critical.</li>
-                    <li>Tuned to reduce application startup time and minimize memory footprint.</li>
-                </ul>
-            </li>
-            <li><strong>Java HotSpot Server VM:</strong>
-                <ul>
-                    <li>Focused on maximizing peak performance for long-running server applications.</li>
-                    <li>Prioritizes operating speed over startup time, making it suitable for server environments.</li>
-                    <li>Utilizes a different compiler optimized for high-performance execution.</li>
-                </ul>
-            </li>
-            <li><strong>Commonality:</strong>
-                <ul>
-                    <li>Both VMs share the same Java HotSpot runtime environment but differ in their compilers.</li>
-                    <li>On 64-bit JDKs, only the Java HotSpot Server VM is supported.</li>
-                </ul>
-            </li>
-        </ul>
-        <br />
-    </div>
-    <hr>
-    <div id="explain-what-is-jit">
-        <h5>Explain what is JIT?</h5>
-        <ul>
-            <li><strong>Just-In-Time (JIT) Compiler Overview:</strong>
-                <ul>
-                    <li>The JIT compiler is a component of the Java Virtual Machine (JVM) that improves the performance
-                        of Java applications.</li>
-                    <li>It translates Java bytecode into native machine code at runtime, enabling faster execution by
-                        eliminating the need for interpretation.</li>
-                </ul>
-            </li><br />
-            <li><strong>How JIT Compiler Works:</strong>
-                <ul>
-                    <li>Initially, the JVM interprets the bytecode line by line.</li>
-                    <li>As the application runs, the JIT compiler identifies frequently executed code sections (hot
-                        spots).</li>
-                    <li>These hot spots are compiled into native machine code, which the CPU can execute directly.</li>
-                    <li>Once compiled, the native code is stored in memory for subsequent executions, speeding up
-                        performance.</li>
-                </ul>
-            </li><br />
-            <li><strong>Types of JIT Compilation:</strong>
-                <ul>
-                    <li><strong>Method-Level Compilation:</strong> The entire method is compiled into native code when
-                        it becomes hot.</li>
-                    <li><strong>On-Stack Replacement (OSR):</strong> Allows the JVM to switch from interpreted code to
-                        compiled code within a loop, improving performance in long-running loops.</li>
-                </ul>
-            </li><br />
-            <li><strong>Benefits of JIT Compilation:</strong>
-                <ul>
-                    <li>Significantly improves the execution speed of Java applications by reducing the overhead of
-                        interpretation.</li>
-                    <li>Applies runtime optimizations, such as inlining methods and eliminating dead code, to enhance
-                        performance.</li>
-                    <li>Adapts to the actual workload of the application, optimizing code paths that are most frequently
-                        used.</li>
-                </ul>
-            </li><br />
-            <li><strong>JIT Compiler Optimization Techniques:</strong>
-                <ul>
-                    <li><strong>Inlining:</strong> Frequently called methods are inserted directly into the calling
-                        code, reducing the overhead of method calls.</li>
-                    <li><strong>Loop Unrolling:</strong> Reduces the overhead of loop control code by repeating the loop
-                        body multiple times.</li>
-                    <li><strong>Dead Code Elimination:</strong> Removes code that will never be executed, streamlining
-                        the execution process.</li>
-                </ul>
-            </li><br />
-            <li><strong>JIT Compilation vs. Interpretation:</strong>
-                <ul>
-                    <li>JIT compilation produces faster execution times than interpretation because native code runs
-                        directly on the CPU.</li>
-                    <li>Interpretation is useful for quick startup, while JIT compilation enhances performance during
-                        sustained execution.</li>
-                </ul>
-            </li><br />
-            <li><strong>JIT Compiler in the Java HotSpot VM:</strong>
-                <ul>
-                    <li>The Java HotSpot VM includes both a client and a server JIT compiler, each optimized for
-                        different use cases.</li>
-                    <li>The client compiler focuses on reducing startup time, while the server compiler emphasizes peak
-                        performance.</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <hr>
+</div>
+<div id="What is Java Hotspot?">
+    <h5>What is Java Hotspot?</h5>
+    The JVM is named HotSpot because it continuously monitors the program's performance to identify hot spots—code
+    paths that are frequently executed.
+    These frequently executed code paths are then compiled into highly optimized native machine code to enhance
+    execution speed.
 
-</body>
-
-</html>
+    <img src="../../images/java-version.PNG" class="responsive-image">
+    <ul>
+        <li><strong>Java HotSpot Client VM:</strong>
+            <ul>
+                <li>Optimized for quick startup and low memory usage.</li>
+                <li>Ideal for client environments where fast application launch is critical.</li>
+                <li>Tuned to reduce application startup time and minimize memory footprint.</li>
+            </ul>
+        </li>
+        <li><strong>Java HotSpot Server VM:</strong>
+            <ul>
+                <li>Focused on maximizing peak performance for long-running server applications.</li>
+                <li>Prioritizes operating speed over startup time, making it suitable for server environments.</li>
+                <li>Utilizes a different compiler optimized for high-performance execution.</li>
+            </ul>
+        </li>
+        <li><strong>Commonality:</strong>
+            <ul>
+                <li>Both VMs share the same Java HotSpot runtime environment but differ in their compilers.</li>
+                <li>On 64-bit JDKs, only the Java HotSpot Server VM is supported.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<hr>
+<div id="explain-what-is-jit">
+    <h5>Explain what is JIT?</h5>
+    <ul>
+        <li><strong>Just-In-Time (JIT) Compiler Overview:</strong>
+            <ul>
+                <li>The JIT compiler is a component of the Java Virtual Machine (JVM) that improves the performance
+                    of Java applications.</li>
+                <li>It translates Java bytecode into native machine code at runtime, enabling faster execution by
+                    eliminating the need for interpretation.</li>
+            </ul>
+        </li><br />
+        <li><strong>How JIT Compiler Works:</strong>
+            <ul>
+                <li>Initially, the JVM interprets the bytecode line by line.</li>
+                <li>As the application runs, the JIT compiler identifies frequently executed code sections (hot
+                    spots).</li>
+                <li>These hot spots are compiled into native machine code, which the CPU can execute directly.</li>
+                <li>Once compiled, the native code is stored in memory for subsequent executions, speeding up
+                    performance.</li>
+            </ul>
+        </li><br />
+        <li><strong>Types of JIT Compilation:</strong>
+            <ul>
+                <li><strong>Method-Level Compilation:</strong> The entire method is compiled into native code when
+                    it becomes hot.</li>
+                <li><strong>On-Stack Replacement (OSR):</strong> Allows the JVM to switch from interpreted code to
+                    compiled code within a loop, improving performance in long-running loops.</li>
+            </ul>
+        </li><br />
+        <li><strong>Benefits of JIT Compilation:</strong>
+            <ul>
+                <li>Significantly improves the execution speed of Java applications by reducing the overhead of
+                    interpretation.</li>
+                <li>Applies runtime optimizations, such as inlining methods and eliminating dead code, to enhance
+                    performance.</li>
+                <li>Adapts to the actual workload of the application, optimizing code paths that are most frequently
+                    used.</li>
+            </ul>
+        </li><br />
+        <li><strong>JIT Compiler Optimization Techniques:</strong>
+            <ul>
+                <li><strong>Inlining:</strong> Frequently called methods are inserted directly into the calling
+                    code, reducing the overhead of method calls.</li>
+                <li><strong>Loop Unrolling:</strong> Reduces the overhead of loop control code by repeating the loop
+                    body multiple times.</li>
+                <li><strong>Dead Code Elimination:</strong> Removes code that will never be executed, streamlining
+                    the execution process.</li>
+            </ul>
+        </li><br />
+        <li><strong>JIT Compilation vs. Interpretation:</strong>
+            <ul>
+                <li>JIT compilation produces faster execution times than interpretation because native code runs
+                    directly on the CPU.</li>
+                <li>Interpretation is useful for quick startup, while JIT compilation enhances performance during
+                    sustained execution.</li>
+            </ul>
+        </li><br />
+        <li><strong>JIT Compiler in the Java HotSpot VM:</strong>
+            <ul>
+                <li>The Java HotSpot VM includes both a client and a server JIT compiler, each optimized for
+                    different use cases.</li>
+                <li>The client compiler focuses on reducing startup time, while the server compiler emphasizes peak
+                    performance.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<hr>

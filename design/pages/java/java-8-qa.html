@@ -1,3 +1,62 @@
+<title>Java 8+ Interview Questions and Answers Guide</title>
+<meta name="description"
+      content="Comprehensive Java 8+ Interview Questions and Answers covering Lambdas, Streams, Optional, Functional Interfaces, CompletableFuture, Records, Sealed Classes, Virtual Threads, and Java 17 features.">
+<meta name="keywords"
+      content="Java 8 Interview Questions, Java 11 Interview, Java 17 Features, Java Streams, Java Lambdas, Optional, CompletableFuture, Records, Sealed Classes, Virtual Threads, Java Interview Q&A">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Preparation Zone">
+
+<link rel="canonical" href="https://www.preparationzone.com/#design/pages/java/java-8-interview-questions.html" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the key features introduced in Java 8?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Java 8 introduced Lambdas, Functional Interfaces, Streams, Optional, Date/Time API, Default and Static Methods in Interfaces, and CompletableFuture for async programming."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a functional interface in Java 8?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A functional interface contains exactly one abstract method. Examples include Predicate, Function, Supplier, Consumer, and BiFunction. They enable Lambda expressions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Optional class in Java 8?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Optional is a container object that may or may not contain a non-null value, helping to avoid NullPointerException. It provides methods like of(), ofNullable(), isPresent(), orElse(), and ifPresent()."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are Records in Java 14?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Records are immutable data carrier classes introduced in Java 14 that reduce boilerplate code. They automatically generate equals(), hashCode(), and toString()."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are Virtual Threads in Project Loom?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Virtual Threads introduced in Project Loom are lightweight threads designed for high concurrency, making it easier to scale concurrent applications compared to traditional platform threads."
+      }
+    }
+  ]
+}
+</script>
+
 <h2 style="text-align: center;">Java 8+ Interview Q.A.</h2>
 <br>
 <div class="custom-container">
@@ -92,8 +151,8 @@
     <div>
         <ul>
             <li><b>Lambda Expression:</b> A lambda expression is a concise way to represent an anonymous function in Java. It allows passing behavior as a parameter.</li>
-            <li><b>Syntax:</b> <code>(parameters) -> expression</code> or <code>(parameters) -> { statements }</code></li>
-            <li><b>Example:</b> <code>(a, b) -> a + b;</code></li>
+            <li><b>Syntax:</b> <b>(parameters) -> expression</b> or <b>(parameters) -> { statements }</b></li>
+            <li><b>Example:</b> <b>(a, b) -> a + b;</b></li>
         </ul>
         <ul>
             <li><b>Differences from Anonymous Class:</b></li>
@@ -236,24 +295,24 @@
             <li><b>flatMap():</b> Transforms each element into a Stream and then flattens all resulting Streams into a single Stream.</li>
             <li><b>Key Difference:</b> 
                 <ul>
-                    <li><code>map()</code> produces a Stream of Streams when dealing with nested structures.</li>
-                    <li><code>flatMap()</code> merges the nested Streams into a single Stream.</li>
+                    <li><b>map()</b> produces a Stream of Streams when dealing with nested structures.</li>
+                    <li><b>flatMap()</b> merges the nested Streams into a single Stream.</li>
                 </ul>
             </li>
                 <li><b>map() Example:</b>
                     <ul>
                         <li>Given a list of numbers, we want to square each number.</li>
-                        <li><code>List<Integer> numbers = Arrays.asList(1, 2, 3, 4);</code></li>
-                        <li><code>List<Integer> squaredNumbers = numbers.stream().map(n -> n * n).collect(Collectors.toList());</code></li>
-                        <li>Result: <code>[1, 4, 9, 16]</code></li>
+                        <li><b>List<Integer> numbers = Arrays.asList(1, 2, 3, 4);</b></li>
+                        <li><b>List<Integer> squaredNumbers = numbers.stream().map(n -> n * n).collect(Collectors.toList());</b></li>
+                        <li>Result: <b>[1, 4, 9, 16]</b></li>
                     </ul>
                 </li>
                 <li><b>flatMap() Example:</b>
                     <ul>
                         <li>Given a list of sentences, we want to split each sentence into words and flatten the result.</li>
-                        <li><code>List<String> sentences = Arrays.asList("Hello World", "Java Streams");</code></li>
-                        <li><code>List<String> words = sentences.stream().flatMap(sentence -> Arrays.stream(sentence.split(" "))).collect(Collectors.toList());</code></li>
-                        <li>Result: <code>[Hello, World, Java, Streams]</code></li>
+                        <li><b>List<String> sentences = Arrays.asList("Hello World", "Java Streams");</b></li>
+                        <li><b>List<String> words = sentences.stream().flatMap(sentence -> Arrays.stream(sentence.split(" "))).collect(Collectors.toList());</b></li>
+                        <li>Result: <b>[Hello, World, Java, Streams]</b></li>
                     </ul>
                 </li>
             </ul>
@@ -325,8 +384,8 @@
             <li>If the stream is ordered (e.g., List, SortedSet), it will return the first element as per the order.</li>
             <li>It is usually used when you want to guarantee getting the first element in a stream.</li>
             <li><b>Example:</b></li>
-            <li><code>Optional<Integer> first = Stream.of(1, 2, 3, 4).findFirst();</code></li>
-            <li><code>first.ifPresent(System.out::println);  // Output: 1</code></li>
+            <li><b>Optional<Integer> first = Stream.of(1, 2, 3, 4).findFirst();</b></li>
+            <li><b>first.ifPresent(System.out::println);  // Output: 1</b></li>
         </ul>
         </li>
         <li><b>findAny():</b>
@@ -335,8 +394,8 @@
             <li>It is often used in parallel streams, where it can return any element without worrying about the order.</li>
             <li>If the stream is unordered, it may return any element; if it is ordered, it can still return any element.</li>
             <li><b>Example:</b></li>
-            <li><code>Optional<Integer> any = Stream.of(1, 2, 3, 4).findAny();</code></li>
-            <li><code>any.ifPresent(System.out::println);  // Output: (could be any element, e.g., 1)</code></li>
+            <li><b>Optional<Integer> any = Stream.of(1, 2, 3, 4).findAny();</b></li>
+            <li><b>any.ifPresent(System.out::println);  // Output: (could be any element, e.g., 1)</b></li>
         </ul>
         </li>
     </ul>
@@ -366,28 +425,28 @@
         <ul>
           <li><b>Static method reference:</b>
             <pre>ClassName::staticMethodName</pre>
-            <p>Example: <code>Math::max</code></p>
+            <p>Example: <b>Math::max</b></p>
             <pre>List<Integer> numbers = Arrays.asList(1, 3, 2);
       numbers.stream().max(Math::max).ifPresent(System.out::println);</pre>
           </li>
           
           <li><b>Instance method reference:</b>
             <pre>object::instanceMethodName</pre>
-            <p>Example: <code>String::toUpperCase</code></p>
+            <p>Example: <b>String::toUpperCase</b></p>
             <pre>List<String> words = Arrays.asList("hello", "world");
       words.stream().map(String::toUpperCase).forEach(System.out::println);</pre>
           </li>
       
           <li><b>Instance method reference of an arbitrary object of a particular type:</b>
             <pre>ClassName::instanceMethodName</pre>
-            <p>Example: <code>List::add</code></p>
+            <p>Example: <b>List::add</b></p>
             <pre>List<String> words = new ArrayList<>();
       Stream.of("apple", "banana").forEach(words::add);</pre>
           </li>
       
           <li><b>Constructor reference:</b>
             <pre>ClassName::new</pre>
-            <p>Example: <code>ArrayList::new</code></p>
+            <p>Example: <b>ArrayList::new</b></p>
             <pre>Supplier<List<String>> listSupplier = ArrayList::new;
       List<String> list = listSupplier.get();</pre>
           </li>

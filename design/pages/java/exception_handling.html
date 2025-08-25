@@ -1,3 +1,31 @@
+<title>Java Exception Handling Interview Guide</title>
+<meta name="description"
+      content="A complete Java Exception Handling Interview Guide covering try-catch, throw, throws, finally, checked vs unchecked exceptions, custom exceptions, and best practices with examples.">
+<meta name="keywords"
+      content="Java Exception Handling, try-catch, throw, throws, finally, checked exceptions, unchecked exceptions, custom exceptions, error handling, Java Interview Questions">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Preparation Zone">
+
+<link rel="canonical" href="https://www.preparationzone.com/index.html#design/pages/java/exception_handling.html"/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Java Exception Handling Interview Guide",
+  "description": "A complete Java Exception Handling Interview Guide covering try-catch, throw, throws, finally, checked vs unchecked exceptions, custom exceptions, and best practices with examples.",
+  "url": "https://www.preparationzone.com/java-exception-handling-guide.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Preparation Zone",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.preparationzone.com/images/logo.png"
+    }
+  }
+}
+</script>
+
 <h2 style="text-align: center;">Exception Handling</h2>
 <br>
 <div class="custom-container">
@@ -33,15 +61,15 @@
     <h5>Quick Revision</h5>
     <ul>
         <li><b>Exception</b>: An unexpected event during program execution disrupting normal flow.</li>
-        <li><b>Checked Exceptions</b>: Exceptions checked at compile-time, e.g., <code>IOException</code>.</li>
-        <li><b>Unchecked Exceptions</b>: Runtime exceptions not checked at compile-time, e.g., <code>NullPointerException</code>.</li>
+        <li><b>Checked Exceptions</b>: Exceptions checked at compile-time, e.g., <b>IOException</b>.</li>
+        <li><b>Unchecked Exceptions</b>: Runtime exceptions not checked at compile-time, e.g., <b>NullPointerException</b>.</li>
         <li><b>try-catch Block</b>: Handles exceptions to prevent program termination.</li>
         <li><b>finally Block</b>: Executes always, used for cleanup operations.</li>
         <li><b>throw Keyword</b>: Manually throw an exception.</li>
         <li><b>throws Keyword</b>: Declares exceptions a method might throw.</li>
         <li><b>Custom Exceptions</b>: User-defined exceptions for specific use cases.</li>
-        <li><b>Multi-Catch Block</b>: Catch multiple exceptions in a single <code>catch</code> block.</li>
-        <li><b>try-with-resources</b>: Automatically closes resources (implements <code>AutoCloseable</code>).</li>
+        <li><b>Multi-Catch Block</b>: Catch multiple exceptions in a single <b>catch</b> block.</li>
+        <li><b>try-with-resources</b>: Automatically closes resources (implements <b>AutoCloseable</b>).</li>
         <li><b>Exception Propagation</b>: Forwarding exceptions from a method to the caller.</li>
         <li><b>Stack Trace</b>: A log of method calls leading to an exception.</li>
         <li><b>Error vs Exception</b>: Errors are critical system issues; exceptions are recoverable events.</li>
@@ -58,10 +86,10 @@
 <div id="Hierarchy">
     <h5>Exception Handling Hierarchy in Java</h5>
     <p>
-        Exception handling in Java is based on a well-defined class hierarchy that categorizes various types of exceptions. All exception-related classes inherit from the <code>Throwable</code> class, which is the root of the hierarchy. Below is a detailed explanation of the exception handling hierarchy:
+        Exception handling in Java is based on a well-defined class hierarchy that categorizes various types of exceptions. All exception-related classes inherit from the <b>Throwable</b> class, which is the root of the hierarchy. Below is a detailed explanation of the exception handling hierarchy:
     </p>
 
-    <b>1. <code>Throwable</code></b>
+    <b>1. <b>Throwable</b></b>
     <p>
         The root class for all errors and exceptions in Java. It has two main subclasses:
     </p>
@@ -70,7 +98,7 @@
         <li><b>Exception</b>: Represents conditions that a program might want to catch and handle.</li>
     </ul>
 
-    <b>2. <code>Error</code> (Unchecked)</b>
+    <b>2. <b>Error</b> (Unchecked)</b>
     <p>
         Indicates critical problems that are beyond the application's control. Examples include:
     </p>
@@ -80,13 +108,13 @@
         <li><b>VirtualMachineError</b>: Indicates that the JVM is broken or has encountered an issue it cannot recover from.</li>
     </ul>
 
-    <b>3. <code>Exception</code></b>
+    <b>3. <b>Exception</b></b>
     <p>
         Represents conditions that a program should catch and handle. It is further divided into:
     </p>
     <ul>
         <li>
-            <b>Checked Exceptions</b>: Exceptions checked at compile-time. These must be declared in the <code>throws</code> clause of a method or caught using a <code>try-catch</code> block.
+            <b>Checked Exceptions</b>: Exceptions checked at compile-time. These must be declared in the <b>throws</b> clause of a method or caught using a <b>try-catch</b> block.
             <ul>
                 <li><b>IOException</b>: Raised when an I/O operation fails.</li>
                 <li><b>SQLException</b>: Raised for database access errors.</li>
@@ -129,10 +157,10 @@
     <p>In Java, exceptions are categorized into <b>Checked Exceptions</b> and <b>Unchecked Exceptions</b> based on when they are checked by the compiler. Understanding this distinction is essential for effective exception handling.</p>
 
     <b>1. Checked Exceptions</b>
-    <p>Checked exceptions are exceptions that are checked at compile-time. The compiler ensures that these exceptions are either handled using a <code>try-catch</code> block or declared in the method signature using the <code>throws</code> keyword. Must handle or declare them explicitly.</p>
+    <p>Checked exceptions are exceptions that are checked at compile-time. The compiler ensures that these exceptions are either handled using a <b>try-catch</b> block or declared in the method signature using the <b>throws</b> keyword. Must handle or declare them explicitly.</p>
     
     <b>2. Unchecked Exceptions</b>
-    <p>Unchecked exceptions are exceptions that occur during runtime and are not checked by the compiler. These are subclasses of <code>RuntimeException</code>. No mandatory handling or declaration needed; should focus on writing bug-free code.</p>
+    <p>Unchecked exceptions are exceptions that occur during runtime and are not checked by the compiler. These are subclasses of <b>RuntimeException</b>. No mandatory handling or declaration needed; should focus on writing bug-free code.</p>
     
     <b>Key Differences Between Checked and Unchecked Exceptions</b>
     <table>
@@ -151,18 +179,18 @@
             </tr>
             <tr>
                 <td>Hierarchy</td>
-                <td>Subclasses of <code>Exception</code> (excluding <code>RuntimeException</code>).</td>
-                <td>Subclasses of <code>RuntimeException</code>.</td>
+                <td>Subclasses of <b>Exception</b> (excluding <b>RuntimeException</b>).</td>
+                <td>Subclasses of <b>RuntimeException</b>.</td>
             </tr>
             <tr>
                 <td>Handling</td>
-                <td>Must be handled or declared using <code>throws</code>.</td>
+                <td>Must be handled or declared using <b>throws</b>.</td>
                 <td>Handling is optional.</td>
             </tr>
             <tr>
                 <td>Examples</td>
-                <td><code>IOException</code>, <code>SQLException</code>.</td>
-                <td><code>NullPointerException</code>, <code>ArithmeticException</code>.</td>
+                <td><b>IOException</b>, <b>SQLException</b>.</td>
+                <td><b>NullPointerException</b>, <b>ArithmeticException</b>.</td>
             </tr>
             <tr>
                 <td>Common Use</td>
@@ -212,12 +240,12 @@ public class UncheckedExceptionExample {
 <div id="Try-Catch-Finally">
     <h5>Explain Try-Catch and Finally Block in Java</h5>
     <p>
-        The <code>try-catch</code> and <code>finally</code> blocks are fundamental constructs in Java for handling exceptions. These blocks help ensure that a program can gracefully handle runtime errors and continue execution without crashing. Here’s a detailed explanation of their usage, scenarios, and common interview questions.
+        The <b>try-catch</b> and <b>finally</b> blocks are fundamental constructs in Java for handling exceptions. These blocks help ensure that a program can gracefully handle runtime errors and continue execution without crashing. Here’s a detailed explanation of their usage, scenarios, and common interview questions.
     </p>
 
-    <b>1. <code>try-catch</code> Block</b>
+    <b>1. <b>try-catch</b> Block</b>
     <p>
-        The <code>try</code> block contains code that might throw an exception. The <code>catch</code> block is used to handle the exception that occurs in the <code>try</code> block.
+        The <b>try</b> block contains code that might throw an exception. The <b>catch</b> block is used to handle the exception that occurs in the <b>try</b> block.
     </p>
     <pre>
 try {
@@ -228,9 +256,9 @@ try {
 }
     </pre>
 
-    <b>2. <code>finally</code> Block</b>
+    <b>2. <b>finally</b> Block</b>
     <p>
-        The <code>finally</code> block contains code that will execute regardless of whether an exception was thrown or caught. It is typically used for cleanup operations such as closing resources.
+        The <b>finally</b> block contains code that will execute regardless of whether an exception was thrown or caught. It is typically used for cleanup operations such as closing resources.
     </p>
     <pre>
 try {
@@ -246,7 +274,7 @@ try {
 
     <b>3. Nested Try-Catch</b>
     <p>
-        You can nest <code>try-catch</code> blocks to handle exceptions at multiple levels.
+        You can nest <b>try-catch</b> blocks to handle exceptions at multiple levels.
     </p>
     <pre>
 try {
@@ -263,10 +291,10 @@ try {
 
     <b>4. Scenarios</b>
     <ul>
-        <li><b>Exception Thrown in Try Block</b>: The <code>catch</code> block handles the exception.</li>
-        <li><b>No Exception Thrown</b>: The <code>catch</code> block is skipped; <code>finally</code> executes.</li>
-        <li><b>Exception Without Matching Catch</b>: The program terminates unless there's a matching <code>catch</code>.</li>
-        <li><b>Exception Thrown in Catch</b>: It propagates unless handled by another <code>try-catch</code>.</li>
+        <li><b>Exception Thrown in Try Block</b>: The <b>catch</b> block handles the exception.</li>
+        <li><b>No Exception Thrown</b>: The <b>catch</b> block is skipped; <b>finally</b> executes.</li>
+        <li><b>Exception Without Matching Catch</b>: The program terminates unless there's a matching <b>catch</b>.</li>
+        <li><b>Exception Thrown in Catch</b>: It propagates unless handled by another <b>try-catch</b>.</li>
         <li><b>Exception Thrown in Finally</b>: Overwrites the original exception if not handled.</li>
     </ul>
 
@@ -274,12 +302,12 @@ try {
     <ol>
         <li>
             <b>Can a try block exist without a catch block?</b>
-            <p>Yes, a <code>try</code> block can exist without a <code>catch</code> block if a <code>finally</code> block is present.</p>
+            <p>Yes, a <b>try</b> block can exist without a <b>catch</b> block if a <b>finally</b> block is present.</p>
         </li>
         <li>
-            <b>What happens if an exception is thrown in the <code>finally</code> block?</b>
+            <b>What happens if an exception is thrown in the <b>finally</b> block?</b>
             <p>
-                It will overwrite any exception thrown in the <code>try</code> or <code>catch</code> block, leading to the final exception being propagated.
+                It will overwrite any exception thrown in the <b>try</b> or <b>catch</b> block, leading to the final exception being propagated.
             </p>
         </li>
         <li>
@@ -289,20 +317,20 @@ try {
         <li>
             <b>What is the order of execution for try-catch-finally?</b>
             <p>
-                The order is <code>try</code>, then <code>catch</code> (if an exception occurs), followed by <code>finally</code>.
+                The order is <b>try</b>, then <b>catch</b> (if an exception occurs), followed by <b>finally</b>.
             </p>
         </li>
         <li>
-            <b>Can we use <code>finally</code> without a try block?</b>
-            <p>No, <code>finally</code> must always be associated with a <code>try</code> block.</p>
+            <b>Can we use <b>finally</b> without a try block?</b>
+            <p>No, <b>finally</b> must always be associated with a <b>try</b> block.</p>
         </li>
         <li>
             <b>Can a catch block handle multiple exceptions?</b>
-            <p>Yes, using multi-catch syntax (<code>catch(Exception1 | Exception2 e)</code>).</p>
+            <p>Yes, using multi-catch syntax (<b>catch(Exception1 | Exception2 e)</b>).</p>
         </li>
         <li>
             <b>What if a return statement is in both try and finally blocks?</b>
-            <p>The return statement in the <code>finally</code> block will override the one in the <code>try</code>.</p>
+            <p>The return statement in the <b>finally</b> block will override the one in the <b>try</b>.</p>
         </li>
     </ol>
 
@@ -333,7 +361,7 @@ System.out.println(test()); // Output: 20
 
     <b>Conclusion</b>
     <p>
-        Understanding the nuances of <code>try-catch</code> and <code>finally</code> blocks is essential for effective exception handling in Java. Mastering these concepts will help in writing robust and error-resistant code.
+        Understanding the nuances of <b>try-catch</b> and <b>finally</b> blocks is essential for effective exception handling in Java. Mastering these concepts will help in writing robust and error-resistant code.
     </p>
 </div>
 <hr>
@@ -341,16 +369,16 @@ System.out.println(test()); // Output: 20
 <div id="Throw-Throws">
     <h5>Throw and Throws Keywords in Java</h5>
     <p>
-        The <code>throw</code> and <code>throws</code> keywords in Java are used for exception handling but serve different purposes. While <code>throw</code> is used to explicitly throw an exception, <code>throws</code> is used to declare exceptions that a method might throw.
+        The <b>throw</b> and <b>throws</b> keywords in Java are used for exception handling but serve different purposes. While <b>throw</b> is used to explicitly throw an exception, <b>throws</b> is used to declare exceptions that a method might throw.
     </p>
 
-    <b>1. <code>throw</code> Keyword</b>
+    <b>1. <b>throw</b> Keyword</b>
     <p>
-        The <code>throw</code> keyword is used to explicitly throw an exception during program execution. It is typically followed by an instance of an exception class.
+        The <b>throw</b> keyword is used to explicitly throw an exception during program execution. It is typically followed by an instance of an exception class.
     </p>
     <ul>
         <li><b>Usage:</b> Throw exceptions in specific conditions, such as invalid input or state.</li>
-        <li><b>Syntax:</b> <code>throw new ExceptionType("Message");</code></li>
+        <li><b>Syntax:</b> <b>throw new ExceptionType("Message");</b></li>
         <li><b>Example:</b></li>
     </ul>
     <pre>
@@ -368,13 +396,13 @@ public class ThrowExample {
 }
     </pre>
 
-    <b>2. <code>throws</code> Keyword</b>
+    <b>2. <b>throws</b> Keyword</b>
     <p>
-        The <code>throws</code> keyword is used in method declarations to indicate that a method might throw certain exceptions. It allows the caller of the method to handle the exception.
+        The <b>throws</b> keyword is used in method declarations to indicate that a method might throw certain exceptions. It allows the caller of the method to handle the exception.
     </p>
     <ul>
         <li><b>Usage:</b> Declare exceptions for methods to handle later.</li>
-        <li><b>Syntax:</b> <code>returnType methodName() throws ExceptionType1, ExceptionType2</code></li>
+        <li><b>Syntax:</b> <b>returnType methodName() throws ExceptionType1, ExceptionType2</b></li>
         <li><b>Example:</b></li>
     </ul>
     <pre>
@@ -395,13 +423,13 @@ public class ThrowsExample {
 }
     </pre>
 
-    <b>3. Differences Between <code>throw</code> and <code>throws</code></b>
+    <b>3. Differences Between <b>throw</b> and <b>throws</b></b>
     <table border="1">
         <thead>
             <tr>
                 <th>Aspect</th>
-                <th><code>throw</code></th>
-                <th><code>throws</code></th>
+                <th><b>throw</b></th>
+                <th><b>throws</b></th>
             </tr>
         </thead>
         <tbody>
@@ -435,30 +463,30 @@ public class ThrowsExample {
     <br>
     <b>4. Key Interview Questions</b>
     <ul>
-        <li><b>Can we use <code>throw</code> to throw multiple exceptions?</b><br>
-            No, <code>throw</code> can only throw one exception at a time.
+        <li><b>Can we use <b>throw</b> to throw multiple exceptions?</b><br>
+            No, <b>throw</b> can only throw one exception at a time.
         </li>
-        <li><b>Can a method have both <code>throws</code> and <code>try-catch</code>?</b><br>
-            Yes, <code>throws</code> declares the exception, and <code>try-catch</code> can handle it within the method.
+        <li><b>Can a method have both <b>throws</b> and <b>try-catch</b>?</b><br>
+            Yes, <b>throws</b> declares the exception, and <b>try-catch</b> can handle it within the method.
         </li>
-        <li><b>Is it mandatory to handle exceptions declared using <code>throws</code>?</b><br>
+        <li><b>Is it mandatory to handle exceptions declared using <b>throws</b>?</b><br>
             Yes, checked exceptions must be handled by the caller.
         </li>
-        <li><b>Can we use <code>throws</code> for unchecked exceptions?</b><br>
+        <li><b>Can we use <b>throws</b> for unchecked exceptions?</b><br>
             Yes, but it is not mandatory to declare unchecked exceptions.
         </li>
     </ul>
 
     <b>5. Best Practices</b>
     <ul>
-        <li>Use <code>throw</code> for specific conditions and custom exceptions.</li>
-        <li>Use <code>throws</code> to propagate checked exceptions to the caller.</li>
-        <li>Avoid overusing <code>throws</code> for runtime exceptions; handle them locally.</li>
+        <li>Use <b>throw</b> for specific conditions and custom exceptions.</li>
+        <li>Use <b>throws</b> to propagate checked exceptions to the caller.</li>
+        <li>Avoid overusing <b>throws</b> for runtime exceptions; handle them locally.</li>
     </ul>
 
     <b>Conclusion</b>
     <p>
-        The <code>throw</code> and <code>throws</code> keywords complement each other in exception handling. Mastering their usage ensures robust and clean exception management in Java applications.
+        The <b>throw</b> and <b>throws</b> keywords complement each other in exception handling. Mastering their usage ensures robust and clean exception management in Java applications.
     </p>
 </div>
 <hr>
@@ -466,7 +494,7 @@ public class ThrowsExample {
 <div id="Custom-Exceptions">
     <h5>Custom Exceptions in Java</h5>
     <p>
-        Custom exceptions are user-defined exceptions in Java that allow developers to create specific exceptions for their application’s requirements. By extending the <code>Exception</code> class or <code>RuntimeException</code> class, developers can create meaningful exception types to represent unique error conditions in their application.
+        Custom exceptions are user-defined exceptions in Java that allow developers to create specific exceptions for their application’s requirements. By extending the <b>Exception</b> class or <b>RuntimeException</b> class, developers can create meaningful exception types to represent unique error conditions in their application.
     </p>
 
     <b>1. Why Use Custom Exceptions?</b>
@@ -477,7 +505,7 @@ public class ThrowsExample {
     </ul>
 
     <b>2. Creating a Custom Exception</b>
-    <p>Custom exceptions can extend either <code>Exception</code> (for checked exceptions) or <code>RuntimeException</code> (for unchecked exceptions).</p>
+    <p>Custom exceptions can extend either <b>Exception</b> (for checked exceptions) or <b>RuntimeException</b> (for unchecked exceptions).</p>
     <p><b>Example:</b> A custom checked exception for invalid age input.</p>
     <pre>
 class InvalidAgeException extends Exception {
@@ -512,7 +540,7 @@ class CustomExceptionExample {
 
     <b>4. Custom Unchecked Exception</b>
     <p>
-        To create an unchecked exception, extend the <code>RuntimeException</code> class. These exceptions are not required to be declared in the method signature.
+        To create an unchecked exception, extend the <b>RuntimeException</b> class. These exceptions are not required to be declared in the method signature.
     </p>
     <p><b>Example:</b> A custom unchecked exception.</p>
     <pre>
@@ -540,15 +568,15 @@ class UncheckedExceptionExample {
     <ul>
         <li><b>Why create custom exceptions instead of using predefined ones?</b><br>
             To provide more specific and meaningful error messages for application-specific issues.</li>
-        <li><b>What is the difference between extending <code>Exception</code> and <code>RuntimeException</code>?</b><br>
-            Extending <code>Exception</code> creates a checked exception, requiring explicit handling, while <code>RuntimeException</code> creates an unchecked exception.</li>
+        <li><b>What is the difference between extending <b>Exception</b> and <b>RuntimeException</b>?</b><br>
+            Extending <b>Exception</b> creates a checked exception, requiring explicit handling, while <b>RuntimeException</b> creates an unchecked exception.</li>
         <li><b>Can a custom exception have additional fields or methods?</b><br>
             Yes, custom exceptions can include additional fields and methods to provide more information about the error.</li>
     </ul>
 
     <b>6. Best Practices for Custom Exceptions</b>
     <ul>
-        <li>Use meaningful names that reflect the error condition (e.g., <code>InvalidAgeException</code>).</li>
+        <li>Use meaningful names that reflect the error condition (e.g., <b>InvalidAgeException</b>).</li>
         <li>Provide a clear and concise error message via the exception constructor.</li>
         <li>Minimize the use of checked exceptions to avoid excessive boilerplate.</li>
         <li>Document custom exceptions for better maintainability.</li>
@@ -564,12 +592,12 @@ class UncheckedExceptionExample {
 <div id="Multi-Catch">
     <h5>Multi-Catch Block in Java</h5>
     <p>
-        The multi-catch block in Java, introduced in Java 7, allows a single <code>catch</code> block to handle multiple exception types. This helps reduce redundant code and improves readability by combining similar exception handling logic.
+        The multi-catch block in Java, introduced in Java 7, allows a single <b>catch</b> block to handle multiple exception types. This helps reduce redundant code and improves readability by combining similar exception handling logic.
     </p>
 
     <b>1. Syntax of Multi-Catch Block</b>
     <p>
-        Multiple exceptions can be caught in a single <code>catch</code> block by separating their types with a vertical bar <code>|</code>.
+        Multiple exceptions can be caught in a single <b>catch</b> block by separating their types with a vertical bar <b>|</b>.
     </p>
     <pre>
 try {
@@ -580,7 +608,7 @@ try {
     </pre>
 
     <b>2. Example of Multi-Catch Block</b>
-    <p>Handling multiple exceptions in a single <code>catch</code> block:</p>
+    <p>Handling multiple exceptions in a single <b>catch</b> block:</p>
     <pre>
 public class MultiCatchExample {
     public static void main(String[] args) {
@@ -598,10 +626,10 @@ public class MultiCatchExample {
     <b>3. Rules for Multi-Catch Block</b>
     <ul>
         <li>
-            The exception types in a multi-catch block must not have a parent-child relationship. For example, <code>Exception</code> and <code>IOException</code> cannot be combined in a single multi-catch block.
+            The exception types in a multi-catch block must not have a parent-child relationship. For example, <b>Exception</b> and <b>IOException</b> cannot be combined in a single multi-catch block.
         </li>
         <li>
-            The exception object (<code>ex</code> in the example) is implicitly final. This means it cannot be reassigned within the <code>catch</code> block.
+            The exception object (<b>ex</b> in the example) is implicitly final. This means it cannot be reassigned within the <b>catch</b> block.
         </li>
         <li>
             All exceptions listed must be disjoint (non-overlapping).
@@ -624,7 +652,7 @@ public class MultiCatchExample {
     <b>6. Key Interview Questions</b>
     <ul>
         <li><b>What is a multi-catch block?</b><br>
-            It is a <code>catch</code> block that handles multiple exception types using a single block.
+            It is a <b>catch</b> block that handles multiple exception types using a single block.
         </li>
         <li><b>What is the advantage of using multi-catch?</b><br>
             It reduces redundant code and improves readability when handling similar exceptions.
@@ -652,14 +680,14 @@ public class MultiCatchExample {
 
     <b>1. Key Features of Try-with-Resources</b>
     <ul>
-        <li>Automatically closes resources that implement the <code>AutoCloseable</code> interface.</li>
-        <li>Eliminates the need for explicit <code>finally</code> blocks to close resources.</li>
+        <li>Automatically closes resources that implement the <b>AutoCloseable</b> interface.</li>
+        <li>Eliminates the need for explicit <b>finally</b> blocks to close resources.</li>
         <li>Improves code readability and reduces boilerplate.</li>
     </ul>
 
     <b>2. Syntax of Try-with-Resources</b>
     <p>
-        Resources are declared within parentheses (<code>()</code>) in the <code>try</code> statement.
+        Resources are declared within parentheses (<b>()</b>) in the <b>try</b> statement.
     </p>
     <pre>
 try (ResourceType resource = new ResourceType()) {
@@ -670,7 +698,7 @@ try (ResourceType resource = new ResourceType()) {
     </pre>
 
     <b>3. Example: File Reading with Try-with-Resources</b>
-    <p>Below is an example of reading a file using <code>BufferedReader</code>:</p>
+    <p>Below is an example of reading a file using <b>BufferedReader</b>:</p>
     <pre>
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -692,9 +720,9 @@ public class TryWithResourcesExample {
 
     <b>4. How It Works</b>
     <ul>
-        <li>Any resource declared within the parentheses of the <code>try</code> block is automatically closed at the end of the block.</li>
-        <li>The resources must implement the <code>AutoCloseable</code> or <code>Closeable</code> interfaces.</li>
-        <li>The <code>close()</code> method is called automatically, even if an exception occurs within the <code>try</code> block.</li>
+        <li>Any resource declared within the parentheses of the <b>try</b> block is automatically closed at the end of the block.</li>
+        <li>The resources must implement the <b>AutoCloseable</b> or <b>Closeable</b> interfaces.</li>
+        <li>The <b>close()</b> method is called automatically, even if an exception occurs within the <b>try</b> block.</li>
     </ul>
 
     <b>5. Multiple Resources in Try-with-Resources</b>
@@ -710,7 +738,7 @@ try (BufferedReader reader = new BufferedReader(new FileReader("file1.txt"));
 
     <b>6. Example with Custom Resource</b>
     <p>
-        You can use try-with-resources for custom classes that implement <code>AutoCloseable</code>.
+        You can use try-with-resources for custom classes that implement <b>AutoCloseable</b>.
     </p>
     <pre>
 class CustomResource implements AutoCloseable {
@@ -747,11 +775,11 @@ public class CustomResourceExample {
         <li><b>What is the try-with-resources statement?</b><br>
             It is a Java construct for managing resources that ensures automatic resource closure.</li>
         <li><b>Which interfaces must a resource implement to work with try-with-resources?</b><br>
-            The <code>AutoCloseable</code> or <code>Closeable</code> interface.</li>
+            The <b>AutoCloseable</b> or <b>Closeable</b> interface.</li>
         <li><b>Can you declare multiple resources in a single try-with-resources statement?</b><br>
             Yes, multiple resources can be declared separated by semicolons.</li>
         <li><b>What happens if an exception occurs in a try-with-resources block?</b><br>
-            The <code>close()</code> method is called automatically before the exception is propagated.</li>
+            The <b>close()</b> method is called automatically before the exception is propagated.</li>
     </ul>
 
     <b>Conclusion</b>
@@ -770,7 +798,7 @@ public class CustomResourceExample {
     <b>1. Structure of a Stack Trace</b>
     <p>A stack trace contains:</p>
     <ul>
-        <li><b>Exception Name:</b> The type of exception that occurred (e.g., <code>NullPointerException</code>).</li>
+        <li><b>Exception Name:</b> The type of exception that occurred (e.g., <b>NullPointerException</b>).</li>
         <li><b>Message:</b> Additional details about the exception (e.g., null reference).</li>
         <li><b>Stack Frames:</b> A list of method calls that led to the exception, including file names and line numbers.</li>
     </ul>
@@ -780,12 +808,12 @@ Exception in thread "main" java.lang.NullPointerException: Cannot invoke "String
     at MainClass.main(MainClass.java:10)
     </pre>
     <p>
-        This indicates a <code>NullPointerException</code> occurred at line 10 of the file <code>MainClass.java</code>, inside the <code>main</code> method.
+        This indicates a <b>NullPointerException</b> occurred at line 10 of the file <b>MainClass.java</b>, inside the <b>main</b> method.
     </p>
 
     <b>2. Generating a Stack Trace</b>
     <p>
-        A stack trace is automatically printed when an unhandled exception occurs, but it can also be manually generated using the <code>printStackTrace()</code> method of the <code>Throwable</code> class.
+        A stack trace is automatically printed when an unhandled exception occurs, but it can also be manually generated using the <b>printStackTrace()</b> method of the <b>Throwable</b> class.
     </p>
     <pre>
 public class StackTraceExample {
@@ -809,12 +837,12 @@ public class StackTraceExample {
     </ul>
 
     <b>4. Stack Trace Methods</b>
-    <p>Java provides methods in the <code>Throwable</code> class to work with stack traces:</p>
+    <p>Java provides methods in the <b>Throwable</b> class to work with stack traces:</p>
     <ul>
         <li><b>printStackTrace():</b> Prints the full stack trace to the standard error stream.</li>
-        <li><b>getStackTrace():</b> Returns an array of <code>StackTraceElement</code> objects representing the stack trace.</li>
+        <li><b>getStackTrace():</b> Returns an array of <b>StackTraceElement</b> objects representing the stack trace.</li>
     </ul>
-    <p><b>Example:</b> Using <code>getStackTrace()</code>:</p>
+    <p><b>Example:</b> Using <b>getStackTrace()</b>:</p>
     <pre>
 public class GetStackTraceExample {
     public static void main(String[] args) {
@@ -856,13 +884,13 @@ public class GetStackTraceExample {
             </tr>
             <tr>
                 <td><b>Examples</b></td>
-                <td><code>OutOfMemoryError</code>, <code>StackOverflowError</code>, <code>NoClassDefFoundError</code>.</td>
-                <td><code>IOException</code>, <code>NullPointerException</code>, <code>ArithmeticException</code>.</td>
+                <td><b>OutOfMemoryError</b>, <b>StackOverflowError</b>, <b>NoClassDefFoundError</b>.</td>
+                <td><b>IOException</b>, <b>NullPointerException</b>, <b>ArithmeticException</b>.</td>
             </tr>
             <tr>
                 <td><b>Hierarchy</b></td>
-                <td>Errors are subclasses of the <code>Error</code> class, which is part of <code>java.lang</code>.</td>
-                <td>Exceptions are subclasses of the <code>Exception</code> class, which is part of <code>java.lang</code>.</td>
+                <td>Errors are subclasses of the <b>Error</b> class, which is part of <b>java.lang</b>.</td>
+                <td>Exceptions are subclasses of the <b>Exception</b> class, which is part of <b>java.lang</b>.</td>
             </tr>
             <tr>
                 <td><b>Handling Mechanism</b></td>
@@ -919,13 +947,13 @@ public class UnreachableCatchBlockExample {
 }
     </pre>
     <p>
-        In the above example, the catch block for <code>NullPointerException</code> is unreachable because the method <code>someMethod()</code> only throws <code>FileNotFoundException</code>, which matches the catch block for <code>IOException</code>.
+        In the above example, the catch block for <b>NullPointerException</b> is unreachable because the method <b>someMethod()</b> only throws <b>FileNotFoundException</b>, which matches the catch block for <b>IOException</b>.
     </p>
 
     <b>3. Solutions to Avoid Unreachable Catch Block Error</b>
     <ul>
         <li><b>Refactor Code:</b> Remove catch blocks that are not needed. Ensure that each catch block is only catching exceptions that might be thrown by the method's logic.</li>
-        <li><b>Correct Exception Handling:</b> Catch specific exceptions that the code can actually handle. For example, handle <code>FileNotFoundException</code> if that's the expected exception.</li>
+        <li><b>Correct Exception Handling:</b> Catch specific exceptions that the code can actually handle. For example, handle <b>FileNotFoundException</b> if that's the expected exception.</li>
         <li><b>Use Multiple Try-Catch Blocks:</b> If multiple exceptions can occur and are not mutually exclusive, consider using separate try-catch blocks for each type.</li>
     </ul>
 </div>
@@ -940,7 +968,7 @@ public class UnreachableCatchBlockExample {
     <b>ClassNotFoundException</b>
     <ul>
         <li>
-            <strong>Cause:</strong> This exception occurs when a class cannot be found in the classpath at runtime using methods like <code>loadClass()</code> or <code>Class.forName()</code>.
+            <strong>Cause:</strong> This exception occurs when a class cannot be found in the classpath at runtime using methods like <b>loadClass()</b> or <b>Class.forName()</b>.
         </li>
         <li>
             <strong>Type:</strong> It is a checked exception, which means it must be explicitly caught in the code using try-catch blocks.
@@ -1175,10 +1203,10 @@ class ChildDemo extends ParentDemo {
     </p>
     <ul>
         <li>
-            <b>Using Standard Functional Interfaces:</b> You can throw only unchecked exceptions because standard Java functional interfaces (like <code>Consumer</code>, <code>Function</code>) do not include a <code>throws</code> clause in their method signatures.
+            <b>Using Standard Functional Interfaces:</b> You can throw only unchecked exceptions because standard Java functional interfaces (like <b>Consumer</b>, <b>Function</b>) do not include a <b>throws</b> clause in their method signatures.
         </li>
         <li>
-            <b>Checked Exceptions:</b> To throw checked exceptions, you need to create a custom functional interface with a <code>throws</code> clause.
+            <b>Checked Exceptions:</b> To throw checked exceptions, you need to create a custom functional interface with a <b>throws</b> clause.
         </li>
     </ul>
     <p>
@@ -1199,13 +1227,13 @@ class ChildDemo extends ParentDemo {
 <div id="try-without-catch-finally">
     <h5>Are we allowed to use only try blocks without a catch and finally blocks?</h5>
     <p>
-        Before Java 7, it was mandatory for a <code>try</code> block to be followed by either a <code>catch</code> or a <code>finally</code> block. A standalone <code>try</code> block was not allowed.
+        Before Java 7, it was mandatory for a <b>try</b> block to be followed by either a <b>catch</b> or a <b>finally</b> block. A standalone <b>try</b> block was not allowed.
     </p>
     <p>
-        However, starting from Java 7, it became possible to use a <code>try</code> block without explicitly including <code>catch</code> or <code>finally</code> blocks by using the <b>try-with-resources</b> feature. This allows resource management for parameters that implement the <code>AutoCloseable</code> interface.
+        However, starting from Java 7, it became possible to use a <b>try</b> block without explicitly including <b>catch</b> or <b>finally</b> blocks by using the <b>try-with-resources</b> feature. This allows resource management for parameters that implement the <b>AutoCloseable</b> interface.
     </p>
     <p>
-        It is important to note that if the resources specified in the try-with-resources block do not implement the <code>AutoCloseable</code> interface, it will result in a compilation error.
+        It is important to note that if the resources specified in the try-with-resources block do not implement the <b>AutoCloseable</b> interface, it will result in a compilation error.
     </p>
 </div>
 <hr>
@@ -1213,10 +1241,10 @@ class ChildDemo extends ParentDemo {
 <div id="Finally-Block">
     <h5>Does the Finally Block Always Execute in Java?</h5>
     <p>
-        The <code>finally</code> block is designed to execute regardless of whether an exception occurs in the <code>try</code> or <code>catch</code> blocks. It ensures cleanup operations are performed.
+        The <b>finally</b> block is designed to execute regardless of whether an exception occurs in the <b>try</b> or <b>catch</b> blocks. It ensures cleanup operations are performed.
     </p>
     <p>
-        However, there is one exception to this rule: if <code>System.exit(0)</code> is called within the <code>try</code> or <code>catch</code> block, the <code>finally</code> block will not execute. This is because <code>System.exit(0)</code> terminates the running JVM, preventing any further execution.
+        However, there is one exception to this rule: if <b>System.exit(0)</b> is called within the <b>try</b> or <b>catch</b> block, the <b>finally</b> block will not execute. This is because <b>System.exit(0)</b> terminates the running JVM, preventing any further execution.
     </p>
 </div>
 <hr>
@@ -1232,7 +1260,7 @@ class ChildDemo extends ParentDemo {
 <div id="Checked-Exceptions-Static-Block">
     <h5>Can Checked Exceptions Be Thrown from a Static Block?</h5>
     <p>
-        It is not possible to throw checked exceptions from a static block. However, you can include <code>try-catch</code> logic within the static block to handle exceptions locally. 
+        It is not possible to throw checked exceptions from a static block. However, you can include <b>try-catch</b> logic within the static block to handle exceptions locally. 
     </p>
     <p>
         Checked exceptions cannot be propagated from static blocks because these blocks are executed by the JVM during class loading, and they are not invoked by any method at runtime.
@@ -1243,7 +1271,7 @@ class ChildDemo extends ParentDemo {
 <div id="Exception-by-Main">
     <h5>What Happens When an Exception Is Thrown by the Main Method?</h5>
     <p>
-        If an exception is thrown by the <code>main()</code> method and is not handled, the Java Runtime terminates the program. The exception message, along with the stack trace, is displayed on the system console to help identify the cause of the error.
+        If an exception is thrown by the <b>main()</b> method and is not handled, the Java Runtime terminates the program. The exception message, along with the stack trace, is displayed on the system console to help identify the cause of the error.
     </p>
 </div>
 <hr>

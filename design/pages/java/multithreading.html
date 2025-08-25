@@ -1,3 +1,31 @@
+<title>Java Multithreading Interview Guide</title>
+<meta name="description"
+      content="A complete Java Multithreading Interview Guide covering Threads, Runnable, Synchronization, Concurrency, Executors, Deadlock, Race Conditions, and best practices with examples.">
+<meta name="keywords"
+      content="Java Multithreading, Java Concurrency, Threads, Runnable, Synchronization, Executors, Deadlock, Race Condition, Java Interview Questions, Multithreading Best Practices">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Preparation Zone">
+
+<link rel="canonical" href="https://www.preparationzone.com/#design/pages/java/multithreading.html" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Java Multithreading Interview Guide",
+  "description": "A complete Java Multithreading Interview Guide covering Threads, Runnable, Synchronization, Concurrency, Executors, Deadlock, Race Conditions, and best practices with examples.",
+  "url": "https://www.preparationzone.com/java-multithreading-guide.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Preparation Zone",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.preparationzone.com/images/logo.png"
+    }
+  }
+}
+</script>
+
 <h2 style="text-align: center;">Multi Threading</h2>
 <br>
 <div class="custom-container">
@@ -35,17 +63,17 @@
         <li><b>Thread Life Cycle:</b> Understand the states: New, Runnable, Running, Blocked/Waiting, and Terminated.</li>
         <li><b>Thread Creation:</b> Create threads by:
             <ul>
-                <li>Extending <code>Thread</code> class.</li>
-                <li>Implementing <code>Runnable</code> interface.</li>
-                <li>Using <code>Callable</code> with <code>Future</code> for result-returning tasks.</li>
+                <li>Extending <b>Thread</b> class.</li>
+                <li>Implementing <b>Runnable</b> interface.</li>
+                <li>Using <b>Callable</b> with <b>Future</b> for result-returning tasks.</li>
             </ul>
         </li>
-        <li><b>Thread Safety:</b> Techniques like synchronization, volatile keyword, and using atomic classes (e.g., <code>AtomicInteger</code>).</li>
+        <li><b>Thread Safety:</b> Techniques like synchronization, volatile keyword, and using atomic classes (e.g., <b>AtomicInteger</b>).</li>
         <li><b>Synchronized Block vs Method:</b> Block provides finer-grained control than a synchronized method.</li>
         <li><b>Volatile Keyword:</b> Ensures visibility of changes to variables across threads but does not guarantee atomicity.</li>
-        <li><b>Thread Communication:</b> Use <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code> for inter-thread communication.</li>
-        <li><b>Executor Framework:</b> Use <code>Executors</code> for managing thread pools and asynchronous task execution.</li>
-        <li><b>Deadlock:</b> Understand the concept and techniques to avoid it (e.g., avoiding nested locks, using <code>tryLock()</code>).</li>
+        <li><b>Thread Communication:</b> Use <b>wait()</b>, <b>notify()</b>, and <b>notifyAll()</b> for inter-thread communication.</li>
+        <li><b>Executor Framework:</b> Use <b>Executors</b> for managing thread pools and asynchronous task execution.</li>
+        <li><b>Deadlock:</b> Understand the concept and techniques to avoid it (e.g., avoiding nested locks, using <b>tryLock()</b>).</li>
         <li><b>Race Conditions:</b> Occur when threads access shared resources concurrently without proper synchronization.</li>
         <li><b>Locks:</b> 
             <ul>
@@ -55,19 +83,19 @@
         </li>
         <li><b>ThreadLocal:</b> Provides thread-specific variables, isolating data among threads.</li>
         <li><b>ForkJoin Framework:</b> Used for parallel task execution by dividing tasks into smaller subtasks (introduced in Java 7).</li>
-        <li><b>Java Concurrency Utilities:</b> Includes classes like <code>CountDownLatch</code>, <code>CyclicBarrier</code>, <code>Semaphore</code>, <code>Phaser</code>, and <code>Exchanger</code>.</li>
+        <li><b>Java Concurrency Utilities:</b> Includes classes like <b>CountDownLatch</b>, <b>CyclicBarrier</b>, <b>Semaphore</b>, <b>Phaser</b>, and <b>Exchanger</b>.</li>
         <li><b>Immutable Objects:</b> Preferred in multithreaded environments to avoid data inconsistency.</li>
         <li><b>Thread Priority:</b> Threads can have priorities, but they are not guaranteed to affect execution order.</li>
-        <li><b>Daemon Threads:</b> Background threads (e.g., garbage collector). Use <code>setDaemon(true)</code> to mark a thread as daemon.</li>
-        <li><b>Thread Interruption:</b> Use <code>interrupt()</code> to signal a thread to stop. Check with <code>isInterrupted()</code> or <code>Thread.interrupted()</code>.</li>
-        <li><b>Callable and Future:</b> Use for tasks that return results or throw exceptions, unlike <code>Runnable</code>.</li>
+        <li><b>Daemon Threads:</b> Background threads (e.g., garbage collector). Use <b>setDaemon(true)</b> to mark a thread as daemon.</li>
+        <li><b>Thread Interruption:</b> Use <b>interrupt()</b> to signal a thread to stop. Check with <b>isInterrupted()</b> or <b>Thread.interrupted()</b>.</li>
+        <li><b>Callable and Future:</b> Use for tasks that return results or throw exceptions, unlike <b>Runnable</b>.</li>
         <li><b>ScheduledExecutorService:</b> For scheduling tasks at fixed rates or with delays.</li>
         <li><b>BlockingQueue:</b> Thread-safe queue used for producer-consumer scenarios.</li>
-        <li><b>Atomic Variables:</b> Use <code>java.util.concurrent.atomic</code> classes for lock-free thread-safe operations.</li>
+        <li><b>Atomic Variables:</b> Use <b>java.util.concurrent.atomic</b> classes for lock-free thread-safe operations.</li>
         <li><b>Reentrant Locks:</b> A lock that can be acquired multiple times by the same thread without causing a deadlock.</li>
-        <li><b>Joining Threads:</b> Use <code>join()</code> to wait for a thread to complete its execution.</li>
+        <li><b>Joining Threads:</b> Use <b>join()</b> to wait for a thread to complete its execution.</li>
         <li><b>Thread Group:</b> Allows grouping multiple threads for collective management.</li>
-        <li><b>Common Exceptions:</b> Be familiar with <code>InterruptedException</code>, <code>IllegalThreadStateException</code>, and <code>RejectionExecutionException</code>.</li>
+        <li><b>Common Exceptions:</b> Be familiar with <b>InterruptedException</b>, <b>IllegalThreadStateException</b>, and <b>RejectionExecutionException</b>.</li>
     </ul>
 </div>
 <hr>
@@ -75,7 +103,7 @@
 <div id="thread-life-cycle">
     <h5>Explain Thread Life Cycle in Java</h5>
     <p>
-        A thread in Java goes through a defined series of states during its life cycle. These states are managed by the <code>Thread</code> class and the Java Virtual Machine (JVM). The thread life cycle includes the following states:
+        A thread in Java goes through a defined series of states during its life cycle. These states are managed by the <b>Thread</b> class and the Java Virtual Machine (JVM). The thread life cycle includes the following states:
     </p>
 
     <b>1. New State</b>
@@ -86,12 +114,12 @@
         Thread thread = new Thread(() -> System.out.println("Thread running"));
     </pre>
     <p>
-        Here, the thread is not yet started and is waiting to be activated using the <code>start()</code> method.
+        Here, the thread is not yet started and is waiting to be activated using the <b>start()</b> method.
     </p>
 
     <b>2. Runnable State</b>
     <p>
-        After calling the <code>start()</code> method, the thread enters the <b>Runnable</b> state. In this state, the thread is ready to run but is waiting for CPU time for execution.
+        After calling the <b>start()</b> method, the thread enters the <b>Runnable</b> state. In this state, the thread is ready to run but is waiting for CPU time for execution.
     </p>
     <pre>
         thread.start(); // Moves the thread to Runnable state
@@ -116,8 +144,8 @@
     </p>
     <ul>
         <li><b>Blocked:</b> The thread is waiting to acquire a lock on an object.</li>
-        <li><b>Waiting:</b> The thread is indefinitely waiting for another thread to signal, using methods like <code>wait()</code>.</li>
-        <li><b>Timed Waiting:</b> The thread is waiting for another thread's signal, but only for a specified time, using methods like <code>sleep()</code> or <code>join(timeout)</code>.</li>
+        <li><b>Waiting:</b> The thread is indefinitely waiting for another thread to signal, using methods like <b>wait()</b>.</li>
+        <li><b>Timed Waiting:</b> The thread is waiting for another thread's signal, but only for a specified time, using methods like <b>sleep()</b> or <b>join(timeout)</b>.</li>
     </ul>
     <pre>
         synchronized (lock) {
@@ -141,12 +169,12 @@
 <div id="thread-creation">
     <h5>Explain Thread Creation in Java</h5>
     <p>
-        In Java, threads are represented by the <code>Thread</code> class, and there are multiple ways to create and start a thread. Here are the main approaches to create threads:
+        In Java, threads are represented by the <b>Thread</b> class, and there are multiple ways to create and start a thread. Here are the main approaches to create threads:
     </p>
 
     <b>1. Extending the Thread Class</b>
     <p>
-        To create a thread by extending the <code>Thread</code> class, you need to override its <code>run()</code> method. The <code>run()</code> method contains the code that will execute when the thread is started.
+        To create a thread by extending the <b>Thread</b> class, you need to override its <b>run()</b> method. The <b>run()</b> method contains the code that will execute when the thread is started.
     </p>
     <pre>
     class MyThread extends Thread {
@@ -169,7 +197,7 @@
 
     <b>2. Implementing the Runnable Interface</b>
     <p>
-        You can create a thread by implementing the <code>Runnable</code> interface and defining the <code>run()</code> method. This approach is more flexible since your class can extend another class.
+        You can create a thread by implementing the <b>Runnable</b> interface and defining the <b>run()</b> method. This approach is more flexible since your class can extend another class.
     </p>
     <pre>
     class MyRunnable implements Runnable {
@@ -203,7 +231,7 @@
 
     <b>4. Using the Callable and Future Interfaces</b>
     <p>
-        The <code>Callable</code> interface allows creating threads that can return a result or throw exceptions. This is achieved by using an <code>ExecutorService</code>.
+        The <b>Callable</b> interface allows creating threads that can return a result or throw exceptions. This is achieved by using an <b>ExecutorService</b>.
     </p>
     <pre>
     import java.util.concurrent.*;
@@ -228,7 +256,7 @@
 
     <b>5. Creating Threads with the Executor Framework</b>
     <p>
-        The <code>Executor</code> framework simplifies thread management by decoupling task submission from thread creation. You can submit tasks to an <code>ExecutorService</code>, and it manages the thread pool.
+        The <b>Executor</b> framework simplifies thread management by decoupling task submission from thread creation. You can submit tasks to an <b>ExecutorService</b>, and it manages the thread pool.
     </p>
     <pre>
     import java.util.concurrent.Executors;
@@ -268,9 +296,9 @@
 
     <b>Key Notes</b>
     <ul>
-        <li>Always use the <code>start()</code> method to begin a thread's execution. Calling <code>run()</code> directly will not start a new thread but will execute in the current thread.</li>
+        <li>Always use the <b>start()</b> method to begin a thread's execution. Calling <b>run()</b> directly will not start a new thread but will execute in the current thread.</li>
         <li>For complex thread management, prefer using the <b>Executor Framework</b>.</li>
-        <li>Use <code>Callable</code> for tasks that return results.</li>
+        <li>Use <b>Callable</b> for tasks that return results.</li>
     </ul>
 </div>
 <hr>
@@ -284,7 +312,7 @@
 
     <b>1. Synchronization</b>
     <p>
-        <b>Synchronization</b> ensures that only one thread at a time can access a specific section of code (a synchronized block or method) that accesses shared resources. This is achieved using the <code>synchronized</code> keyword.
+        <b>Synchronization</b> ensures that only one thread at a time can access a specific section of code (a synchronized block or method) that accesses shared resources. This is achieved using the <b>synchronized</b> keyword.
     </p>
     <pre>
     public class Counter {
@@ -296,7 +324,7 @@
     }
     </pre>
     <p>
-        In the example above, the <code>increment()</code> method is synchronized, ensuring that only one thread can increment the count at a time.
+        In the example above, the <b>increment()</b> method is synchronized, ensuring that only one thread can increment the count at a time.
     </p>
 
     <b>2. Volatile Keyword</b>
@@ -317,17 +345,17 @@
     }
     </pre>
     <p>
-        By marking <code>flag</code> as volatile, it ensures that any thread reading this variable will see the latest value written by another thread.
+        By marking <b>flag</b> as volatile, it ensures that any thread reading this variable will see the latest value written by another thread.
     </p>
 
     <b>3. Atomic Classes</b>
     <p>
-        <b>Atomic classes</b> provide lock-free and thread-safe operations on single variables. These classes ensure atomicity without requiring synchronization. They are part of the <code>java.util.concurrent.atomic</code> package.
+        <b>Atomic classes</b> provide lock-free and thread-safe operations on single variables. These classes ensure atomicity without requiring synchronization. They are part of the <b>java.util.concurrent.atomic</b> package.
     </p>
     <ul>
-        <li><code>AtomicInteger</code> for integer operations.</li>
-        <li><code>AtomicLong</code> for long operations.</li>
-        <li><code>AtomicReference</code> for reference-type atomic operations.</li>
+        <li><b>AtomicInteger</b> for integer operations.</li>
+        <li><b>AtomicLong</b> for long operations.</li>
+        <li><b>AtomicReference</b> for reference-type atomic operations.</li>
     </ul>
     <pre>
     AtomicInteger atomicInt = new AtomicInteger(0);
@@ -341,7 +369,7 @@
     }
     </pre>
     <p>
-        These classes offer methods like <code>incrementAndGet()</code>, <code>getAndSet()</code>, <code>compareAndSet()</code>, etc., to perform atomic operations without the need for synchronization.
+        These classes offer methods like <b>incrementAndGet()</b>, <b>getAndSet()</b>, <b>compareAndSet()</b>, etc., to perform atomic operations without the need for synchronization.
     </p>
 
     <b>Comison</b>
@@ -393,7 +421,7 @@
     }
     </pre>
     <p>
-        In the example above, the <code>increment()</code> method is synchronized, and the block inside it is a synchronized block that only allows one thread to access the increment operation at a time.
+        In the example above, the <b>increment()</b> method is synchronized, and the block inside it is a synchronized block that only allows one thread to access the increment operation at a time.
     </p>
 
     <h5>Synchronization Block vs Synchronized Method</h5>
@@ -415,7 +443,7 @@
     }
     </pre>
     <p>
-        Here, the <code>increment()</code> method is synchronized, meaning the entire method is locked for access by only one thread at a time.
+        Here, the <b>increment()</b> method is synchronized, meaning the entire method is locked for access by only one thread at a time.
     </p>
 
     <b>2. Synchronized Block</b>
@@ -480,12 +508,12 @@
 <div id="thread-communication">
     <h5>How Thread Communication happens in Java</h5>
     <p>
-        Thread communication in Java refers to the process by which multiple threads can communicate with each other and coordinate their actions. This is achieved through the use of inter-thread communication methods provided by the <code>Object</code> class, such as <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code>. These methods facilitate a way for threads to wait for certain conditions to be met before proceeding or to notify other threads that a condition has changed.
+        Thread communication in Java refers to the process by which multiple threads can communicate with each other and coordinate their actions. This is achieved through the use of inter-thread communication methods provided by the <b>Object</b> class, such as <b>wait()</b>, <b>notify()</b>, and <b>notifyAll()</b>. These methods facilitate a way for threads to wait for certain conditions to be met before proceeding or to notify other threads that a condition has changed.
     </p>
 
     <b>1. wait()</b>
     <p>
-        The <code>wait()</code> method is called by a thread when it needs to relinquish the monitor and go into a waiting state until another thread invokes <code>notify()</code> or <code>notifyAll()</code>.
+        The <b>wait()</b> method is called by a thread when it needs to relinquish the monitor and go into a waiting state until another thread invokes <b>notify()</b> or <b>notifyAll()</b>.
     </p>
     <pre>
     synchronized (lock) {
@@ -496,12 +524,12 @@
     }
     </pre>
     <p>
-        In the above example, the thread waits for the condition <code>someCondition</code> to become false before proceeding.
+        In the above example, the thread waits for the condition <b>someCondition</b> to become false before proceeding.
     </p>
 
     <b>2. notify()</b>
     <p>
-        The <code>notify()</code> method wakes up a single thread that is waiting on the object's monitor. It does not guarantee which thread will be awakened if multiple threads are waiting. This method is typically used when only one thread should be awakened to proceed with its work.
+        The <b>notify()</b> method wakes up a single thread that is waiting on the object's monitor. It does not guarantee which thread will be awakened if multiple threads are waiting. This method is typically used when only one thread should be awakened to proceed with its work.
     </p>
     <pre>
     synchronized (lock) {
@@ -509,12 +537,12 @@
     }
     </pre>
     <p>
-        A thread should call <code>notify()</code> only when it holds the object's lock, otherwise, it will throw IllegalMonitorStateException.
+        A thread should call <b>notify()</b> only when it holds the object's lock, otherwise, it will throw IllegalMonitorStateException.
     </p>
 
     <b>3. notifyAll()</b>
     <p>
-        The <code>notifyAll()</code> method wakes up all the threads that are waiting on the object's monitor. This is useful when all the waiting threads should be allowed to proceed.
+        The <b>notifyAll()</b> method wakes up all the threads that are waiting on the object's monitor. This is useful when all the waiting threads should be allowed to proceed.
     </p>
     <pre>
     synchronized (lock) {
@@ -522,7 +550,7 @@
     }
     </pre>
     <p>
-        Unlike <code>notify()</code>, <code>notifyAll()</code> ensures that all waiting threads will eventually get a chance to proceed.
+        Unlike <b>notify()</b>, <b>notifyAll()</b> ensures that all waiting threads will eventually get a chance to proceed.
     </p>
 
     <b>Example Scenario</b>
@@ -591,14 +619,14 @@
     }
     </pre>
     <p>
-        In this example, the <code>produce()</code> method waits if the resource is not available and the <code>consume()</code> method waits if the resource is available. The use of <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code> allows proper coordination between the producer and consumer threads.
+        In this example, the <b>produce()</b> method waits if the resource is not available and the <b>consume()</b> method waits if the resource is available. The use of <b>wait()</b>, <b>notify()</b>, and <b>notifyAll()</b> allows proper coordination between the producer and consumer threads.
     </p>
 
     <b>Key Points</b>
     <ul>
-        <li>The methods <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code> must be called inside a synchronized block or method.</li>
-        <li>A thread must own the object's lock to call <code>notify()</code> or <code>notifyAll()</code>.</li>
-        <li><code>wait()</code> puts the thread in the waiting state and releases the lock, whereas <code>notify()</code> and <code>notifyAll()</code> wake up threads but do not relinquish the lock.</li>
+        <li>The methods <b>wait()</b>, <b>notify()</b>, and <b>notifyAll()</b> must be called inside a synchronized block or method.</li>
+        <li>A thread must own the object's lock to call <b>notify()</b> or <b>notifyAll()</b>.</li>
+        <li><b>wait()</b> puts the thread in the waiting state and releases the lock, whereas <b>notify()</b> and <b>notifyAll()</b> wake up threads but do not relinquish the lock.</li>
     </ul>
 </div>
 <hr>
@@ -612,7 +640,7 @@
     <ol>
         <li>
             <b>Executor Interface:</b>
-            <p>The base interface of the framework. It provides a method, <code>execute(Runnable)</code>, for executing tasks.</p>
+            <p>The base interface of the framework. It provides a method, <b>execute(Runnable)</b>, for executing tasks.</p>
             <pre>
 Executor executor = new Executor() {
     public void execute(Runnable r) {
@@ -625,7 +653,7 @@ executor.execute(() -> System.out.println("Task executed!"));
         <li>
             <b>ExecutorService Interface:</b>
             <p>
-                Extends the <code>Executor</code> interface and adds more control over task execution, such as submitting tasks, shutting down the service, and retrieving results.
+                Extends the <b>Executor</b> interface and adds more control over task execution, such as submitting tasks, shutting down the service, and retrieving results.
             </p>
             <pre>
 ExecutorService executorService = Executors.newFixedThreadPool(3);
@@ -640,7 +668,7 @@ executorService.shutdown();
         <li>
             <b>ScheduledExecutorService:</b>
             <p>
-                Extends <code>ExecutorService</code> to schedule tasks to execute periodically or after a delay.
+                Extends <b>ExecutorService</b> to schedule tasks to execute periodically or after a delay.
             </p>
             <pre>
 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -651,7 +679,7 @@ scheduler.shutdown();
         <li>
             <b>ThreadPoolExecutor:</b>
             <p>
-                The most commonly used implementation of <code>ExecutorService</code>. It manages a pool of worker threads and reuses them for executing multiple tasks, improving performance.
+                The most commonly used implementation of <b>ExecutorService</b>. It manages a pool of worker threads and reuses them for executing multiple tasks, improving performance.
             </p>
             <pre>
 ThreadPoolExecutor executor = new ThreadPoolExecutor(
@@ -786,7 +814,7 @@ public class DeadlockExample {
 }
     </pre>
     <p>
-        In this example, <b>Thread 1</b> acquires <code>lock1</code> and waits for <code>lock2</code>, while <b>Thread 2</b> acquires <code>lock2</code> and waits for <code>lock1</code>, causing a deadlock.
+        In this example, <b>Thread 1</b> acquires <b>lock1</b> and waits for <b>lock2</b>, while <b>Thread 2</b> acquires <b>lock2</b> and waits for <b>lock1</b>, causing a deadlock.
     </p>
 
     <b>How to Avoid Deadlock</b>
@@ -830,7 +858,7 @@ try {
     e.printStackTrace();
 }
         </pre>
-        <li><b>Use Higher-Level Concurrency Tools:</b> Prefer using <code>java.util.concurrent</code> package utilities like <code>ExecutorService</code> and <code>Locks</code>, which minimize the chances of deadlock.</li>
+        <li><b>Use Higher-Level Concurrency Tools:</b> Prefer using <b>java.util.concurrent</b> package utilities like <b>ExecutorService</b> and <b>Locks</b>, which minimize the chances of deadlock.</li>
     </ul>
 
     <b>Detecting Deadlock</b>
@@ -933,7 +961,7 @@ public void increment() {
     </pre>
 
     <b>2. Using ReentrantLock</b>
-    <p>Use <code>ReentrantLock</code> to explicitly lock critical sections:</p>
+    <p>Use <b>ReentrantLock</b> to explicitly lock critical sections:</p>
     <pre>
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -955,7 +983,7 @@ public class RaceConditionExample {
 
     <b>3. Using Atomic Classes</b>
     <p>
-        Java's <code>java.util.concurrent.atomic</code> package provides classes like <code>AtomicInteger</code>, which ensures atomicity without explicit synchronization:
+        Java's <b>java.util.concurrent.atomic</b> package provides classes like <b>AtomicInteger</b>, which ensures atomicity without explicit synchronization:
     </p>
     <pre>
 import java.util.concurrent.atomic.AtomicInteger;
@@ -976,7 +1004,7 @@ public class RaceConditionExample {
     <b>Best Practices to Avoid Race Conditions</b>
     <ul>
         <li>Minimize shared mutable state and use local variables wherever possible.</li>
-        <li>Use thread-safe collections like <code>ConcurrentHashMap</code> or <code>CopyOnWriteArrayList</code>.</li>
+        <li>Use thread-safe collections like <b>ConcurrentHashMap</b> or <b>CopyOnWriteArrayList</b>.</li>
         <li>Leverage higher-level concurrency frameworks (e.g., Executor Framework).</li>
         <li>Adopt immutability patterns to eliminate shared state modification.</li>
     </ul>
@@ -991,7 +1019,7 @@ public class RaceConditionExample {
 <div id="locks">
     <h5>Explain Locks in Java</h5>
     <p>
-        In Java, <b>locks</b> are synchronization mechanisms used to manage access to shared resources by multiple threads. They provide greater flexibility and control compared to the traditional <code>synchronized</code> keyword. Locks are part of the <code>java.util.concurrent.locks</code> package, introduced in Java 5.
+        In Java, <b>locks</b> are synchronization mechanisms used to manage access to shared resources by multiple threads. They provide greater flexibility and control compared to the traditional <b>synchronized</b> keyword. Locks are part of the <b>java.util.concurrent.locks</b> package, introduced in Java 5.
     </p>
 
     <b>Why Use Locks?</b>
@@ -1134,8 +1162,8 @@ public class StampedLockExample {
         <thead>
             <tr>
                 <th>Feature</th>
-                <th><code>synchronized</code></th>
-                <th><code>Lock</code></th>
+                <th><b>synchronized</b></th>
+                <th><b>Lock</b></th>
             </tr>
         </thead>
         <tbody>
@@ -1147,29 +1175,29 @@ public class StampedLockExample {
             <tr>
                 <td>Interruptibility</td>
                 <td>Cannot be interrupted while waiting.</td>
-                <td>Can be interrupted using <code>lock.lockInterruptibly()</code>.</td>
+                <td>Can be interrupted using <b>lock.lockInterruptibly()</b>.</td>
             </tr>
             <tr>
                 <td>Timeout Support</td>
                 <td>Not supported.</td>
-                <td>Supports timeout using <code>tryLock()</code>.</td>
+                <td>Supports timeout using <b>tryLock()</b>.</td>
             </tr>
             <tr>
                 <td>Fairness</td>
                 <td>Not fair by default.</td>
-                <td>Fair locks can be created using <code>new ReentrantLock(true)</code>.</td>
+                <td>Fair locks can be created using <b>new ReentrantLock(true)</b>.</td>
             </tr>
             <tr>
                 <td>Read/Write Separation</td>
                 <td>Not supported.</td>
-                <td>Supported with <code>ReadWriteLock</code>.</td>
+                <td>Supported with <b>ReadWriteLock</b>.</td>
             </tr>
         </tbody>
     </table>
 
     <b>Conclusion</b>
     <p>
-        Locks provide advanced synchronization capabilities compared to the <code>synchronized</code> keyword, making them more suitable for complex concurrent applications. Depending on the use case, you can choose from ReentrantLock, ReadWriteLock, or StampedLock for efficient thread management in Java.
+        Locks provide advanced synchronization capabilities compared to the <b>synchronized</b> keyword, making them more suitable for complex concurrent applications. Depending on the use case, you can choose from ReentrantLock, ReadWriteLock, or StampedLock for efficient thread management in Java.
     </p>
 </div>
 <hr>
@@ -1177,7 +1205,7 @@ public class StampedLockExample {
 <div id="threadLocal">
     <h5>Explain ThreadLocal in Java</h5>
     <p>
-        The <code>ThreadLocal</code> class in Java provides thread-local variables. Each thread accessing such a variable (via its <code>get</code> or <code>set</code> methods) has its own, independently initialized copy of the variable. This is useful for maintaining per-thread state, such as user sessions or transaction information, without interference from other threads.
+        The <b>ThreadLocal</b> class in Java provides thread-local variables. Each thread accessing such a variable (via its <b>get</b> or <b>set</b> methods) has its own, independently initialized copy of the variable. This is useful for maintaining per-thread state, such as user sessions or transaction information, without interference from other threads.
     </p>
 
     <b>Key Features of ThreadLocal</b>
@@ -1186,7 +1214,7 @@ public class StampedLockExample {
             <b>Thread Isolation:</b> Each thread gets its own copy of the variable, ensuring that updates in one thread do not affect others.
         </li>
         <li>
-            <b>Independent Initialization:</b> You can define an initial value for the variable for each thread using the <code>initialValue()</code> method.
+            <b>Independent Initialization:</b> You can define an initial value for the variable for each thread using the <b>initialValue()</b> method.
         </li>
         <li>
             <b>Use Case:</b> Commonly used in multithreaded environments for tasks like session management, database connections, or logging.
@@ -1195,7 +1223,7 @@ public class StampedLockExample {
 
     <b>How ThreadLocal Works</b>
     <p>
-        Each thread maintains its own map of ThreadLocal variables internally. When you call <code>set</code> or <code>get</code> on a ThreadLocal variable, the thread-specific map is used to retrieve or update the value.
+        Each thread maintains its own map of ThreadLocal variables internally. When you call <b>set</b> or <b>get</b> on a ThreadLocal variable, the thread-specific map is used to retrieve or update the value.
     </p>
 
     <b>Code Example</b>
@@ -1227,16 +1255,16 @@ public class ThreadLocalExample {
     <b>Methods in ThreadLocal</b>
     <ul>
         <li>
-            <b><code>get()</code>:</b> Retrieves the value associated with the current thread. If no value is set, it calls <code>initialValue()</code>.
+            <b><b>get()</b>:</b> Retrieves the value associated with the current thread. If no value is set, it calls <b>initialValue()</b>.
         </li>
         <li>
-            <b><code>set(T value)</code>:</b> Sets the value for the current thread.
+            <b><b>set(T value)</b>:</b> Sets the value for the current thread.
         </li>
         <li>
-            <b><code>remove()</code>:</b> Removes the value associated with the current thread to prevent memory leaks.
+            <b><b>remove()</b>:</b> Removes the value associated with the current thread to prevent memory leaks.
         </li>
         <li>
-            <b><code>withInitial(Supplier&lt;T&gt; supplier)</code>:</b> Creates a ThreadLocal with an initial value provided by a supplier.
+            <b><b>withInitial(Supplier&lt;T&gt; supplier)</b>:</b> Creates a ThreadLocal with an initial value provided by a supplier.
         </li>
     </ul>
 
@@ -1249,7 +1277,7 @@ public class ThreadLocalExample {
 
     <b>Disadvantages of ThreadLocal</b>
     <ul>
-        <li>Potential for memory leaks if <code>remove()</code> is not used, as thread-local variables are tied to thread lifespan.</li>
+        <li>Potential for memory leaks if <b>remove()</b> is not used, as thread-local variables are tied to thread lifespan.</li>
         <li>Overuse can lead to difficulty in managing and debugging thread-local states.</li>
     </ul>
 
@@ -1283,7 +1311,7 @@ public class ThreadLocalExample {
 
     <b>Creating a ThreadGroup</b>
     <p>
-        A <code>ThreadGroup</code> can be created by specifying a name or by associating it with a parent group.
+        A <b>ThreadGroup</b> can be created by specifying a name or by associating it with a parent group.
     </p>
     <pre>
 public class ThreadGroupExample {
@@ -1311,7 +1339,7 @@ public class ThreadGroupExample {
 
     <b>ThreadGroup Hierarchy</b>
     <p>
-        Thread groups can have parent-child relationships, creating a hierarchy of thread groups. The default parent group is the <code>main</code> group, and all user-created thread groups are descendants of it.
+        Thread groups can have parent-child relationships, creating a hierarchy of thread groups. The default parent group is the <b>main</b> group, and all user-created thread groups are descendants of it.
     </p>
 
     <pre>
@@ -1342,23 +1370,23 @@ public class ThreadGroupHierarchy {
         </thead>
         <tbody>
             <tr>
-                <td><code>activeCount()</code></td>
+                <td><b>activeCount()</b></td>
                 <td>Returns the number of active threads in the group.</td>
             </tr>
             <tr>
-                <td><code>activeGroupCount()</code></td>
+                <td><b>activeGroupCount()</b></td>
                 <td>Returns the number of active subgroups in the group.</td>
             </tr>
             <tr>
-                <td><code>getName()</code></td>
+                <td><b>getName()</b></td>
                 <td>Returns the name of the thread group.</td>
             </tr>
             <tr>
-                <td><code>list()</code></td>
+                <td><b>list()</b></td>
                 <td>Prints information about the group and its threads to the console.</td>
             </tr>
             <tr>
-                <td><code>interrupt()</code></td>
+                <td><b>interrupt()</b></td>
                 <td>Interrupts all threads in the group.</td>
             </tr>
         </tbody>
@@ -1374,7 +1402,7 @@ public class ThreadGroupHierarchy {
     <b>Disadvantages of ThreadGroup</b>
     <ul>
         <li>
-            Deprecated in modern Java versions because <code>java.util.concurrent</code> classes (like ExecutorService) provide better thread management options.
+            Deprecated in modern Java versions because <b>java.util.concurrent</b> classes (like ExecutorService) provide better thread management options.
         </li>
         <li>Limited functionality compared to newer concurrency utilities.</li>
         <li>Does not provide advanced thread control mechanisms.</li>
@@ -1382,7 +1410,7 @@ public class ThreadGroupHierarchy {
 
     <b>Conclusion</b>
     <p>
-        The <code>ThreadGroup</code> class is a basic way to group and manage threads. While it is useful for organizing threads and performing bulk actions, it has largely been replaced by modern concurrency frameworks like <code>java.util.concurrent</code>, which offer more robust features for thread management in Java.
+        The <b>ThreadGroup</b> class is a basic way to group and manage threads. While it is useful for organizing threads and performing bulk actions, it has largely been replaced by modern concurrency frameworks like <b>java.util.concurrent</b>, which offer more robust features for thread management in Java.
     </p>
 </div>
 <hr>
@@ -1390,19 +1418,19 @@ public class ThreadGroupHierarchy {
 <div id="Fork/Join">
     <h5>Explain Fork/Join Framework in Java</h5>
     <p>
-        The <b>Fork/Join Framework</b> in Java is a framework for parallel task execution. It is part of the <code>java.util.concurrent</code> package and was introduced in Java 7. The framework is designed to recursively divide a large task into smaller subtasks (fork), execute them concurrently, and then combine their results (join). It leverages multiple processors for efficient parallelism, making it ideal for compute-intensive operations.
+        The <b>Fork/Join Framework</b> in Java is a framework for parallel task execution. It is part of the <b>java.util.concurrent</b> package and was introduced in Java 7. The framework is designed to recursively divide a large task into smaller subtasks (fork), execute them concurrently, and then combine their results (join). It leverages multiple processors for efficient parallelism, making it ideal for compute-intensive operations.
     </p>
 
     <b>Key Components of Fork/Join Framework</b>
     <ul>
         <li>
-            <b>ForkJoinPool:</b> A specialized implementation of <code>ExecutorService</code> designed to manage and execute tasks in the Fork/Join Framework. It uses a work-stealing algorithm to efficiently balance workload among threads.
+            <b>ForkJoinPool:</b> A specialized implementation of <b>ExecutorService</b> designed to manage and execute tasks in the Fork/Join Framework. It uses a work-stealing algorithm to efficiently balance workload among threads.
         </li>
         <li>
             <b>ForkJoinTask:</b> The base class for tasks that run within a ForkJoinPool. Subclasses include:
             <ul>
-                <li><code>RecursiveAction</code>: Used for tasks that do not return a result.</li>
-                <li><code>RecursiveTask</code>: Used for tasks that return a result.</li>
+                <li><b>RecursiveAction</b>: Used for tasks that do not return a result.</li>
+                <li><b>RecursiveTask</b>: Used for tasks that return a result.</li>
             </ul>
         </li>
     </ul>
@@ -1511,7 +1539,7 @@ public class ForkJoinExample {
 <div id="JavaConcurrency">
     <h5>Explain Java Concurrency Utilities</h5>
     <p>
-        Java provides a robust set of concurrency utilities in the <code>java.util.concurrent</code> package to simplify the development of multithreaded applications. These utilities include thread management, synchronization mechanisms, concurrent data structures, and task execution frameworks. They address common concurrency challenges and improve scalability, performance, and ease of use.
+        Java provides a robust set of concurrency utilities in the <b>java.util.concurrent</b> package to simplify the development of multithreaded applications. These utilities include thread management, synchronization mechanisms, concurrent data structures, and task execution frameworks. They address common concurrency challenges and improve scalability, performance, and ease of use.
     </p>
 
     <b>Key Components of Java Concurrency Utilities</b>
@@ -1520,13 +1548,13 @@ public class ForkJoinExample {
             <b>Executors Framework:</b> Simplifies thread management by decoupling task submission from thread creation and management.
         </li>
         <li>
-            <b>Concurrent Collections:</b> Thread-safe data structures like <code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code>, and <code>BlockingQueue</code>.
+            <b>Concurrent Collections:</b> Thread-safe data structures like <b>ConcurrentHashMap</b>, <b>CopyOnWriteArrayList</b>, and <b>BlockingQueue</b>.
         </li>
         <li>
-            <b>Locks and Synchronizers:</b> Advanced locking mechanisms like <code>ReentrantLock</code>, <code>ReadWriteLock</code>, and synchronizers like <code>CountDownLatch</code> and <code>CyclicBarrier</code>.
+            <b>Locks and Synchronizers:</b> Advanced locking mechanisms like <b>ReentrantLock</b>, <b>ReadWriteLock</b>, and synchronizers like <b>CountDownLatch</b> and <b>CyclicBarrier</b>.
         </li>
         <li>
-            <b>Atomic Variables:</b> Classes like <code>AtomicInteger</code> and <code>AtomicReference</code> for lock-free thread-safe operations on variables.
+            <b>Atomic Variables:</b> Classes like <b>AtomicInteger</b> and <b>AtomicReference</b> for lock-free thread-safe operations on variables.
         </li>
         <li>
             <b>Fork/Join Framework:</b> Enables parallel processing by splitting tasks into smaller subtasks for recursive execution.
@@ -1540,9 +1568,9 @@ public class ForkJoinExample {
         The Executors Framework provides a flexible mechanism for managing threads through thread pools. Key interfaces and classes include:
     </p>
     <ul>
-        <li><code>Executor</code>: The base interface for task execution.</li>
-        <li><code>ExecutorService</code>: Extends <code>Executor</code> and adds methods for lifecycle management.</li>
-        <li><code>ScheduledExecutorService</code>: Supports task scheduling with delays or periodic execution.</li>
+        <li><b>Executor</b>: The base interface for task execution.</li>
+        <li><b>ExecutorService</b>: Extends <b>Executor</b> and adds methods for lifecycle management.</li>
+        <li><b>ScheduledExecutorService</b>: Supports task scheduling with delays or periodic execution.</li>
     </ul>
     <pre>
 import java.util.concurrent.ExecutorService;
@@ -1567,9 +1595,9 @@ public class ExecutorsExample {
         Concurrent collections are designed to handle concurrent modifications safely:
     </p>
     <ul>
-        <li><code>ConcurrentHashMap</code>: A thread-safe version of <code>HashMap</code>.</li>
-        <li><code>CopyOnWriteArrayList</code>: Allows safe iteration without locking.</li>
-        <li><code>BlockingQueue</code>: Includes thread-safe queue implementations like <code>ArrayBlockingQueue</code> and <code>LinkedBlockingQueue</code>.</li>
+        <li><b>ConcurrentHashMap</b>: A thread-safe version of <b>HashMap</b>.</li>
+        <li><b>CopyOnWriteArrayList</b>: Allows safe iteration without locking.</li>
+        <li><b>BlockingQueue</b>: Includes thread-safe queue implementations like <b>ArrayBlockingQueue</b> and <b>LinkedBlockingQueue</b>.</li>
     </ul>
     <pre>
 import java.util.concurrent.ConcurrentHashMap;
@@ -1587,13 +1615,13 @@ public class ConcurrentMapExample {
 
     <h5>3. Locks and Synchronizers</h5>
     <p>
-        Advanced synchronization tools provide more control than the <code>synchronized</code> keyword:
+        Advanced synchronization tools provide more control than the <b>synchronized</b> keyword:
     </p>
     <ul>
-        <li><code>ReentrantLock</code>: Explicit locking with advanced features like fairness and condition variables.</li>
-        <li><code>ReadWriteLock</code>: Allows multiple readers or a single writer at a time.</li>
-        <li><code>CountDownLatch</code>: Allows threads to wait for a set number of events to occur.</li>
-        <li><code>CyclicBarrier</code>: Makes threads wait at a common barrier point before proceeding.</li>
+        <li><b>ReentrantLock</b>: Explicit locking with advanced features like fairness and condition variables.</li>
+        <li><b>ReadWriteLock</b>: Allows multiple readers or a single writer at a time.</li>
+        <li><b>CountDownLatch</b>: Allows threads to wait for a set number of events to occur.</li>
+        <li><b>CyclicBarrier</b>: Makes threads wait at a common barrier point before proceeding.</li>
     </ul>
     <pre>
 import java.util.concurrent.locks.ReentrantLock;
@@ -1670,9 +1698,9 @@ public class AtomicExample {
         <li>
             Java provides three constants for thread priorities:
             <ul>
-                <li><code>Thread.MIN_PRIORITY</code> = 1</li>
-                <li><code>Thread.NORM_PRIORITY</code> = 5</li>
-                <li><code>Thread.MAX_PRIORITY</code> = 10</li>
+                <li><b>Thread.MIN_PRIORITY</b> = 1</li>
+                <li><b>Thread.NORM_PRIORITY</b> = 5</li>
+                <li><b>Thread.MAX_PRIORITY</b> = 10</li>
             </ul>
         </li>
         <li>
@@ -1688,7 +1716,7 @@ public class AtomicExample {
 
     <b>Setting Thread Priority</b>
     <p>
-        Thread priority can be set using the <code>setPriority(int priority)</code> method of the <code>Thread</code> class and retrieved using the <code>getPriority()</code> method.
+        Thread priority can be set using the <b>setPriority(int priority)</b> method of the <b>Thread</b> class and retrieved using the <b>getPriority()</b> method.
     </p>
     <pre>
 class PriorityExample extends Thread {
@@ -1737,7 +1765,7 @@ Thread-1 with priority 1 is running.
 
     <b>Conclusion</b>
     <p>
-        Thread priorities provide a mechanism to influence thread scheduling, but they are not deterministic and should not be solely relied upon for thread control. For precise task management, using Java concurrency utilities like <code>ExecutorService</code> or <code>Fork/Join Framework</code> is a better approach.
+        Thread priorities provide a mechanism to influence thread scheduling, but they are not deterministic and should not be solely relied upon for thread control. For precise task management, using Java concurrency utilities like <b>ExecutorService</b> or <b>Fork/Join Framework</b> is a better approach.
     </p>
 </div>
 <hr>
@@ -1757,7 +1785,7 @@ Thread-1 with priority 1 is running.
             They are automatically terminated when all user threads have finished execution.
         </li>
         <li>
-            Examples of daemon threads in Java include the Garbage Collector and threads from <code>Timer</code> or <code>ScheduledExecutorService</code>.
+            Examples of daemon threads in Java include the Garbage Collector and threads from <b>Timer</b> or <b>ScheduledExecutorService</b>.
         </li>
         <li>
             By default, threads created in Java are user threads, not daemon threads.
@@ -1766,7 +1794,7 @@ Thread-1 with priority 1 is running.
 
     <b>How to Create a Daemon Thread</b>
     <p>
-        A thread can be marked as a daemon by using the <code>setDaemon(true)</code> method before starting the thread. The <code>isDaemon()</code> method can be used to check if a thread is a daemon thread.
+        A thread can be marked as a daemon by using the <b>setDaemon(true)</b> method before starting the thread. The <b>isDaemon()</b> method can be used to check if a thread is a daemon thread.
     </p>
     <pre>
 class DaemonThreadExample extends Thread {
@@ -1834,7 +1862,7 @@ Main thread finished.
         <tr>
             <td>Default Behavior</td>
             <td>By default, threads are user threads.</td>
-            <td>Daemon threads must be explicitly marked using <code>setDaemon(true)</code>.</td>
+            <td>Daemon threads must be explicitly marked using <b>setDaemon(true)</b>.</td>
         </tr>
         <tr>
             <td>Priority</td>
@@ -1846,7 +1874,7 @@ Main thread finished.
     <b>Considerations for Using Daemon Threads</b>
     <ul>
         <li>Daemon threads should not be used for critical tasks since they may terminate abruptly when the JVM exits.</li>
-        <li>A thread must be marked as a daemon before it is started. Attempting to set it after starting the thread will throw an <code>IllegalThreadStateException</code>.</li>
+        <li>A thread must be marked as a daemon before it is started. Attempting to set it after starting the thread will throw an <b>IllegalThreadStateException</b>.</li>
         <li>Daemon threads are useful for non-critical background tasks like logging or monitoring.</li>
     </ul>
 
@@ -1860,12 +1888,12 @@ Main thread finished.
 <div id="CallableFuture">
     <h5>Callable and Future in Java</h5>
     <p>
-        In Java, <code>Callable</code> and <code>Future</code> are key components of the <code>java.util.concurrent</code> package used for creating tasks and managing their results. <code>Callable</code> allows for concurrent computation with a return value, while <code>Future</code> represents the result of an asynchronous computation.
+        In Java, <b>Callable</b> and <b>Future</b> are key components of the <b>java.util.concurrent</b> package used for creating tasks and managing their results. <b>Callable</b> allows for concurrent computation with a return value, while <b>Future</b> represents the result of an asynchronous computation.
     </p>
 
     <b>Callable Interface</b>
     <p>
-        <code>Callable</code> is similar to <code>Runnable</code> but it allows a task to return a result and throw a checked exception. The primary method of <code>Callable</code> is <code>call()</code>.
+        <b>Callable</b> is similar to <b>Runnable</b> but it allows a task to return a result and throw a checked exception. The primary method of <b>Callable</b> is <b>call()</b>.
     </p>
     <pre>
 import java.util.concurrent.Callable;
@@ -1890,12 +1918,12 @@ public class CallableExample implements Callable<Integer> {
 
     <b>Future Interface</b>
     <p>
-        <code>Future</code> represents the result of a computation and provides methods to check its status or retrieve its result. Methods include:
+        <b>Future</b> represents the result of a computation and provides methods to check its status or retrieve its result. Methods include:
         <ul>
-            <li><code>get()</code>: Returns the computed result, waiting if necessary for the computation to complete.</li>
-            <li><code>isDone()</code>: Checks if the task has finished execution.</li>
-            <li><code>cancel(boolean mayInterruptIfRunning)</code>: Attempts to cancel the task, which may or may not succeed.</li>
-            <li><code>isCancelled()</code>: Checks if the task was cancelled.</li>
+            <li><b>get()</b>: Returns the computed result, waiting if necessary for the computation to complete.</li>
+            <li><b>isDone()</b>: Checks if the task has finished execution.</li>
+            <li><b>cancel(boolean mayInterruptIfRunning)</b>: Attempts to cancel the task, which may or may not succeed.</li>
+            <li><b>isCancelled()</b>: Checks if the task was cancelled.</li>
         </ul>
     </p>
     <pre>
@@ -1935,8 +1963,8 @@ public class FutureExample {
         </tr>
         <tr>
             <td>Return Type</td>
-            <td><code>void</code></td>
-            <td>Generic type (e.g., <code>Integer</code>)</td>
+            <td><b>void</b></td>
+            <td>Generic type (e.g., <b>Integer</b>)</td>
         </tr>
         <tr>
             <td>Exceptions</td>
@@ -1952,7 +1980,7 @@ public class FutureExample {
 
     <b>Using Future with Callable</b>
     <p>
-        <code>Future</code> can be used with <code>Callable</code> to manage the asynchronous nature of computations. It allows the main thread to perform other tasks while the computation is ongoing.
+        <b>Future</b> can be used with <b>Callable</b> to manage the asynchronous nature of computations. It allows the main thread to perform other tasks while the computation is ongoing.
     </p>
     <pre>
 import java.util.concurrent.*;
@@ -1995,7 +2023,7 @@ public class FutureWithCallable {
 
     <b>Conclusion</b>
     <p>
-        <code>Callable</code> and <code>Future</code> are powerful tools for handling tasks in a concurrent environment. While <code>Runnable</code> is simpler, <code>Callable</code> provides more features like returning a result and exception handling, making it preferable for many asynchronous tasks.
+        <b>Callable</b> and <b>Future</b> are powerful tools for handling tasks in a concurrent environment. While <b>Runnable</b> is simpler, <b>Callable</b> provides more features like returning a result and exception handling, making it preferable for many asynchronous tasks.
     </p>
 </div>
 <hr>
@@ -2003,13 +2031,13 @@ public class FutureWithCallable {
 <div id="ScheduledExecutorService">
     <h5>ScheduledExecutorService in Java</h5>
     <p>
-        <code>ScheduledExecutorService</code> is a part of the <code>java.util.concurrent</code> package that allows you to schedule tasks to run after a given delay or periodically with a fixed delay. It's particularly useful for performing background tasks at fixed intervals.
+        <b>ScheduledExecutorService</b> is a part of the <b>java.util.concurrent</b> package that allows you to schedule tasks to run after a given delay or periodically with a fixed delay. It's particularly useful for performing background tasks at fixed intervals.
     </p>
 
     <b>Key Features of ScheduledExecutorService</b>
     <ul>
         <li>
-            Schedule Tasks: It can schedule tasks to run at a fixed rate or after a certain delay using either <code>schedule()</code> or <code>scheduleAtFixedRate()</code>/<code>scheduleWithFixedDelay()</code>.
+            Schedule Tasks: It can schedule tasks to run at a fixed rate or after a certain delay using either <b>schedule()</b> or <b>scheduleAtFixedRate()</b>/<b>scheduleWithFixedDelay()</b>.
         </li>
         <li>
             Manage Thread Pools: Allows you to manage a pool of worker threads to handle scheduled tasks.
@@ -2079,12 +2107,12 @@ public class ScheduledExecutorServiceExample {
 
     <b>Comparison with Timer and TimerTask</b>
     <p>
-        While both <code>ScheduledExecutorService</code> and <code>Timer</code> are used for scheduling tasks, <code>ScheduledExecutorService</code> offers more features and better thread management. <code>Timer</code> is deprecated and uses <code>TimerTask</code>, which does not provide the flexibility that <code>ScheduledExecutorService</code> offers with methods like <code>scheduleWithFixedDelay()</code>.
+        While both <b>ScheduledExecutorService</b> and <b>Timer</b> are used for scheduling tasks, <b>ScheduledExecutorService</b> offers more features and better thread management. <b>Timer</b> is deprecated and uses <b>TimerTask</b>, which does not provide the flexibility that <b>ScheduledExecutorService</b> offers with methods like <b>scheduleWithFixedDelay()</b>.
     </p>
 
     <b>Conclusion</b>
     <p>
-        <code>ScheduledExecutorService</code> is a powerful tool for scheduling tasks with fixed delay or periodic execution, making it ideal for managing periodic background tasks in Java applications. It simplifies thread management and provides better performance compared to older alternatives like <code>Timer</code> and <code>TimerTask</code>.
+        <b>ScheduledExecutorService</b> is a powerful tool for scheduling tasks with fixed delay or periodic execution, making it ideal for managing periodic background tasks in Java applications. It simplifies thread management and provides better performance compared to older alternatives like <b>Timer</b> and <b>TimerTask</b>.
     </p>
 </div>
 <hr>
@@ -2092,7 +2120,7 @@ public class ScheduledExecutorServiceExample {
 <div id="BlockingQueue">
     <h5>Explain BlockingQueue in Java</h5>
     <p>
-        <code>BlockingQueue</code> is a part of the <code>java.util.concurrent</code> package that is designed to be used in concurrent programming environments where multiple threads need to safely produce and consume elements from a shared queue.
+        <b>BlockingQueue</b> is a part of the <b>java.util.concurrent</b> package that is designed to be used in concurrent programming environments where multiple threads need to safely produce and consume elements from a shared queue.
     </p>
 
     <b>Key Features of BlockingQueue</b>
@@ -2101,7 +2129,7 @@ public class ScheduledExecutorServiceExample {
             Thread Safety: Provides thread-safe operations for adding, removing, and inspecting elements, ensuring that no thread ever sees an inconsistent state of the queue.
         </li>
         <li>
-            Blocking Operations: Supports blocking operations, such as <code>put()</code>, <code>take()</code>, <code>poll()</code>, and <code>peek()</code>, making it easy to synchronize producer-consumer scenarios.
+            Blocking Operations: Supports blocking operations, such as <b>put()</b>, <b>take()</b>, <b>poll()</b>, and <b>peek()</b>, making it easy to synchronize producer-consumer scenarios.
         </li>
         <li>
             Capacity Management: Most implementations provide a bounded capacity, ensuring that producers can only add elements up to the specified capacity before being blocked.
@@ -2110,10 +2138,10 @@ public class ScheduledExecutorServiceExample {
 
     <b>Common Implementations</b>
     <ul>
-        <li><code>ArrayBlockingQueue</code>: A bounded blocking queue based on an array.</li>
-        <li><code>LinkedBlockingQueue</code>: A blocking queue based on linked nodes.</li>
-        <li><code>PriorityBlockingQueue</code>: A blocking queue that orders elements based on their natural ordering or using a comparator.</li>
-        <li><code>SynchronousQueue</code>: A blocking queue where each insert must be matched by a corresponding remove.</li>
+        <li><b>ArrayBlockingQueue</b>: A bounded blocking queue based on an array.</li>
+        <li><b>LinkedBlockingQueue</b>: A blocking queue based on linked nodes.</li>
+        <li><b>PriorityBlockingQueue</b>: A blocking queue that orders elements based on their natural ordering or using a comparator.</li>
+        <li><b>SynchronousQueue</b>: A blocking queue where each insert must be matched by a corresponding remove.</li>
     </ul>
 
     <b>Methods in BlockingQueue</b>
@@ -2123,7 +2151,7 @@ public class ScheduledExecutorServiceExample {
             <pre>queue.add(element);</pre>
         </li>
         <li>
-            offer(E e): Inserts an element at the tail of the queue if possible, and returns <code>true</code> if it succeeded, <code>false</code> otherwise.
+            offer(E e): Inserts an element at the tail of the queue if possible, and returns <b>true</b> if it succeeded, <b>false</b> otherwise.
             <pre>queue.offer(element);</pre>
         </li>
         <li>
@@ -2183,12 +2211,12 @@ public class BlockingQueueExample {
     <ul>
         <li>Provides thread-safe operations for managing data between producer and consumer threads.</li>
         <li>Handles synchronization internally, making it easy to implement complex concurrent tasks.</li>
-        <li>Offers methods like <code>put()</code> and <code>take()</code> that block until they can acquire the necessary lock, thus simplifying producer-consumer scenarios.</li>
+        <li>Offers methods like <b>put()</b> and <b>take()</b> that block until they can acquire the necessary lock, thus simplifying producer-consumer scenarios.</li>
     </ul>
 
     <b>Conclusion</b>
     <p>
-        <code>BlockingQueue</code> is a powerful tool for managing thread-safe, concurrent data structures. It simplifies producer-consumer problems by providing methods that block until an operation can be completed, making it easier to synchronize multiple threads accessing shared resources.
+        <b>BlockingQueue</b> is a powerful tool for managing thread-safe, concurrent data structures. It simplifies producer-consumer problems by providing methods that block until an operation can be completed, making it easier to synchronize multiple threads accessing shared resources.
     </p>
 </div>
 <hr>
@@ -2201,7 +2229,7 @@ public class BlockingQueueExample {
 
     <b>Understanding the join() Method</b>
     <p>
-        The <code>join()</code> method, available in the <code>Thread</code> class, is used to make one thread wait for another thread to complete its execution. When a thread calls the <code>join()</code> method on another thread, it blocks until that thread finishes execution.
+        The <b>join()</b> method, available in the <b>Thread</b> class, is used to make one thread wait for another thread to complete its execution. When a thread calls the <b>join()</b> method on another thread, it blocks until that thread finishes execution.
     </p>
 
     <b>Usage Example</b>
@@ -2239,14 +2267,14 @@ class ThreadJoinExample {
 
     <b>Key Points About join() Method</b>
     <ul>
-        <li><b>Blocking Call</b>: <code>join()</code> is a blocking call, meaning that the calling thread will stop executing until the thread it's called on completes.</li>
+        <li><b>Blocking Call</b>: <b>join()</b> is a blocking call, meaning that the calling thread will stop executing until the thread it's called on completes.</li>
         <li><b>Thread Interdependency</b>: It allows threads to wait for each other. For example, thread A can wait for thread B to complete before proceeding.</li>
         <li><b>Thread Deadlock Prevention</b>: If multiple threads are involved and each thread is joining another, a thread deadlock can occur. It's important to manage thread joins carefully to avoid such scenarios.</li>
     </ul>
 
     <b>Difference Between join() and wait()/notify()</b>
     <p>
-        While <code>join()</code> is used for waiting for the completion of another thread, <code>wait()</code> and <code>notify()/notifyAll()</code> are used for inter-thread communication within a single thread. <code>wait()</code> is typically used in conjunction with synchronization to release a lock and wait for other threads to signal it to resume execution.
+        While <b>join()</b> is used for waiting for the completion of another thread, <b>wait()</b> and <b>notify()/notifyAll()</b> are used for inter-thread communication within a single thread. <b>wait()</b> is typically used in conjunction with synchronization to release a lock and wait for other threads to signal it to resume execution.
     </p>
 
     <b>Practical Scenarios</b>
@@ -2261,7 +2289,7 @@ class ThreadJoinExample {
 
     <b>Conclusion</b>
     <p>
-        The <code>join()</code> method is a simple yet powerful feature for managing thread execution in Java. It allows one thread to wait for another, which can be useful for controlling the order of thread completion, ensuring that certain tasks complete before others, and managing shared resources among threads.
+        The <b>join()</b> method is a simple yet powerful feature for managing thread execution in Java. It allows one thread to wait for another, which can be useful for controlling the order of thread completion, ensuring that certain tasks complete before others, and managing shared resources among threads.
     </p>
 </div>
 <hr>
@@ -2269,7 +2297,7 @@ class ThreadJoinExample {
 <div id="ThreadPools">
     <h5>Explain Thread Pools in Java</h5>
     <p>
-        A <code>ThreadPool</code> in Java is a mechanism to manage a group of reusable threads for executing multiple tasks concurrently. Instead of creating a new thread for every task, a thread pool maintains a fixed number of threads, which can be reused to execute tasks. This improves performance and resource management in applications with many short-lived tasks.
+        A <b>ThreadPool</b> in Java is a mechanism to manage a group of reusable threads for executing multiple tasks concurrently. Instead of creating a new thread for every task, a thread pool maintains a fixed number of threads, which can be reused to execute tasks. This improves performance and resource management in applications with many short-lived tasks.
     </p>
 
     <b>Advantages of Thread Pools</b>
@@ -2282,7 +2310,7 @@ class ThreadJoinExample {
 
     <b>How to Create a Thread Pool</b>
     <p>
-        Java provides the <code>ExecutorService</code> interface and <code>Executors</code> factory class to create and manage thread pools.
+        Java provides the <b>ExecutorService</b> interface and <b>Executors</b> factory class to create and manage thread pools.
     </p>
 
     <b>Types of Thread Pools</b>
@@ -2328,16 +2356,16 @@ scheduledPool.shutdown();
     <b>Important Methods in ExecutorService</b>
     <ul>
         <li>
-            <b><code>execute(Runnable task)</code></b>: Submits a task for execution.
+            <b><b>execute(Runnable task)</b></b>: Submits a task for execution.
         </li>
         <li>
-            <b><code>submit()</code></b>: Submits a task and returns a <code>Future</code> for tracking the result.
+            <b><b>submit()</b></b>: Submits a task and returns a <b>Future</b> for tracking the result.
         </li>
         <li>
-            <b><code>shutdown()</code></b>: Initiates an orderly shutdown of the thread pool after all tasks are completed.
+            <b><b>shutdown()</b></b>: Initiates an orderly shutdown of the thread pool after all tasks are completed.
         </li>
         <li>
-            <b><code>shutdownNow()</code></b>: Immediately stops all actively executing tasks and halts further task processing.
+            <b><b>shutdownNow()</b></b>: Immediately stops all actively executing tasks and halts further task processing.
         </li>
     </ul>
 
@@ -2380,7 +2408,7 @@ public class ThreadPoolExample {
 <div id="CompletableFuture">
     <h5>Explain CompletableFuture in Java</h5>
     <p>
-        <code>CompletableFuture</code> is a class in the <code>java.util.concurrent</code> package that represents a future result of an asynchronous computation. It provides a more flexible and powerful way to handle asynchronous tasks compared to traditional <code>Future</code>.
+        <b>CompletableFuture</b> is a class in the <b>java.util.concurrent</b> package that represents a future result of an asynchronous computation. It provides a more flexible and powerful way to handle asynchronous tasks compared to traditional <b>Future</b>.
     </p>
 
     <b>Key Features of CompletableFuture</b>
@@ -2392,11 +2420,11 @@ public class ThreadPoolExample {
     </ul>
 
     <b>Creating a CompletableFuture</b>
-    <p>You can create a <code>CompletableFuture</code> using the following methods:</p>
+    <p>You can create a <b>CompletableFuture</b> using the following methods:</p>
     <ul>
-        <li><code>CompletableFuture.runAsync()</code>: Runs a task asynchronously without returning a result.</li>
-        <li><code>CompletableFuture.supplyAsync()</code>: Runs a task asynchronously and returns a result.</li>
-        <li><code>new CompletableFuture()</code>: Creates an uncompleted future that you can complete manually.</li>
+        <li><b>CompletableFuture.runAsync()</b>: Runs a task asynchronously without returning a result.</li>
+        <li><b>CompletableFuture.supplyAsync()</b>: Runs a task asynchronously and returns a result.</li>
+        <li><b>new CompletableFuture()</b>: Creates an uncompleted future that you can complete manually.</li>
     </ul>
 
     <b>Example: CompletableFuture Basics</b>
@@ -2426,7 +2454,7 @@ public class CompletableFutureExample {
 
     <b>Chaining CompletableFutures</b>
     <p>
-        You can chain multiple futures using methods like <code>thenApply()</code>, <code>thenAccept()</code>, and <code>thenRun()</code>.
+        You can chain multiple futures using methods like <b>thenApply()</b>, <b>thenAccept()</b>, and <b>thenRun()</b>.
     </p>
     <pre>
 CompletableFuture.supplyAsync(() -> "Task 1")
@@ -2436,7 +2464,7 @@ CompletableFuture.supplyAsync(() -> "Task 1")
 
     <b>Combining CompletableFutures</b>
     <p>
-        Combine multiple <code>CompletableFuture</code> instances using methods like <code>thenCombine()</code> or <code>allOf()</code>.
+        Combine multiple <b>CompletableFuture</b> instances using methods like <b>thenCombine()</b> or <b>allOf()</b>.
     </p>
     <pre>
 // Combining two futures
@@ -2449,7 +2477,7 @@ future1.thenCombine(future2, (result1, result2) -> result1 + " + " + result2)
 
     <b>Exception Handling</b>
     <p>
-        Handle exceptions using <code>exceptionally()</code> or <code>handle()</code>.
+        Handle exceptions using <b>exceptionally()</b> or <b>handle()</b>.
     </p>
     <pre>
 CompletableFuture.supplyAsync(() -> {
@@ -2461,10 +2489,10 @@ CompletableFuture.supplyAsync(() -> {
 
     <b>Advanced Methods</b>
     <ul>
-        <li><b><code>allOf()</code></b>: Waits for all tasks to complete.</li>
-        <li><b><code>anyOf()</code></b>: Completes when any task completes.</li>
-        <li><b><code>complete()</code></b>: Manually completes a future.</li>
-        <li><b><code>join()</code></b>: Blocks and waits for the task to complete.</li>
+        <li><b><b>allOf()</b></b>: Waits for all tasks to complete.</li>
+        <li><b><b>anyOf()</b></b>: Completes when any task completes.</li>
+        <li><b><b>complete()</b></b>: Manually completes a future.</li>
+        <li><b><b>join()</b></b>: Blocks and waits for the task to complete.</li>
     </ul>
 
     <b>CompletableFuture vs Future</b>
@@ -2495,14 +2523,14 @@ CompletableFuture.supplyAsync(() -> {
             <tr>
                 <td>Exception Handling</td>
                 <td>Built-in exception handling with recovery.</td>
-                <td>Limited to <code>get()</code> method throwing exceptions.</td>
+                <td>Limited to <b>get()</b> method throwing exceptions.</td>
             </tr>
         </tbody>
     </table>
 
     <b>Conclusion</b>
     <p>
-        <code>CompletableFuture</code> is a versatile and modern approach for handling asynchronous computations in Java. It overcomes the limitations of <code>Future</code> by supporting non-blocking execution, chaining, combining, and error handling. It is a valuable tool for building responsive and efficient applications.
+        <b>CompletableFuture</b> is a versatile and modern approach for handling asynchronous computations in Java. It overcomes the limitations of <b>Future</b> by supporting non-blocking execution, chaining, combining, and error handling. It is a valuable tool for building responsive and efficient applications.
     </p>
 </div>
 

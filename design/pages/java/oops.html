@@ -1,0 +1,982 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 🔑 SEO Metadata -->
+<title>Java OOP Interview Guide</title>
+<meta name="description"
+  content="A complete Java OOP Interview Guide covering Encapsulation, Inheritance, Polymorphism, Abstraction, Constructors, Method Overloading, Overriding, and SOLID principles with examples.">
+<meta name="keywords"
+  content="Java OOP, Java Interview Questions, Encapsulation, Inheritance, Polymorphism, Abstraction, Method Overloading, Method Overriding, SOLID principles, Abstract vs Interface">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Preparation Zone">
+
+<!-- 📑 Structured Data -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Java OOP Interview Guide",
+    "description": "A complete Java OOP Interview Guide covering Encapsulation, Inheritance, Polymorphism, Abstraction, Constructors, Method Overloading, Overriding, and SOLID principles with examples.",
+    "url": "https://www.preparationzone.com/#design/pages/java/oops.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Preparation Zone",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.preparationzone.com/images/logo.png"
+      }
+    }
+  }
+  </script>
+
+<h2 style="text-align: center;">Object-Oriented Programming (OOP)</h2>
+<br>
+<div class="custom-container">
+  <h5>Table of Contents</h5>
+  <ol>
+    <li><a href="#oops"> What is Object-Oriented Programming (OOP) in Java?</a></li>
+    <li><a href="#main-features-oops">Main Features of Object-Oriented Programming (OOP) </a></li>
+    <li><a href="#encapsulation">What is encapsulation in Java? </a></li>
+    <li><a href="#inheritance">Explain inheritance in Java with an example </a></li>
+    <li><a href="#polymorphism"> What is polymorphism in Java?</a></li>
+    <li><a href="#abstraction">What is abstraction, and how is it achieved in Java? </a></li>
+    <li><a href="#abstract-interface">Explain the difference between an abstract class and an interface. </a></li>
+    <li><a href="#multiple-inheritance">How does Java implement multiple inheritance? </a></li>
+    <li><a href="#abstract-final">Can a class be declared as both `abstract` and `final`? </a></li>
+    <li><a href="#constructor">What is a constructor, and what are its types? </a></li>
+    <li><a href="#super">What is the role of the `super` keyword in Java? </a></li>
+    <li><a href="#overloading-overriding">Explain the concept of method overloading and method overriding </a></li>
+    <li><a href="#overload-static-method">Can we overload a static method in Java? </a></li>
+    <li><a href="#override-static-method">Can you override a static method in Java? </a></li>
+    <li><a href="#prevent-overriding">Can we prevent overriding a method without using the final modifier? </a></li>
+    <li><a href="#override-private">Can we override a private method in Java? </a></li>
+    <li><a href="#change-the-return-type">Can We Change the Return Type of a Method to a Subclass While Overriding? </a>
+    </li>
+    <li><a href="#inner-class">What is an inner class, and why is it used? </a></li>
+    <li><a href="#this-super">What is the difference between `this` and `super` keywords? </a></li>
+    <li><a href="#override-in-subclass">How Do You Call a Superclass Version of an Overriding Method in a Subclass? </a>
+    </li>
+    <li><a href="#immutability">How do you achieve immutability in Java? </a></li>
+    <li><a href="#sealed-class">What is a sealed class in Java? </a></li>
+    <li><a href="#method-hiding">What is the method of hiding in Java? </a></li>
+    <li><a href="#final-abstract">Can we make a class both final and abstract at the same time? </a></li>
+    <li><a href="#extend-classes">Can a class extend more than one class in Java? </a></li>
+    <li><a href="#extend-interface">Can an interface extend another interface? </a></li>
+    <li><a href="#instanceof">What is the `instanceof` keyword? </a></li>
+    <li><a href="#default-method">What is the purpose of the `default` methods in interfaces? </a></li>
+    <li><a href="#functional-interface">Explain the use of functional interfaces in Java 8. </a></li>
+    <li><a href="#object-cloning">How does Java handle object cloning? </a></li>
+    <li><a href="#composition">What is composition in OOP? </a></li>
+    <li><a href="#dependency-injection">Explain dependency injection. </a></li>
+    <li><a href="#default-constructors">What are default constructors? </a></li>
+    <li><a href="#method-hiding-1">Can you explain the concept of method hiding? </a></li>
+    <li><a href="#solid">What are the SOLID principles </a></li>
+    <li><a href="#aggregation-composition">What is the difference between aggregation and composition? </a></li>
+    <li><a href="#diff-overloading-overriding">What is the difference between method overloading and method overriding?
+      </a></li>
+    <li><a href="#change-return-type">What happens if you override a method and change the return type to a different
+        type, which is not a subclass of the original return type? </a></li>
+    <li><a href="#constructor-inherited">Can a constructor be inherited? </a></li>
+    <li><a href="#constructor-from-static-method">Can we call a constructor from a static method in Java? </a></li>
+  </ol>
+</div>
+<hr>
+
+<div id="oops">
+  <h5>What is Object-Oriented Programming (OOP) in Java?</h5>
+
+  <li>OOP is a programming paradigm that organizes software design around objects, which are instances of classes.</li>
+  <li>An object is an instance of a class, and a class serves as a blueprint defining properties (fields) and behaviors
+    (methods).</li>
+  <li>It is based on four fundamental principles: Encapsulation, Inheritance, Polymorphism, and Abstraction.</li>
+  <li>OOP promotes code reusability, modularity, scalability, and easier maintenance.</li>
+  <li>Java fully supports OOP concepts, making it a widely used language for OOP-based software development.</li>
+  <a href="design/pages/oops/basic_oops.html" class="nav-link" onclick="loadPage(event)">Detail of OOPs</a>
+
+</div>
+<hr>
+
+<div id="main-features-oops">
+  <h5>Main Features of Object-Oriented Programming (OOP)</h5>
+  <p>
+    Object-Oriented Programming (OOP) is a programming paradigm that organizes software design around data, or objects,
+    rather than functions and logic. The key features of OOP help make the development process more modular, reusable,
+    and easier to maintain.
+  </p>
+
+  <b>1. Encapsulation:</b>
+  <p>
+    Encapsulation is the concept of bundling the data (variables) and the methods (functions) that operate on the data
+    into a single unit, called a class. It also helps in restricting access to certain components of the object to
+    protect the data from unauthorized access and modification.
+  </p>
+  <ul>
+    <li>Encapsulation is achieved through access modifiers like <b>private</b>, <b>protected</b>, and
+      <b>public</b>.</li>
+    <li>Example: Hide internal implementation details and provide getter and setter methods to access and modify the
+      data.</li>
+  </ul>
+
+  <b>2. Abstraction:</b>
+  <p>
+    Abstraction is the concept of hiding the complex implementation details and showing only the essential features of
+    an object. It allows you to focus on what an object does rather than how it does it.
+  </p>
+  <ul>
+    <li>Abstract classes and interfaces are used to achieve abstraction in OOP.</li>
+    <li>Example: An abstract class or interface defines a template, and concrete classes provide the implementation.
+    </li>
+  </ul>
+
+  <b>3. Inheritance:</b>
+  <p>
+    Inheritance is a mechanism where a new class inherits the properties and behaviors (methods) of an existing class.
+    It helps in reusing code, extending functionality, and creating a hierarchical class structure.
+  </p>
+  <ul>
+    <li>Through inheritance, a subclass can access the members (fields and methods) of its superclass.</li>
+    <li>Example: A <b>Dog</b> class can inherit from an <b>Animal</b> class and gain its characteristics and
+      behavior.</li>
+  </ul>
+
+  <b>4. Polymorphism:</b>
+  <p>
+    Polymorphism means "many forms." It allows objects to be treated as instances of their parent class, but the actual
+    method that gets executed is determined by the object's actual class (at runtime in the case of dynamic
+    polymorphism).
+  </p>
+  <ul>
+    <li>Polymorphism can be achieved through method overriding (runtime polymorphism) and method overloading
+      (compile-time polymorphism).</li>
+    <li>Example: A <b>Shape</b> class can have a method <b>draw()</b>, which is overridden in subclasses
+      like <b>Circle</b> and <b>Rectangle</b> to provide specific implementations.</li>
+  </ul>
+
+  <b>5. Object:</b>
+  <p>
+    An object is an instance of a class. It holds real values for the variables defined in the class and can perform
+    actions (methods) defined by the class. Objects are the basic units of OOP.
+  </p>
+  <ul>
+    <li>Objects represent real-world entities and encapsulate state and behavior.</li>
+    <li>Example: A <b>Car</b> object might have attributes like <b>color</b> and <b>model</b>, and
+      behaviors like <b>start()</b> and <b>stop()</b>.</li>
+  </ul>
+
+
+  <b>Summary:</b>
+  <ul>
+    <li><strong>Encapsulation</strong>: Bundling data and methods and restricting access to internal details.</li>
+    <li><strong>Abstraction</strong>: Hiding complex details and showing only the essential features.</li>
+    <li><strong>Inheritance</strong>: Creating a new class from an existing class to reuse code.</li>
+    <li><strong>Polymorphism</strong>: Allowing objects to take many forms through method overriding and overloading.
+    </li>
+  </ul>
+</div>
+<hr>
+
+<div id="encapsulation">
+  <h5>What is encapsulation in Java?</h5>
+  <a href="design/pages/oops/encapsulation.html" class="nav-link" onclick="loadPage(event)">Click on this link  -> Data Hiding -
+    Encapsulation</a>
+</div>
+<hr>
+
+<div id="inheritance">
+  <h5>Explain inheritance in Java with an example.</h5>
+  <a href="design/pages/oops/inheritance.html" class="nav-link" onclick="loadPage(event)">Click on this link  -> Inheritance</a>
+</div>
+<hr>
+
+<div id="polymorphism">
+  <h5>What is polymorphism in Java?</h5>
+  <a href="design/pages/oops/polymorphism.html" class="nav-link" onclick="loadPage(event)">Click on this link  -> Polymorphism</a>
+</div>
+<hr>
+
+<div id="abstraction">
+  <h5>What is abstraction, and how is it achieved in Java?</h5>
+  <a href="design/pages/oops/abstraction.html" class="nav-link" onclick="loadPage(event)">Click on this link  -> Data Hiding - Abstraction</a>
+</div>
+<hr>
+
+<div id="abstract-interface">
+  <h5>Explain the difference between an abstract class and an interface.</h5>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+      <th>Feature</th>
+      <th>Abstract Class</th>
+      <th>Interface</th>
+    </tr>
+    <tr>
+      <td>Definition</td>
+      <td>A class that can have both abstract methods (without a body) and concrete methods (with a body).</td>
+      <td>A blueprint that only contains abstract methods (until Java 8, after which default and static methods were
+        introduced).</td>
+    </tr>
+    <tr>
+      <td>Usage</td>
+      <td>Used to represent a base class that provides partial implementation for subclasses.</td>
+      <td>Used to define a contract that implementing classes must adhere to.</td>
+    </tr>
+    <tr>
+      <td>Inheritance</td>
+      <td>A class can extend only one abstract class (single inheritance).</td>
+      <td>A class can implement multiple interfaces (multiple inheritance).</td>
+    </tr>
+    <tr>
+      <td>Access Modifiers</td>
+      <td>Abstract classes can have any access modifier for methods and fields (e.g., private, protected, public).</td>
+      <td>All methods in an interface are public by default.</td>
+    </tr>
+    <tr>
+      <td>Fields</td>
+      <td>Can have instance variables and static variables.</td>
+      <td>Fields are implicitly public, static, and final (constants).</td>
+    </tr>
+    <tr>
+      <td>Constructor</td>
+      <td>Can have a constructor to initialize fields.</td>
+      <td>Cannot have a constructor.</td>
+    </tr>
+    <tr>
+      <td>Example</td>
+      <td>
+        <pre>
+          abstract class Animal {
+              abstract void makeSound();
+              void eat() {
+                  System.out.println("Eating...");
+              }
+          }
+          </pre>
+      </td>
+      <td>
+        <pre>
+          interface Animal {
+              void makeSound();
+              default void eat() {
+                  System.out.println("Eating...");
+              }
+          }
+          </pre>
+      </td>
+    </tr>
+  </table>
+
+  <b>Note: </b>
+  <ul>
+    <li>A class can implement multiple interfaces but can extend only one abstract class.</li>
+    <li>Interfaces support default and static methods from Java 8 onwards.</li>
+  </ul>
+  </p>
+</div>
+<hr>
+
+<div id="multiple-inheritance">
+  <h5>How does Java implement multiple inheritance?</h5>
+  <p><strong>Answer:</strong>
+    Java implements multiple inheritance through interfaces. <br>
+    A class can implement multiple interfaces, thus inheriting behavior from all of them.<br>
+    This avoids the "diamond problem" caused by ambiguity in multiple inheritance.</p>
+  <pre>
+      interface InterfaceA {
+          void methodA();
+      }
+      
+      interface InterfaceB {
+          void methodB();
+      }
+      
+      class MultiInheritanceClass implements InterfaceA, InterfaceB {
+          public void methodA() {
+              System.out.println("Method A from InterfaceA");
+          }
+      
+          public void methodB() {
+              System.out.println("Method B from InterfaceB");
+          }
+      }
+      
+      public class Test {
+          public static void main(String[] args) {
+              MultiInheritanceClass obj = new MultiInheritanceClass();
+              obj.methodA();
+              obj.methodB();
+          }
+      }
+        </pre>
+
+</div>
+<hr>
+
+<div id="abstract-final">
+  <h5>Can a class be declared as both `abstract` and `final`?</h5>
+  <p><strong>Answer:</strong> No, a class cannot be both <b>abstract</b> and <b>final</b> because an
+    abstract class is meant to be extended, whereas a final class cannot be extended.</p>
+</div>
+<hr>
+
+
+<div id="constructor">
+  <h5>What is a constructor, and what are its types?</h5>
+  <p><strong>Answer:</strong> A constructor is a special method used to initialize objects. Types:
+  <ul>
+    <li><strong>Default Constructor:</strong> No arguments.</li>
+    <li><strong>Parameterized Constructor:</strong> Takes arguments to initialize fields.</li>
+  </ul>
+  </p>
+</div>
+<hr>
+
+<div id="super">
+  <h5> What is the role of the `super` keyword in Java?</h5>
+  <p><strong>Answer:</strong> The <b>super</b> keyword is used to refer to the immediate parent class. It can be
+    used to call the parent class constructor or methods.</p>
+  <pre>class Animal {
+      void eat() {
+          System.out.println("Animal eats.");
+      }
+  }
+  
+  class Dog extends Animal {
+      void eat() {
+          super.eat();
+          System.out.println("Dog eats.");
+      }
+  }
+  </pre>
+</div>
+<hr>
+
+<div id="overloading-overriding">
+  <h5> Explain the concept of method overloading and method overriding.</h5>
+  <div>
+    <p><strong>Method Overloading:</strong> This occurs when multiple methods in the same class share the same name but
+      have different parameter lists (number, type, or order of parameters). It is a <b>compile-time polymorphism</b>.
+    </p>
+    <p><strong>Key Points:</strong></p>
+    <ul>
+      <li>Method overloading cannot be achieved by changing only the return type.</li>
+      <li>It is resolved at compile time based on the method signature.</li>
+    </ul>
+    <pre>
+      class Calculator {
+          // Overloaded methods
+          int add(int a, int b) {
+              return a + b;
+          }
+      
+          double add(double a, double b) {
+              return a + b;
+          }
+      
+          int add(int a, int b, int c) {
+              return a + b + c;
+          }
+      }
+      
+      public class OverloadingExample {
+          public static void main(String[] args) {
+              Calculator calc = new Calculator();
+              System.out.println(calc.add(2, 3));        // Calls int add(int, int)
+              System.out.println(calc.add(2.5, 3.5));   // Calls double add(double, double)
+              System.out.println(calc.add(1, 2, 3));    // Calls int add(int, int, int)
+          }
+      }
+        </pre>
+
+    <p><strong>Method Overriding:</strong> This occurs when a subclass provides a specific implementation for a method
+      already defined in its parent class. It is <b>runtime polymorphism</b>.</p>
+    <p><strong>Key Points:</strong></p>
+    <ul>
+      <li>The method in the child class must have the same name, return type, and parameters as in the parent class.
+      </li>
+      <li>Only instance methods can be overridden; static methods are hidden.</li>
+      <li>The <b>@Override</b> annotation is used for clarity and to catch errors.</li>
+    </ul>
+    <pre>
+      class Parent {
+          void display() {
+              System.out.println("Display from Parent");
+          }
+      }
+      
+      class Child extends Parent {
+          @Override
+          void display() {
+              System.out.println("Display from Child");
+          }
+      }
+      
+      public class OverridingExample {
+          public static void main(String[] args) {
+              Parent obj = new Child(); // Upcasting
+              obj.display(); // Calls Child's overridden method
+          }
+      }
+        </pre>
+
+    <p><strong>Tricky Points:</strong></p>
+    <ul>
+      <li>If a static method is re-declared in the subclass, it is method hiding, not overriding.</li>
+      <li>Overriding depends on the runtime object type, not the reference type.</li>
+      <li>Private methods cannot be overridden; they are class-specific.</li>
+    </ul>
+  </div>
+
+</div>
+<hr>
+
+<div id="overload-static-method">
+  <h5>Can we overload a static method in Java?</h5>
+  <p>
+    Yes, you can overload a static method in Java. You can declare as many static methods of the same name as you wish
+    provided all of them have different method signatures.
+  <pre>
+      class Calculator {
+          // Static method to add two integers
+          static int add(int a, int b) {
+              return a + b;
+          }
+      
+          // Static method to add three integers
+          static int add(int a, int b, int c) {
+              return a + b + c;
+          }
+      
+          // Static method to add two double values
+          static double add(double a, double b) {
+              return a + b;
+          }
+      }
+      
+      public class StaticMethodOverloadingDemo {
+          public static void main(String[] args) {
+              // Calling overloaded static methods
+              System.out.println(Calculator.add(10, 20));           // Calls method with two integers
+              System.out.println(Calculator.add(10, 20, 30));       // Calls method with three integers
+              System.out.println(Calculator.add(10.5, 20.5));       // Calls method with two doubles
+          }
+      }
+          </pre>
+
+  <b>Output:</b>
+  <pre>
+      30
+      60
+      31.0
+    </pre>
+  </p>
+</div>
+<hr>
+
+<div id="override-static-method">
+  <h5> Can you override a static method in Java?</h5>
+  <p>No, static methods cannot be overridden in Java. Instead, if a static method is defined in both the parent and
+    child classes with the same name and parameters, it is known as <b>method hiding</b>.
+    The method called depends on the reference type, not the object type.</p>
+  <ul>
+    <li>Static methods are associated with the class, not instances of the class.</li>
+    <li>During method hiding, the method of the reference type (class type) is invoked, not the runtime object.</li>
+  </ul>
+
+  <pre>
+      class Parent {
+          static void staticMethod() {
+              System.out.println("Static method in Parent");
+          }
+      }
+      
+      class Child extends Parent {
+          static void staticMethod() {
+              System.out.println("Static method in Child");
+          }
+      }
+      
+      public class StaticMethodTest {
+          public static void main(String[] args) {
+              Parent parent = new Parent();
+              Parent childAsParent = new Child();
+              Child child = new Child();
+              
+              parent.staticMethod();           // Outputs: Static method in Parent
+              childAsParent.staticMethod();    // Outputs: Static method in Parent (method hiding)
+              child.staticMethod();            // Outputs: Static method in Child
+          }
+      }
+        </pre>
+
+  <p><strong>Key Points:</strong></p>
+  <ul>
+    <li>Static methods are resolved at compile time, not runtime.</li>
+    <li>Overriding applies only to instance methods, not static methods.</li>
+    <li>Access modifiers can be changed in hiding, but the method signature should remain the same.</li>
+  </ul>
+
+</div>
+<hr>
+
+<div id="prevent-overriding">
+  <h5>Can we prevent overriding a method without using the final modifier?</h5>
+  <p>
+    Yes, you can prevent the method overriding in Java without using the final modifier.
+    In fact, there are several ways to accomplish it e.g. you can mark the method as private or static, those cannot be
+    overridden.
+  </p>
+</div>
+<hr>
+
+<div id="override-private">
+  <h5>Can we override a private method in Java?</h5>
+  <p>
+    No, you cannot. Since the private method is only accessible and visible inside the class they are declared, it's not
+    possible to override them in subclasses.
+    Though, you can override them inside the inner class as they are accessible there.
+  </p>
+</div>
+<hr>
+
+<div id="change-the-return-type">
+  <h5>Can We Change the Return Type of a Method to a Subclass While Overriding?</h5>
+  <p>
+    Yes, in Java, we can change the return type of a method to a subclass while overriding the method. This feature is
+    called <strong>covariant return type</strong>.
+  </p>
+
+  <b>Covariant Return Type:</b>
+  <p>
+    Covariant return type allows a subclass to override a method and return a type that is a subclass of the original
+    method's return type in the parent class. It is a feature introduced in Java 5 that enhances flexibility and
+    reusability while preserving method signatures and behavior.
+  </p>
+
+  <b>Example of Covariant Return Type in Java:</b>
+  <pre>
+class Animal {
+  // Method returning an Animal object
+  Animal getAnimal() {
+      return new Animal();
+  }
+}
+
+class Dog extends Animal {
+  // Overriding the method with a covariant return type (returning Dog)
+  @Override
+  Dog getAnimal() {
+      return new Dog();
+  }
+}
+
+public class CovariantReturnTypeDemo {
+  public static void main(String[] args) {
+      Animal animal = new Animal();
+      Animal anotherAnimal = animal.getAnimal(); // Returns an Animal object
+
+      Dog dog = new Dog();
+      Dog anotherDog = dog.getAnimal(); // Returns a Dog object, covariant return type
+  }
+}
+  </pre>
+
+  <b>Output:</b>
+  <pre>
+No output, but the types are correct:
+- animal.getAnimal() returns Animal
+- dog.getAnimal() returns Dog
+  </pre>
+
+  <b>Explanation of the Example:</b>
+  <ul>
+    <li>The class <b>Animal</b> has a method <b>getAnimal()</b> that returns an <b>Animal</b> object.
+    </li>
+    <li>The class <b>Dog</b> overrides the <b>getAnimal()</b> method and returns a <b>Dog</b> object,
+      which is a subclass of <b>Animal</b>.</li>
+    <li>This demonstrates the concept of covariant return types in method overriding. The method in the subclass
+      (<b>Dog</b>) returns a more specific type than the superclass (<b>Animal</b>).</li>
+  </ul>
+
+  <b>Benefits of Covariant Return Type:</b>
+  <ul>
+    <li>It allows more specific return types in overridden methods, improving the flexibility and usability of class
+      hierarchies.</li>
+    <li>Helps to avoid unnecessary casting when working with object-oriented designs.</li>
+  </ul>
+
+  <b>Key Restrictions:</b>
+  <ul>
+    <li>The return type must be a subtype of the return type declared in the parent class method.</li>
+    <li>Covariant return type can only be used in overriding methods, not overloaded methods.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="inner-class">
+  <h5> What is an inner class, and why is it used?</h5>
+  <p><strong>Answer:</strong> An inner class in Java is a class that is defined within another class. Inner classes are
+    used to logically group classes that are only used in one place, improve encapsulation, and make the code more
+    readable and maintainable.</p>
+
+  <p><strong>Types of Inner Classes:</strong></p>
+  <ul>
+    <li><strong>Member Inner Class:</strong> A non-static inner class that is a member of the outer class.</li>
+    <li><strong>Static Nested Class:</strong> A static class defined inside another class.</li>
+    <li><strong>Local Inner Class:</strong> A class defined within a method.</li>
+    <li><strong>Anonymous Inner Class:</strong> A class without a name, usually used to provide a quick implementation
+      of an interface or abstract class.</li>
+  </ul>
+
+  <p><strong>Example: Member Inner Class</strong></p>
+  <pre>
+      class OuterClass {
+          private String message = "Hello from Outer Class!";
+          
+          class InnerClass {
+              void displayMessage() {
+                  System.out.println(message); // Accessing private member of the outer class
+              }
+          }
+      }
+      
+      public class InnerClassExample {
+          public static void main(String[] args) {
+              OuterClass outer = new OuterClass();
+              OuterClass.InnerClass inner = outer.new InnerClass();
+              inner.displayMessage();
+          }
+      }
+        </pre>
+
+  <p><strong>Why Use Inner Classes?</strong></p>
+  <ul>
+    <li>Improves code readability by logically grouping related classes.</li>
+    <li>Provides better encapsulation since inner classes can access private members of the outer class.</li>
+    <li>Enables creating more compact code, such as with anonymous inner classes for event handling or short-lived
+      implementations.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="this-super">
+  <h5> What is the difference between `this` and `super` keywords?</h5>
+  <p><strong>Answer:</strong>
+  <ul>
+    <li><b>this</b>: Refers to the current object.</li>
+    <li><b>super</b>: Refers to the parent class object.</li>
+  </ul>
+  </p>
+</div>
+<hr>
+
+<div id="override-in-subclass">
+  <h5>How Do You Call a Superclass Version of an Overriding Method in a Subclass?</h5>
+  <p>
+    In Java, when a method in a subclass overrides a method in its superclass, you can call the superclass version of
+    the method using the <b>super</b> keyword. The <b>super</b> keyword allows access to the superclass's
+    methods and constructors.
+  </p>
+
+  <b>Example of Calling a Superclass Method from a Subclass:</b>
+  <pre>
+class Animal {
+  // Method in the superclass
+  void sound() {
+      System.out.println("Animal makes a sound");
+  }
+}
+
+class Dog extends Animal {
+  // Overriding the sound method
+  @Override
+  void sound() {
+      System.out.println("Dog barks");
+      
+      // Calling the superclass version of the sound method
+      super.sound();
+  }
+}
+
+public class SuperclassMethodCallDemo {
+  public static void main(String[] args) {
+      Dog dog = new Dog();
+      dog.sound();  // Calls the overridden method in Dog class
+  }
+}
+  </pre>
+
+  <b>Output:</b>
+  <pre>
+Dog barks
+Animal makes a sound
+  </pre>
+  <b>Limitations:</b>
+  <ul>
+    <li>You can only call the superclass method from the subclass if the method is not marked as <b>private</b> in
+      the superclass.</li>
+    <li><b>super</b> can only refer to the immediate superclass, and not any class higher in the hierarchy.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="immutability">
+  <h5> How do you achieve immutability in Java?</h5>
+  <p><strong>Answer:</strong> Create a class with:
+  <ul>
+    <li>Private final fields.</li>
+    <li>A constructor to initialize fields.</li>
+    <li>No setter methods.</li>
+  </ul>
+  </p>
+  <pre>final class Immutable {
+      private final String name;
+  
+      Immutable(String name) {
+          this.name = name;
+      }
+  
+      public String getName() {
+          return name;
+      }
+  }
+  </pre>
+</div>
+<hr>
+
+
+<div id="sealed-class">
+  <h5> What is a sealed class in Java?</h5>
+  <p><strong>Answer:</strong> A sealed class in Java restricts the inheritance of the class to a specific set of
+    classes. It is a way to restrict the subclassing of a class, ensuring that only a designated set of classes can
+    inherit it. Sealed classes are introduced in Java 16.</p>
+
+  <p><strong>Key Features:</strong></p>
+  <ul>
+    <li>Used to define a base class that only a specific set of classes can extend.</li>
+    <li>Enhances code security and predictability by limiting which classes can extend a sealed class.</li>
+  </ul>
+
+  <p><strong>Example:</strong></p>
+  <pre>
+      sealed class Shape permits Circle, Rectangle {
+          double area;
+      
+          Shape(double area) {
+              this.area = area;
+          }
+      
+          abstract double calculateArea();
+      }
+      
+      final class Circle extends Shape {
+          Circle(double area) {
+              super(area);
+          }
+      
+          @Override
+          double calculateArea() {
+              return Math.PI * area * area;
+          }
+      }
+      
+      final class Rectangle extends Shape {
+          double length, width;
+      
+          Rectangle(double area, double length, double width) {
+              super(area);
+              this.length = length;
+              this.width = width;
+          }
+      
+          @Override
+          double calculateArea() {
+              return length * width;
+          }
+      }
+      
+      public class SealedClassExample {
+          public static void main(String[] args) {
+              Shape circle = new Circle(10.0);
+              Shape rectangle = new Rectangle(20.0, 5.0, 4.0);
+              
+              System.out.println("Circle Area: " + circle.calculateArea());
+              System.out.println("Rectangle Area: " + rectangle.calculateArea());
+          }
+      }
+        </pre>
+
+  <p><strong>Why Use Sealed Classes?</strong></p>
+  <ul>
+    <li>Provides greater control over what can be a subclass, improving maintainability and readability.</li>
+    <li>Enhances security by limiting the types of classes that can extend a sealed class.</li>
+    <li>Useful in domain modeling to represent closed hierarchies.</li>
+  </ul>
+</div>
+<hr>
+
+<div id="method-hiding">
+  <h5>What is the method of hiding in Java?</h5>
+  <p>
+    When you declare two static methods with the same name and signature in both superclass and subclass then they hide
+    each other
+    i.e. a call to the method in the subclass will call the static method declared in that class and a call to the same
+    method is superclass is resolved to the static method declared in the super-class.
+  </p>
+</div>
+<hr>
+
+<div id="final-abstract">
+  <h5>Can we make a class both final and abstract at the same time?</h5>
+  <p>
+    No, you cannot apply both final and abstract keywords to the class at the same time because they are exactly the
+    opposite of each other.
+    A final class in Java cannot be extended and you cannot use an abstract class without extending and making it a
+    concrete class.
+    As per Java specification, the compiler will throw an error if you try to make a class abstract and final at the
+    same time.
+  </p>
+</div>
+<hr>
+
+<div id="extend-classes">
+  <h5>Can a class extend more than one class in Java?</h5>
+  <p>
+    No, a class can only extend another class because Java doesn't support multiple inheritances but yes, it can
+    implement multiple interfaces.
+  </p>
+</div>
+<hr>
+
+
+<div id="extend-interface">
+  <h5> Can an interface extend another interface?</h5>
+  <p><strong>Answer:</strong> Yes, an interface can extend another interface. This allows a child interface to inherit
+    methods from the parent interface.</p>
+</div>
+<hr>
+
+
+<div id="instanceof">
+  <h5> What is the `instanceof` keyword?</h5>
+  <p><strong>Answer:</strong> The <b>instanceof</b> keyword is used to test whether an object is an instance of a
+    specific class or subclass.</p>
+</div>
+<hr>
+
+<div id="default-method">
+  <h5> What is the purpose of the `default` methods in interfaces?</h5>
+  <p><strong>Answer:</strong> Default methods, introduced in Java 8, allow adding new methods to interfaces without
+    breaking existing implementations.</p>
+</div>
+<hr>
+
+<div id="functional-interface">
+  <h5> Explain the use of functional interfaces in Java 8.</h5>
+  <p><strong>Answer:</strong> A functional interface is an interface with a single abstract method. It is used in lambda
+    expressions and method references. Example: <b>Runnable</b>, <b>Predicate</b>.</p>
+</div>
+<hr>
+
+<div id="object-cloning">
+  <h5> How does Java handle object cloning?</h5>
+  <p><strong>Answer:</strong> Java provides cloning using the <b>clone()</b> method of the <b>Object</b>
+    class. A class must implement <b>Cloneable</b> to use it.</p>
+</div>
+<hr>
+
+<div id="composition">
+  <h5> What is composition in OOP?</h5>
+  <p><strong>Answer:</strong> Composition is a design principle where a class contains objects of other classes to
+    achieve reusability.</p>
+</div>
+<hr>
+
+<div id="dependency-injection">
+  <h5> Explain dependency injection.</h5>
+  <p><strong>Answer:</strong> Dependency Injection is a design pattern where objects are provided their dependencies
+    instead of creating them internally, promoting loose coupling.</p>
+</div>
+<hr>
+
+<div id="default-constructors">
+  <h5> What are default constructors?</h5>
+  <p><strong>Answer:</strong> A default constructor is provided by Java if no constructor is explicitly defined. It
+    initializes objects with default values.</p>
+</div>
+<hr>
+
+<div id="method-hiding-1">
+  <h5> Can you explain the concept of method hiding?</h5>
+  <p><strong>Answer:</strong> Method hiding occurs when a static method in a subclass has the same name and signature as
+    one in its superclass. The method is hidden, not overridden.</p>
+</div>
+<hr>
+
+<div id="solid">
+  <h5> What are the SOLID principles?</h5>
+  <p><strong>Answer:</strong> SOLID principles are design principles for maintainable software:
+  <ul>
+    <li>Single Responsibility</li>
+    <li>Open/Closed</li>
+    <li>Liskov Substitution</li>
+    <li>Interface Segregation</li>
+    <li>Dependency Inversion</li>
+  </ul>
+  </p>
+</div>
+<hr>
+
+<div id="aggregation-composition">
+  <h5> What is the difference between aggregation and composition?</h5>
+  <p><strong>Answer:</strong>
+  <ul>
+    <li><strong>Aggregation:</strong> A weak relationship where the lifecycle of the contained object is independent.
+    </li>
+    <li><strong>Composition:</strong> A strong relationship where the contained object's lifecycle is dependent.</li>
+  </ul>
+  </p>
+</div>
+<hr>
+
+<div id="diff-overloading-overriding">
+  <h5>What is the difference between method overloading and method overriding?</h5>
+  <p>
+    Method overloading occurs when you have multiple methods with the same name but different parameter lists (either by
+    number, type, or both) in the same class. It is a form of <strong>compile-time polymorphism</strong>.
+    Method overriding occurs when a subclass provides a specific implementation of a method that is already defined in
+    its superclass, and it is a form of <strong>runtime polymorphism</strong>.
+  </p>
+</div>
+<hr>
+
+<div id="change-return-type">
+  <h5>What happens if you override a method and change the return type to a different type, which is not a subclass of
+    the original return type?</h5>
+  <p>
+    Java does not allow overriding a method with a return type that is not a subclass of the original return type. The
+    return type in the overriding method must either be the same as the return type in the superclass method or a
+    subtype of it (covariant return type).
+    If you attempt to do so, a <strong>compilation error</strong> will occur.
+  </p>
+</div>
+<hr>
+
+<div id="constructor-inherited">
+  <h5>Can a constructor be inherited?</h5>
+  <p>
+    No, constructors are not inherited in Java. Although a subclass can call a superclass constructor using the
+    <b>super</b> keyword, it cannot directly inherit the constructor from the superclass. The subclass can only
+    inherit the behavior of the superclass via method inheritance, not constructors.
+  </p>
+</div>
+<hr>
+
+<div id="constructor-from-static-method">
+  <h5>Can we call a constructor from a static method in Java?</h5>
+  <p>
+    Yes, you can call a constructor from a static method in Java, but you cannot directly call a constructor using
+    <b>this()</b> in a static context (since <b>this</b> refers to an instance).
+    However, you can create an object inside a static method using <b>new</b> and invoke the constructor to
+    initialize the object.
+  </p>
+</div>
+<hr>
