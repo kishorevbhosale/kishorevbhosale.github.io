@@ -471,7 +471,6 @@ input[type="radio"]:checked.wrong + label { color: red; }
 .left-panel {
   height: 100vh;
   overflow-y: auto;
-  position: sticky;
   top: 70px;
   border-right: 1px solid #dee2e6;
 }
@@ -501,21 +500,3 @@ input[type="radio"]:checked.wrong + label { color: red; }
   border-radius: 10px;
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .left-panel {
-    display: none;
-  }
-  .left-panel.show {
-    display: block;
-    position: fixed;
-    top: 0; left: 0;
-    width: 75%;
-    height: 100%;
-    z-index: 1050;
-    background: #fff;
-  }
-  .right-panel {
-    padding: 15px;
-  }
-}
