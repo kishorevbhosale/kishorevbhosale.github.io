@@ -500,3 +500,37 @@ input[type="radio"]:checked.wrong + label { color: red; }
   border-radius: 10px;
 }
 
+
+.left-panel {
+    height: 90vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 10px;
+}
+.sidebar-link.active {
+    background: #4b6cb7;
+    color: #fff !important;
+    border-radius: 6px;
+}
+.sidebar-link:hover {
+    background-color: #f1f1f1;
+    border-radius: 6px;
+}
+/* Mobile Sidebar */
+@media (max-width: 768px) {
+  .left-panel {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 75%;
+    height: 100%;
+    background: #fff;
+    z-index: 1050;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  }
+  .left-panel.show {
+    display: block; /* show when toggled */
+  }
+}
