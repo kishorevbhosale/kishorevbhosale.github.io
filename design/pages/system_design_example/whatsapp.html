@@ -8,10 +8,10 @@
       <li><a href="#estimation">Estimation</a></li>
       <li><a href="#high-level-design">High Level Design</a></li>
       <li><a href="#followup-questions">Followup Questions and Answers</a></li>
+      <li><a href="#facts">Intersting Facts about whatsapp</a></li>
   </ol>
 </div>
 <hr>
-
     <h5 id="functional-requirements">Functional Requirements</h5>
     <ul>
         <li>1:1 chat</li>
@@ -234,6 +234,7 @@
     </div>
     <hr>
     <h5 id="followup-questions">Followup Questions and Answers</h5>
+    <div>
       <h6>1. Why do we need a WebSocket Manager when WebSocket servers can talk to each other?</h6>
       <ol>
         <li><b>Trap:</b> Interviewer checks if you understand scaling and mapping of billions of connections.</li>
@@ -343,5 +344,62 @@
             WebSocket servers, Kafka, MySQL only see ciphertext. 
             Only recipient’s device can decrypt, ensuring E2E security.</li>
       </ol>
-      <hr class="thin-line">
-      
+    </div>
+    <hr>
+    <h5 id="facts">Intersting Facts about WhatsApp</h5>
+    <div>
+        <h5>History</h5>
+          <p>
+            In January 2008, Jan Koum, who worked at Yahoo, tried to get a job at Facebook but didn’t make it. 
+            Instead of giving up, he kept going. The next year, he got an iPhone and saw how powerful the new App Store could be. 
+            This gave him an idea. Along with some old friends from Yahoo, he created WhatsApp, a simple app to send messages without the heavy costs of SMS. 
+            WhatsApp became super popular, with a million people signing up every single day!
+          </p>
+        <hr class="thin-line">
+
+        <h5>Tech Stack:</h5>
+          <ul>
+            <li>WhatsApp uses <b>Erlang</b>> for its core servers because it's built for high scalability with a tiny footprint.</li>
+            <li>Erlang supports <b>hot-loading</b>, allowing code updates without restarting servers or redirecting traffic, ensuring nearly 100% uptime.</li>
+            <li>Unlike Java or C++, Erlang’s threads are lightweight and managed by the language itself, making context switching much cheaper and efficient.</li>
+            <li>Operating System: WhatsApp runs on <b>FreeBSD servers</b>, chosen for stability and performance.</li>
+            <li>Message Protocol: Uses a customized, lightweight version of XMPP optimized for instant delivery and low latency.</li>
+            <li>Databases: Distributed Erlang-based databases (like Mnesia) store messages reliably with replication and sharding for scalability.</li>
+            <li>Infrastructure: Initially hosted on SoftLayer, now on Facebook’s data centers for better scalability.</li>
+            <li>Security: Employs end-to-end encryption to keep user messages private.</li>
+            <li>Cross cutting concerns : They focus on this aread more, Cross-cutting concerns are things that affect many parts of a product. And are hard to separate.
+              e.g Security, Logging, Alerting, Performance, Exception_handling, Monitoring
+            </li>
+          </ul>
+        <hr class="thin-line">
+
+        <h5>Don’t reinvent the wheel everytime:</h5>
+        <p>
+          <b>Ejabberd</b> is an open-source real-time messaging server written in Erlang. And they built WhatsApp on top of ejabberd. 
+          Also they rewrote some of the ejabberd core components to meet their needs.<br>
+          Besides WhatsApp leveraged third-party services such as <b>Google Push</b> to provide push notifications.
+        </p>
+        <hr class="thin-line">
+        <h5>Scalability</h5>
+        <ul>
+          <li>WhatsApp used <b>diagonal scaling</b> to keep the costs and operational complexity low.</li>
+          <li>Diagonal scaling is a hybrid of horizontal and vertical scaling. The computing resources get added both vertically and horizontally.</li>
+          <li>They ran <b>WhatsApp servers</b> on the <b>FreeBSD operating system</b>. Because they had previous experience with FreeBSD while working at Yahoo.</li>
+          <li>Besides FreeBSD offered a <b>reliable network stack</b>.</li>
+          <li>They fine-tuned FreeBSD to accommodate 2 million+ connections per server. And modified kernel parameters such as files and sockets.</li>
+          <li>They overprovisioned servers to handle sudden traffic spikes and keep headroom for failures. For example, failures such as network partitions or hardware faults.</li>
+        </ul>
+        <hr class="thin-line">
+        <b>They kept the team size small - 32 engineers.</b>
+        <p>
+            WhatsApp is one of the most successful instant messengers in the market.
+            In 2014, Facebook acquired WhatsApp for a whopping 19 billion USD.
+            According to Forbes, Jan Koum has a net worth of 14 billion USD in 2023.
+        </p>
+        <p>This lean yet powerful technology stack lets WhatsApp handle billions of messages daily with great speed, reliability, and uptime.</p>
+    </div>
+    <hr>
+    <h5>Resources:</h5>
+    <ul>
+      <li><a href="https://highscalability.com/the-whatsapp-architecture-facebook-bought-for-19-billion/">the-whatsapp-architecture-facebook-bought-for-19-billion</a></li>
+    </ul>
