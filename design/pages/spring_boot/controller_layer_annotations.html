@@ -1,0 +1,216 @@
+<h2 style="text-align: center;">Understanding of Mavne Structure</h2>
+<br>
+<div class="custom-container">
+  <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#controller">@Controller</a></li>
+        <li><a href="#restcontroller">@RestController</a></li>
+        <li><a href="#responsebody">@ResponseBody</a></li>
+        <li><a href="#requestmapping">@RequestMapping and Derived Annotations</a></li>
+        <li><a href="#requestparam">@RequestParam</a></li>
+        <li><a href="#pathvariable">@PathVariable</a></li>
+        <li><a href="#requestbody">@RequestBody</a></li>
+        <li><a href="#responseentity">@ResponseEntity</a></li>
+    </ol>
+</div>
+<hr>
+<h5 id="controller"> @Controller</h5>
+<ul>
+  <li><b>Definition:</b> Marks a class as a Spring MVC Controller. It returns a <b>View</b> (like JSP, Thymeleaf) instead of JSON/XML by default.</li>
+  <li>Used in MVC pattern for handling web requests.</li>
+  <li>If you need REST APIs, you typically use <b>@RestController</b> instead.</li>
+</ul>
+<pre>
+@Controller
+public class HomeController {
+    @RequestMapping("/home")
+    public String home() {
+        return "home"; // returns view name (home.jsp or home.html from templates)
+    }
+}
+</pre>
+<hr>
+
+<h5 id="restcontroller"> @RestController</h5>
+<ul>
+  <li><b>Definition:</b> Shortcut annotation = <b>@Controller</b> + <b>@ResponseBody</b>.</li>
+  <li>Automatically serializes returned objects to JSON/XML (using <b>Jackson</b> by default).</li>
+</ul>
+<pre>
+@RestController
+@RequestMapping("/api")
+public class UserController {
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!"; // directly returns JSON response
+    }
+}
+</pre>
+<hr>
+
+<h5 id="responsebody"> @ResponseBody</h5>
+<ul>
+  <li><b>Definition:</b> Tells Spring to serialize method return value into the HTTP response body.</li>
+  <li>If not used, Spring assumes return value is a <b>view name</b>.</li>
+  <li><b>Advantages:</b> Converts Java objects → JSON/XML automatically using HttpMessageConverters.</li>
+</ul>
+<pre>
+@Controller
+public class UserController {
+    @RequestMapping("/json")
+    @ResponseBody
+    public User getUser() {
+        return new User("Kishor", "Bhosale"); // returned as JSON
+    }
+}
+</pre>
+<hr>
+
+<h5 id="requestmapping"> @RequestMapping and Derived Annotations</h5>
+<ul>
+  <li><b>@RequestMapping:</b> Maps HTTP requests to handler methods/classes.</li>
+  <li>Can define: path, method, headers, consumes, produces.</li>
+  <li><b>Derived annotations:</b>
+    <ul>
+      <li><b>@GetMapping</b></li>
+      <li><b>@PostMapping</b></li>
+      <li><b>@PutMapping</b></li>
+      <li><b>@DeleteMapping</b></li>
+    </ul>
+  </li>
+</ul>
+<pre>
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable int id) {
+        return "User id: " + id;
+    }
+
+    @PostMapping
+    public String createUser(@RequestBody User user) {
+        return "Created user: " + user.getFirstName();
+    }
+}
+</pre>
+<hr>
+
+<h5 id="requestparam"> @RequestParam</h5>
+<ul>
+  <li>Extracts query parameters from URL.</li>
+  <li>Supports type conversion: primitive, wrapper, String, Enum, custom objects.</li>
+  <li><b>Example URL:</b> <b>http://localhost:8080/api/fetchUser?firstName=Kishor&amp;lastName=Bhosale</b></li>
+</ul>
+<pre>
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @GetMapping("/fetchUser")
+    public String getUserDetails(
+        @RequestParam(required = false) String firstName,
+        @RequestParam(required = false) String lastName) {
+        return "User: " + firstName + " " + lastName;
+    }
+}
+</pre>
+
+<b>Custom Object Conversion using @InitBinder + PropertyEditor:</b>
+<pre>
+public class Address {
+    private String city;
+    private String state;
+    // getters & setters
+}
+
+@RestController
+@RequestMapping("/api")
+public class AddressController {
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Address.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                String[] parts = text.split(",");
+                Address addr = new Address();
+                addr.setCity(parts[0]);
+                addr.setState(parts[1]);
+                setValue(addr);
+            }
+        });
+    }
+
+    @GetMapping("/address")
+    public Address getAddress(@RequestParam Address address) {
+        return address; // e.g. ?address=Pune,MH
+    }
+}
+</pre>
+<hr>
+
+<h5 id="pathvariable"> @PathVariable</h5>
+<ul>
+  <li>Binds URI template variable to method parameter.</li>
+  <li>Example URL: <b>/api/users/101</b></li>
+</ul>
+<pre>
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @GetMapping("/users/{id}")
+    public String getUser(@PathVariable("id") int userId) {
+        return "Fetched user id: " + userId;
+    }
+}
+</pre>
+<hr>
+
+<h5 id="requestbody"> @RequestBody</h5>
+<ul>
+  <li>Binds HTTP request body → Java object.</li>
+  <li>Uses <b>Jackson</b> (default) or Gson for JSON ↔ Object conversion.</li>
+  <li>Field mapping is done by <b>matching JSON keys with POJO field names</b>.</li>
+</ul>
+<pre>
+public class User {
+    private String firstName;
+    private String lastName;
+    // getters & setters
+}
+
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @PostMapping("/create")
+    public User createUser(@RequestBody User user) {
+        return user; // JSON → User object
+    }
+}
+</pre>
+<hr>
+
+<h5 id="responseentity"> @ResponseEntity</h5>
+<ul>
+  <li>Represents the complete HTTP response: <b>status</b>, <b>headers</b>, <b>body</b>.</li>
+  <li>Provides fine-grained control compared to just returning objects.</li>
+</ul>
+<pre>
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @GetMapping("/status")
+    public ResponseEntity&lt;String&gt; getStatus() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Custom-Header", "SpringBoot")
+                .body("Everything is fine!");
+    }
+}
+</pre>
+<hr>
