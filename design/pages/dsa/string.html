@@ -1,0 +1,305 @@
+<h2 style="text-align: center;">String Problems</h2>
+<br>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#reverseString">Reverse the String</a></li>
+        <li><a href="#isPalindrome">Check Palindrome</a></li>
+        <li><a href="#firstUniqueCharacter">First Non-Repeating Character</a></li>
+        <li><a href="#countVowelsAndConsonants">Count Vowels and Consonants</a></li>
+        <li><a href="#isAnagram">Check Anagram</a></li>
+        <li><a href="#longestSubstringWithoutRepeatingCharacters">Longest Substring Without Repeating Characters</a></li>
+        <li><a href="#removeDuplicates">Remove Duplicates</a></li>
+        <li><a href="#compressString">String Compression</a></li>
+        <li><a href="#checkIsomorphicStrings">Check Isomorphic Strings</a></li>
+        <li><a href="#printAllPermutations">All Permutations</a></li>
+        <li><a href="#countWordInString">Count Words</a></li>
+        <li><a href="#duplicateCharactersInString">Duplicate Characters</a></li>
+        <li><a href="#findAllSubString">All Substrings</a></li>
+        <li><a href="#sortString">Sort String</a></li>
+        <li><a href="#longestPrefix">Longest Common Prefix</a></li>
+    </ol>
+</div>
+<hr>
+<h5 id="reverseString">Reverse the string</h5>
+<pre>
+public static String reverseString(String s) {
+    if (s == null) return null;
+    char[] chars = s.toCharArray();
+    int l = 0, r = chars.length - 1;
+    while (l < r) {
+        char tmp = chars[l];
+        chars[l] = chars[r];
+        chars[r] = tmp;
+        l++;
+        r--;
+    }
+    return new String(chars);
+}
+</pre>
+<b>Input:</b> "hello"<br>
+<b>Output:</b> "olleh"
+<hr>
+
+<h5 id="isPalindrome">Check Palindrome</h5>
+<pre>
+public static boolean isPalindrome(String s) {
+    if (s == null) return false;
+    int l = 0, r = s.length() - 1;
+    while (l < r) {
+        if (s.charAt(l) != s.charAt(r)) return false;
+        l++;
+        r--;
+    }
+    return true;
+}
+</pre>
+<b>Input:</b> "madam"<br>
+<b>Output:</b> true
+<hr>
+
+<h5 id="firstUniqueCharacter">First Non-Repeating Character</h5>
+<pre>
+public static char firstUniqueCharacter(String s) {
+    if (s == null || s.isEmpty()) return '-';
+    int[] freq = new int[256];
+    for (char c : s.toCharArray()) freq[c]++;
+    for (char c : s.toCharArray()) {
+        if (freq[c] == 1) return c;
+    }
+    return '-';
+}
+</pre>
+<b>Input:</b> "swiss"<br>
+<b>Output:</b> 'w'
+<hr>
+
+<h5 id="countVowelsAndConsonants">Count Vowels and Consonants</h5>
+<pre>
+public static void countVowelsAndConsonants(String s) {
+    if (s == null) {
+        System.out.println("Null string");
+        return;
+    }
+    int vowels = 0, consonants = 0;
+    for (char c : s.toLowerCase().toCharArray()) {
+        if ("aeiou".indexOf(c) != -1) vowels++;
+        else if (c >= 'a' && c <= 'z') consonants++;
+    }
+    System.out.println("Vowels = " + vowels + ", Consonants = " + consonants);
+}
+</pre>
+<b>Input:</b> "hello"<br>
+<b>Output:</b> Vowels = 2, Consonants = 3
+<hr>
+
+<h5 id="isAnagram">Check Anagram</h5>
+<pre>
+public static boolean isAnagram(String s1, String s2) {
+    if (s1 == null || s2 == null || s1.length() != s2.length()) return false;
+    int[] freq = new int[256];
+    for (char c : s1.toCharArray()) freq[c]++;
+    for (char c : s2.toCharArray()) {
+        if (--freq[c] < 0) return false;
+    }
+    return true;
+}
+</pre>
+<b>Input:</b> "listen", "silent"<br>
+<b>Output:</b> true
+<hr>
+
+<h5 id="longestSubstringWithoutRepeatingCharacters">Longest Substring Without Repeating Characters</h5>
+<pre>
+public static void longestSubstringWithoutRepeatingCharacters(String s) {
+    if (s == null || s.isEmpty()) {
+        System.out.println("Empty string");
+        return;
+    }
+    Map<Character, Integer> map = new HashMap<>();
+    int left = 0, maxLen = 0, start = 0;
+    for (int right = 0; right < s.length(); right++) {
+        if (map.containsKey(s.charAt(right))) {
+            left = Math.max(left, map.get(s.charAt(right)) + 1);
+        }
+        map.put(s.charAt(right), right);
+        if (right - left + 1 > maxLen) {
+            maxLen = right - left + 1;
+            start = left;
+        }
+    }
+    String longestSubstr = s.substring(start, start + maxLen);
+    System.out.println("Longest Substring: " + longestSubstr + " (Length: " + maxLen + ")");
+}
+</pre>
+<b>Input:</b> "abcabcbb"<br>
+<b>Output:</b> "abc" (Length: 3)
+<hr>
+
+<h5 id="removeDuplicates">Remove Duplicates</h5>
+<pre>
+public static void removeDuplicates(String str) {
+    if (str == null) return;
+    Set<Character> seen = new LinkedHashSet<>();
+    for (char c : str.toCharArray()) seen.add(c);
+    StringBuilder sb = new StringBuilder();
+    for (char c : seen) sb.append(c);
+    System.out.println("After removing duplicates: " + sb);
+}
+</pre>
+<b>Input:</b> "programming"<br>
+<b>Output:</b> "progamin"
+<hr>
+
+<h5 id="compressString">String Compression</h5>
+<pre>
+public static void compressString(String s) {
+    if (s == null || s.isEmpty()) return;
+    int count = 1;
+    StringBuilder sb = new StringBuilder();
+    for (int i = 1; i <= s.length(); i++) {
+        if (i < s.length() && s.charAt(i) == s.charAt(i - 1)) {
+            count++;
+        } else {
+            sb.append(s.charAt(i - 1)).append(count);
+            count = 1;
+        }
+    }
+    System.out.println(s + " after compression = " + sb);
+}
+</pre>
+<b>Input:</b> "aabcccccaaa"<br>
+<b>Output:</b> "a2b1c5a3"
+<hr>
+
+<h5 id="checkIsomorphicStrings">Check Isomorphic Strings</h5>
+<pre>
+public static void checkIsomorphicStrings(String s, String t) {
+    if (s == null || t == null || s.length() != t.length()) {
+        System.out.println("Not isomorphic");
+        return;
+    }
+    int[] mapS = new int[256];
+    int[] mapT = new int[256];
+    for (int i = 0; i < s.length(); i++) {
+        if (mapS[s.charAt(i)] != mapT[t.charAt(i)]) {
+            System.out.println("Not isomorphic");
+            return;
+        }
+        mapS[s.charAt(i)] = i + 1;
+        mapT[t.charAt(i)] = i + 1;
+    }
+    System.out.println("Isomorphic");
+}
+</pre>
+<b>Input:</b> "egg", "add"<br>
+<b>Output:</b> "Isomorphic"
+<hr>
+
+<h5 id="printAllPermutations">All Permutations</h5>
+<pre>
+public static void printAllPermutations(String s, String ans) {
+    if (s == null) return;
+    if (s.length() == 0) {
+        System.out.println(ans);
+        return;
+    }
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        String rem = s.substring(0, i) + s.substring(i + 1);
+        printAllPermutations(rem, ans + c);
+    }
+}
+</pre>
+<b>Input:</b> "abc"<br>
+<b>Output:</b> "abc, acb, bac, bca, cab, cba"
+<hr>
+
+<h5 id="countWordInString">Count Words</h5>
+<pre>
+public static void countWordInString(String s) {
+    if (s == null) {
+        System.out.println("0");
+        return;
+    }
+    s = s.trim();
+    if (s.isEmpty()) {
+        System.out.println("0");
+        return;
+    }
+    int count = s.split("\\s+").length;
+    System.out.println("Words = " + count);
+}
+</pre>
+<b>Input:</b> "Hello World from Java"<br>
+<b>Output:</b> 4
+<hr>
+
+<h5 id="duplicateCharactersInString">Duplicate Characters</h5>
+<pre>
+public static void duplicateCharactersInString(String s) {
+    if (s == null) return;
+    int[] freq = new int[256];
+    for (char c : s.toCharArray()) freq[c]++;
+    for (int i = 0; i < 256; i++) {
+        if (freq[i] > 1) {
+            System.out.println((char) i + " -> " + freq[i]);
+        }
+    }
+}
+</pre>
+<b>Input:</b> "programming"<br>
+<b>Output:</b> g -> 2, r -> 2, m -> 2
+<hr>
+
+<h5 id="findAllSubString">All Substrings</h5>
+<pre>
+public static void findAllSubString(String str) {
+    if (str == null) return;
+    for (int i = 0; i < str.length(); i++) {
+        for (int j = i + 1; j <= str.length(); j++) {
+            System.out.println(str.substring(i, j));
+        }
+    }
+}
+</pre>
+<b>Input:</b> "abc"<br>
+<b>Output:</b> a, ab, abc, b, bc, c
+<hr>
+
+<h5 id="sortString">Sort String</h5>
+<pre>
+public static void sortString(String str) {
+    if (str == null) return;
+    char[] chars = str.toCharArray();
+    Arrays.sort(chars);
+    System.out.println(new String(chars));
+}
+</pre>
+<b>Input:</b> "dcba"<br>
+<b>Output:</b> "abcd"
+<hr>
+
+<h5 id="longestPrefix">Longest Common Prefix</h5>
+<pre>
+public static void longestPrefix(String[] words) {
+    if (words == null || words.length == 0) {
+        System.out.println("Empty string array");
+        return;
+    }
+    String prefix = words[0];
+    for (int i = 1; i < words.length; i++) {
+        while (!words[i].startsWith(prefix)) {
+            prefix = prefix.substring(0, prefix.length() - 1);
+            if (prefix.isEmpty()) {
+                System.out.println("No matching prefix");
+                return;
+            }
+        }
+    }
+    System.out.println("Prefix = " + prefix);
+}
+</pre>
+<b>Input:</b> {"flower","flow","flight"}<br>
+<b>Output:</b> "fl"
+<hr>
