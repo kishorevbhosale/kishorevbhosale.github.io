@@ -61,64 +61,87 @@
 <h2 style="text-align: center;">🏆 Ultimate Java 8+ & OOPs Interview Preparation Master List</h2>
 
 <hr>
-<h5>1. OOPs Concepts (Core)</h5>
-<ol>
-<li>What are the four pillars of OOP (Encapsulation, Inheritance, Polymorphism, Abstraction)? Explain each with real-world examples.</li>
-<li>Differentiate between <b>Abstract Class</b> and <b>Interface</b>. When should you use which?</li>
-<li>Can an interface have <b>default</b> and <b>static</b> methods (Java 8+ feature)? Provide use cases.</li>
-<li>Explain <b>multiple inheritance</b> in Java and how Java resolves conflicts.</li>
-<li>Differentiate between <b>method overloading</b> and <b>method overriding</b> with examples.</li>
-<li>What are the <b>rules of method overriding</b> (return type, access modifiers, exceptions)?</li>
-<li>What is <b>dynamic method dispatch</b> in Java? Provide an example.</li>
-<li>Differentiate between <b>compile-time polymorphism</b> and <b>runtime polymorphism</b>.</li>
-<li>Can a constructor be overridden? Why or why not?</li>
-<li>Differentiate between <b>HAS-A</b> and <b>IS-A</b> relationships with examples.</li>
-<li>Explain <b>encapsulation</b> with a practical code snippet.</li>
-<li>Define <b>coupling</b> and <b>cohesion</b> in OOPs. Why is low coupling and high cohesion desirable?</li>
-<li>What is a <b>marker interface</b>? Give examples (e.g., Serializable, Cloneable).</li>
-<li>Differentiate between <b>composition</b> and <b>aggregation</b>. Which is preferred and why?</li>
-<li>What are the commonly overridden methods from <b>Object</b> class (<b>equals</b>, <b>hashCode</b>, <b>toString</b>, <b>clone</b>)? How do you override them correctly?</li>
-</ol>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#oops-core">OOPs Concepts (Core)</a></li>
+        <li><a href="#core-java-fundamentals">Core Java – Fundamentals</a></li>
+        <li><a href="#java8-core">Java 8+ Features (Core)</a></li>
+        <li><a href="#multithreading-concurrency-core">Multithreading & Concurrency (Core)</a></li>
+        <li><a href="#collections-core">Collections Framework (Core)</a></li>
+        <li><a href="#memory-jvm">Memory & JVM</a></li>
+        <li><a href="#advanced-tricky">Advanced / Tricky Java Questions</a></li>
+        <li><a href="#oops-extended">OOPs Concepts (Extended)</a></li>
+        <li><a href="#core-java-advanced">Core Java (Advanced Concepts)</a></li>
+        <li><a href="#java8-advanced">Java 8+ Features (Advanced)</a></li>
+        <li><a href="#collections-concurrency-advanced">Collections & Concurrency (Advanced)</a></li>
+        <li><a href="#coding-java8">Coding Interview Questions (Java 8)</a></li>
+        <li><a href="#optional-usage">Optional Usage (Java 8+)</a></li>
+        <li><a href="#concurrency-coding">Concurrency Coding Challenges</a></li>
+        <li><a href="#collections-coding">Collections Coding Challenges</a></li>
+        <li><a href="#tricky-scenario">Tricky & Scenario-Based Questions</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+    </ol>
+</div>
+<hr>
+<h5 id="oops-core">1. OOPs Concepts (Core)</h5>
+  <ol>
+    <li>What are the four pillars of OOP (Encapsulation, Inheritance, Polymorphism, Abstraction)? Explain each with real-world examples.</li>
+    <li>Differentiate between <b>Abstract Class</b> and <b>Interface</b>. When should you use which?</li>
+    <li>Can an interface have <b>default</b> and <b>static</b> methods (Java 8+ feature)? Provide use cases.</li>
+    <li>Explain <b>multiple inheritance</b> in Java and how Java resolves conflicts.</li>
+    <li>Differentiate between <b>method overloading</b> and <b>method overriding</b> with examples.</li>
+    <li>What are the <b>rules of method overriding</b> (return type, access modifiers, exceptions)?</li>
+    <li>What is <b>dynamic method dispatch</b> in Java? Provide an example.</li>
+    <li>Differentiate between <b>compile-time polymorphism</b> and <b>runtime polymorphism</b>.</li>
+    <li>Can a constructor be overridden? Why or why not?</li>
+    <li>Differentiate between <b>HAS-A</b> and <b>IS-A</b> relationships with examples.</li>
+    <li>Explain <b>encapsulation</b> with a practical code snippet.</li>
+    <li>Define <b>coupling</b> and <b>cohesion</b> in OOPs. Why is low coupling and high cohesion desirable?</li>
+    <li>What is a <b>marker interface</b>? Give examples (e.g., Serializable, Cloneable).</li>
+    <li>Differentiate between <b>composition</b> and <b>aggregation</b>. Which is preferred and why?</li>
+    <li>What are the commonly overridden methods from <b>Object</b> class (<b>equals</b>, <b>hashCode</b>, <b>toString</b>, <b>clone</b>)? How do you override them correctly?</li>
+  </ol>
+<hr>
+
+<h5 id="core-java-fundamentals">2. Core Java – Fundamentals</h5>
+  <ol start="16">
+    <li>Differentiate between <b>JDK, JRE, JVM</b>.</li>
+    <li>What is a <b>classloader</b> in Java? Explain its hierarchy (Bootstrap, Extension, Application).</li>
+    <li>Difference between <b>==</b> and <b>.equals()</b>. When should each be used?</li>
+    <li>Difference between <b>String, StringBuilder, StringBuffer</b>. Which one to use in multi-threaded scenarios?</li>
+    <li>Why are <b>Strings immutable</b> in Java? Explain design reasons.</li>
+    <li>What is <b>String interning</b>? How does it improve performance?</li>
+    <li>Differentiate between <b>final, finally, finalize</b>.</li>
+    <li>Can we override <b>private</b>, <b>static</b>, or <b>final</b> methods? Why or why not?</li>
+    <li>Differentiate between <b>checked</b> and <b>unchecked</b> exceptions. Provide examples.</li>
+    <li>Difference between <b>throw</b> and <b>throws</b> keywords.</li>
+    <li>What is <b>try-with-resources</b>? Why is it preferred over <b>finally</b> for closing resources?</li>
+    <li>What is <b>autoboxing</b> and <b>unboxing</b> in Java? Provide examples.</li>
+    <li>Differentiate between <b>primitive</b> types and <b>wrapper</b> classes.</li>
+  </ol>
 
 <hr>
-<h5>2. Core Java – Fundamentals</h5>
-<ol start="16">
-<li>Differentiate between <b>JDK, JRE, JVM</b>.</li>
-<li>What is a <b>classloader</b> in Java? Explain its hierarchy (Bootstrap, Extension, Application).</li>
-<li>Difference between <b>==</b> and <b>.equals()</b>. When should each be used?</li>
-<li>Difference between <b>String, StringBuilder, StringBuffer</b>. Which one to use in multi-threaded scenarios?</li>
-<li>Why are <b>Strings immutable</b> in Java? Explain design reasons.</li>
-<li>What is <b>String interning</b>? How does it improve performance?</li>
-<li>Differentiate between <b>final, finally, finalize</b>.</li>
-<li>Can we override <b>private</b>, <b>static</b>, or <b>final</b> methods? Why or why not?</li>
-<li>Differentiate between <b>checked</b> and <b>unchecked</b> exceptions. Provide examples.</li>
-<li>Difference between <b>throw</b> and <b>throws</b> keywords.</li>
-<li>What is <b>try-with-resources</b>? Why is it preferred over <b>finally</b> for closing resources?</li>
-<li>What is <b>autoboxing</b> and <b>unboxing</b> in Java? Provide examples.</li>
-<li>Differentiate between <b>primitive</b> types and <b>wrapper</b> classes.</li>
-</ol>
+<h5 id="java8-core">3. Java 8+ Features (Core)</h5>
+  <ol start="29">
+    <li>What are <b>Lambda expressions</b>? Provide syntax and real-world examples.</li>
+    <li>What are <b>functional interfaces</b>? Provide examples (<b>Runnable</b>, <b>Supplier</b>, <b>Consumer</b>, <b>Function</b>).</li>
+    <li>Differentiate between <b>Predicate, Function, Consumer, Supplier</b>.</li>
+    <li>What are <b>default</b> and <b>static</b> methods in interfaces? Why were they introduced?</li>
+    <li>Difference between <b>stream()</b> and <b>parallelStream()</b>. When to use which?</li>
+    <li>Differentiate between <b>intermediate</b> and <b>terminal</b> stream operations with examples.</li>
+    <li>Explain the difference between <b>map(), flatMap(), filter(), reduce()</b> in Streams.</li>
+    <li>How does <b>collect()</b> work? Explain common collectors (<b>toList</b>, <b>toSet</b>, <b>joining</b>, <b>groupingBy</b>, <b>partitioningBy</b>).</li>
+    <li>What is <b>Optional</b> in Java? How does it help avoid NullPointerException?</li>
+    <li>Difference between <b>findFirst()</b> and <b>findAny()</b>.</li>
+    <li>Difference between <b>forEach()</b> and <b>forEachOrdered()</b>.</li>
+    <li>What are <b>method references</b>? What are their types?</li>
+    <li>Differentiate between <b>LocalDate, LocalTime, LocalDateTime, ZonedDateTime</b>.</li>
+    <li>Compare <b>Date/Calendar API</b> with <b>java.time API</b>. Why is the new API better?</li>
+  </ol>
 
 <hr>
-<h5>3. Java 8+ Features (Core)</h5>
-<ol start="29">
-<li>What are <b>Lambda expressions</b>? Provide syntax and real-world examples.</li>
-<li>What are <b>functional interfaces</b>? Provide examples (<b>Runnable</b>, <b>Supplier</b>, <b>Consumer</b>, <b>Function</b>).</li>
-<li>Differentiate between <b>Predicate, Function, Consumer, Supplier</b>.</li>
-<li>What are <b>default</b> and <b>static</b> methods in interfaces? Why were they introduced?</li>
-<li>Difference between <b>stream()</b> and <b>parallelStream()</b>. When to use which?</li>
-<li>Differentiate between <b>intermediate</b> and <b>terminal</b> stream operations with examples.</li>
-<li>Explain the difference between <b>map(), flatMap(), filter(), reduce()</b> in Streams.</li>
-<li>How does <b>collect()</b> work? Explain common collectors (<b>toList</b>, <b>toSet</b>, <b>joining</b>, <b>groupingBy</b>, <b>partitioningBy</b>).</li>
-<li>What is <b>Optional</b> in Java? How does it help avoid NullPointerException?</li>
-<li>Difference between <b>findFirst()</b> and <b>findAny()</b>.</li>
-<li>Difference between <b>forEach()</b> and <b>forEachOrdered()</b>.</li>
-<li>What are <b>method references</b>? What are their types?</li>
-<li>Differentiate between <b>LocalDate, LocalTime, LocalDateTime, ZonedDateTime</b>.</li>
-<li>Compare <b>Date/Calendar API</b> with <b>java.time API</b>. Why is the new API better?</li>
-</ol>
-
-<hr>
-<h5>4. Multithreading & Concurrency (Core)</h5>
+<h5 id="multithreading-concurrency-core">4. Multithreading & Concurrency (Core)</h5>
 <ol start="43">
 <li>Difference between a <b>process</b> and a <b>thread</b>.</li>
 <li>Explain the <b>lifecycle of a thread</b>.</li>
@@ -141,7 +164,7 @@
 </ol>
 
 <hr>
-<h5>5. Collections Framework (Core)</h5>
+<h5 id="collections-core">5. Collections Framework (Core)</h5>
 <ol start="61">
 <li>Difference between <b>List, Set, Map</b>.</li>
 <li>Difference between <b>HashMap, LinkedHashMap, TreeMap</b>.</li>
@@ -165,7 +188,7 @@
 </ol>
 
 <hr>
-<h5>6. Memory & JVM</h5>
+<h5 id="memory-jvm">6. Memory & JVM</h5>
 <ol start="80">
 <li>Explain <b>JVM Architecture</b> (ClassLoader, Method Area, Heap, Stack, Native Method Area, PC Registers).</li>
 <li>What is <b>garbage collection</b>? How does it work?</li>
@@ -183,7 +206,7 @@
 </ol>
 
 <hr>
-<h5>7. Advanced / Tricky Java Questions</h5>
+<h5 id="advanced-tricky">7. Advanced / Tricky Java Questions</h5>
 <ol start="93">
 <li>Why doesn’t Java support <b>multiple inheritance</b> with classes?</li>
 <li>Difference between <b>deep copy</b> and <b>shallow copy</b>.</li>
@@ -201,7 +224,7 @@
 </ol>
 
 <hr>
-<h5>8. OOPs Concepts (Extended)</h5>
+<h5 id="oops-extended">8. OOPs Concepts (Extended)</h5>
 <ol start="106">
 <li>Difference between <b>abstraction</b> and <b>encapsulation</b>.</li>
 <li>Can an <b>abstract class</b> have a constructor? Why?</li>
@@ -216,7 +239,7 @@
 </ol>
 
 <hr>
-<h5>9. Core Java (Advanced Concepts)</h5>
+<h5 id="core-java-advanced">9. Core Java (Advanced Concepts)</h5>
 <ol start="116">
 <li>Differentiate between <b>instance variable</b>, <b>class variable</b>, and <b>local variable</b>.</li>
 <li>How do you design an <b>immutable class</b>? Best practices?</li>
@@ -231,7 +254,7 @@
 </ol>
 
 <hr>
-<h5>10. Java 8+ Features (Advanced)</h5>
+<h5 id="java8-advanced">10. Java 8+ Features (Advanced)</h5>
 <ol start="126">
 <li>Explain <b>Collectors.groupingBy()</b> and <b>Collectors.partitioningBy()</b> with examples.</li>
 <li>Difference between <b>flatMap</b> in Streams vs Optional.</li>
@@ -248,7 +271,7 @@
 </ol>
 
 <hr>
-<h5>11. Collections & Concurrency (Advanced)</h5>
+<h5 id="collections-concurrency-advanced">11. Collections & Concurrency (Advanced)</h5>
 <ol start="138">
 <li>Difference between <b>ConcurrentHashMap</b> and <b>SynchronizedMap</b>.</li>
 <li>How does <b>ConcurrentHashMap</b> achieve thread safety? (Segments, locks, CAS).</li>
@@ -273,7 +296,7 @@
 </ol>
 
 <hr>
-<h5>12. Coding Interview Questions (Java 8)</h5>
+<h5 id="coding-java8">12. Coding Interview Questions (Java 8)</h5>
 <ol start="158">
 <li>Find the <b>first non-repeating character</b> in a String using Java 8 Streams.</li>
 <li>Find <b>duplicate elements</b> in a list using Streams.</li>
@@ -298,7 +321,7 @@
 </ol>
 
 <hr>
-<h5>13. Optional Usage (Java 8+)</h5>
+<h5 id="optional-usage">13. Optional Usage (Java 8+)</h5>
 <ol start="178">
 <li>Safely retrieve a nested object’s field using <b>Optional</b>.</li>
 <li>Return a default value if null using <b>orElse()</b> / <b>orElseGet()</b>.</li>
@@ -308,7 +331,7 @@
 </ol>
 
 <hr>
-<h5>14. Concurrency Coding Challenges</h5>
+<h5 id="concurrency-coding">14. Concurrency Coding Challenges</h5>
 <ol start="183">
 <li>Implement <b>producer-consumer</b> using BlockingQueue.</li>
 <li>Print <b>odd/even numbers alternately</b> using two threads.</li>
@@ -321,7 +344,7 @@
 </ol>
 
 <hr>
-<h5>15. Collections Coding Challenges</h5>
+<h5 id="collections-coding">15. Collections Coding Challenges</h5>
 <ol start="191">
 <li>Implement an <b>LRU Cache</b> using LinkedHashMap.</li>
 <li>Custom sort an <b>Employee list</b> by salary and name.</li>
@@ -332,7 +355,7 @@
 </ol>
 
 <hr>
-<h5>16. Tricky & Scenario-Based Questions</h5>
+<h5 id="tricky-scenario">16. Tricky & Scenario-Based Questions</h5>
 <ol start="197">
 <li>Why must <b>HashMap keys</b> be immutable?</li>
 <li>Why is <b>String</b> used as key in HashMap?</li>
@@ -351,7 +374,7 @@
 
 <hr>
 
-<h5>🏁 Conclusion</h5>
+<h5 id="conclusion">🏁 Conclusion</h5>
 <p>🔥 This compilation serves as a <b>professional, structured, and comprehensive 200+ question Java 8+ interview preparation guide</b>, ensuring complete coverage of critical areas:</p>
 <ul>
     ✔️ Object-Oriented Programming (OOPs)<br>
