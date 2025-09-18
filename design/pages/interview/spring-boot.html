@@ -1,0 +1,349 @@
+<!-- ✅ Basic Meta Tags -->
+<title>🏆 200+ Spring Boot Interview Questions with Answers [2025 Guide]</title>
+<meta name="description" content="Crack Senior Backend Engineer interviews with 200+ frequently asked Spring Boot questions. Covers Core Spring, Annotations, JPA, REST APIs, Security, Microservices, AWS Cloud, Testing, and Observability. Updated for 2025.">
+<meta name="keywords" content="spring boot interview questions, spring boot advanced interview questions, senior backend engineer spring boot, spring boot microservices interview, spring security interview, spring data jpa interview questions, spring boot aws integration, spring boot testing interview, spring actuator interview questions, spring boot 2025 interview guide">
+
+<!-- ✅ Robots -->
+<meta name="robots" content="index, follow">
+<meta name="author" content="Spring Boot Interview Prep Guide">
+
+<!-- ✅ Open Graph (for social sharing) -->
+<meta property="og:title" content="🏆 200+ Spring Boot Interview Questions [2025 Updated Guide]">
+<meta property="og:description" content="Comprehensive Spring Boot Interview Preparation Master List with 200+ questions covering Core Concepts, JPA, Security, Microservices, AWS Cloud, Testing, Actuator, and Real-World Scenarios. Perfect for Senior Backend Engineers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.preparationzone.com/#design/pages/interview/spring-boot.html">
+<meta property="og:image" content="https://www.preparationzone.com/#images/spring-boot-banner.png">
+
+<!-- ✅ Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🏆 200+ Spring Boot Interview Questions [2025 Guide]">
+<meta name="twitter:description" content="Ace your Spring Boot interviews with this ultimate guide covering Core, JPA, Security, Microservices, AWS, Testing, and Observability. Updated for 2025.">
+<meta name="twitter:image" content="https://www.preparationzone.com/#images/spring-boot-banner.png">
+
+<!-- ✅ Canonical URL -->
+<link rel="canonical" href="https://www.preparationzone.com/#design/pages/interview/spring-boot.html">
+
+<!-- ✅ Structured Data (Schema.org FAQ for SEO Boost) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the most asked Spring Boot interview questions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Frequently asked Spring Boot interview questions include: Difference between Spring and Spring Boot, Explain @SpringBootApplication, What is auto-configuration, How does dependency injection work, Difference between @RestController and @Controller, JPA vs Hibernate, JWT authentication in Spring Security, and Microservices patterns using Spring Cloud."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which Spring Boot topics are important for Senior Backend Engineer interviews?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Senior-level interviews focus on: Spring Boot Auto-Configuration, Spring Data JPA & Transactions, REST API design, Exception Handling, Spring Security (OAuth2, JWT), Microservices with Spring Cloud, AWS integrations (SQS, SNS, RDS, S3), Testing (JUnit5, Mockito, Testcontainers), and Monitoring with Actuator and Micrometer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this guide include real-world Spring Boot scenarios?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the guide includes advanced real-world questions on designing scalable Spring Boot microservices, handling distributed transactions, implementing resilience patterns like Circuit Breaker and Retry, managing observability with ELK/Prometheus, and AWS cloud-native best practices."
+      }
+    }
+  ]
+}
+</script>
+<h2 style="text-align: center;">🏆 200+ Spring Boot Interview Questions with Answers (200+ Questions)</h2>
+<hr>
+<h5>🔹 Core Spring & Spring Boot Concepts</h5>
+<ol start="1">
+  <li>What is Spring Framework? How is it different from Spring Boot?</li>
+  <li>Why was Spring Boot introduced? What problems does it solve?</li>
+  <li>What are the advantages of using Spring Boot in enterprise applications?</li>
+  <li>Explain the differences between Spring, Spring MVC, and Spring Boot.</li>
+  <li>How does Spring Boot simplify dependency management?</li>
+  <li>What is an embedded server in Spring Boot? Which servers are supported?</li>
+  <li>Explain the concept of convention over configuration in Spring Boot.</li>
+  <li>What are Spring Boot Starters? Give examples of commonly used ones.</li>
+  <li>What are Spring Boot DevTools? Why are they used?</li>
+  <li>How does Spring Boot differ from traditional WAR-based deployments?</li>
+  <li>What is Spring Initializr and how does it help in project setup?</li>
+  <li>What is the role of Spring Boot CLI? When is it useful?</li>
+  <li>How does Spring Boot achieve auto-configuration?</li>
+  <li>What are common Spring Boot application.properties and application.yml configurations?</li>
+  <li>What is the difference between `application.properties` and `application.yml`?</li>
+  <li>Explain Spring Boot’s layered architecture.</li>
+  <li>What is the default logging framework used in Spring Boot?</li>
+  <li>What are the limitations of Spring Boot?</li>
+  <li>How do profiles work in Spring Boot?</li>
+  <li>How do you override default properties in Spring Boot?</li>
+</ol>
+
+<hr>
+<h5>🔹 Spring Boot Annotations & Configuration</h5>
+<ol start="21">
+  <li>What does the `@SpringBootApplication` annotation do internally?</li>
+  <li>Difference between `@Component`, `@Service`, `@Repository`, and `@Controller`.</li>
+  <li>Explain the use of `@Configuration` and `@Bean` annotations.</li>
+  <li>What is the difference between `@ComponentScan` and `@EnableAutoConfiguration`?</li>
+  <li>How does `@ConditionalOnProperty` work in Spring Boot?</li>
+  <li>Explain the purpose of `@EnableConfigurationProperties` and `@ConfigurationProperties`.</li>
+  <li>What is the difference between `@Value` and `@ConfigurationProperties`?</li>
+  <li>How does Spring Boot handle externalized configuration?</li>
+  <li>Explain `@Import` and when to use it.</li>
+  <li>What does `@EnableScheduling` do? Provide an example.</li>
+  <li>Difference between `@RestController` and `@Controller` in Spring Boot.</li>
+  <li>What is the use of `@EnableAsync` in Spring Boot?</li>
+  <li>Explain the `@Lazy` annotation in Spring.</li>
+  <li>Difference between `@Primary` and `@Qualifier` annotations.</li>
+  <li>What is the use of `@Profile` in Spring Boot?</li>
+  <li>How does `@Scope` annotation work in Spring Boot?</li>
+  <li>What is `@EnableTransactionManagement`?</li>
+  <li>What is the role of `@PropertySource` annotation?</li>
+  <li>What is the difference between `@ImportResource` and `@Import`?</li>
+  <li>Explain `@EnableJpaRepositories` and its usage.</li>
+</ol>
+<hr>
+<h5>🔹 Dependency Injection & Bean Lifecycle</h5>
+<ol start="41">
+  <li>What is Dependency Injection (DI) in Spring? Why is it important?</li>
+  <li>What are the different types of Dependency Injection in Spring?</li>
+  <li>What is the difference between constructor injection and setter injection?</li>
+  <li>Which injection method is preferred in Spring and why?</li>
+  <li>How does Spring manage the lifecycle of a bean?</li>
+  <li>What is the role of the `BeanFactory` interface?</li>
+  <li>Difference between `ApplicationContext` and `BeanFactory`.</li>
+  <li>What are the different bean scopes available in Spring?</li>
+  <li>How do you create a prototype-scoped bean?</li>
+  <li>What is the default bean scope in Spring Boot?</li>
+  <li>Explain the difference between singleton bean and prototype bean.</li>
+  <li>What is the role of `@PostConstruct` and `@PreDestroy` annotations?</li>
+  <li>How do you define custom initialization and destruction methods for beans?</li>
+  <li>What are BeanPostProcessor and BeanFactoryPostProcessor?</li>
+  <li>What is the difference between `@Autowired` and `@Inject`?</li>
+  <li>What is circular dependency in Spring? How is it handled?</li>
+  <li>Difference between field injection, setter injection, and constructor injection.</li>
+  <li>What is `@DependsOn` annotation in Spring?</li>
+  <li>How do you create lazy-initialized beans in Spring Boot?</li>
+  <li>Explain the lifecycle phases of a Spring bean with example.</li>
+</ol>
+
+<hr>
+<h5>🔹 Spring Boot Auto-Configuration & Starter Packs</h5>
+<ol start="61">
+  <li>What is auto-configuration in Spring Boot? How does it work?</li>
+  <li>What is the role of `spring.factories` in auto-configuration?</li>
+  <li>What is the difference between `@EnableAutoConfiguration` and `@SpringBootApplication`?</li>
+  <li>How do you exclude an auto-configuration class in Spring Boot?</li>
+  <li>What is the purpose of `META-INF/spring.factories` file?</li>
+  <li>How do you create a custom auto-configuration in Spring Boot?</li>
+  <li>What is the difference between `@ConditionalOnClass` and `@ConditionalOnMissingBean`?</li>
+  <li>What is `@ConditionalOnProperty` and when would you use it?</li>
+  <li>Explain `@ConditionalOnResource` and its use case.</li>
+  <li>What are Spring Boot Starter dependencies?</li>
+  <li>Give examples of commonly used Spring Boot Starter dependencies.</li>
+  <li>How do Spring Boot Starters simplify dependency management?</li>
+  <li>What is the difference between `spring-boot-starter-web` and `spring-boot-starter-webflux`?</li>
+  <li>What is `spring-boot-starter-data-jpa` and what does it provide?</li>
+  <li>Explain the role of `spring-boot-starter-security`.</li>
+  <li>What is the purpose of `spring-boot-starter-test`?</li>
+  <li>How do you create a custom Spring Boot Starter?</li>
+  <li>What are the advantages of custom Spring Boot Starters?</li>
+  <li>How do you debug issues with auto-configuration in Spring Boot?</li>
+  <li>What is the role of `spring-boot-autoconfigure` module?</li>
+</ol>
+<hr>
+<h5>🔹 Spring Data JPA & Transactions</h5>
+<ol start="81">
+  <li>What is Spring Data JPA and how is it different from Hibernate?</li>
+  <li>What are the advantages of using Spring Data JPA?</li>
+  <li>What is the role of `JpaRepository` interface?</li>
+  <li>Difference between `CrudRepository`, `PagingAndSortingRepository`, and `JpaRepository`.</li>
+  <li>How do you define custom query methods in Spring Data JPA?</li>
+  <li>What is the difference between JPQL and native SQL queries?</li>
+  <li>How do you use `@Query` annotation in Spring Data JPA?</li>
+  <li>What is the difference between `getOne()` and `findById()`?</li>
+  <li>Difference between `save()` and `saveAndFlush()`.</li>
+  <li>What are derived query methods in Spring Data JPA?</li>
+  <li>What is optimistic locking vs pessimistic locking in JPA?</li>
+  <li>What is the role of `@Transactional` annotation in Spring Boot?</li>
+  <li>Difference between declarative and programmatic transaction management.</li>
+  <li>How do you configure transaction propagation in Spring?</li>
+  <li>What is the difference between `REQUIRED`, `REQUIRES_NEW`, and `MANDATORY` propagation levels?</li>
+  <li>What is the role of isolation levels in transactions?</li>
+  <li>Explain `READ_COMMITTED`, `REPEATABLE_READ`, and `SERIALIZABLE` isolation levels.</li>
+  <li>What is dirty read, non-repeatable read, and phantom read?</li>
+  <li>How do you roll back transactions in Spring Boot?</li>
+  <li>What is the difference between `rollbackFor` and `noRollbackFor` in `@Transactional`?</li>
+</ol>
+
+<hr>
+<h5>🔹 Spring Boot REST APIs (Controllers, Validation, Exception Handling)</h5>
+<ol start="101">
+  <li>How do you create a REST API in Spring Boot?</li>
+  <li>Difference between `@Controller` and `@RestController`.</li>
+  <li>What is the role of `@RequestMapping` annotation?</li>
+  <li>Difference between `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, and `@PatchMapping`.</li>
+  <li>How do you pass path variables in Spring Boot REST APIs?</li>
+  <li>What is the difference between `@RequestParam` and `@PathVariable`?</li>
+  <li>How do you send and receive JSON in Spring Boot?</li>
+  <li>What is the role of `@RequestBody` annotation?</li>
+  <li>What is the role of `@ResponseEntity`?</li>
+  <li>How do you implement global exception handling in Spring Boot?</li>
+  <li>What is the use of `@ControllerAdvice`?</li>
+  <li>What is the difference between `@ExceptionHandler` and `@ControllerAdvice`?</li>
+  <li>How do you perform input validation in Spring Boot?</li>
+  <li>What is the role of `@Valid` and `@Validated` annotations?</li>
+  <li>How do you define custom validation constraints?</li>
+  <li>What is the difference between checked and unchecked exceptions in REST APIs?</li>
+  <li>How do you implement versioning in REST APIs (URI, Query Params, Headers)?</li>
+  <li>How do you implement HATEOAS in Spring Boot?</li>
+  <li>How do you implement pagination and sorting in REST APIs?</li>
+  <li>How do you secure REST APIs in Spring Boot?</li>
+</ol>
+<hr>
+<h5>🔹 Spring Security (OAuth2, JWT, Role-Based Access)</h5>
+<ol start="121">
+  <li>What is Spring Security and why is it used?</li>
+  <li>Difference between authentication and authorization.</li>
+  <li>How do you configure basic authentication in Spring Boot?</li>
+  <li>What is the role of `UserDetailsService` in Spring Security?</li>
+  <li>What is the difference between `GrantedAuthority` and `Role`?</li>
+  <li>How do you secure REST APIs with role-based access in Spring Boot?</li>
+  <li>What is CSRF protection? How does Spring Security handle it?</li>
+  <li>What is JWT (JSON Web Token)? How is it used in Spring Security?</li>
+  <li>What are the advantages of JWT over session-based authentication?</li>
+  <li>How do you implement JWT authentication in Spring Boot?</li>
+  <li>What is the role of filters in Spring Security?</li>
+  <li>Difference between `OncePerRequestFilter` and `GenericFilterBean`.</li>
+  <li>What is OAuth2 and how does it work with Spring Security?</li>
+  <li>Difference between OAuth2 authorization code flow, implicit flow, and client credentials flow.</li>
+  <li>How do you implement OAuth2 login in Spring Boot?</li>
+  <li>What is the difference between `@EnableWebSecurity` and `WebSecurityConfigurerAdapter`?</li>
+  <li>How do you customize Spring Security configuration in Spring Boot 3.x (no `WebSecurityConfigurerAdapter`)?</li>
+  <li>What is stateless authentication and why is it important for REST APIs?</li>
+  <li>How do you secure endpoints with method-level security (`@PreAuthorize`, `@Secured`)?</li>
+  <li>What is the difference between symmetric and asymmetric encryption in JWT?</li>
+</ol>
+
+<hr>
+<h5>🔹 Spring Boot with Microservices</h5>
+<ol start="141">
+  <li>What are microservices and how are they different from monoliths?</li>
+  <li>What are the main advantages of using microservices architecture?</li>
+  <li>How do you implement service discovery using Eureka?</li>
+  <li>What is the role of Netflix Eureka in Spring Cloud?</li>
+  <li>How do you configure a Spring Boot application as a Eureka client?</li>
+  <li>What is Spring Cloud Config Server? How is it used?</li>
+  <li>How do you secure communication between Config Server and microservices?</li>
+  <li>What is API Gateway? Difference between Zuul and Spring Cloud Gateway.</li>
+  <li>How do you implement request routing with Spring Cloud Gateway?</li>
+  <li>What is Feign Client and why is it used in microservices?</li>
+  <li>Difference between Feign Client and RestTemplate.</li>
+  <li>What is load balancing in microservices? How does Ribbon work?</li>
+  <li>What is Resilience4j and how does it improve fault tolerance?</li>
+  <li>Difference between Circuit Breaker, Bulkhead, Retry, and Rate Limiter patterns.</li>
+  <li>How do you implement a circuit breaker in Spring Boot with Resilience4j?</li>
+  <li>What is Hystrix? Why is Resilience4j preferred over Hystrix?</li>
+  <li>What is distributed tracing? How do you implement it in Spring Boot?</li>
+  <li>What are Sleuth and Zipkin? How do they work with Spring Boot?</li>
+  <li>How do you handle centralized logging in microservices?</li>
+  <li>What are the best practices for designing Spring Boot microservices?</li>
+</ol>
+<hr>
+<h5>🔹 Spring Boot with Cloud & AWS</h5>
+<ol start="161">
+  <li>How do you deploy a Spring Boot application to AWS?</li>
+  <li>What is the difference between AWS Elastic Beanstalk and ECS for Spring Boot apps?</li>
+  <li>How do you connect a Spring Boot application to AWS RDS?</li>
+  <li>What are the best practices for securing AWS RDS credentials in Spring Boot?</li>
+  <li>How do you use AWS Parameter Store or Secrets Manager with Spring Boot?</li>
+  <li>How do you integrate Spring Boot with AWS S3?</li>
+  <li>How do you upload and download files to S3 using Spring Boot?</li>
+  <li>What is the difference between S3 and EFS? When to use each?</li>
+  <li>How do you integrate Spring Boot with AWS SQS?</li>
+  <li>Difference between SQS standard and FIFO queues.</li>
+  <li>How do you integrate Spring Boot with AWS SNS?</li>
+  <li>What is the difference between SQS and SNS?</li>
+  <li>How do you integrate Spring Boot with AWS Lambda?</li>
+  <li>What are the best practices for building serverless applications with Spring Boot on AWS?</li>
+  <li>How do you implement distributed caching with AWS ElastiCache (Redis/Memcached)?</li>
+  <li>How do you configure Spring Boot for AWS DynamoDB?</li>
+  <li>Difference between RDS and DynamoDB for Spring Boot apps.</li>
+  <li>How do you secure Spring Boot applications running on AWS (IAM roles, VPCs, security groups)?</li>
+  <li>What is AWS API Gateway and how do you integrate it with Spring Boot microservices?</li>
+  <li>How do you monitor and scale Spring Boot microservices on AWS?</li>
+</ol>
+
+<hr>
+<h5>🔹 Spring Boot Testing (JUnit5, Mockito, Integration Tests, Testcontainers)</h5>
+<ol start="181">
+  <li>What are the different types of testing in Spring Boot?</li>
+  <li>Difference between unit test and integration test.</li>
+  <li>How do you write a simple JUnit 5 test in Spring Boot?</li>
+  <li>How do you mock dependencies using Mockito?</li>
+  <li>Difference between `@Mock` and `@MockBean` in Spring Boot tests.</li>
+  <li>What is the role of `@SpringBootTest` annotation?</li>
+  <li>What is `@DataJpaTest` used for?</li>
+  <li>How do you test REST controllers in Spring Boot?</li>
+  <li>What is `MockMvc` and how is it used?</li>
+  <li>Difference between `WebMvcTest` and `SpringBootTest`.</li>
+  <li>How do you test service layer components?</li>
+  <li>How do you test exception handling in Spring Boot?</li>
+  <li>What are Testcontainers? Why are they useful?</li>
+  <li>How do you use Testcontainers with Spring Boot?</li>
+  <li>How do you test with an in-memory database like H2?</li>
+  <li>What is the role of embedded Kafka/RabbitMQ in integration tests?</li>
+  <li>How do you measure code coverage in Spring Boot tests?</li>
+  <li>How do you test asynchronous methods in Spring Boot?</li>
+  <li>How do you run Spring Boot tests in parallel?</li>
+  <li>What are best practices for writing maintainable Spring Boot tests?</li>
+</ol>
+
+<hr>
+<h5>🔹 Spring Boot Actuator, Monitoring & Observability</h5>
+<ol start="201">
+  <li>What is Spring Boot Actuator and why is it used?</li>
+  <li>What are the default Actuator endpoints available in Spring Boot?</li>
+  <li>How do you enable and secure Actuator endpoints?</li>
+  <li>How do you create custom Actuator endpoints?</li>
+  <li>What is Micrometer in Spring Boot?</li>
+  <li>How do you integrate Spring Boot with Prometheus?</li>
+  <li>How do you integrate Spring Boot with Grafana dashboards?</li>
+  <li>How do you configure distributed tracing with Spring Cloud Sleuth?</li>
+  <li>What is Zipkin and how does it integrate with Spring Boot?</li>
+  <li>How do you send Spring Boot logs to ELK stack (Elasticsearch, Logstash, Kibana)?</li>
+  <li>What are the best practices for monitoring microservices in production?</li>
+  <li>What is health check endpoint and why is it important in cloud deployments?</li>
+  <li>How do you configure metrics for JVM memory, threads, and garbage collection?</li>
+  <li>How do you enable request/response tracing in Spring Boot?</li>
+  <li>How do you integrate Spring Boot with centralized logging frameworks?</li>
+  <li>What is OpenTelemetry and how does it relate to Spring Boot observability?</li>
+  <li>How do you configure graceful shutdown in Spring Boot applications?</li>
+  <li>What are performance tuning tips for Spring Boot in production?</li>
+  <li>How do you handle thread pool tuning in Spring Boot?</li>
+  <li>What are the common production pitfalls in Spring Boot and how to avoid them?</li>
+</ol>
+<hr>
+<h5>🏁 Conclusion</h5>
+<p>🔥 This compilation serves as a <b>professional, structured, and comprehensive 200+ question Spring Boot interview preparation guide</b>, ensuring complete coverage of critical areas:</p>
+<ul>
+    ✔️ Core Spring & Spring Boot Concepts<br>
+    ✔️ Annotations, Configuration & Bean Lifecycle<br>
+    ✔️ Auto-Configuration & Starter Packs<br>
+    ✔️ Spring Data JPA & Transaction Management<br>
+    ✔️ REST API Development, Validation & Exception Handling<br>
+    ✔️ Spring Security (OAuth2, JWT, Role-Based Access)<br>
+    ✔️ Microservices with Spring Cloud (Eureka, Feign, API Gateway, Config Server, Resilience4j)<br>
+    ✔️ Cloud & AWS Integrations (S3, SQS, SNS, RDS, Lambda)<br>
+    ✔️ Spring Boot Testing (JUnit5, Mockito, Integration, Testcontainers)<br>
+    ✔️ Monitoring & Observability (Actuator, Micrometer, Prometheus, Grafana, ELK)<br>
+    ✔️ Performance Tuning, Best Practices & Advanced Scenarios<br>
+</ul>
+<p>This guide is designed as a <b>master reference</b> for Spring Boot interviews across startups, product-based firms, and enterprise companies. 
+    By practicing these questions, coding exercises, and real-world case studies, 
+    you will be fully prepared to tackle both conceptual and applied challenges in modern backend engineering interviews with confidence.
+</p>
