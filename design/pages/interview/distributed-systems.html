@@ -1,0 +1,274 @@
+<!-- ✅ Basic Meta Tags -->
+<title>🏆 Distributed Systems & Cloud Building Blocks Interview Questions [Senior/Staff Engineer Guide 2025]</title>
+<meta name="description" content="Ace Senior Backend, Staff, and Tech Lead interviews with 200+ real-world questions on Distributed Systems, Cloud Building Blocks, System Design, DNS, Load Balancers, Databases, Messaging Queues, Caching, Monitoring, CDN, Blob Storage, and AWS Services. Updated for 2025.">
+<meta name="keywords" content="distributed systems interview questions, staff engineer interview prep, senior backend interview guide, cloud building blocks interview, system design interview questions, AWS interview questions, DNS load balancer caching messaging, FAANG interview prep, tech lead distributed systems">
+
+<!-- ✅ Robots -->
+<meta name="robots" content="index, follow">
+<meta name="author" content="Distributed Systems & Cloud Interview Prep Guide">
+
+<!-- ✅ Open Graph (for social sharing) -->
+<meta property="og:title" content="🏆 200+ Distributed Systems & Cloud Building Blocks Interview Questions [Senior/Staff Engineer Guide 2025]">
+<meta property="og:description" content="Comprehensive interview preparation guide with 200+ questions covering Distributed Systems, Cloud Building Blocks, System Design, DNS, Load Balancers, Databases, Messaging Queues, Caching, Monitoring, and AWS Cloud services. Perfect for Senior/Staff/Tech Lead interviews.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.preparationzone.com/#design/pages/interview/distributed-systems.html">
+<meta property="og:image" content="https://www.preparationzone.com/#images/distributed-systems-banner.png">
+
+<!-- ✅ Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🏆 200+ Distributed Systems & Cloud Building Blocks Interview Questions [Senior/Staff Engineer Guide 2025]">
+<meta name="twitter:description" content="Crack Senior Backend, Staff, and Tech Lead interviews with 200+ Distributed Systems & Cloud interview questions. Covers System Design, Caching, Messaging, DNS, Load Balancing, and AWS Services. Updated for 2025.">
+<meta name="twitter:image" content="https://www.preparationzone.com/#images/distributed-systems-banner.png">
+
+<!-- ✅ Canonical URL -->
+<link rel="canonical" href="https://www.preparationzone.com/#design/pages/interview/distributed-systems.html">
+
+<!-- ✅ Structured Data (Schema.org FAQ for SEO Boost) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What topics are covered in this Distributed Systems interview guide?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The guide covers DNS, Load Balancers, Databases (SQL, NoSQL, Key-Value Stores), Content Delivery Networks, Sequencers, Distributed Caching, Messaging Queues, Publish-Subscribe Systems, Rate Limiting, Distributed Search, Logging, Tracing, Task Scheduling, Blob Storage, and Cloud-native implementations with AWS, GCP, and Azure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who should use this guide?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This guide is designed for Senior Backend Engineers, Staff Engineers, and Tech Leads preparing for interviews at startups, FAANG/MAANG, MNCs, banks, and enterprise companies where distributed systems and cloud architecture are core competencies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this guide include real-world scenarios?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It includes practical, scenario-based interview questions on scaling distributed systems, ensuring high availability, handling failures, designing resilient architectures, and integrating with AWS services like Route 53, ELB, RDS, DynamoDB, CloudWatch, S3, and more."
+      }
+    }
+  ]
+}
+</script>
+
+<h2 style="text-align: center;">🏆 Distributed Systems & Cloud Building Blocks Interview Questions Master List</h2>
+<hr>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#dns">Domain Name System (DNS)</a></li>
+        <li><a href="#load-balancer">Load Balancer</a></li>
+        <li><a href="#database">Database</a></li>
+        <li><a href="#key-value-store">Key-Value Store</a></li>
+        <li><a href="#cdn">Content Delivery Network (CDN)</a></li>
+        <li><a href="#sequencer">Sequencer</a></li>
+        <li><a href="#service-monitoring">Service Monitoring</a></li>
+        <li><a href="#distributed-caching">Distributed Caching</a></li>
+        <li><a href="#messaging-queue">Distributed Messaging Queue</a></li>
+        <li><a href="#pub-sub">Publish-Subscribe System</a></li>
+        <li><a href="#rate-limiter">Rate Limiter</a></li>
+        <li><a href="#distributed-search">Distributed Search</a></li>
+        <li><a href="#distributed-logging">Distributed Logging</a></li>
+        <li><a href="#distributed-tracing">Distributed Tracing</a></li>
+        <li><a href="#distributed-task-scheduling">Distributed Task Scheduling</a></li>
+        <li><a href="#blob-store">Blob Store</a></li>
+    </ol>
+</nav>
+<hr>
+<h5 id="dns">🌐 Domain Name System (DNS)</h5>
+<ol>
+  <li>Explain how DNS resolution works step by step.</li>
+  <li>What is the difference between recursive and iterative DNS queries?</li>
+  <li>What are common DNS record types (A, AAAA, CNAME, MX, TXT, SRV)?</li>
+  <li>How do DNS caching and TTL (Time-to-Live) impact performance?</li>
+  <li>How does Amazon Route 53 provide high availability and latency-based routing?</li>
+  <li>What is DNS poisoning/spoofing? How do you prevent it?</li>
+  <li>Explain how CDN providers integrate with DNS for load balancing.</li>
+  <li>Design a fault-tolerant DNS resolution system for a global e-commerce app.</li>
+</ol>
+
+<hr>
+<h5 id="load-balancer">⚖️ Load Balancer</h5>
+<ol start="9">
+  <li>What’s the difference between Layer 4 and Layer 7 load balancers?</li>
+  <li>How does AWS ELB detect unhealthy instances and reroute traffic?</li>
+  <li>Explain sticky sessions and when you’d use them.</li>
+  <li>How would you design a load balancing strategy for a real-time chat system?</li>
+  <li>What’s the role of reverse proxies like Nginx in load balancing?</li>
+  <li>How do load balancers handle SSL/TLS termination?</li>
+  <li>Explain how global load balancing differs from regional load balancing.</li>
+  <li>How do you design a load balancer setup that supports disaster recovery?</li>
+</ol>
+
+<hr>
+<h5 id="database">🗄️ Database</h5>
+<ol start="17">
+  <li>Compare SQL vs NoSQL databases and when to use each.</li>
+  <li>How does database replication improve availability?</li>
+  <li>What is the difference between master-slave and master-master replication?</li>
+  <li>How do sharding and partitioning differ?</li>
+  <li>Explain CAP theorem and its application in database systems.</li>
+  <li>How does DynamoDB achieve horizontal scalability?</li>
+  <li>Design a schema for a high-volume transaction system (like UPI).</li>
+  <li>How do you handle database migration in production without downtime?</li>
+</ol>
+
+<hr>
+<h5 id="kv-store">🔑 Key-Value Store</h5>
+<ol start="25">
+  <li>How do Redis and DynamoDB differ in design and use cases?</li>
+  <li>What are typical eviction policies in Redis?</li>
+  <li>How do you ensure consistency in a distributed key-value store?</li>
+  <li>Explain write-through, write-back, and write-around caching strategies.</li>
+  <li>Design a leaderboard system using Redis sorted sets.</li>
+  <li>How do you prevent cache stampede and thundering herd problems?</li>
+  <li>What’s the difference between strong and eventual consistency in key-value stores?</li>
+  <li>How do you secure Redis or DynamoDB in production?</li>
+</ol>
+
+<hr>
+<h5 id="cdn">🚀 Content Delivery Network (CDN)</h5>
+<ol start="33">
+  <li>How does a CDN reduce latency for end users?</li>
+  <li>What’s the difference between push CDN and pull CDN?</li>
+  <li>How do you handle cache invalidation in CDN?</li>
+  <li>Explain edge caching and its importance in video streaming.</li>
+  <li>How does Cloudflare handle DDoS protection via CDN?</li>
+  <li>Design a global CDN strategy for an OTT video platform.</li>
+  <li>What are challenges in serving dynamic vs static content via CDN?</li>
+</ol>
+
+<hr>
+<h5 id="sequencer">🔢 Sequencer</h5>
+<ol start="40">
+  <li>Why do distributed systems need a sequencer?</li>
+  <li>Explain Twitter’s Snowflake ID generator design.</li>
+  <li>What are trade-offs between UUID and Snowflake IDs?</li>
+  <li>How do you design a sequencer to avoid collisions in a high-scale system?</li>
+  <li>How do sequencers preserve causality in event processing?</li>
+  <li>What are scalability challenges in a centralized sequencer?</li>
+  <li>How do you implement distributed ID generation in DynamoDB?</li>
+</ol>
+
+<hr>
+<h5 id="monitoring">📊 Service Monitoring</h5>
+<ol start="47">
+  <li>What are key metrics to monitor in distributed systems?</li>
+  <li>How do you implement health checks in microservices?</li>
+  <li>What’s the difference between black-box and white-box monitoring?</li>
+  <li>Explain Prometheus pull vs push metrics collection.</li>
+  <li>How do you design an alerting system to avoid alert fatigue?</li>
+  <li>How does AWS CloudWatch integrate with auto-scaling?</li>
+  <li>What is the difference between logging, monitoring, and observability?</li>
+</ol>
+
+<hr>
+<h5 id="caching">⚡ Distributed Caching</h5>
+<ol start="54">
+  <li>Why do we need distributed caching instead of local cache?</li>
+  <li>How does Redis cluster ensure partition tolerance?</li>
+  <li>What are cache invalidation strategies?</li>
+  <li>Explain cache-aside vs read-through caching.</li>
+  <li>Design a caching strategy for an e-commerce product catalog.</li>
+  <li>How do you ensure consistency in multi-node cache clusters?</li>
+  <li>What are common pitfalls of caching (e.g., stale data, cache stampede)?</li>
+</ol>
+
+<hr>
+<h5 id="messaging">📩 Distributed Messaging Queue</h5>
+<ol start="61">
+  <li>Compare Kafka vs RabbitMQ vs AWS SQS.</li>
+  <li>How does Kafka ensure message durability?</li>
+  <li>What is the difference between at-most-once, at-least-once, and exactly-once delivery?</li>
+  <li>How does partitioning work in Kafka?</li>
+  <li>Design a messaging system for order processing in e-commerce.</li>
+  <li>What are dead-letter queues (DLQs) and when do you use them?</li>
+  <li>How do you handle backpressure in message queues?</li>
+</ol>
+
+<hr>
+<h5 id="pubsub">📢 Publish-Subscribe System</h5>
+<ol start="68">
+  <li>How does pub-sub differ from point-to-point messaging?</li>
+  <li>Explain fan-out in pub-sub systems.</li>
+  <li>What challenges arise in maintaining message ordering in pub-sub?</li>
+  <li>How does Google Pub/Sub scale globally?</li>
+  <li>Design an event-driven architecture using SNS + SQS + Lambda.</li>
+  <li>What’s the role of Kafka topics and consumer groups in pub-sub?</li>
+</ol>
+
+<hr>
+<h5 id="rate-limiter">🚦 Rate Limiter</h5>
+<ol start="74">
+  <li>Why do we need rate limiting in APIs?</li>
+  <li>Compare token bucket vs leaky bucket algorithms.</li>
+  <li>How does API Gateway in AWS implement rate limiting?</li>
+  <li>Design a rate limiter for login attempts in a banking app.</li>
+  <li>How do you prevent abuse when scaling rate limiters across multiple servers?</li>
+  <li>What’s the role of Redis in implementing distributed rate limiting?</li>
+</ol>
+
+<hr>
+<h5 id="search">🔍 Distributed Search</h5>
+<ol start="80">
+  <li>How does Elasticsearch index data?</li>
+  <li>What’s the difference between inverted index and forward index?</li>
+  <li>How does distributed search handle sharding and replication?</li>
+  <li>Explain full-text search vs keyword search.</li>
+  <li>Design a search engine for an e-commerce platform.</li>
+  <li>What are common scaling challenges with Elasticsearch?</li>
+  <li>How do you implement autocomplete efficiently in search?</li>
+</ol>
+
+<hr>
+<h5 id="logging">📝 Distributed Logging</h5>
+<ol start="87">
+  <li>Why is centralized logging important in microservices?</li>
+  <li>How does ELK stack (Elasticsearch, Logstash, Kibana) work together?</li>
+  <li>What’s the difference between structured and unstructured logs?</li>
+  <li>How do you design a log aggregation system for 1M+ events/sec?</li>
+  <li>What are common challenges in log storage and retention?</li>
+  <li>How does CloudWatch Logs differ from Splunk?</li>
+</ol>
+
+<hr>
+<h5 id="tracing">🕵️ Distributed Tracing</h5>
+<ol start="93">
+  <li>What problem does distributed tracing solve?</li>
+  <li>Explain how AWS X-Ray works.</li>
+  <li>What are spans and traces in OpenTelemetry?</li>
+  <li>How do you trace a request across multiple microservices?</li>
+  <li>Design a tracing setup for a large-scale payments platform.</li>
+  <li>What are challenges in tracing asynchronous calls?</li>
+</ol>
+
+<hr>
+<h5 id="scheduling">⏳ Distributed Task Scheduling</h5>
+<ol start="99">
+  <li>What’s the difference between cron jobs and distributed schedulers?</li>
+  <li>How does Apache Airflow manage DAG dependencies?</li>
+  <li>How do AWS Step Functions handle retries and rollbacks?</li>
+  <li>Design a scheduling system for nightly ETL jobs processing TBs of data.</li>
+  <li>What challenges arise in distributed task scheduling across regions?</li>
+  <li>How do you handle idempotency in scheduled tasks?</li>
+</ol>
+
+<hr>
+<h5 id="blob">🗂️ Blob Storage</h5>
+<ol start="105">
+  <li>What’s the difference between object storage and block storage?</li>
+  <li>How does S3 achieve 11 9’s durability?</li>
+  <li>Explain eventual consistency in S3 read-after-write model.</li>
+  <li>How do you secure access to blob storage in cloud?</li>
+  <li>Design a storage strategy for a video streaming platform.</li>
+  <li>What’s the difference between hot, warm, and cold storage tiers?</li>
+  <li>How do you handle data lifecycle management in blob storage?</li>
+</ol>
+
+</div>
