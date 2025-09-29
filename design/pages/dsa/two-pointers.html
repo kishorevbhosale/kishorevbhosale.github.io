@@ -1,0 +1,31 @@
+<h2 style="text-align: center;">Two Pointers Problems</h2>
+<br>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#validPalindrome">Valid Palindrome</a></li>
+    </ol>
+</div>
+<hr>
+<h5 id="validPalindrome">Valid Palindrome</h5>
+<pre>
+public static boolean isPalindrome(String s) {
+        int l = 0, r = s.length() - 1;
+        s = s.toLowerCase();
+
+        if (s.isEmpty()) return true;
+        while (l &lt;= r) {
+            while (l &lt; r && !Character.isLetterOrDigit(s.charAt(l))) l++;
+            while (l &lt; r && !Character.isLetterOrDigit(s.charAt(r))) r--;
+            if (s.charAt(l) != s.charAt(r)) return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+</pre>
+<b>Input:</b> "madam"<br>
+<b>Output:</b> true
+<hr>
+
+
