@@ -1,0 +1,16 @@
+# robots.txt for Tech Preparation Zone
+# https://kishorevbhosale.github.io/
+
+User-agent: *
+Allow: /
+Disallow: /design/pages/under_construction.html
+
+# Sitemap location
+Sitemap: https://kishorevbhosale.github.io/sitemap.xml
+
+# Crawl-delay (optional)
+Crawl-delay: 1
+
+
+
+
