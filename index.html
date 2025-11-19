@@ -80,7 +80,7 @@
                 </div>
 
                 <!-- Right: Navigation Links + Theme Toggle -->
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                     <div class="d-none d-md-flex align-items-center gap-2">
                         <a href="index.html" class="btn btn-outline-light btn-sm" aria-label="Home">
                             <i class="bi bi-house-fill" aria-hidden="true"></i>
@@ -101,6 +101,17 @@
                         <i class="bi bi-moon-fill" id="themeIconMobile" aria-hidden="true"></i>
                     </button>
                 </div>
+
+                <!-- Quick Stats -->
+                <div class="header-stats d-none d-lg-flex align-items-center ms-3">
+                    <div class="stat-pill">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <div>
+                            <small>Total Visits</small>
+                            <strong id="visitorCountValue">0</strong>
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -116,6 +127,16 @@
                 <div id="searchResultsMobile" class="search-results"></div>
                 </div>
             </div>
+
+        <!-- Mobile Stats -->
+        <div class="mobile-stats d-md-none px-3 pb-3">
+            <div class="stat-pill w-100 justify-content-between">
+                <div class="text-center w-100">
+                    <small>Total Visits</small>
+                    <strong id="visitorCountValueMobile">0</strong>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
@@ -701,9 +722,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-    
-    <!-- jsPDF for PDF Export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <script src="script.js"></script>
     

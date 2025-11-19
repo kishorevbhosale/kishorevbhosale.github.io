@@ -48,7 +48,7 @@
         }
     };
 
-    // ============================================
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // ============================================
     // Search Functionality
     // ============================================
     const SearchManager = {
@@ -426,6 +426,8 @@
         },
         
         initializePageContent: function() {
+            this.ensureActionBar();
+
             // Add lazy loading to images
             const images = document.querySelectorAll('#content img:not([loading])');
             images.forEach(img => {
@@ -487,6 +489,40 @@
             if (typeof Prism !== 'undefined') {
                 Prism.highlightAll();
             }
+
+            ShareManager.init();
+            PrintManager.init();
+        },
+
+        ensureActionBar: function() {
+            const content = document.getElementById('content');
+            if (!content) return;
+
+            const existingShareBtn = content.querySelector('#shareBtn');
+            if (existingShareBtn) {
+                return;
+            }
+
+            const toolbarWrapper = document.createElement('div');
+            toolbarWrapper.className = 'article-header-row';
+            toolbarWrapper.innerHTML = `
+                <div class="article-tools-bar">
+                    <span class="reading-time-badge" id="readingTime">
+                        <i class="bi bi-clock" aria-hidden="true"></i>
+                        <span id="readingTimeText">Calculating...</span>
+                    </span>
+                    <div class="article-actions">
+                        <button class="btn btn-sm btn-outline-primary" id="shareBtn" aria-label="Share article" title="Share article">
+                            <i class="bi bi-share" aria-hidden="true"></i> Share
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" id="printBtn" aria-label="Print article" title="Print article">
+                            <i class="bi bi-printer" aria-hidden="true"></i> Print
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            content.insertBefore(toolbarWrapper, content.firstChild);
         }
     };
 
@@ -613,13 +649,14 @@
             if (!content) return;
             
             const text = content.innerText || content.textContent || '';
-            const words = text.trim().split(/\s+/).length;
+            const trimmed = text.trim();
+            const words = trimmed ? trimmed.split(/\s+/).length : 0;
             const wordsPerMinute = 200; // Average reading speed
-            const minutes = Math.ceil(words / wordsPerMinute);
+            const minutes = words > 0 ? Math.max(1, Math.ceil(words / wordsPerMinute)) : 0;
             
             const readingTimeText = document.getElementById('readingTimeText');
             if (readingTimeText) {
-                readingTimeText.textContent = minutes === 1 ? '1 min read' : `${minutes} min read`;
+                readingTimeText.textContent = minutes <= 0 ? 'Ready to read' : (minutes === 1 ? '1 min read' : `${minutes} min read`);
             }
         }
     };
@@ -715,6 +752,59 @@
     };
 
     // ============================================
+    // Visitor Counter
+    // ============================================
+    const VisitorCounter = {
+        init: function() {
+            if (!this.isStorageAvailable()) {
+                return;
+            }
+
+            const totalVisits = this.incrementCounter('tpz_total_visits');
+            this.updateUI(totalVisits);
+        },
+
+        isStorageAvailable: function() {
+            try {
+                const testKey = '__tpz_test__';
+                localStorage.setItem(testKey, '1');
+                localStorage.removeItem(testKey);
+                return true;
+            } catch (error) {
+                console.warn('Local storage unavailable, visitor counter disabled.');
+                return false;
+            }
+        },
+
+        incrementCounter: function(key) {
+            const current = parseInt(localStorage.getItem(key) || '0', 10);
+            const updated = current + 1;
+            localStorage.setItem(key, updated.toString());
+            return updated;
+        },
+
+        updateUI: function(total) {
+            const formattedTotal = this.formatNumber(total);
+            const totalTargets = [
+                document.getElementById('visitorCountValue'),
+                document.getElementById('visitorCountValueMobile')
+            ];
+
+            totalTargets.forEach(el => {
+                if (el) el.textContent = formattedTotal;
+            });
+        },
+
+        formatNumber: function(num) {
+            try {
+                return new Intl.NumberFormat().format(num);
+            } catch (error) {
+                return num.toString();
+            }
+        }
+    };
+
+    // ============================================
     // Font Size Controls
     // ============================================
     const FontSizeManager = {
@@ -777,7 +867,10 @@
         init: function() {
             const shareBtn = document.getElementById('shareBtn');
             if (shareBtn) {
-                shareBtn.addEventListener('click', () => this.openShareModal());
+                shareBtn.onclick = (event) => {
+                    event.preventDefault();
+                    this.openShareModal();
+                };
             }
             
             this.setupShareButtons();
@@ -838,30 +931,15 @@
         init: function() {
             const printBtn = document.getElementById('printBtn');
             if (printBtn) {
-                printBtn.addEventListener('click', () => this.printArticle());
+                printBtn.onclick = (event) => {
+                    event.preventDefault();
+                    this.printArticle();
+                };
             }
         },
         
         printArticle: function() {
             window.print();
-        },
-        
-        exportToPDF: function() {
-            if (typeof window.jspdf === 'undefined') {
-                alert('PDF export is not available. Please use Print instead.');
-                return;
-            }
-            
-            const { jsPDF } = window.jspdf;
-            const content = document.getElementById('content');
-            if (!content) return;
-            
-            const doc = new jsPDF();
-            const text = content.innerText;
-            const lines = doc.splitTextToSize(text, 180);
-            
-            doc.text(lines, 10, 10);
-            doc.save(document.title + '.pdf');
         }
     };
 
@@ -1083,6 +1161,7 @@
         ArticleSearch.init();
         KeyboardShortcuts.init();
         ReadingHistory.init();
+        VisitorCounter.init();
         
         // Initialize page content for initial load
         PageLoader.initializePageContent();
