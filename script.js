@@ -330,10 +330,10 @@
         },
         
         loadPage: function(event) {
-            event.preventDefault();
-            const link = event.currentTarget;
-            const pageUrl = link.getAttribute('href');
-            
+    event.preventDefault();
+    const link = event.currentTarget;
+    const pageUrl = link.getAttribute('href');
+
             if (!pageUrl || pageUrl.includes('#')) return;
             
             this.loadPageFromUrl(pageUrl);
@@ -362,7 +362,7 @@
                     if (!response.ok) throw new Error('Failed to load page');
                     return response.text();
                 })
-                .then(data => {
+        .then(data => {
                     const contentDiv = document.getElementById('content');
                     if (contentDiv) {
                         // Extract body content from full HTML document
@@ -372,9 +372,9 @@
                         // Re-initialize any page-specific functionality
                         this.initializePageContent();
                     }
-                })
-                .catch(error => {
-                    console.error('Error loading page:', error);
+        })
+        .catch(error => {
+            console.error('Error loading page:', error);
                     const contentDiv = document.getElementById('content');
                     if (contentDiv) {
                         contentDiv.innerHTML = `
@@ -630,7 +630,7 @@
             
             if (scrolled > 100) {
                 this.progressBar.classList.add('show');
-            } else {
+    } else {
                 this.progressBar.classList.remove('show');
             }
         }

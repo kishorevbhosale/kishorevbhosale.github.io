@@ -845,7 +845,7 @@ html {
         font-size: 1rem;
     }
     
-    .left-panel {
+.left-panel {
         display: none;
         position: fixed;
         top: 56px; /* Below compact header */
@@ -855,13 +855,13 @@ html {
         height: calc(100vh - 56px);
         background: var(--bg-primary);
         z-index: 1050;
-        overflow-y: auto;
+  overflow-y: auto;
         box-shadow: var(--shadow-lg);
         padding: 20px;
-    }
+}
     
     .left-panel.show {
-        display: block;
+  display: block;
     }
     
     .right-panel {
@@ -911,7 +911,7 @@ html {
         font-size: 1.5rem;
     }
 
-    .right-panel {
+.right-panel {
         padding: 15px;
     }
     
@@ -1135,7 +1135,7 @@ pre:hover .code-copy-btn {
    ============================================ */
 .search-results-list {
     max-height: 400px;
-  overflow-y: auto;
+    overflow-y: auto;
 }
 
 .search-result-match {
