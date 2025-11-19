@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynamoDB Paper</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
 <body>
-
-    <!-- PDF Embed Inside a Div -->
-    <div class="pdf-container">
-        <embed src="design\pages\papers\dynamodb.pdf#zoom=page-width" type="application/pdf">
+    <div class="pdf-page">
+        <div class="pdf-card">
+            <div class="pdf-card-header">
+                <h1>AWS DynamoDB Paper</h1>
+                <a href="/index.html#design/pages/papers/dynamodb.html">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to library
+                </a>
+            </div>
+            <div class="pdf-container">
+                <iframe src="/design/pages/papers/dynamodb.pdf#view=FitH&zoom=page-width"
+                        title="AWS DynamoDB whitepaper"
+                        loading="lazy">
+                </iframe>
+            </div>
+        </div>
     </div>
-    <script src="/script.js"></script>
-
 </body>
 </html>

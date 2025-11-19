@@ -752,59 +752,6 @@
     };
 
     // ============================================
-    // Visitor Counter
-    // ============================================
-    const VisitorCounter = {
-        init: function() {
-            if (!this.isStorageAvailable()) {
-                return;
-            }
-
-            const totalVisits = this.incrementCounter('tpz_total_visits');
-            this.updateUI(totalVisits);
-        },
-
-        isStorageAvailable: function() {
-            try {
-                const testKey = '__tpz_test__';
-                localStorage.setItem(testKey, '1');
-                localStorage.removeItem(testKey);
-                return true;
-            } catch (error) {
-                console.warn('Local storage unavailable, visitor counter disabled.');
-                return false;
-            }
-        },
-
-        incrementCounter: function(key) {
-            const current = parseInt(localStorage.getItem(key) || '0', 10);
-            const updated = current + 1;
-            localStorage.setItem(key, updated.toString());
-            return updated;
-        },
-
-        updateUI: function(total) {
-            const formattedTotal = this.formatNumber(total);
-            const totalTargets = [
-                document.getElementById('visitorCountValue'),
-                document.getElementById('visitorCountValueMobile')
-            ];
-
-            totalTargets.forEach(el => {
-                if (el) el.textContent = formattedTotal;
-            });
-        },
-
-        formatNumber: function(num) {
-            try {
-                return new Intl.NumberFormat().format(num);
-            } catch (error) {
-                return num.toString();
-            }
-        }
-    };
-
-    // ============================================
     // Font Size Controls
     // ============================================
     const FontSizeManager = {
@@ -1161,7 +1108,6 @@
         ArticleSearch.init();
         KeyboardShortcuts.init();
         ReadingHistory.init();
-        VisitorCounter.init();
         
         // Initialize page content for initial load
         PageLoader.initializePageContent();
