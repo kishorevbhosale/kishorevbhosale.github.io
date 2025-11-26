@@ -23,11 +23,11 @@
                     <li>
                         <h5>Consistency (C):</h5>
                         <ul><br>
-                            <p><strong>Consistency</strong> means that every read operation returns the most recent write, i.e., all nodes in a distributed system see the same data at the same time. 
+                            <p><strong>Consistency</strong> means that every read operation returns the most recent write, i.e., all nodes in a distributed system see the same data at the same time, no matter which node they connected to.
                                 In simple terms, when data is written to the system, it must immediately be propagated to all nodes, ensuring that all users see the same information.</p>
                             <p><strong>Example:</strong> In a bank transaction system, if one account is debited, all nodes must reflect that change immediately to avoid showing inconsistent balances.</p>
                             <p><strong>Impact:</strong> To maintain consistency, a system may have to delay responses to ensure all replicas are updated.</p>
-                            <img src="../../images/cap-1.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">                  
+                                            
                         </ul>
                     </li>
                     <hr>
@@ -35,21 +35,21 @@
                         <h5>Availability (A):</h5>
                         <ul><br>
                             <p><strong>Availability</strong> means that the system is always able to serve requests. 
-                                Every request (read or write) gets a response, even if the system doesn't guarantee the most up-to-date data.</p>
+                                Every request (read or write) gets a response, even if the system doesn't guarantee the most up-to-date data or even if some of the nodes are down.</p>
                             <p><strong>Example:</strong> In a social media system, you might still be able to post updates or view older posts, even if the latest data from other users hasn’t yet been propagated to all nodes.</p>
                             <p><strong>Impact:</strong> Prioritizing availability may lead to stale or outdated data being served during failures or delays in updates.</p>
-                            <img src="../../images/cap-2.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">
+                            
                         </ul>
                     </li>
                     <hr>
                     <li>
                         <h5>Partition Tolerance (P):</h5>
                         <ul><br>
-                            <p><strong>Partition Tolerance</strong> means that the system continues to operate even when there is a network partition, i.e., when communication between nodes in a distributed system is disrupted. 
+                            <p><strong>Partition</strong> indicates a communication break between two nodes. <strong>Partition Tolerance</strong> means that the system continues to operate even when there is a network partition, i.e., when communication between nodes in a distributed system is disrupted. 
                                 The system can still function despite certain nodes being isolated from each other.</p>
                             <p><strong>Example:</strong> In a cloud service, if data centers in different regions lose connectivity, a partition-tolerant system will continue serving users with data from the available nodes, even if they can't communicate with others.</p>
                             <p><strong>Impact:</strong> Partition tolerance is crucial in distributed systems, especially in wide-area networks, but it often forces the system to compromise on consistency or availability.</p>
-                            <img src="../../images/cap-3.PNG" alt="lb" style="display: block; margin: auto; width: 30%;">
+                            
                         </ul>
                     </li>
                 </ol>
@@ -91,6 +91,31 @@
                     </div>  
                 </ul>
             <br>
+
+            <h3 class="section-title">CAP Theorem in Real World Distributed System</h3>
+            <p>In real world system we cant avoid <b>Partition</b>. So we must need to choose between <b>Consistency</b> & <b>Availability</b>.</p>
+            <img src="../../images/cap-ds.png" alt="lb" style="display: block; margin: auto; width: 50%;">
+            <p>
+                If n3 becomes unreachable and cannot communicate with n1 and n2, then:
+                <ul>
+                    <li>Any writes sent to n1 or n2 cannot be forwarded to n3.</li>
+                    <li>Any writes sent to n3 cannot reach n1 or n2, so n1 and n2 will have stale data.</li>
+                </ul>
+            
+                <b>If the system chooses Consistency over Availability (CP):</b>
+                <p>
+                    We must block all write operations on n1 and n2 during the partition.<br>
+                    This prevents inconsistent data, but it also means the system becomes unavailable for writes until n3 is reachable again.
+                </p>    
+                </ul>
+                <b>If the system chooses Availability over Consistency (AP):</b>
+                <p>
+                    The system continues to accept both reads and writes, even though some nodes may return outdated data.<br>
+                    n1 and n2 keep processing writes, and once the network partition heals, the data will be reconciled and synced with n3.
+                </p>
+            </p>
+            <br>
+
             <h3 class="section-title">CAP Theorem in System Design Interviews</h3>
 
                 <p>In system design interviews, CAP theorem is an important concept because it helps you understand trade-offs in designing distributed systems. When discussing a system, you should be able to explain:</p>
@@ -133,5 +158,4 @@
 
         <br>
     </div>
-    Images sourced from Algomaster's blog: https://blog.algomaster.io/
 </div>
