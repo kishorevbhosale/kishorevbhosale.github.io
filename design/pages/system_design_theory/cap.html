@@ -113,8 +113,14 @@
                     The system continues to accept both reads and writes, even though some nodes may return outdated data.<br>
                     n1 and n2 keep processing writes, and once the network partition heals, the data will be reconciled and synced with n3.
                 </p>
+                <b>Strong Consistency:</b>
+                <p>Every read returns the most recent write, as if there is a single up-to-date copy of the data. After a write completes, all nodes in the distributed system immediately see the same value.</p>
+                <b>Eventual Consistency:</b>
+                <p>Nodes may temporarily return stale data, but if no new updates occur, all replicas will converge to the same value over time. The system does not guarantee immediate consistency, only eventual agreement.</p>
             </p>
             <br>
+
+            
 
             <h3 class="section-title">CAP Theorem in System Design Interviews</h3>
 
