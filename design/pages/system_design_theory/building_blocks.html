@@ -1,17 +1,38 @@
-<div class="container">
+<h2 style="text-align: center;">Building Blocks Of System Design</h2>
+<br>
+<div class="custom-container">
 
-        <div class="content">
-            <h1>Building Blocks Of System Design </h1>
-            <img src="../../../images/buildingblocks.png" alt="whatsapp" class="responsive-image">
+
+           
+                <h5>Table of Contents</h5>
+                <ol>
+                    <li><a href="#dns">Domain Name System (DNS)</a></li>
+                    <li><a href="#load-balancer">Load Balancer</a></li>
+                    <li><a href="#database">Database</a></li>
+                    <li><a href="#key-value-store">Key-Value Store</a></li>
+                    <li><a href="#cdn">Content Delivery Network (CDN)</a></li>
+                    <li><a href="#sequencer">Sequencer</a></li>
+                    <li><a href="#service-monitoring">Service Monitoring Overview</a></li>
+                    <li><a href="#distributed-caching">Distributed Caching</a></li>
+                    <li><a href="#distributed-mq">Distributed Messaging Queue</a></li>
+                    <li><a href="#pub-sub">Publish-Subscribe System</a></li>
+                    <li><a href="#rate-limiter">Rate Limiter Overview</a></li>
+                    <li><a href="#distributed-search">Distributed Search</a></li>
+                    <li><a href="#distributed-logging">Distributed Logging</a></li>
+                    <li><a href="#distributed-tracing">Distributed Tracing</a></li>
+                    <li><a href="#task-scheduling">Distributed Task Scheduling</a></li>
+                    <li><a href="#blob-store">Blob Store</a></li>
+                </ol>
+            </div>
             <hr>
-            <h5>Domain Name System (DNS)</h5>
+            <h5 id="dns">Domain Name System (DNS)</h5>
             <ul>
                 <li><strong>DNS (Domain Name System)</strong> is a hierarchical system that translates human-readable domain names (like www.example.com) into IP addresses (like 192.0.2.1).</li>
                 <li>It functions like a phonebook of the internet, making it easier for users to access websites without remembering complex IP addresses.</li>
                 <li>DNS servers store records of domain names and their corresponding IP addresses, ensuring efficient and accurate routing of internet traffic.</li>
                 <li>DNS resolution involves several steps, including contacting root, top-level domain (TLD), and authoritative name servers to retrieve the correct IP address for a domain.</li>
-            <hr></ul>
-            <h5>Cloud services:</h5>
+            </ul>
+            <b>Cloud services:</b>
             <div class="example">
             <ul>    
                 <li>Amazon Route 53 (AWS)</li>
@@ -22,15 +43,15 @@
             </ul>
             </div>
             <hr>  
-            <h5>Load Balancer</h5>
+            <h5 id="load-balancer">Load Balancer</h5>
             <ul>
                 <li>A load balancer distributes incoming network traffic evenly across multiple servers.</li>
                 <li>It ensures optimal resource utilization and prevents overloading any single server.</li>
                 <li>Enhances system reliability by automatically routing traffic away from failed or unhealthy servers.</li>
                 <li>Improves application performance by reducing downtime and improving response times.</li>
                 <li>Can work at different layers (Layer 4 or Layer 7) based on traffic types, like TCP or HTTP.</li>
-            <hr></ul>
-            <h5>Cloud services:</h5>
+            </ul>
+            <b>Cloud services:</b>
             <div class="example">
                 <ul>
                     <li>Amazon Elastic Load Balancing (ELB) - AWS</li>
@@ -40,15 +61,15 @@
                     <li>Alibaba Cloud SLB (Server Load Balancer)</li>
                 </ul>
             <hr></div>
-            <h5>Database</h5>
+            <h5 id="database">Database</h5>
             <ul>
                 <li><strong>Data Management:</strong> Involves storing, retrieving, modifying, and deleting data as part of various data-processing tasks.</li>
                 <li><strong>Types of Databases:</strong> Includes relational databases (e.g., SQL databases) and non-relational databases (e.g., NoSQL databases).</li>
                 <li><strong>Database Replication:</strong> Ensures data redundancy and availability by copying data across multiple database instances.</li>
                 <li><strong>Partitioning:</strong> Distributes data across multiple servers or locations to optimize performance and scalability.</li>
                 <li><strong>Distributed Databases:</strong> Analyzes data across multiple sites or nodes, allowing for improved access and performance.</li>
-            <hr></ul>
-            <h5>Cloud services:</h5>
+            </ul>
+            <b>Cloud services:</b>
             <div class="example">
                 <ul>
                     <li>Amazon RDS</li>
@@ -62,15 +83,15 @@
                     <li>Firebase Realtime Database</li>
                 </ul>
             <hr></div>
-            <h5>Key-Value Store</h5>
+            <h5 id="key-value-store">Key-Value Store</h5>
             <p>A key-value store is a type of non-relational database that uses a simple key-value pair structure for storing data. Here are some key points:</p>
             <ul>
                 <li><strong>Simplicity:</strong> Key-value stores offer a straightforward way to store and retrieve data, making them easy to use.</li>
                 <li><strong>Scalability:</strong> They are designed to scale horizontally, allowing for the handling of large volumes of data across multiple servers.</li>
                 <li><strong>Performance:</strong> Key-value stores provide fast data access due to their minimalistic design.</li>
                 <li><strong>Flexibility:</strong> They support various data types and can be easily configured to meet specific application needs.</li>
-            <hr></ul>
-            <h5>Cloud services:</h5>
+            </ul>
+            <b>Cloud services:</b>
             <div class="example">
                 <ul>
                     <li><em>Amazon DynamoDB</em></li>
@@ -80,16 +101,16 @@
                     <li><em>IBM Cloudant</em></li>
                 </ul>
             </div>
-<hr>
-            <h5>Content Delivery Network (CDN)</h5>
+            <hr>
+            <h5 id="cdn">Content Delivery Network (CDN)</h5>
             <ul>
                 <li>A CDN is a distributed network of servers that delivers content to users based on their geographic location.</li>
                 <li>It reduces latency by caching content closer to the end-user, improving load times for websites and applications.</li>
                 <li>CDNs enhance the reliability and availability of content by distributing the load across multiple servers.</li>
                 <li>They help mitigate traffic spikes and DDoS attacks by distributing the network load.</li>
                 <li>CDNs are essential for optimizing performance in media delivery, such as video streaming and gaming.</li>
-            <hr></ul>
-            <h5>Cloud services:</h5>
+            </ul>
+            <b>Cloud services:</b>
             <div class="example">
                 <ul>
                     <li>Amazon CloudFront</li>
@@ -101,15 +122,15 @@
                     <li>StackPath</li>
                 </ul>
             <hr></div>
-            <h5>Sequencer</h5>
+            <h5 id="sequencer">Sequencer</h5>
                 <ul>
                     <li><strong>Purpose:</strong> A sequencer is designed to generate unique identifiers (IDs) while ensuring the preservation of causality in distributed systems.</li>
                     <li><strong>Techniques:</strong> It can utilize various methods for ID generation, including UUIDs (Universally Unique Identifiers) and Snowflake ID generators, which were popularized by Twitter.</li>
                     <li><strong>Scalability:</strong> The system must be scalable to handle a high volume of requests without collisions in ID generation.</li>
                     <li><strong>Performance:</strong> The ID generation process should be efficient to minimize latency in applications requiring rapid ID creation.</li>
                     <li><strong>Causality Maintenance:</strong> Ensuring that the order of ID generation reflects the order of events in the system is crucial for maintaining consistency.</li>
-                <hr></ul>
-                <h5>Cloud services:</h5>
+                </ul>
+                <b>Cloud services:</b>
                 <div class="example">
                     <ul>
                         <li>AWS DynamoDB with Auto-Increment feature</li>
@@ -119,15 +140,15 @@
                         <li>FaunaDB with unique ID capabilities</li>
                     </ul>
                 </div>
-<hr>
-                <h5>Service Monitoring Overview</h5>
+                <hr>
+                <h5 id="service-monitoring">Service Monitoring Overview</h5>
                     <ul>
                         <li><strong>Importance:</strong> Monitoring systems are essential for analyzing the performance of distributed systems.</li>
                         <li><strong>Alerting:</strong> They provide alerts to stakeholders in case of issues, enabling timely responses.</li>
                         <li><strong>Components:</strong> Both server-side and client-side monitoring systems are utilized.</li>
                         <li><strong>Tools:</strong> Popular tools include Amazon CloudWatch, Prometheus, and Grafana for effective monitoring.</li>
-                    <hr></ul>
-                    <h5>Cloud services:</h5>
+                    </ul>
+                    <b>Cloud services:</b>
                     <div class="example">
                     <ul>
                         <li>Amazon CloudWatch</li>
@@ -142,15 +163,15 @@
                         <li>AppDynamics</li>
                     </ul>
                     </div>
-<hr>
-                <h5>Distributed Caching</h5>
+                <hr>
+                <h5 id="distributed-caching">Distributed Caching</h5>
                     <ul>
                         <li><strong>Definition:</strong> Distributed caching involves multiple cache servers that work together to store and retrieve frequently accessed data, improving performance and reducing latency.</li>
                         <li><strong>Benefits:</strong> Enhances application speed, reduces database load, and provides a scalable solution to manage large volumes of data access.</li>
                         <li><strong>Coordination:</strong> Cache servers coordinate to ensure consistency and reliability of cached data across different nodes.</li>
                         <li><strong>Tools:</strong> Popular tools for implementing distributed caching include in-memory data stores like Redis and Memcached.</li>
-                    <hr></ul>
-                    <h5>Cloud services:</h5>
+                    </ul>
+                    <b>Cloud services:</b>
                     <div class="example">
                         <ul>
                             <li>Amazon ElastiCache (Redis & Memcached)</li>
@@ -160,16 +181,16 @@
                             <li>Redis Enterprise Cloud</li>
                         </ul>
                     </div>
-<hr>
-                <h5>Distributed Messaging Queue</h5>
+                <hr>
+                <h5 id="distributed-mq">Distributed Messaging Queue</h5>
                     <ul>
                         <li>A distributed messaging queue allows communication between producers and consumers across multiple servers.</li>
                         <li>It enhances system scalability by enabling independent scaling of components.</li>
                         <li>Reliability is improved as messages can be stored and processed even if one part of the system is down.</li>
                         <li>Common use cases include event-driven architectures, microservices, and data streaming.</li>
                     </ul>
-<hr>
-                    <h5>Cloud services:</h5>
+
+                    <b>Cloud services:</b>
                     <div class="example">
                     <ul>
                         <li>Amazon SQS</li>
@@ -182,15 +203,15 @@
                         <li>Redis Streams</li>
                     </ul>
                     </div>
-<hr>
-                    <h5>Publish-Subscribe System</h5>
+                    <hr>
+                    <h5 id="pub-sub">Publish-Subscribe System</h5>
                     <ul>
                         <li>The publish-subscribe (pub-sub) system is an asynchronous messaging pattern.</li>
                         <li>It allows multiple producers (publishers) to send messages to multiple consumers (subscribers).</li>
                         <li>Pub-sub systems decouple message senders from receivers, enhancing scalability.</li>
                         <li>Commonly used in serverless and microservices architectures to enable event-driven communication.</li>
-                    <hr></ul>
-                    <h5>Cloud services:</h5>
+                    </ul>
+                    <b>Cloud services:</b>
                     <div class="example">
                     <ul>
                         <li>Google Cloud Pub/Sub</li>
@@ -200,15 +221,15 @@
                         <li>IBM Cloud Event Streams</li>
                     </ul>
                     </div>
-<hr>
-                    <h5>Rate Limiter Overview</h5>
+                    <hr>
+                    <h5 id="rate-limiter">Rate Limiter Overview</h5>
                     <ul>
                         <li><strong>Definition:</strong> A Rate Limiter controls the number of requests a user can make to a service within a specified time frame.</li>
                         <li><strong>Purpose:</strong> It protects services from being overwhelmed by excessive requests, ensuring fair usage and availability.</li>
                         <li><strong>Implementation:</strong> Can be integrated into APIs using gateways that provide built-in rate-limiting features.</li>
                         <li><strong>Benefits:</strong> Enhances security, prevents abuse, and improves service performance by managing traffic effectively.</li>
-                    <hr></ul>
-                    <h5>Cloud services:</h5>
+                    </ul>
+                    <b>Cloud services:</b>
                     <div class="example">
                     <ul>
                         <li>Amazon API Gateway</li>
@@ -218,16 +239,16 @@
                         <li>IBM API Gateway</li>
                     </ul>
                     </div>
-<hr>
-                    <h5>Distributed Search</h5>
+                    <hr>
+                    <h5 id="distributed-search">Distributed Search</h5>
                         <ul>
                             <li><strong>Definition:</strong> A system designed to process user queries and return relevant content quickly.</li>
                             <li><strong>Key Components:</strong> Includes crawling, indexing, and searching to ensure efficient data retrieval.</li>
                             <li><strong>Scalability:</strong> Supports handling large volumes of data across multiple servers, enhancing performance.</li>
                             <li><strong>Real-time Results:</strong> Provides timely responses to user queries, improving user experience.</li>
                             <li><strong>Common Tools:</strong> Elasticsearch and Amazon OpenSearch are widely used for building distributed search systems.</li>
-                        <hr></ul>
-                        <h5>Cloud services:</h5>
+                        </ul>
+                        <b>Cloud services:</b>
                         <div class="example">
                         <ul>
                             <li>Amazon OpenSearch Service</li>
@@ -236,8 +257,8 @@
                             <li>Google Cloud Search</li>
                         </ul>
                         </div>
-<hr>
-                    <h5>Distributed Logging</h5>
+                    <hr>
+                    <h5 id="distributed-logging">Distributed Logging</h5>
                         <ul>
                             <li><strong>Definition:</strong> Distributed logging involves collecting logs from multiple services or applications running in different environments.</li>
                             <li><strong>Importance:</strong> Efficient logging is crucial in distributed systems to monitor application performance and troubleshoot issues.</li>
@@ -245,8 +266,8 @@
                             <li><strong>Solutions:</strong> Cloud-based logging tools streamline the logging process, ensuring scalability and reliability.</li>
                             <li><strong>Usage:</strong> Logs can be aggregated, analyzed, and visualized for better insights into system behavior.</li>
                         </ul>
-<hr>
-                        <h5>Cloud services:</h5>
+
+                        <b>Cloud services:</b>
                         <div class="example">
                         <ul>
                             <li>Amazon CloudWatch Logs</li>
@@ -257,15 +278,15 @@
                         </ul>
                         </div>
 <hr>
-                        <h5>Distributed Tracing</h5>
+                        <h5 id="distributed-logging">Distributed Logging</h5>
                             <ul>
                                 <li><strong>Definition:</strong> Distributed tracing is a method used to monitor and track the flow of requests through various services in a microservices architecture.</li>
                                 <li><strong>Purpose:</strong> It helps developers identify performance bottlenecks, latency issues, and failures within complex distributed systems.</li>
                                 <li><strong>Granularity:</strong> Provides detailed insights into how long requests take at each service level, enabling effective troubleshooting and optimization.</li>
                                 <li><strong>Visualization:</strong> Generates trace visualizations to understand the path of requests and the interactions between different services.</li>
                             </ul>
-<hr>
-                            <h5>Cloud services:</h5>
+
+                            <b>Cloud services:</b>
                             <div class="example">
                             <ul>
                                 <li>AWS X-Ray</li>
@@ -276,7 +297,7 @@
                             </ul>
                             </div>
 <hr>
-                        <h5>Distributed Task Scheduling</h5>
+                        <h5 id="task-scheduling">Distributed Task Scheduling</h5>
                         
                         <ul>
                             <li>Distributed task scheduling involves managing and allocating resources to tasks across multiple nodes or systems.</li>
@@ -285,8 +306,8 @@
                             <li>Common in cloud environments, it allows tasks to be distributed across different regions, improving scalability and fault tolerance.</li>
                             <li>Used for large-scale applications with complex workflows and data pipelines.</li>
                         </ul>
-<hr>
-                        <h5>Cloud services:</h5>
+
+                        <b>Cloud services:</b>
                         <div class="example">
                         <ul>
                             <li>Amazon Step Functions</li>
@@ -297,7 +318,7 @@
                         </ul>
                         </div>
 <hr>
-                        <h5>Blob Store</h5>
+                        <h5 id="blob-store">Blob Store</h5>
                         
                         <ul>
                                 <li><strong>Definition:</strong> A storage solution specifically designed for unstructured data, including multimedia files, images, videos, and binary executables.</li>
@@ -306,8 +327,8 @@
                                 <li><strong>Scalability:</strong> Can scale to accommodate vast amounts of data without the need for extensive infrastructure management.</li>
                                 <li><strong>Use Cases:</strong> Commonly used for backup and disaster recovery, big data analytics, and content distribution.</li>
                         </ul>
-<hr>
-                        <h5>Cloud services:</h5>
+
+                        <b>Cloud services:</b>
                         <div class="example">
                             <ul>
                                 <li>Amazon S3 (Simple Storage Service)</li>
