@@ -107,14 +107,19 @@
             
             links.forEach(link => {
                 const text = link.textContent.trim();
-                const href = link.getAttribute('href');
+                let href = link.getAttribute('href');
                 const icon = link.querySelector('i');
                 const iconClass = icon ? icon.className : '';
+                
+                // Strip # prefix if present - loadPageFromUrl will add it back
+                if (href && href.startsWith('#')) {
+                    href = href.substring(1);
+                }
                 
                 if (text && href && !href.includes('under_construction')) {
                     this.searchData.push({
                         title: text,
-                        url: href,
+                        url: href, // Store without # - loadPageFromUrl handles hash formatting
                         icon: iconClass,
                         keywords: text.toLowerCase().split(/\s+/)
                     });
@@ -324,17 +329,41 @@
             
             // Load initial content if hash present
             const hashPath = window.location.hash.substring(1);
+            console.log('Initial hash path:', hashPath);
             if (hashPath) {
-                this.fetchContent(hashPath);
+                // Handle both direct hash paths and absolute URLs with hash
+                let contentPath = hashPath;
+                // If hash contains index.html#, extract the part after the second #
+                if (hashPath.includes('index.html#')) {
+                    const parts = hashPath.split('#');
+                    contentPath = parts.length > 1 ? parts[parts.length - 1] : hashPath.replace('index.html', '');
+                }
+                console.log('Content path to load:', contentPath);
+                if (contentPath) {
+                    this.fetchContent(contentPath);
+                }
             }
         },
         
         loadPage: function(event) {
-    event.preventDefault();
-    const link = event.currentTarget;
-    const pageUrl = link.getAttribute('href');
+            event.preventDefault();
+            const link = event.currentTarget;
+            let pageUrl = link.getAttribute('href');
 
-            if (!pageUrl || pageUrl.includes('#')) return;
+            if (!pageUrl) return;
+            
+            // Handle hash-based URLs - strip # if present
+            if (pageUrl.startsWith('#')) {
+                pageUrl = pageUrl.substring(1);
+            }
+            
+            // Handle absolute URLs with hash (e.g., /index.html#design/pages/...)
+            if (pageUrl.includes('#') && pageUrl.includes('index.html')) {
+                pageUrl = pageUrl.split('#')[1];
+            }
+            
+            // Skip if it's already a hash-only or empty
+            if (!pageUrl || pageUrl === '#') return;
             
             this.loadPageFromUrl(pageUrl);
             
@@ -344,10 +373,16 @@
         },
         
         loadPageFromUrl: function(pageUrl) {
+            // Strip # if present
+            if (pageUrl.startsWith('#')) {
+                pageUrl = pageUrl.substring(1);
+            }
+            
             this.fetchContent(pageUrl);
             
-            // Update URL without reload
-            history.pushState({ pageUrl }, '', `#${pageUrl}`);
+            // Update URL without reload - ensure hash format
+            const hashUrl = pageUrl.startsWith('#') ? pageUrl : `#${pageUrl}`;
+            history.pushState({ pageUrl }, '', hashUrl);
             
             // Scroll to content
             const rightPanel = document.querySelector('.right-panel');
@@ -357,57 +392,126 @@
         },
         
         fetchContent: function(url) {
+            console.log('Fetching content from:', url);
+            const contentDiv = document.getElementById('content');
+            if (!contentDiv) {
+                console.error('Content div not found!');
+                return;
+            }
+            
             fetch(url)
                 .then(response => {
-                    if (!response.ok) throw new Error('Failed to load page');
+                    console.log('Response status:', response.status, response.statusText);
+                    if (!response.ok) {
+                        throw new Error(`Failed to load page: ${response.status} ${response.statusText}`);
+                    }
                     return response.text();
                 })
-        .then(data => {
-                    const contentDiv = document.getElementById('content');
+                .then(data => {
+                    console.log('Content fetched, extracting body content...');
+                    // Clean up old page-specific styles before loading new content
+                    this.cleanupPageStyles();
+                    
+                    // Extract body content from full HTML document
+                    let extractedContent = this.extractBodyContent(data);
+                    console.log('Content extracted, length:', extractedContent.length);
+                    
                     if (contentDiv) {
-                        // Extract body content from full HTML document
-                        let extractedContent = this.extractBodyContent(data);
                         contentDiv.innerHTML = extractedContent;
+                        console.log('Content inserted into DOM');
                         
                         // Re-initialize any page-specific functionality
                         this.initializePageContent();
                     }
-        })
-        .catch(error => {
-            console.error('Error loading page:', error);
-                    const contentDiv = document.getElementById('content');
+                })
+                .catch(error => {
+                    console.error('Error loading page:', error);
                     if (contentDiv) {
                         contentDiv.innerHTML = `
                             <div class="alert alert-danger" role="alert">
                                 <h4>Error Loading Content</h4>
-                                <p>Unable to load the requested page. Please try again later.</p>
+                                <p>Unable to load the requested page: ${error.message}</p>
+                                <p><small>URL: ${url}</small></p>
                             </div>
                         `;
                     }
                 });
         },
         
+        cleanupPageStyles: function() {
+            // Remove any previously injected page-specific styles
+            const existingStyles = document.querySelectorAll('style[data-page-specific]');
+            existingStyles.forEach(style => style.remove());
+        },
+        
         extractBodyContent: function(html) {
-            // Create a temporary DOM element to parse HTML
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+            // Use DOMParser to properly parse full HTML documents
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Extract styles from head if present (for pages like about_me.html)
+            const headTag = doc.querySelector('head');
+            let pageStyles = '';
+            if (headTag) {
+                const styleTags = headTag.querySelectorAll('style');
+                styleTags.forEach(style => {
+                    pageStyles += style.outerHTML;
+                });
+            }
             
             // Try to find body tag content
-            const bodyTag = tempDiv.querySelector('body');
+            const bodyTag = doc.querySelector('body');
             if (bodyTag) {
-                // Get all content inside body, excluding navbar placeholders
-                let bodyContent = bodyTag.innerHTML;
+                // Clone the body to avoid modifying the original
+                const bodyClone = bodyTag.cloneNode(true);
+                
+                // Remove header, footer, and back-to-top button (these are already in index.html)
+                const header = bodyClone.querySelector('header');
+                const footer = bodyClone.querySelector('footer');
+                const backToTop = bodyClone.querySelector('#backToTop, .back-to-top');
+                
+                if (header) header.remove();
+                if (footer) footer.remove();
+                if (backToTop) backToTop.remove();
+                
                 // Remove navbar placeholder divs
-                bodyContent = bodyContent.replace(/<div[^>]*id=["']navbar-placeholder["'][^>]*>.*?<\/div>/gis, '');
+                const navbarPlaceholder = bodyClone.querySelector('#navbar-placeholder, [id*="navbar"]');
+                if (navbarPlaceholder) navbarPlaceholder.remove();
+                
+                // Get the remaining content
+                let bodyContent = bodyClone.innerHTML;
+                
                 // Remove script tags that might cause issues
                 bodyContent = bodyContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+                
+                // If content is empty or only whitespace, try to get main sections
+                if (!bodyContent.trim()) {
+                    const sections = bodyClone.querySelectorAll('section, main, article, .container');
+                    if (sections.length > 0) {
+                        bodyContent = Array.from(sections).map(s => s.outerHTML).join('');
+                    }
+                }
+                
+                // Prepend styles if they exist, and mark them as page-specific
+                if (pageStyles) {
+                    // Add data attribute to identify page-specific styles
+                    pageStyles = pageStyles.replace(/<style([^>]*)>/gi, '<style$1 data-page-specific>');
+                    bodyContent = pageStyles + bodyContent;
+                }
+                
                 return bodyContent;
             }
             
             // If no body tag, check if it's just content (some pages are content-only)
-            const container = tempDiv.querySelector('.container, .content, main, article');
+            const container = doc.querySelector('.container, .content, main, article');
             if (container) {
-                return container.innerHTML;
+                let content = container.innerHTML;
+                if (pageStyles) {
+                    // Add data attribute to identify page-specific styles
+                    pageStyles = pageStyles.replace(/<style([^>]*)>/gi, '<style$1 data-page-specific>');
+                    content = pageStyles + content;
+                }
+                return content;
             }
             
             // If it starts with content directly (like some pages), return as is but clean it
@@ -416,11 +520,27 @@
             content = content.replace(/<!DOCTYPE[^>]*>/gi, '');
             content = content.replace(/<html[^>]*>/gi, '');
             content = content.replace(/<\/html>/gi, '');
+            // Extract styles before removing head
+            const headMatch = content.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+            if (headMatch) {
+                const headContent = headMatch[1];
+                const styleMatch = headContent.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+                if (styleMatch) {
+                    pageStyles = styleMatch.join('');
+                }
+            }
             content = content.replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '');
             content = content.replace(/<body[^>]*>/gi, '');
             content = content.replace(/<\/body>/gi, '');
             // Remove script tags
             content = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+            
+            // Prepend styles if they exist, and mark them as page-specific
+            if (pageStyles) {
+                // Add data attribute to identify page-specific styles
+                pageStyles = pageStyles.replace(/<style([^>]*)>/gi, '<style$1 data-page-specific>');
+                content = pageStyles + content;
+            }
             
             return content;
         },
@@ -1084,6 +1204,37 @@
             return stored ? JSON.parse(stored) : [];
         }
     };
+
+    // ============================================
+    // Handle Direct File Access - Run Immediately
+    // ============================================
+    (function() {
+        // Only run on non-index pages that are opened directly
+        const currentPath = window.location.pathname;
+        const isIndexPage = currentPath.endsWith('index.html') || currentPath.endsWith('/') || currentPath === '';
+        
+        // Skip if we're on index.html or if there's already a hash
+        if (!isIndexPage && !window.location.hash) {
+            // Check if this is a content page (in design/pages directory)
+            if (currentPath.includes('design/pages/') || currentPath.includes('design\\pages\\')) {
+                // Extract the relative path from root
+                let relativePath = currentPath;
+                
+                // Remove leading slash and normalize
+                if (relativePath.startsWith('/')) {
+                    relativePath = relativePath.substring(1);
+                }
+                
+                // Normalize Windows paths
+                relativePath = relativePath.replace(/\\/g, '/');
+                
+                // Redirect to index.html with hash immediately
+                const newUrl = window.location.origin + (window.location.pathname.includes('/') ? '/' : '') + 'index.html#' + relativePath;
+                window.location.replace(newUrl);
+                return; // Stop execution
+            }
+        }
+    })();
 
     // ============================================
     // Initialize Everything

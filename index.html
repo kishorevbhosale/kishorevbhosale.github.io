@@ -18,6 +18,37 @@
     <meta name="twitter:description" content="Revise, prepare, and excel in backend development and system design interviews.">
     <title>Tech Preparation Zone - Backend Development & System Design Resources</title>
 
+    <!-- Base URL for consistent path resolution -->
+    <base href="/">
+    <script>
+        // Fix paths for local file:// protocol
+        (function() {
+            if (window.location.protocol === 'file:') {
+                var path = window.location.pathname;
+                var basePath = path.substring(0, path.lastIndexOf('/') + 1);
+                document.querySelector('base').href = basePath || './';
+                
+                // Fix CSS and JS paths if needed
+                var links = document.querySelectorAll('link[rel="stylesheet"]');
+                var scripts = document.querySelectorAll('script[src]');
+                
+                [].forEach.call(links, function(link) {
+                    var href = link.getAttribute('href');
+                    if (href && href.startsWith('/') && !href.startsWith('//')) {
+                        link.href = href.substring(1);
+                    }
+                });
+                
+                [].forEach.call(scripts, function(script) {
+                    var src = script.getAttribute('src');
+                    if (src && src.startsWith('/') && !src.startsWith('//')) {
+                        script.src = src.substring(1);
+                    }
+                });
+            }
+        })();
+    </script>
+    
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,10 +70,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
 
 <body>
@@ -62,7 +93,7 @@
                         <i class="bi bi-list" aria-hidden="true"></i>
                     </button>
                     <h1 class="blog-title m-0">
-                        <a href="index.html" class="text-white text-decoration-none">Tech Preparation Zone</a>
+                        <a href="/index.html" class="text-white text-decoration-none">Tech Preparation Zone</a>
                     </h1>
                 </div>
 
@@ -82,18 +113,16 @@
                 <!-- Right: Navigation Links + Theme Toggle -->
                 <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
                     <div class="d-none d-md-flex align-items-center gap-2">
-                        <a href="index.html" class="btn btn-outline-light btn-sm" aria-label="Home">
+                        <a href="/index.html" class="btn btn-outline-light btn-sm" aria-label="Home">
                             <i class="bi bi-house-fill" aria-hidden="true"></i>
                         </a>
-                        <a href="design/about_me.html" class="btn btn-outline-light btn-sm" aria-label="About Me">
+                        <a href="/index.html#design/about_me.html" class="btn btn-outline-light btn-sm" aria-label="About Me">
                             <i class="bi bi-person-fill" aria-hidden="true"></i>
                         </a>
-                        <!-- <a href="#contact" class="btn btn-outline-light btn-sm" aria-label="Contact">
-                            <i class="bi bi-envelope-fill" aria-hidden="true"></i>
-                        </a> -->
+                        
                     </div>
                     <div class="d-flex d-md-none align-items-center gap-2 mobile-quick-links">
-                        <a href="index.html" class="btn btn-outline-light btn-sm" aria-label="Home">
+                        <a href="/index.html" class="btn btn-outline-light btn-sm" aria-label="Home">
                             <i class="bi bi-house-fill" aria-hidden="true"></i>
                         </a>
                         <a href="#contact" class="btn btn-outline-light btn-sm" aria-label="Contact">
@@ -148,37 +177,37 @@
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
                                     <li>
-                                        <a href="design/pages/dsa/string.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/string.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-journal-text"></i> String Problems
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="design/pages/dsa/two-pointers.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/two-pointers.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-journal-text"></i> Two Pointers Problems
                                         </a>
                                     </li>
                                     <!-- <li>
-                                        <a href="design/pages/dsa/array.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/array.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-grid-3x3-gap"></i> Array Problems
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="design/pages/dsa/linkedlist.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/linkedlist.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-link-45deg"></i> Linked List
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="design/pages/dsa/tree.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/tree.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-diagram-3"></i> Trees
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="design/pages/dsa/graph.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/graph.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-diagram-3-fill"></i> Graphs
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="design/pages/dsa/dp.html" class="nav-link sidebar-link" onclick="loadPage(event)">
+                                        <a href="/index.html#design/pages/dsa/dp.html" class="nav-link sidebar-link" onclick="loadPage(event)">
                                             <i class="bi bi-boxes"></i> Dynamic Programming
                                         </a> -->
                                     </li>
@@ -208,15 +237,15 @@
                                         <div id="collapseJavaQA" class="accordion-collapse collapse" aria-labelledby="headingJavaQA" data-bs-parent="#javaSubsections">
                                             <div class="accordion-body">
                                                 <ul class="list-unstyled">                                                    
-                                                    <li><a href="design/pages/java/basic-java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i>Basic Java</a></li>
-                                                    <li><a href="design/pages/java/java-ecosystem.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i>Java Ecosystem</a></li>
-                                                    <li><a href="design/pages/java/oops.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i>Object-Oriented Programming</a></li>
-                                                    <li><a href="design/pages/java/multithreading.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i>MultiThreading</a></li>
-                                                    <li><a href="design/pages/java/exception_handling.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bug"></i>Exception Handling</a></li>
-                                                    <li><a href="design/pages/java/memory_management.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-memory"></i>Memory Management</a></li>
-                                                    <li><a href="design/pages/java/collection_framework.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-collection"></i>Collection Framework</a></li>
-                                                    <li><a href="design/pages/java/java-8.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-gear"></i>Java 8+</a></li>
-                                                    <!-- <li><a href="design/pages/java/java-8-qa.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-question-circle"></i>Java 8+ Interview QA</a></li> -->
+                                                    <li><a href="/index.html#design/pages/java/basic-java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i>Basic Java</a></li>
+                                                    <li><a href="/index.html#design/pages/java/java-ecosystem.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i>Java Ecosystem</a></li>
+                                                    <li><a href="/index.html#design/pages/java/oops.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i>Object-Oriented Programming</a></li>
+                                                    <li><a href="/index.html#design/pages/java/multithreading.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i>MultiThreading</a></li>
+                                                    <li><a href="/index.html#design/pages/java/exception_handling.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bug"></i>Exception Handling</a></li>
+                                                    <li><a href="/index.html#design/pages/java/memory_management.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-memory"></i>Memory Management</a></li>
+                                                    <li><a href="/index.html#design/pages/java/collection_framework.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-collection"></i>Collection Framework</a></li>
+                                                    <li><a href="/index.html#design/pages/java/java-8.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-gear"></i>Java 8+</a></li>
+                                                    <!-- <li><a href="/index.html#design/pages/java/java-8-qa.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-question-circle"></i>Java 8+ Interview QA</a></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -232,11 +261,11 @@
                                         <div id="collapseSOLID" class="accordion-collapse collapse" aria-labelledby="headingSOLID" data-bs-parent="#javaSubsections">
                                             <div class="accordion-body">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="design/pages/solid/srp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-building"></i> SRP - Single Responsibility</a></li>
-                                                    <li><a href="design/pages/solid/ocp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-code"></i> OCP - Open/Closed Principle</a></li>
-                                                    <li><a href="design/pages/solid/lsp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-boxes"></i> LSP - Liskov Substitution</a></li>
-                                                    <li><a href="design/pages/solid/isp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-segmented-nav"></i> ISP - Interface Segregation</a></li>
-                                                    <li><a href="design/pages/solid/dip.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-2"></i> DIP - Dependency Inversion</a></li>
+                                                    <li><a href="/index.html#design/pages/solid/srp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-building"></i> SRP - Single Responsibility</a></li>
+                                                    <li><a href="/index.html#design/pages/solid/ocp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-code"></i> OCP - Open/Closed Principle</a></li>
+                                                    <li><a href="/index.html#design/pages/solid/lsp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-boxes"></i> LSP - Liskov Substitution</a></li>
+                                                    <li><a href="/index.html#design/pages/solid/isp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-segmented-nav"></i> ISP - Interface Segregation</a></li>
+                                                    <li><a href="/index.html#design/pages/solid/dip.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-2"></i> DIP - Dependency Inversion</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -252,8 +281,8 @@
                                         <div id="collapseDesignPatterns" class="accordion-collapse collapse" aria-labelledby="headingDesignPatterns" data-bs-parent="#javaSubsections">
                                             <div class="accordion-body">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="design/pages/design_pattern/introduction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> Introduction</a></li>
-                                                    <li><a href="design/pages/design_pattern/creational/creational_dp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Creational Design Patterns</a></li>
+                                                    <li><a href="/index.html#design/pages/design_pattern/introduction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> Introduction</a></li>
+                                                    <li><a href="/index.html#design/pages/design_pattern/creational/creational_dp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Creational Design Patterns</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -274,14 +303,14 @@
                         <div id="collapseDb" class="accordion-collapse collapse" aria-labelledby="headingDb" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/db/database.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-journal-text"></i> Database Concepts</a></li>
-                                    <li><a href="design/pages/db/different_types_db.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-layers"></i> Database Types</a></li>
-                                    <li><a href="design/pages/db/database-choice.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-check2-circle"></i> Right Database Choice</a></li>
-                                    <li><a href="design/pages/db/dynamodb.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud-check"></i> DynamoDB</a></li>
-                                    <li><a href="design/pages/db/elasticsearch.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-search"></i> ElasticSearch</a></li>
-                                    <li><a href="design/pages/db/redis.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> Redis</a></li>
-                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-tools"></i> Cassandra</a></li>
-                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-code-slash"></i> MySQL Queries</a></li>
+                                    <li><a href="/index.html#design/pages/db/database.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-journal-text"></i> Database Concepts</a></li>
+                                    <li><a href="/index.html#design/pages/db/different_types_db.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-layers"></i> Database Types</a></li>
+                                    <li><a href="/index.html#design/pages/db/database-choice.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-check2-circle"></i> Right Database Choice</a></li>
+                                    <li><a href="/index.html#design/pages/db/dynamodb.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud-check"></i> DynamoDB</a></li>
+                                    <li><a href="/index.html#design/pages/db/elasticsearch.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-search"></i> ElasticSearch</a></li>
+                                    <li><a href="/index.html#design/pages/db/redis.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> Redis</a></li>
+                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-tools"></i> Cassandra</a></li>
+                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-code-slash"></i> MySQL Queries</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -297,21 +326,21 @@
                         <div id="collapseLLD" class="accordion-collapse collapse" aria-labelledby="headingLLD" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/low_level_design/parking_lot.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-car-front-fill"></i> Design Parking Lot</a></li>
-                                    <li><a href="design/pages/low_level_design/design_elevator.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-building"></i> Design Elevator</a></li>
-                                    <li><a href="design/pages/low_level_design/library_management.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book-half"></i> Design Library Management System</a></li>
-                                    <li><a href="design/pages/low_level_design/vending_machine.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cup-hot"></i> Design a Vending Machine</a></li>
-                                    <li><a href="design/pages/low_level_design/movie_ticket_booking.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-film"></i> Design Movie Ticket Booking</a></li>
-                                    <li><a href="design/pages/low_level_design/atm.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bank"></i> Design ATM</a></li>
-                                    <li><a href="design/pages/low_level_design/restaurnat_book.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-egg-fried"></i> Design Restaurant Management System</a></li>
-                                    <li><a href="design/pages/low_level_design/hotel_booking.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-house-door-fill"></i> Design Online Hotel Booking System</a></li>
-                                    <li><a href="design/pages/low_level_design/logger.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-file-earmark-text"></i> Implement Logger System</a></li>
-                                    <li><a href="design/pages/low_level_design/stackoverflow.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-chat-left-text-fill"></i> Design StackOverflow</a></li>
-                                    <li><a href="design/pages/low_level_design/cache.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i> Design Cache System</a></li>
-                                    <li><a href="design/pages/low_level_design/splitwise.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cash-stack"></i> Design Splitwise</a></li>
-                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-taxi-front-fill"></i> Design Cab Booking (Uber/Ola)</a></li>
-                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-trophy"></i> Design CricInfo/Cricbuzz</a></li>
-                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-calendar-event"></i> Design Meeting Scheduler</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/parking_lot.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-car-front-fill"></i> Design Parking Lot</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/design_elevator.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-building"></i> Design Elevator</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/library_management.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book-half"></i> Design Library Management System</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/vending_machine.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cup-hot"></i> Design a Vending Machine</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/movie_ticket_booking.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-film"></i> Design Movie Ticket Booking</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/atm.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bank"></i> Design ATM</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/restaurnat_book.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-egg-fried"></i> Design Restaurant Management System</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/hotel_booking.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-house-door-fill"></i> Design Online Hotel Booking System</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/logger.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-file-earmark-text"></i> Implement Logger System</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/stackoverflow.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-chat-left-text-fill"></i> Design StackOverflow</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/cache.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i> Design Cache System</a></li>
+                                    <li><a href="/index.html#design/pages/low_level_design/splitwise.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cash-stack"></i> Design Splitwise</a></li>
+                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-taxi-front-fill"></i> Design Cab Booking (Uber/Ola)</a></li>
+                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-trophy"></i> Design CricInfo/Cricbuzz</a></li>
+                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-calendar-event"></i> Design Meeting Scheduler</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -338,16 +367,16 @@
                                         <div id="collapseTheory" class="accordion-collapse collapse" aria-labelledby="headingTheory" data-bs-parent="#systemDesignSubsections">
                                             <div class="accordion-body">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="design/pages/system_design_theory/zero_to_million.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bar-chart"></i> Scale Zero To Million</a></li>
-                                                    <li><a href="design/pages/system_design_theory/estimation.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-calculator"></i> Effective Estimation</a></li>
-                                                    <li><a href="design/pages/system_design_theory/building_blocks.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i> Building Blocks</a></li>
-                                                    <li><a href="design/pages/system_design_theory/scalability.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-graph-up"></i> Scalability</a></li>
-                                                    <li><a href="design/pages/system_design_theory/performance_scalability.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-speedometer"></i> Performance vs Scalability</a></li>
-                                                    <li><a href="design/pages/system_design_theory/dns.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-globe"></i> Domain Name System (DNS)</a></li>
-                                                    <li><a href="design/pages/system_design_theory/load_balancer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-3"></i> Load Balancer</a></li>
-                                                    <li><a href="design/pages/system_design_theory/websocket.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-chat-square"></i> WebSocket</a></li>
-                                                    <li><a href="design/pages/system_design_theory/cap.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-shield-lock"></i> CAP Theorem</a></li>
-                                                    <li><a href="design/pages/system_design_theory/distributed_cache.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning-fill"></i> Distributed Cache</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/zero_to_million.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bar-chart"></i> Scale Zero To Million</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/estimation.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-calculator"></i> Effective Estimation</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/building_blocks.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box"></i> Building Blocks</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/scalability.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-graph-up"></i> Scalability</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/performance_scalability.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-speedometer"></i> Performance vs Scalability</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/dns.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-globe"></i> Domain Name System (DNS)</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/load_balancer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-3"></i> Load Balancer</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/websocket.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-chat-square"></i> WebSocket</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/cap.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-shield-lock"></i> CAP Theorem</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_theory/distributed_cache.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning-fill"></i> Distributed Cache</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -363,16 +392,16 @@
                                         <div id="collapseExamples" class="accordion-collapse collapse" aria-labelledby="headingExamples" data-bs-parent="#systemDesignSubsections">
                                             <div class="accordion-body">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="design/pages/system_design_example/url_shortner.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-link-45deg"></i> URL Shortener</a></li>
-                                                    <li><a href="design/pages/system_design_example/hotel_booking.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-house-door"></i> Hotel Booking</a></li>
-                                                    <li><a href="design/pages/system_design_example/ecommerce.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cart"></i> Ecommerce System</a></li>
-                                                    <li><a href="design/pages/system_design_example/whatsapp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-chat-dots"></i> WhatsApp System Design</a></li>
-                                                    <li><a href="design/pages/system_design_example/notification.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Notification System</a></li>
-                                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-car-front"></i> Design Uber</a></li>
-                                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-twitter"></i> Design Twitter</a></li>
-                                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-facebook"></i> Design Facebook</a></li>
-                                                    <li><a href="design/pages/system_design_example/youtube.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-youtube"></i> Design YouTube</a></li>
-                                                    <li><a href="design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-map"></i> Design Google Maps</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_example/url_shortner.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-link-45deg"></i> URL Shortener</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_example/hotel_booking.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-house-door"></i> Hotel Booking</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_example/ecommerce.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cart"></i> Ecommerce System</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_example/whatsapp.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-chat-dots"></i> WhatsApp System Design</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_example/notification.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Notification System</a></li>
+                                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-car-front"></i> Design Uber</a></li>
+                                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-twitter"></i> Design Twitter</a></li>
+                                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-facebook"></i> Design Facebook</a></li>
+                                                    <li><a href="/index.html#design/pages/system_design_example/youtube.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-youtube"></i> Design YouTube</a></li>
+                                                    <li><a href="/index.html#design/pages/under_construction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-map"></i> Design Google Maps</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -393,18 +422,18 @@
                         <div id="collapseMicroservices" class="accordion-collapse collapse" aria-labelledby="headingMicroservices" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/microservices/mono_vs_micro.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-3"></i> Monolithic vs Microservices</a></li>
-                                    <li><a href="design/pages/microservices/building_microservice.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-hammer"></i> Build Microservice using Spring Boot</a></li>
-                                    <li><a href="design/pages/microservices/sizing_of_microservice.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-arrows-expand"></i> Right-Sizing & Defining Service Boundaries</a></li>
-                                    <li><a href="design/pages/microservices/key_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-key"></i> Key Annotations for Spring Boot Microservices</a></li>
-                                    <li><a href="design/pages/microservices/benefits_cloud-native_ms.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud"></i> Benefits of Cloud-Native Microservices</a></li>
-                                    <li><a href="design/pages/microservices/deployment_portability_scalability.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box-arrow-up"></i> Deployment Portability & Scalability</a></li>
-                                    <li><a href="design/pages/microservices/cloud-native_application.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud-arrow-up"></i> Features of Cloud-Native Applications</a></li>
-                                    <li><a href="design/pages/microservices/15_factors.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-list-ol"></i> 15 Factors Methodology</a></li>
-                                    <li><a href="design/pages/microservices/config_management.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-sliders"></i> Configurations Management</a></li>
-                                    <li><a href="design/pages/microservices/liveness_readiness.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-heart"></i> Liveness and Readiness in Actuator</a></li>
-                                    <li><a href="design/pages/microservices/service_discovery.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-binoculars"></i> Service Discovery & Registration</a></li>
-                                    <!--<li><a href="design/pages/microservices/microservice_interview-part-1.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-binoculars"></i>Microservice_Interview-Part-1</a> </li>-->
+                                    <li><a href="/index.html#design/pages/microservices/mono_vs_micro.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-3"></i> Monolithic vs Microservices</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/building_microservice.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-hammer"></i> Build Microservice using Spring Boot</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/sizing_of_microservice.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-arrows-expand"></i> Right-Sizing & Defining Service Boundaries</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/key_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-key"></i> Key Annotations for Spring Boot Microservices</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/benefits_cloud-native_ms.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud"></i> Benefits of Cloud-Native Microservices</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/deployment_portability_scalability.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box-arrow-up"></i> Deployment Portability & Scalability</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/cloud-native_application.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud-arrow-up"></i> Features of Cloud-Native Applications</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/15_factors.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-list-ol"></i> 15 Factors Methodology</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/config_management.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-sliders"></i> Configurations Management</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/liveness_readiness.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-heart"></i> Liveness and Readiness in Actuator</a></li>
+                                    <li><a href="/index.html#design/pages/microservices/service_discovery.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-binoculars"></i> Service Discovery & Registration</a></li>
+                                    <!--<li><a href="/index.html#design/pages/microservices/microservice_interview-part-1.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-binoculars"></i>Microservice_Interview-Part-1</a> </li>-->
                                 </ul>
                             </div>
                         </div>
@@ -420,21 +449,21 @@
                         <div id="collapseSpringBoot" class="accordion-collapse collapse" aria-labelledby="headingSpringBoot" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/spring_boot/servlet.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> Introduction to Servlet</a></li>
-                                    <li><a href="design/pages/spring_boot/maven.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> understanding of Maven</a></li>
-                                    <li><a href="design/pages/spring_boot/crud.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i>Create Spring Boot CRUD Application</a></li>
-                                    <li><a href="design/pages/spring_boot/controller_layer_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i>Controller Layer Annotations</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/servlet.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> Introduction to Servlet</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/maven.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> understanding of Maven</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/crud.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i>Create Spring Boot CRUD Application</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/controller_layer_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i>Controller Layer Annotations</a></li>
 
-                                    <li><a href="design/pages/spring_boot/introduction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> Introduction to Spring Framework</a></li>
-                                    <li><a href="design/pages/spring_boot/spring_beans.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bricks"></i> Introduction to Beans</a></li>
-                                    <li><a href="design/pages/spring_boot/bean_scope.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-arrows-angle-expand"></i> Spring Bean Scope</a></li>
-                                    <li><a href="design/pages/spring_boot/spring_bean_autowiring.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-plug"></i> Spring Bean Autowiring</a></li>
-                                    <li><a href="design/pages/spring_boot/aop.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> Aspect Oriented Programming (AOP)</a></li>
-                                    <li><a href="design/pages/spring_boot/stereotype_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-tags"></i> Stereotype Annotation</a></li>
-                                    <li><a href="design/pages/spring_boot/spring_boot_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-list-task"></i> Spring Boot Annotations</a></li>
-                                    <li><a href="design/pages/spring_boot/exception_handling.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-exclamation-circle"></i> Exception Handling</a></li>
-                                    <li><a href="design/pages/spring_boot/input_data_validation.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-check-circle"></i> Input Data Validation</a></li>
-                                    <li><a href="design/pages/spring_boot/rest_api_documentation.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-file-text"></i> REST API Documentation</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/introduction.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-book"></i> Introduction to Spring Framework</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/spring_beans.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bricks"></i> Introduction to Beans</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/bean_scope.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-arrows-angle-expand"></i> Spring Bean Scope</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/spring_bean_autowiring.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-plug"></i> Spring Bean Autowiring</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/aop.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> Aspect Oriented Programming (AOP)</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/stereotype_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-tags"></i> Stereotype Annotation</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/spring_boot_annotations.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-list-task"></i> Spring Boot Annotations</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/exception_handling.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-exclamation-circle"></i> Exception Handling</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/input_data_validation.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-check-circle"></i> Input Data Validation</a></li>
+                                    <li><a href="/index.html#design/pages/spring_boot/rest_api_documentation.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-file-text"></i> REST API Documentation</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -450,10 +479,10 @@
                         <div id="collapseDevOps" class="accordion-collapse collapse" aria-labelledby="headingDevOps" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/devops/cicd_flow.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-2"></i> CI/CD Flow</a></li>
-                                    <li><a href="design/pages/devops/git_commands.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-git"></i> Git Commands</a></li>
-                                    <li><a href="design/pages/devops/docker_commands.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box-seam"></i> Docker Commands</a></li>
-                                    <li><a href="design/pages/devops/docker-compose.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-stack"></i> Docker Compose</a></li>
+                                    <li><a href="/index.html#design/pages/devops/cicd_flow.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-2"></i> CI/CD Flow</a></li>
+                                    <li><a href="/index.html#design/pages/devops/git_commands.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-git"></i> Git Commands</a></li>
+                                    <li><a href="/index.html#design/pages/devops/docker_commands.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-box-seam"></i> Docker Commands</a></li>
+                                    <li><a href="/index.html#design/pages/devops/docker-compose.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-stack"></i> Docker Compose</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -469,9 +498,9 @@
                         <div id="collapseGeneral" class="accordion-collapse collapse" aria-labelledby="headingGeneral" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/general/osi_layer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-layers"></i> OSI Layer</a></li>
-                                    <li><a href="design/pages/general/api_performace.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-speedometer2"></i> Improve API Performance</a></li>
-                                    <li><a href="design/pages/general/rest_api_auth.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-shield-lock"></i> REST API Authentication</a></li>
+                                    <li><a href="/index.html#design/pages/general/osi_layer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-layers"></i> OSI Layer</a></li>
+                                    <li><a href="/index.html#design/pages/general/api_performace.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-speedometer2"></i> Improve API Performance</a></li>
+                                    <li><a href="/index.html#design/pages/general/rest_api_auth.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-shield-lock"></i> REST API Authentication</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -499,12 +528,12 @@
                                     <div id="collapseCloud" class="accordion-collapse collapse" aria-labelledby="headingAWS" data-bs-parent="#cloudSubsections">
                                         <div class="accordion-body">
                                             <ul class="list-unstyled">
-                                                <li><a href="design/pages/cloud/aws/Regions_Availability_Zones.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Regions_Availability_Zones</a></li>
-                                                <li><a href="design/pages/cloud/aws/load-balancer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Load Balancer</a></li>
+                                                <li><a href="/index.html#design/pages/cloud/aws/Regions_Availability_Zones.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Regions_Availability_Zones</a></li>
+                                                <li><a href="/index.html#design/pages/cloud/aws/load-balancer.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i>Load Balancer</a></li>
 
-                                                <li><a href="design/pages/cloud/aws/iam.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> IAM</a></li>
-                                                <li><a href="design/pages/cloud/aws/ec2_instance_purchasing_options.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> EC2 Instance Purchasing Options</a></li>
-                                                <li><a href="design/pages/cloud/test.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> Test</a></li>
+                                                <li><a href="/index.html#design/pages/cloud/aws/iam.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> IAM</a></li>
+                                                <li><a href="/index.html#design/pages/cloud/aws/ec2_instance_purchasing_options.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> EC2 Instance Purchasing Options</a></li>
+                                                <li><a href="/index.html#design/pages/cloud/test.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-clipboard-check"></i> Test</a></li>
 
                                             </ul>
                                         </div>
@@ -512,9 +541,9 @@
                                 </div>
 
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/cloud/test.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Mike Test</a></li>
+                                    <li><a href="/index.html#design/pages/cloud/test.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Mike Test</a></li>
 
-                                    <li><a href="design/pages/cloud/sns_lambda.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> AWS: SNS and Lambda Example</a></li>
+                                    <li><a href="/index.html#design/pages/cloud/sns_lambda.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> AWS: SNS and Lambda Example</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -531,7 +560,7 @@
                         <div id="collapseApiDesign" class="accordion-collapse collapse" aria-labelledby="headingApiDesign" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/api_design/stripe_processor.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-credit-card"></i> Payment Gateway API Design</a></li>
+                                    <li><a href="/index.html#design/pages/api_design/stripe_processor.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-credit-card"></i> Payment Gateway API Design</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -547,24 +576,24 @@
                         <div id="collapseInterview" class="accordion-collapse collapse" aria-labelledby="headingInterview" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <!-- <li><a href="design/pages/interview/oops_core.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-3"></i> OOPs Core Concepts</a></li>
-                                    <li><a href="design/pages/interview/core_java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cup-hot"></i> Core Java (Advanced)</a></li>
-                                    <li><a href="design/pages/interview/java8_features.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> Java 8+ Features</a></li>
-                                    <li><a href="design/pages/interview/multithreading.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-threads"></i> Multithreading & Concurrency</a></li>
-                                    <li><a href="design/pages/interview/collections.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-collection"></i> Collections Framework</a></li>
-                                    <li><a href="design/pages/interview/jvm_memory.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cpu"></i> JVM & Memory Management</a></li>
-                                    <li><a href="design/pages/interview/microservices.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-boxes"></i> Microservices & System Design</a></li>
-                                    <li><a href="design/pages/interview/aws_cloud.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud"></i> Cloud (AWS Focus)</a></li>
-                                    <li><a href="design/pages/interview/security.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-shield-check"></i> Security & Best Practices</a></li>
-                                    <li><a href="design/pages/interview/coding.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-code-slash"></i> Coding & Problem Solving</a></li>
-                                    <li><a href="design/pages/interview/scenario.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Scenario-Based Q&A</a></li>
+                                    <!-- <li><a href="/index.html#design/pages/interview/oops_core.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-diagram-3"></i> OOPs Core Concepts</a></li>
+                                    <li><a href="/index.html#design/pages/interview/core_java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cup-hot"></i> Core Java (Advanced)</a></li>
+                                    <li><a href="/index.html#design/pages/interview/java8_features.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-lightning"></i> Java 8+ Features</a></li>
+                                    <li><a href="/index.html#design/pages/interview/multithreading.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-threads"></i> Multithreading & Concurrency</a></li>
+                                    <li><a href="/index.html#design/pages/interview/collections.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-collection"></i> Collections Framework</a></li>
+                                    <li><a href="/index.html#design/pages/interview/jvm_memory.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cpu"></i> JVM & Memory Management</a></li>
+                                    <li><a href="/index.html#design/pages/interview/microservices.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-boxes"></i> Microservices & System Design</a></li>
+                                    <li><a href="/index.html#design/pages/interview/aws_cloud.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-cloud"></i> Cloud (AWS Focus)</a></li>
+                                    <li><a href="/index.html#design/pages/interview/security.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-shield-check"></i> Security & Best Practices</a></li>
+                                    <li><a href="/index.html#design/pages/interview/coding.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-code-slash"></i> Coding & Problem Solving</a></li>
+                                    <li><a href="/index.html#design/pages/interview/scenario.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Scenario-Based Q&A</a></li>
                                    -->
-                                    <li><a href="design/pages/interview/java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Java Q&A</a></li>
-                                    <li><a href="design/pages/interview/microservices.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Microservice Q&A</a></li>
-                                    <li><a href="design/pages/interview/spring-boot.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> SpringBoot Q&A</a></li>
-                                    <li><a href="design/pages/interview/project-based.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Real Real-World Application Q&A</a></li>
-                                    <li><a href="design/pages/interview/kafka-redis-aws.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Kafka Redis Aws Q&A</a></li>
-                                    <li><a href="design/pages/interview/distributed-systems.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Distributed System based Q&A</a></li>
+                                    <li><a href="/index.html#design/pages/interview/java.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Java Q&A</a></li>
+                                    <li><a href="/index.html#design/pages/interview/microservices.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Microservice Q&A</a></li>
+                                    <li><a href="/index.html#design/pages/interview/spring-boot.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> SpringBoot Q&A</a></li>
+                                    <li><a href="/index.html#design/pages/interview/project-based.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Real Real-World Application Q&A</a></li>
+                                    <li><a href="/index.html#design/pages/interview/kafka-redis-aws.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Kafka Redis Aws Q&A</a></li>
+                                    <li><a href="/index.html#design/pages/interview/distributed-systems.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-puzzle"></i> Distributed System based Q&A</a></li>
                                   
                                 </ul>
                             </div>
@@ -583,9 +612,9 @@
                         <div id="collapsePaper" class="accordion-collapse collapse" aria-labelledby="headingCloud" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/papers/dynamodb.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> DynamoDB</a></li>
-                                    <li><a href="design/pages/papers/mapreduce.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> MapReduce</a></li>
-                                    <li><a href="design/pages/papers/read_blog.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Engineering Blogs that you must read</a></li>                                   
+                                    <li><a href="/index.html#design/pages/papers/dynamodb.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> DynamoDB</a></li>
+                                    <li><a href="/index.html#design/pages/papers/mapreduce.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> MapReduce</a></li>
+                                    <li><a href="/index.html#design/pages/papers/read_blog.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i> Engineering Blogs that you must read</a></li>                                   
                                 </ul>
                             </div>
                         </div>
@@ -601,7 +630,7 @@
                         <div id="collapsePOC" class="accordion-collapse collapse" aria-labelledby="headingPOC" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/pocs/distributed_replication.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-gear"></i>Distributed Replication Demo</a></li>
+                                    <li><a href="/index.html#design/pages/pocs/distributed_replication.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-gear"></i>Distributed Replication Demo</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -618,7 +647,7 @@
                         <div id="compiler" class="accordion-collapse collapse" aria-labelledby="headingCloud" data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li><a href="design/pages/cloud/online-compiler.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i>online compiler</a></li>
+                                    <li><a href="/index.html#design/pages/cloud/online-compiler.html" class="nav-link sidebar-link" onclick="loadPage(event)"><i class="bi bi-bell"></i>online compiler</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -729,7 +758,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
     
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
     
     <!-- Keyboard Shortcuts Modal -->
     <div class="modal fade" id="shortcutsModal" tabindex="-1" aria-labelledby="shortcutsModalLabel" aria-hidden="true">
