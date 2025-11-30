@@ -1,8 +1,18 @@
-<div>
-    <h2 style="text-align: center;">Designing a Library Management System</h2>
-    <hr>
+<h2 style="text-align: center;">Designing a Library Management System</h2>
+    
+<div class="custom-container">
+    <ol>
+        <li><a href="#Requirements">Requirements </a></li>
+        <li><a href="#Sequnece">Sequnece Diagram </a></li>
+        <li><a href="#Components">Components </a></li>
+        <li><a href="#Code">Code Implementation </a></li>
+        <li><a href="#Explanation">Design Explanation </a></li>
+        <li><a href="#Considerations">Design Considerations </a></li>
+    </ol>
+</div>
+<hr>  
 
-    <h5>Requirements:</h5>
+    <h5 id="Requirements">Requirements:</h5>
     <ul>
         <li>The library management system should allow librarians to manage books, members, and borrowing activities.</li>
         <li>The system should support adding, updating, and removing books from the library catalog.</li>
@@ -15,23 +25,11 @@
     </ul>
     <hr>
 
-    <h5>Sequnece Diagram</h5>
+    <h5 id="Sequnece">Sequnece Diagram</h5>
     <img src="../../../images/library.png" alt="cache" style="display: block; margin: auto; width: 80%;">
     <hr>
 
-    <h5>High-Level Design:</h5>
-    <p>
-        To design a Library Management System, we will create several classes to represent the system’s components, such as:
-        <ul>
-            <li><strong>Book:</strong> Represents the books in the catalog.</li>
-            <li><strong>Member:</strong> Represents library members and tracks their borrowing activity.</li>
-            <li><strong>Library:</strong> Manages the books and members, facilitates borrowing and returning books, and enforces borrowing rules.</li>
-            <li><strong>Transaction:</strong> Tracks each borrowing or returning event.</li>
-        </ul>
-    </p>
-    <hr>
-
-    <h5>Class Design:</h5>
+    <h5 id="Components">Classes and Responsibilities:</h5>
     <ul>
         <li><strong>Book:</strong> Contains details of a book.</li>
         <li><strong>Member:</strong> Stores member information and their borrowing history.</li>
@@ -40,7 +38,7 @@
     </ul>
     <hr>
 
-    <h5>Code Implementation:</h5>
+    <h5 id="Code">Code Implementation:</h5>
 <pre>
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -281,7 +279,7 @@ public class LibraryManagementApp {
     Book is already borrowed.
     </pre>
 
-    <h5>Explanation of the Code:</h5>
+    <h5 id="Explanation">Explanation:</h5>
     <ul>
         <li><strong>Book Class:</strong> Contains the details of each book such as title, author, ISBN, publication year, and availability status. Methods allow borrowing and returning the book.</li>
         <li><strong>Member Class:</strong> Stores details about the library member including name, member ID, and contact information. It tracks the list of books borrowed by the member and ensures that borrowing limits are enforced.</li>
@@ -290,7 +288,7 @@ public class LibraryManagementApp {
     </ul>
     <hr>
 
-    <h5>Design Considerations:</h5>
+    <h5 id="Considerations">Design Considerations:</h5>
     <ul>
         <li><strong>Concurrency:</strong> The library system uses a lock to ensure that access to critical sections (such as borrowing or returning books) is thread-safe. This helps in preventing race conditions when multiple users access the library concurrently.</li>
         <li><strong>Enforcing Rules:</strong> The system enforces rules such as a maximum number of books a member can borrow and checks if the book is available before borrowing.</li>
@@ -298,4 +296,3 @@ public class LibraryManagementApp {
         <li><strong>Error Handling:</strong> Basic error handling is provided for common issues like invalid member or book, and exceeding the borrowing limit. More advanced error handling could be added as needed.</li>
     </ul>
     <hr>
-</div>

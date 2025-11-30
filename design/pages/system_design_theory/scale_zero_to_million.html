@@ -1,11 +1,11 @@
 <div class="container">
 
         <div class="content">
-                <h3 class="section-title">Single server setup</h3>
+                <h5>Single server setup</h3>
                     <p>Below figure illustrates a single-server setup where all components, including the web application, database, and cache, are hosted on a single server.</p>
                     <img src="../../images/single-server.PNG" alt="SS" style="display: block; margin: auto; width: 40%;">
                 <br>
-                <h3 class="section-title">DNS Hierarchy</h3>
+                <h5>DNS Hierarchy</h3>
                     <ul>
                         <li>Users typically access websites using domain names, such as <i>api.mysite.com</i>. The Domain Name System (DNS) is usually a paid service managed by third-party providers rather than being hosted on our own servers.</li>
                         <li>When a user accesses a domain, the DNS resolves it to an Internet Protocol (IP) address, such as <i>15.125.23.214</i>, which is then returned to the browser or mobile app.</li>
@@ -15,7 +15,7 @@
                     <img src="../../images/single-server-1.PNG" alt="DNS" style="display: block; margin: auto; width: 40%;">
                 <br>
 
-                <h3 class="section-title">Database</h3>
+                <h5>Database</h3>
                     <ul>
                         <li>As the user base grows, a single server becomes insufficient, necessitating the use of multiple servers.</li>
                         <li>One server handles web and mobile traffic, while another is dedicated to the database shown in figure. </li>
@@ -23,7 +23,7 @@
                     <img src="../../images/single-server-2.PNG" alt="DB" style="display: block; margin: auto; width: 40%;">
                 <br>
 
-                <h3 class="section-title">Which databases to use?</h3>
+                <h5>Which databases to use?</h3>
                     <ul>
                         <li><b>Relational databases</b> are also called a relational database management system (RDBMS) or
                             SQL database. The most popular ones are MySQL, Oracle database, PostgreSQL, etc.
@@ -35,7 +35,7 @@
                     </ul>
                 <br>
 
-                <h3 class="section-title">Vertical scaling vs horizontal scaling</h3>
+                <h5>Vertical scaling vs horizontal scaling</h3>
                     <p><b>Vertical scaling</b>, referred to as <b>scale up</b>, means the process of adding more power (CPU,RAM, etc.) to your servers. 
                         <b>Horizontal scaling</b>, referred to as <b>scale-out</b>, allows you to scale by adding more servers into your pool of resources.</p>
                     <p>When traffic is low, vertical scaling is a great option, and the simplicity of vertical scaling is its main advantage.
@@ -47,7 +47,7 @@
                     <p>Horizontal scaling is more desirable for large scale applications due to the limitations of vertical scaling.</p>
                 <br>
 
-                <h3 class="section-title">Load balancer</h3>
+                <h5>Load balancer</h3>
                     <p>if many users access the web server simultaneously and it reaches the web server’s load limit, users generally experience slower response or fail to connect to the server. 
                         A load balancer is the best technique to address these problems. A load balancer evenly distributes incoming traffic among web servers that are defined in a
                         load-balanced set.</p>
@@ -56,7 +56,7 @@
                         This setup improves web tier availability and resolves failover issues. If one server goes offline, traffic is rerouted to another server, keeping the website online. As traffic increases, you can easily add more servers to the pool, and the load balancer will distribute requests among them automatically.</p>
                 <br>
 
-                <h3 class="section-title">Database replication</h3>
+                <h5>Database replication</h3>
                     <p>The current design has one database, so it does not support failover and redundancy. Database replication is a common technique to address those problems.</p>
                     <p>A master database handles write operations like insert, delete, or update, while slave databases receive copies of the master’s data and only support read operations. 
                         Since most applications require more reads than writes, there are typically more slave databases than master databases. 
@@ -80,7 +80,7 @@
                     </ul>
                 <br>
 
-                <h3 class="section-title">Cache</h3>
+                <h5>Cache</h3>
                     <p>It's time to enhance load and response times by adding a <b>cache</b> layer and moving static content (like JavaScript, CSS, images, and videos) to a <b>Content Delivery Network (CDN)</b>.</p>
                     <p>A cache is a temporary storage that keeps frequently accessed or resource-intensive data in memory, speeding up subsequent requests. 
                         Instead of repeatedly querying the database, cached data can be quickly retrieved, improving performance. 
@@ -98,7 +98,7 @@
                     </p>
                 <br>
 
-                <h3 class="section-title">Content Delivery Network (CDN)</h3>
+                <h5>Content Delivery Network (CDN)</h3>
                     <p>A CDN is a network of servers located in different regions to deliver static content like images, videos, and JavaScript files. 
                         When a user visits a website, the closest CDN server provides the content, improving load times. 
                         The closer a user is to the CDN server, the faster the website loads. 
@@ -120,7 +120,7 @@
                     </ol>
                 <br>
 
-                <h3 class="section-title">Stateful vs Stateless Web Tier Architecture</h3>
+                <h5>Stateful vs Stateless Web Tier Architecture</h3>
                 <h5>Stateful Web Tier</h5>
                 <ul>
                     <li><strong>Session Management:</strong> The server maintains session information for each user, keeping track of user state between requests.</li>
@@ -148,7 +148,7 @@
                 <img src="../../images/single-server-11.PNG" alt="stateless" style="display: block; margin: auto; width: 40%;">
                 <br>
 
-                <h3 class="section-title">Data centers</h3>
+                <h5>Data centers</h3>
                     <p>Figure shows a setup with two data centers. Normally, users are routed to the nearest data center using geoDNS, which directs traffic based on their location (e.g., x% to US-East and (100 – x)% to US-West).<br>
                         If a data center goes offline, all traffic is redirected to the remaining healthy data center. For example, if US-West data center 2 is down, all traffic will be sent to the US-East data center 1.</p>
                     <img src="../../images/single-server-12.PNG" alt="DNS" style="display: block; margin: auto; width: 40%;"><br>
@@ -160,7 +160,7 @@
                     </ul>
                 <br>
 
-                <h3 class="section-title">Message queue</h3>
+                <h5>Message queue</h3>
                     <p>
                         A message queue is a system component that enables asynchronous communication by storing and managing messages between producers and consumers. 
                         Producers send messages to the queue, while consumers retrieve and process them independently, allowing for scalable and reliable operation in applications. 
@@ -188,7 +188,7 @@
                 <br>
 
                 
-                <h3 class="section-title">Scaling with Logging, Metrics, and Automation</h3>
+                <h5>Scaling with Logging, Metrics, and Automation</h3>
 
                     <p>As your website grows, investing in logging, metrics, and automation becomes essential:</p>
 
@@ -201,7 +201,7 @@
                     <p>Figure shows an updated design that includes a message queue for better system resilience, along with logging, monitoring, metrics, and automation tools to enhance overall management.</p>
                 <br>
 
-                <h3 class="section-title">Database scaling - Database Sharding</h3>
+                <h5>Database scaling - Database Sharding</h3>
                     
                     <p>Database sharding is a horizontal scaling technique where a large database is divided into smaller, more manageable pieces called "shards." Each shard is an independent database that stores a subset of the data.</p>                
                     <ul>
@@ -219,7 +219,7 @@
                     <img src="../../images/single-server-14.PNG" alt="sharding" style="display: block; margin: auto; width: 40%;"><br>
                 
                 <br>
-                <h3 class="section-title">Scaling System to Support Millions of Users</h3>
+                <h5>Scaling System to Support Millions of Users</h3>
                     <ul>
                         <li><strong>Maintain Stateless Web Tier:</strong> Ensure the web tier does not retain session information, allowing for easier scaling and load balancing.</li>
                         <li><strong>Implement Redundancy:</strong> Build redundancy at each tier to ensure high availability and fault tolerance.</li>

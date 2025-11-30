@@ -4,7 +4,7 @@
     <img src="../../../images/api_performance.PNG" alt="Spring" style="display: block; margin: auto; width: 50%" class="img-fluid">
     <br>
     
-        <h3 class="section-title">Pagination</h3>
+        <h5>Pagination</h3>
         <ul>
           <li>Limits the amount of data returned in a single API response, reducing server load and response time.</li>
           <li>Improves user experience by fetching only the required subset of data instead of loading everything at once.</li>
@@ -18,7 +18,7 @@
           <li><em>Tricky point:</em> Handling edge cases like missing pages, or items changing during pagination (ensure consistency).</li>
         </ul>
       
-        <h3 class="section-title">Async Logging</h3>
+        <h5>Async Logging</h3>
         <ul>
           <li>Moves logging operations to asynchronous processes to avoid blocking the main API execution thread.</li>
           <li>Improves performance by offloading tasks such as writing logs to disk or a logging service.</li>
@@ -34,7 +34,7 @@
           <li><em>Tricky point:</em> Ensuring log consistency when using asynchronous logging (potential log loss during crashes).</li>
         </ul>
      
-        <h3 class="section-title">Caching</h3>
+        <h5>Caching</h3>
         <ul>
           <li>Caches frequently accessed data to reduce database queries and repetitive processing.</li>
           <li>In-memory caches (e.g., Redis, Memcached) can drastically improve performance for read-heavy APIs.</li>
@@ -51,7 +51,7 @@
           <li><em>Tricky point:</em> Cache invalidation is hard — improper cache expiry can cause stale data issues or cache thrashing.</li>
         </ul>
       
-        <h3 class="section-title">Payload Compression</h3>
+        <h5>Payload Compression</h3>
         <ul>
           <li>Compresses the response payload (e.g., using Gzip or Brotli) to reduce data transfer size, improving network performance.</li>
           <li>Particularly useful for APIs with large responses, like JSON or XML data.</li>
@@ -60,7 +60,7 @@
         </ul>
       
       
-        <h3 class="section-title">Connection Pooling</h3>
+        <h5>Connection Pooling</h3>
         <ul>
           <li>Reuses established network connections instead of creating new connections for every request, saving time and resources.</li>
           <li>Reduces the overhead of creating and tearing down connections (especially for database connections).</li>
@@ -72,7 +72,7 @@
   </div>
   
   <div>
-    <h3 class="section-title">Tricky Points about API Performance (Potential Interview Questions)</h3>
+    <h5>Tricky Points about API Performance (Potential Interview Questions)</h3>
     <ul>
       <li><strong>How do you handle rate limiting?</strong> Design a strategy for protecting the API from abuse or heavy traffic while ensuring fair usage (e.g., token bucket, leaky bucket).</li>
       <li><strong>How do you handle large payloads?</strong> Consider splitting payloads, using streaming APIs (e.g., chunked encoding), and ensuring client-side handling of partial data.</li>
@@ -83,7 +83,7 @@
   </div>
   
   <div>
-    <h3 class="section-title">Other Tips for API Performance</h3>
+    <h5>Other Tips for API Performance</h3>
     <ul>
       <li><strong>Optimize database queries:</strong> Ensure queries are optimized, with proper indexes and no redundant joins or subqueries.</li>
       <li><strong>Monitor API metrics:</strong> Use tools like Prometheus, Grafana, or New Relic to monitor performance metrics (latency, throughput, error rates) and adjust accordingly.</li>

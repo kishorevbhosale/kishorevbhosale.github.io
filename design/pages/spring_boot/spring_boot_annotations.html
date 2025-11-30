@@ -1,7 +1,7 @@
 <div class="container">
 <div class="content">
     <h1>Spring Boot Annotations</h1>
-    <h3 class="section-title">1. @SpringBootApplication</h3>
+    <h5>1. @SpringBootApplication</h3>
     <p>
         - This is the most commonly used annotation in Spring Boot. It is a combination of the following annotations:
     </p>
@@ -24,7 +24,7 @@ public class Application {
     </pre>
 
     <br>
-    <h3 class="section-title">2. @RestController</h3>
+    <h5>2. @RestController</h3>
     <p>- A convenience annotation that combines @Controller and @ResponseBody. It is typically used in RESTful web services.</p>
     <pre>
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +41,7 @@ public class HelloController {
     </pre>
 
     <br>
-    <h3 class="section-title">3. @RequestMapping</h3>
+    <h5>3. @RequestMapping</h3>
     <p>- This annotation is used to map web requests to specific handler methods or classes. It can map HTTP requests like GET, POST, PUT, DELETE, etc.</p>
     <pre>
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,7 +58,7 @@ public class MyController {
     </pre>
 
     <br>
-    <h3 class="section-title">4. @GetMapping, @PostMapping, @PutMapping, @DeleteMapping</h3>
+    <h5>4. @GetMapping, @PostMapping, @PutMapping, @DeleteMapping</h3>
     <p>- These are specialized variants of @RequestMapping for common HTTP methods such as GET, POST, PUT, and DELETE.</p>
     <pre>
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +89,7 @@ public class CRUDController {
     </pre>
 
     <br>
-    <h3 class="section-title">5. @Autowired</h3>
+    <h5>5. @Autowired</h3>
     <p>- This annotation is used for automatic dependency injection. It can be applied on constructors, methods, and fields.</p>
     <pre>
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +112,7 @@ public class UserService {
     </pre>
 
     <br>
-    <h3 class="section-title">6. @Component, @Service, @Repository</h3>
+    <h5>6. @Component, @Service, @Repository</h3>
     <p>- These annotations are used to define Spring beans. They are automatically detected during classpath scanning and instantiated by Spring's container.</p>
     <ul>
         <li>@Component: Generic stereotype for any Spring-managed component.</li>
@@ -141,7 +141,7 @@ public class UserRepository {
     </pre>
 
     <br>
-    <h3 class="section-title">7. @Configuration</h3>
+    <h5>7. @Configuration</h3>
     <p>- Used to define configuration classes in Spring. It allows for the declaration of beans using the @Bean annotation.</p>
     <pre>
 import org.springframework.context.annotation.Bean;
@@ -158,7 +158,7 @@ public class AppConfig {
     </pre>
 
     <br>
-    <h3 class="section-title">8. @Bean</h3>
+    <h5>8. @Bean</h3>
     <p>- Marks a method as a bean provider method, meaning that it will return an object that Spring will register as a bean in the application context.</p>
     <pre>
 import org.springframework.context.annotation.Bean;
@@ -175,7 +175,7 @@ public class BeanConfig {
     </pre>
 
     <br>
-    <h3 class="section-title">9. @EnableAutoConfiguration</h3>
+    <h5>9. @EnableAutoConfiguration</h3>
     <p>- This annotation enables Spring Boot's auto-configuration mechanism, which automatically configures the application based on the dependencies present in the classpath.</p>
     <pre>
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -191,7 +191,7 @@ public class MyApplication {
     </pre>
 
     <br>
-    <h3 class="section-title">10. @ConditionalOnProperty</h3>
+    <h5>10. @ConditionalOnProperty</h3>
     <p>- Used to conditionally enable a bean based on a configuration property.</p>
     <pre>
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -210,7 +210,7 @@ public class ConditionalConfig {
     </pre>
 
     <br>
-    <h3 class="section-title">11. @Transactional</h3>
+    <h5>11. @Transactional</h3>
     <p>- This annotation is used to define the scope of a database transaction. It can be applied to classes or methods.</p>
     <pre>
 import org.springframework.transaction.annotation.Transactional;
@@ -227,7 +227,7 @@ public class TransactionalService {
     </pre>
 
     <br>
-    <h3 class="section-title">12. @Value</h3>
+    <h5>12. @Value</h3>
     <p>- This annotation is used to inject property values from the application.properties or application.yml file.</p>
     <pre>
 import org.springframework.beans.factory.annotation.Value;
@@ -246,7 +246,7 @@ public class MyComponent {
     </pre>
 
     <br>
-    <h3 class="section-title">13. @PathVariable</h3>
+    <h5>13. @PathVariable</h3>
     <p>- Used to extract values from URI templates.</p>
     <pre>
 import org.springframework.web.bind.annotation.*;
@@ -262,7 +262,7 @@ public class PathVariableController {
     </pre>
 
     <br>
-    <h3 class="section-title">14. @RequestParam</h3>
+    <h5>14. @RequestParam</h3>
     <p>- Used to extract query parameters from the URL.</p>
     <pre>
 import org.springframework.web.bind.annotation.*;
@@ -278,7 +278,7 @@ public class RequestParamController {
     </pre>
     <br>
 
-    <h3 class="section-title">List of other useful Annotations</h3>
+    <h5>List of other useful Annotations</h3>
     <p>
         <pre>
 - @Entity

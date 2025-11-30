@@ -5,14 +5,14 @@
     <div class="container">
 
         <div class="content">
-            <h3 class="section-title">Sequencer</h3>
+            <h5>Sequencer</h3>
             <p>A sequencer is a system that generates unique, ordered identifiers for events or transactions in a distributed system. These unique IDs ensure consistency and order when multiple services interact or process events in parallel. </p>
             <p>In a large distributed system, there can be millions of events happening every second, like liking a video on TikTok, leaving a comment on a blog, or uploading a photo to Snapchat. To keep track of these events, we need to give each one a unique ID.</p>
             <p>Another common use of unique IDs is in databases, where they act as primary keys for each entry. Many databases use an auto-increment feature to generate these IDs, but in distributed systems with multiple nodes working independently, that doesn’t work. Instead, we need a way to create unique IDs across all the nodes, especially in systems like a sharded database.</p> 
             <p>These unique IDs are also helpful for tracking events in logs, making it easier to debug issues. For example, Uber’s Jaeger tracing system uses unique IDs to follow requests as they move through different services, helping engineers understand how events flow through the system.</p>
             </p>
             <br>
-            <h3 class="section-title">Requirements for our unique ID system:</h3>
+            <h5>Requirements for our unique ID system:</h3>
             <ol>
                 <li>Uniqueness: Each event must get its own unique ID so we can easily identify and track it.</li>
                 <li>Scalability: The system should be able to create at least a billion unique IDs every day to handle a large number of events.</li>
@@ -32,7 +32,7 @@
             </ul>
             <br>
 
-            <h3 class="section-title">Sequencer Architecture</h3>
+            <h5>Sequencer Architecture</h3>
                 <h5>a. Centralized Sequencer:</h5>
                     <ul>
                         <p><b>How It Works: </b>A single centralized node or service is responsible for generating and distributing sequential IDs. Every event or system component needing an ID contacts this service.
@@ -56,7 +56,7 @@
                     </ul>
             <br>
 
-            <h3 class="section-title">Solution 1: UUID</h3>
+            <h5>Solution 1: UUID</h3>
             <p>
                 A UUID (Universally Unique Identifier) is a 128-bit value used to uniquely identify information in computer systems. It ensures uniqueness across systems and time, making it ideal for distributed environments where multiple entities need to generate unique IDs without central coordination.
             </p>
@@ -82,7 +82,7 @@
             
             <br>
             
-            <h3 class="section-title">Solution 2: Database-based Sequencer</h3>
+            <h5>Solution 2: Database-based Sequencer</h3>
             <p> Creating a database-based sequencer using Spring Boot involves using a relational database (e.g., MySQL, PostgreSQL, or H2) to generate sequential IDs. 
                 This can be useful when you want to generate unique, ordered IDs for records (e.g., order numbers, transaction IDs) that might need to be consistent across multiple instances of the application.
                 <ul>
@@ -94,7 +94,7 @@
             
             <h5><a href="https://github.com/kishorevbhosale/learn-spring-boot/tree/master/db-sequencer">Complete implementation of the database sequencer using Spring Boot</a></h5>
             <br>
-            <h3 class="section-title">Solution 3: Snowflake ID Generator</h3>
+            <h5>Solution 3: Snowflake ID Generator</h3>
             <p>
                 Snowflake is a popular solution for generating unique, ordered, 64-bit IDs.</p>
                 <img src="../../images/snowflake-id-gen.PNG" alt="dns-hierarchy" style="display: block; margin: auto; width: 50%;"><br>
@@ -112,7 +112,7 @@
             </ul>
             <h5><a href="https://github.com/kishorevbhosale/learn-spring-boot/tree/master/snowflake-id-gen">Complete implementation of the Snowflake ID generator using Spring Boot</a></h5>
             <br>
-            <h3 class="section-title">Unique ID generation systems used by prominent companies </h3>
+            <h5>Unique ID generation systems used by prominent companies </h3>
             <ul>
                 <h5>Instagram's Sharded ID Generator:</h5> 
                 <div class="example">

@@ -1,10 +1,11 @@
+<h2 style="text-align: center;">Load Balancer</h2>
 <div>
-    <h3 class="section-title">Load Balancer</h3>
-    <h4>What is a Load Balancer?</h4>
+
+    <h5>What is a Load Balancer?</h5>
     <p>Load balancing is the process of distributing incoming network or application traffic across multiple servers to ensure no single server becomes overwhelmed.</p>
     <hr>
 
-    <h4>Why is a Load Balancer Important?</h4>
+    <h5>Why is a Load Balancer Important?</h5>
         <ul>
             <li><b>Improved Performance: </b>Ensures requests are handled quickly by directing them to less busy servers.</li>
             <li><b>Fault Tolerance: </b>If one server fails, it redirects traffic to other available servers</li>
@@ -14,7 +15,7 @@
         </ul>
     <hr>
 
-    <h4>Load Balancer Placement</h4>
+    <h5>Load Balancer Placement</h5>
     <p>
         Typically, load balancers are positioned between clients and servers, managing the traffic flow from clients to servers and back.
         However, load balancers can also be strategically placed at various points within a server infrastructure to optimize traffic distribution among different server types. 
@@ -28,7 +29,7 @@
     <img src="../../images/lb-1.PNG" alt="lb" style="display: block; margin: auto; width: 80%;">
     <hr>
 
-    <h4>Services offered by load balancers</h4>
+    <h5>Services offered by load balancers</h5>
     <p>Load balancers offer a variety of services to ensure efficient distribution of traffic and maintain high availability and performance in distributed systems. Here’s a comprehensive list of services typically offered by load balancers</p>            
     <ul>
         <li><b>Traffic Distribution:</b> Load balancers evenly distribute incoming traffic across multiple servers to prevent any single server from becoming overloaded. This helps improve overall system performance and responsiveness.</li>
@@ -44,14 +45,14 @@
     </ul>
     <hr>
 
-    <h4>What if load balancers fail? Are they not a single point of failure (SPOF)?</h4>
+    <h5>What if load balancers fail? Are they not a single point of failure (SPOF)?</h5>
     <p>Load balancers are often set up in pairs to ensure reliability. If one fails and there's no backup, the entire service can go offline. 
         To avoid this, businesses typically use groups (or clusters) of load balancers that constantly check each other's health through "heartbeat" signals. 
         If the main load balancer fails, a backup automatically takes over. 
         However, if the entire cluster goes down, traffic can be manually redirected as a last resort.</p>
     <hr>
 
-    <h4>Global Load Balancing</h4>
+    <h5>Global Load Balancing</h5>
     <p>Global load balancing involves distributing traffic across multiple geographic locations or data centers. It ensures that user requests are routed to the closest or most efficient data center based on factors such as latency, server health, and load conditions.</p>
         
     <h6>Examples:</h6>
@@ -63,7 +64,7 @@
     <hr>
             
 
-    <h4>Local Load Balancing</h4>
+    <h5>Local Load Balancing</h5>
     <p>Local load balancing distributes traffic within a single geographic location or data center. It ensures even distribution of traffic among servers within a specific region or data center to balance the load and optimize resource utilization.</p>
     
     <h6>Examples:</h6>
@@ -74,7 +75,7 @@
     </ul>
     <hr>
 
-    <h4>Load Balancing Algorithms</h4>
+    <h5>Load Balancing Algorithms</h5>
         <table>
             <thead>
                 <tr>
@@ -119,7 +120,7 @@
         </table>
     <hr>
 
-    <h4>Stateful Load Balancers</h4>
+    <h5>Stateful Load Balancers</h5>
     <p>Stateful load balancers maintain session information about clients and their interactions. They keep track of client state and route requests based on this information to ensure continuity of the user session.</p>
     <h6>Characteristics:</h6>
     <ul>
@@ -131,7 +132,7 @@
     <img src="../../images/lb-2.PNG" alt="lb" style="display: block; margin: auto; width: 40%;">
     <hr>
     
-    <h4>Stateless Load Balancers</h4>
+    <h5>Stateless Load Balancers</h5>
     <p>Stateless load balancers do not retain any information about client sessions. They distribute requests to servers without considering any previous interactions or states.</p>
     <h6>Characteristics:</h6>
     <ul>
@@ -176,7 +177,7 @@
     </ul>
     <hr>
 
-    <h3 class="section-title">Interview Questions and Answers</h2>
+    <h5>Interview Questions and Answers</h2>
         <div class="interview-question">
             <strong>How does a load balancer handle SSL termination, and what are the security concerns?</strong>
         </div>

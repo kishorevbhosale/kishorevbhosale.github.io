@@ -8,14 +8,14 @@
     <h1>Spring Boot Input Data Validation</h1>
 
     <br>
-    <h3 class="section-title">1. Introduction to Input Data Validation in Spring Boot</h3>
+    <h5>1. Introduction to Input Data Validation in Spring Boot</h3>
     <p>
         Input data validation is crucial in ensuring that incoming data to a Spring Boot application is valid, consistent, and safe. Spring Boot provides strong support for handling validation using annotations from the <strong>javax.validation</strong> and <strong>hibernate-validator</strong> packages.
     </p>
     <p>Spring Boot allows you to validate data at both the request level (incoming JSON or form data) and at the field level within Java objects (DTOs or Entities).</p>
 
     <br>
-    <h3 class="section-title">2. Enabling Validation</h3>
+    <h5>2. Enabling Validation</h3>
     <p>
         To enable validation, you must include the <strong>spring-boot-starter-validation</strong> dependency in your <b>pom.xml</b> (for Maven users) or <b>build.gradle</b> (for Gradle users).
     </p>
@@ -27,7 +27,7 @@
     </pre>
 
     <br>
-    <h3 class="section-title">3. Using Validation Annotations</h3>
+    <h5>3. Using Validation Annotations</h3>
     <p>Spring Boot uses standard validation annotations to validate incoming data. These annotations are placed on fields in a class that represents the request body or form data.</p>
     <p>Common validation annotations:</p>
     <ul>
@@ -40,7 +40,7 @@
     </ul>
 
     <br>
-    <h3 class="section-title">4. Sample DTO Class with Validation Annotations</h3>
+    <h5>4. Sample DTO Class with Validation Annotations</h3>
     <p>Let's create a simple DTO (Data Transfer Object) class that will hold input data with validation rules:</p>
     <pre>
 import javax.validation.constraints.Email;
@@ -68,7 +68,7 @@ public class UserDTO {
     </pre>
 
     <br>
-    <h3 class="section-title">5. Using @Valid or @Validated in Controller</h3>
+    <h5>5. Using @Valid or @Validated in Controller</h3>
     <p>To trigger validation in the controller, the <strong>@Valid</strong> or <strong>@Validated</strong> annotation is used on the request body parameter. If validation fails, Spring Boot automatically returns a 400 Bad Request response with validation errors.</p>
     <pre>
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,7 +89,7 @@ public class UserController {
     </pre>
 
     <br>
-    <h3 class="section-title">6. Default Error Response for Validation</h3>
+    <h5>6. Default Error Response for Validation</h3>
     <p>If validation fails, Spring Boot returns a default error response in JSON format containing details of the validation errors. Here's an example:</p>
     <pre>
 {
@@ -104,7 +104,7 @@ public class UserController {
     </pre>
 
     <br>
-    <h3 class="section-title">7. Customizing Validation Error Responses</h3>
+    <h5>7. Customizing Validation Error Responses</h3>
     <p>We can create custom validation error responses by handling the <b>MethodArgumentNotValidException</b> in a global exception handler. This gives more control over the structure of the error response.</p>
     <p><strong>Step 1:</strong> Define a custom error response class.</p>
     <pre>
@@ -153,7 +153,7 @@ public class GlobalExceptionHandler {
     </pre>
 
     <br>
-    <h3 class="section-title">8. Custom Error Response Example</h3>
+    <h5>8. Custom Error Response Example</h3>
     <p>When validation fails, the custom error response might look like this:</p>
     <pre>
 {
@@ -167,7 +167,7 @@ public class GlobalExceptionHandler {
     </pre>
 
     <br>
-    <h3 class="section-title">9. Validating Path Variables and Request Parameters</h3>
+    <h5>9. Validating Path Variables and Request Parameters</h3>
     <p>Spring Boot also supports validation of path variables and request parameters using the same validation annotations. The <b>@Validated</b> annotation is used at the controller method level for such cases.</p>
     <pre>
 import javax.validation.constraints.Min;
@@ -189,7 +189,7 @@ public class UserController {
     </pre>
 
     <br>
-    <h3 class="section-title">10. Summary</h3>
+    <h5>10. Summary</h3>
     <ul>
         <li>Validation in Spring Boot is achieved through annotations such as <b>@NotNull</b>, <b>@Size</b>, <b>@Email</b>, etc.</li>
         <li>Use <b>@Valid</b> in controllers to trigger validation on request bodies or forms.</li>

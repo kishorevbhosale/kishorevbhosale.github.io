@@ -1,7 +1,7 @@
 <div class="container">
 
         <div class="content">
-            <h3 class="section-title">What is RabbitMQ?</h3>
+            <h5>What is RabbitMQ?</h3>
                 <p>
                     <b>RabbitMQ</b> is a widely used open-source message broker that facilitates the exchange of messages between different systems and services. 
                     It implements the <b>Advanced Message Queuing Protocol (AMQP)</b>, which provides robust, reliable, and scalable communication between distributed applications. 
@@ -10,7 +10,7 @@
                 <img src="../../images/rmq-1.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
             <br>
 
-            <h3 class="section-title">When to Use RabbitMQ?</h3>
+            <h5>When to Use RabbitMQ?</h3>
                 <p>
                     <ul>
                         <li>Distributed Systems: When you have multiple independent services that need to communicate asynchronously.</li>
@@ -22,7 +22,7 @@
                 </p>
             <br>
 
-            <h3 class="section-title">Example of RabbitMQ</h3>
+            <h5>Example of RabbitMQ</h3>
                 <img src="../../images/rmq-2.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
                 <ol>
                     <li>The user sends a PDF creation request to the web application.</li>
@@ -54,7 +54,7 @@
                     </ul>
                 </div>
             <br>
-            <h3 class="section-title">Exchange in RabbitMQ</h3>
+            <h5>Exchange in RabbitMQ</h3>
                 <p>Messages are not sent directly to a queue by the producer. Instead, they are first sent to an exchange, which is responsible for directing the messages to the appropriate queues. 
                     This routing process is guided by bindings and routing keys. 
                     A binding establishes the connection between a queue and an exchange, helping determine how messages are routed.
@@ -86,7 +86,7 @@
                     </li>
                 </ol>                
             <br>
-            <h3 class="section-title">Exchange Type in RabbitMQ</h3>
+            <h5>Exchange Type in RabbitMQ</h3>
                 <img src="../../images/rmq-4.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
                 <table cellpadding="10" cellspacing="0">
                     <thead>
@@ -120,7 +120,7 @@
                     </tbody>
                 </table>
             <br>
-            <h3 class="section-title">Key concepts in RabbitMQ</h3>
+            <h5>Key concepts in RabbitMQ</h3>
             <ul>
                 <li><strong>Producer</strong>: The entity that sends messages to an exchange.</li>
                 <li><strong>Consumer</strong>: The entity that retrieves and processes messages from a queue.</li>
@@ -135,7 +135,7 @@
                 <li><strong>Dead-Letter Exchange</strong>: An exchange where messages are routed if they cannot be delivered or are rejected by a queue.</li>
             </ul>
             <br>
-            <h3 class="section-title">How to handle message expiration and dead-lettering in RabbitMQ?</h3>
+            <h5>How to handle message expiration and dead-lettering in RabbitMQ?</h3>
                 <p><b>Message Expiration: </b>Set a <b><em>expiration</em></b> property on messages or queues to automatically remove messages after a certain time period. This is useful for handling time-sensitive messages.</p>
                 <pre>
     channel.basic_publish(
@@ -157,7 +157,7 @@
     
                 </pre>
             <br>
-            <h3 class="section-title">Install RabbitMQ using Docker Desktop</h3>
+            <h5>Install RabbitMQ using Docker Desktop</h3>
                 <ol>
                     <li>Download Docker Desktop : <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">https://docs.docker.com/desktop/install/windows-install/</a></li>
                     <li>Open Docker Desktop and ensure it's running.</li> 

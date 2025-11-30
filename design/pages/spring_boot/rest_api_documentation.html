@@ -5,7 +5,7 @@
 
             <h1>REST API Documentation with SpringDoc OpenAPI</h1>
 
-            <h3 class="section-title">Overview</h3>
+            <h5>Overview</h3>
             <p>
                 SpringDoc OpenAPI is a powerful tool for documenting REST APIs in Spring Boot. It automatically generates OpenAPI documentation from annotations and can be customized using various annotations provided by the OpenAPI specification.
             </p>
@@ -19,7 +19,7 @@
                 <li><strong>@Schema</strong>: Used to describe the model or data types of request and response bodies.</li>
             </ul>
 
-            <h3 class="section-title">Setting up SpringDoc OpenAPI</h3>
+            <h5>Setting up SpringDoc OpenAPI</h3>
             <p>
                 To start using SpringDoc OpenAPI, you need to add the following dependency in your <b>pom.xml</b>:
             </p>
@@ -31,7 +31,7 @@
     &lt;/dependency&gt;
             </pre>
             <br>
-            <h3 class="section-title">@OpenAPIDefinition Example</h3>
+            <h5>@OpenAPIDefinition Example</h3>
             <p>The <b>@OpenAPIDefinition</b> annotation allows you to define API-level information such as the title, description, and version.</p>
             <pre>
     @OpenAPIDefinition(
@@ -48,7 +48,7 @@
     }
             </pre>
 
-            <h3 class="section-title">Using @Tag for Grouping API Endpoints</h3>
+            <h5>Using @Tag for Grouping API Endpoints</h3>
             <p>
                 The <b>@Tag</b> annotation is used to group related API operations together under a common tag name.
             </p>
@@ -61,7 +61,7 @@
                 }
             </pre>
             <br>
-            <h3 class="section-title">@Operation and @ApiResponse for API Documentation</h3>
+            <h5>@Operation and @ApiResponse for API Documentation</h3>
             <p>
                 The <b>@Operation</b> annotation provides metadata for an individual API operation. You can define the HTTP method, summary, and detailed description for each operation. 
                 The <b>@ApiResponse</b> annotation specifies the possible responses the API can return.
@@ -77,7 +77,7 @@
     }
             </pre>
             <br>
-            <h3 class="section-title">@Schema for Describing Data Models</h3>
+            <h5>@Schema for Describing Data Models</h3>
             <p>
                 The <b>@Schema</b> annotation is used to describe the structure of request and response bodies. 
                 It can also be used to specify constraints like minimum and maximum values, and required fields.
@@ -94,7 +94,7 @@
         }
             </pre>
             <br>
-            <h3 class="section-title">Sample API Response</h3>
+            <h5>Sample API Response</h3>
             <p>Here is an example of a response from the <b>/api/employees/{id}</b> endpoint:</p>
             <pre>
                 { <br>
@@ -104,7 +104,7 @@
                 }
             </pre>
             <br>
-            <h3 class="section-title">Conclusion</h3>
+            <h5>Conclusion</h3>
             <p>
                 SpringDoc OpenAPI simplifies the process of documenting your Spring Boot REST APIs by generating OpenAPI-compliant documentation based on annotations. 
                 Using annotations like <b>@OpenAPIDefinition</b>, <b>@Tag</b>, <b>@Operation</b>, <b>@ApiResponse</b>, and <b>@Schema</b>, you can easily create detailed and organized API documentation.

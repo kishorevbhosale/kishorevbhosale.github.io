@@ -1,16 +1,18 @@
 <div>
     <h2 style="text-align: center;">Designing a Vending Machine</h2>
-    <hr>
-    <div>
-        <ul>
-            <li><a href="#req">Requirements</a></li>
-            <li><a href="#seq">Sequnece Diagram</a></li>
-            <li><a href="#comp">Components</a></li>
-            <li><a href="#code">Code</a></li>
-        </ul>
+
+    <div class="custom-container">
+        <ol>
+        <li><a href="#Requirements">Requirements </a></li>
+        <li><a href="#Sequnece">Sequnece Diagram </a></li>
+        <li><a href="#Components">Components </a></li>
+        <li><a href="#Code">Code Implementation </a></li>
+        <li><a href="#Explanation">Design Explanation </a></li>
+        <li><a href="#Considerations">Design Considerations </a></li>
+        </ol>
     </div>
     <hr>
-    <div id="req">
+    <div id="Requirements">
         <h5>Requirements:</h5>
         <ul>
             <li>The vending machine should support multiple products with different prices and quantities.</li>
@@ -24,13 +26,13 @@
     </div>
     <hr>
 
-    <div id="seq">
+    <div id="Sequnece">
         <h5>Sequnece Diagram</h5>
         <img src="../../../images/vending_machine.png" alt="cache" style="display: block; margin: auto; width: 80%;">
         <hr>
     </div>
 
-    <div id="comp">
+    <div id="Components">
         <h5>Components:</h5>
         <p>The system will consist of the following classes:</p>
         <ul>
@@ -44,7 +46,7 @@
     </div>
     <hr>
     
-    <div id="code">
+    <div id="Code">
         <h5>Code Implementation:</h5>
         <pre>
 package com.lld;
@@ -224,12 +226,14 @@ Collecting money: 5 cents.
     </div>
 
 <hr>
-    <h5>Design Considerations:</h5>
-    <ul>
-        <li><strong>Concurrency:</strong> To handle concurrent transactions, we can make use of synchronization in key methods like inserting money or updating the product inventory to ensure data consistency.</li>
-        <li><strong>Error Handling:</strong> The design checks for product availability and sufficient funds before dispensing products and returning change. More error handling can be added for cases like invalid coin insertion or invalid inputs.</li>
-        <li><strong>Restocking & Money Collection:</strong> Separate methods to restock products and collect money allow for easy maintenance and operational control.</li>
-    </ul>
+    <div id="Considerations">
+        <h5>Design Considerations:</h5>
+        <ul>
+            <li><strong>Concurrency:</strong> To handle concurrent transactions, we can make use of synchronization in key methods like inserting money or updating the product inventory to ensure data consistency.</li>
+            <li><strong>Error Handling:</strong> The design checks for product availability and sufficient funds before dispensing products and returning change. More error handling can be added for cases like invalid coin insertion or invalid inputs.</li>
+            <li><strong>Restocking & Money Collection:</strong> Separate methods to restock products and collect money allow for easy maintenance and operational control.</li>
+        </ul>
+    </div>
 <hr>
     <h5>Improvements & Extensions:</h5>
     <ul>

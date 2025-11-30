@@ -6,7 +6,7 @@
 
         <div class="content">
     <h1>Spring Boot Exception Handling</h1>
-    <h3 class="section-title">1. Introduction to Exception Handling in Spring Boot</h3>
+    <h5>1. Introduction to Exception Handling in Spring Boot</h3>
     <p>Spring Boot provides robust exception handling mechanisms. These mechanisms ensure that the application gracefully handles exceptions and returns meaningful error messages to the client. Below are the main ways to handle exceptions in Spring Boot:</p>
     <ul>
         <li>Using @ExceptionHandler</li>
@@ -16,7 +16,7 @@
     </ul>
 
     <br>
-    <h3 class="section-title">2. @ExceptionHandler Annotation</h3>
+    <h5>2. @ExceptionHandler Annotation</h3>
     <p>The <b>@ExceptionHandler</b> annotation is used within controller classes to handle specific exceptions that occur during the execution of a request.</p>
     <p><strong>Example:</strong> Handling a specific exception like <b>NullPointerException</b>.</p>
     <pre>
@@ -40,7 +40,7 @@ public class ExceptionController {
     </pre>
 
     <br>
-    <h3 class="section-title">3. Global Exception Handling using @ControllerAdvice</h3>
+    <h5>3. Global Exception Handling using @ControllerAdvice</h3>
     <p>The <strong>@ControllerAdvice</strong> annotation is used to define a global exception handler that applies to all controllers. This is a centralized way to manage exceptions.</p>
     <p><strong>Example:</strong> Creating a global exception handler for all exceptions.</p>
     <pre>
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     </pre>
 
     <br>
-    <h3 class="section-title">4. Custom Exception Handling with @ResponseStatus</h3>
+    <h5>4. Custom Exception Handling with @ResponseStatus</h3>
     <p>The <strong>@ResponseStatus</strong> annotation allows you to map exceptions to specific HTTP status codes. This provides more control over the response status returned when an exception occurs.</p>
     <p><strong>Example:</strong> Custom exception with specific HTTP status.</p>
     <pre>
@@ -92,7 +92,7 @@ public class MyController {
     </pre>
 
     <br>
-    <h3 class="section-title">5. Exception Handling with ResponseStatusException</h3>
+    <h5>5. Exception Handling with ResponseStatusException</h3>
     <p>The <strong>ResponseStatusException</strong> class can be used to throw exceptions with a specific HTTP status and message directly from the controller.</p>
     <p><strong>Example:</strong> Throwing an exception using <b>ResponseStatusException</b>.</p>
     <pre>
@@ -112,7 +112,7 @@ public class MyController {
     </pre>
 
     <br>
-    <h3 class="section-title">6. Custom Error Response Structure</h3>
+    <h5>6. Custom Error Response Structure</h3>
     <p>We can create a custom error response structure by defining a custom error class and using it in exception handlers.</p>
     <p><strong>Step 1:</strong> Define a custom error response class.</p>
     <pre>
@@ -156,7 +156,7 @@ public class CustomGlobalExceptionHandler {
     </pre>
 
     <br>
-    <h3 class="section-title">7. Handling Validation Exceptions</h3>
+    <h5>7. Handling Validation Exceptions</h3>
     <p>Spring Boot automatically handles validation using annotations like <b>@Valid</b> and <b>@Validated</b>, but custom validation exceptions can also be handled.</p>
     <p><strong>Example:</strong> Handling validation exceptions using @ControllerAdvice.</p>
     <pre>
@@ -202,7 +202,7 @@ public class CustomGlobalExceptionHandler {
         <li>The handler extracts validation messages and returns them in a structured format (e.g., a map of field names and errors).</li>
     </ul>
     <br>
-    <h3 class="section-title">8. Sample JSON Error Response</h3>
+    <h5>8. Sample JSON Error Response</h3>
     <p>Below is an example of how a typical custom error response might look when handling an exception:</p>
     <pre>
 {
@@ -213,7 +213,7 @@ public class CustomGlobalExceptionHandler {
     </pre>
 
     <br>
-    <h3 class="section-title">9. Summary</h3>
+    <h5>9. Summary</h3>
     <ul>
         <li><strong>@ExceptionHandler</strong> is used for local exception handling in a controller.</li>
         <li><strong>@ControllerAdvice</strong> is used for global exception handling across all controllers.</li>
@@ -222,7 +222,7 @@ public class CustomGlobalExceptionHandler {
         <li>Custom error responses can be structured using a custom error class.</li>
     </ul>
 
-    <h3 class="section-title">Interview Questions and Answers</h2>
+    <h5>Interview Questions and Answers</h2>
         <div class="interview-question">
             <strong>Q1: You have a Spring Boot application where you are handling exceptions globally using @ControllerAdvice. 
                 However, in one specific controller method, you want to handle exceptions differently and avoid global handling. 

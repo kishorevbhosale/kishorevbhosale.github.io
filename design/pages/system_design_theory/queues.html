@@ -1,12 +1,14 @@
-<div class="container">
+<h2 style="text-align: center;">Messaging Queue</h2>
+
 
         <div class="content">
-            <h3 class="section-title">What is a messaging queue?</h3>
+            <h5>What is a messaging queue?</h3>
                     <p>A <strong>messaging queue</strong> is a form of <strong>asynchronous communication</strong> mechanism used in distributed systems, where messages are sent between different services or components in a system. The queue acts as a temporary storage buffer for these messages, ensuring they are delivered even if the receiver is not immediately available.</p>
 
                     <img src="../../images/mq.PNG" alt="lb" style="display: block; margin: auto; width: 50%;">
 
                     <br>
+                    <hr>
                     <h5>Key Features and Components of a Messaging Queue :</h5>
                     <ul>
                         <li><strong>Producers (Senders):</strong> Applications or services that send messages to the queue.</li>
@@ -34,8 +36,8 @@
                     </ul>
                     </div>
                     
-
-            <h3 class="section-title">Types of Message Queues</h3>
+<hr>
+            <h5>Types of Message Queues</h3>
                     <ul>
                         <li><strong>Point-to-Point (P2P) Queue:</strong>
                             <ul>
@@ -69,8 +71,8 @@
                             </ul>
                         </li>
                     </ul>
-                   <br>     
-            <h3 class="section-title">Why Queues are Important: A Detailed Example Using Pizza Service</h3>
+                   <hr>     
+            <h5>Why Queues are Important: A Detailed Example Using Pizza Service</h3>
                     <p>Let’s imagine a pizza delivery service that receives orders from customers via a website or mobile app. Now, think of all the tasks involved:</p>
                     <ul>
                         <li>Receiving the order</li>
@@ -97,8 +99,8 @@
                             <li><strong>Delivery Assignment (Queue System):</strong> After the pizza is made, the delivery request goes into another delivery queue. Drivers pull jobs from this queue whenever they are available, ensuring a smooth flow of tasks and no idle time for drivers or wasted time waiting for pizza.</li>
                         </ul>            
 
-            <br>
-            <h3 class="section-title">Comparing Publish-Subscribe Messaging and Message Queuing</h3>
+            <hr>
+            <h5>Comparing Publish-Subscribe Messaging and Message Queuing</h3>
             <h5>1. Message Queuing</h5>
             <p>Message Queuing is a method where messages are placed into a queue and then processed in a sequential order. Here's how it works:</p>
         
@@ -131,7 +133,7 @@
             <p>When a payment is processed, the payment service publishes a message to a topic like "OrderStatus." The order system and delivery service, both subscribed to this topic, receive the message and update their records accordingly. This approach ensures that all parts of the system are synchronized and aware of the payment status.</p>
             </div>
             
-            <h3 class="section-title">When to Use and When Not to Use Message Queues</h3>
+            <h5>When to Use and When Not to Use Message Queues</h3>
             
                 <h5>When to Use Message Queues</h5>
                 <ul>
@@ -148,8 +150,8 @@
                     <li><strong>Low Volume or Low Complexity:</strong> Skip message queues for low-volume or simple scenarios where the overhead of setting up and managing a queue doesn’t provide significant benefits.</li>
                     <li><strong>Guaranteed Ordering:</strong> If strict message ordering is crucial and cannot be guaranteed by the queue system, you might need a different approach or additional mechanisms to ensure order.</li>
                 </ul>
-
-                <h3 class="section-title">Message Serialization</h3>
+<hr>
+                <h5>Message Serialization</h3>
                 <p>Message serialization is the process of transforming complex data structures or objects into a format that is suitable for transmission, storage, or reconstruction. Common serialization formats include:</p>
                 <ul>
                     <li><strong>JSON (JavaScript Object Notation):</strong> A lightweight, text-based format used for structured data interchange, widely supported across many programming languages.</li>
@@ -157,16 +159,16 @@
                     <li><strong>Protocol Buffers (protobuf):</strong> A binary serialization format created by Google, known for its efficiency and language-neutrality.</li>
                     <li><strong>Binary Serialization:</strong> Custom binary formats used for performance-critical scenarios due to their compact size and speed.</li>
                 </ul>
-                <br>
+                <hr>
 
-                <h3 class="section-title">Message Structure</h3>
+                <h5>Message Structure</h3>
                 <p>A typical message is composed of two primary components:</p>
                 <ul>
                     <li><strong>Headers:</strong> These include metadata about the message, such as a unique identifier, timestamp, message type, and routing details.</li>
                     <li><strong>Body:</strong> This part contains the actual content or payload of the message. It can be formatted as text, binary data, or structured data such as JSON.</li>
                 </ul>
-                <br>
-                <h3 class="section-title">Message Routing</h3>
+                <hr>
+                <h5>Message Routing</h3>
                 <p>Message routing determines how messages are directed to their intended recipients. Various routing methods include:</p>
                 <ul>
                     <li><strong>Topic-Based Routing:</strong> Messages are sent to specific topics or channels, and subscribers subscribe to these topics. The messages are then delivered to all subscribers of the respective topic.</li>

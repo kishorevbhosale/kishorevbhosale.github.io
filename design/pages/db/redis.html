@@ -1,7 +1,6 @@
-<h1 style="text-align: center;">Redis</h1>
-<hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
+<h2 style="text-align: center;">Redis</h2>
 
-<h2 style="text-align: center;">What is Redis?</h2>
+<h5>What is Redis?</h5>
 <div>
     <b>Definition & Basics</b>
     <ul>
@@ -47,14 +46,14 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Redis Data Types</h2>
+<h5>Redis Data Types</h5>
 <div>
     <p>
       <li><b>Key Structure</b>: Binary-safe strings (max 512 MB), but shorter keys are recommended for efficiency.</li>
     </p>
     <hr class="thin-line">
   
-    <h5>1. Strings</h5>
+    <b>1. Strings</b>
     <ul>
       <li><b>Description</b>: Simplest type, stores text/binary data (up to 512 MB).</li>
       <li><b>Use Cases</b>:
@@ -67,7 +66,7 @@
     </ul>
     <hr class="thin-line">
     
-    <h5>2. Lists</h5>
+    <b>2. Lists</b>
     <ul>
       <li><b>Structure</b>: Linked list of strings.</li>
       <li><b>Operations</b>:
@@ -80,7 +79,7 @@
     </ul>
     <hr class="thin-line">
   
-    <h5>3. Sets</h5>
+    <b>3. Sets</b>
     <ul>
       <li><b>Structure</b>: Unordered collection of unique strings.</li>
       <li><b>Operations</b>: O(1) add/remove; no duplicates allowed.</li>
@@ -88,7 +87,7 @@
     </ul>
     <hr class="thin-line">
   
-    <h5>4. Sorted Sets</h5>
+    <b>4. Sorted Sets</b>
     <ul>
       <li><b>Structure</b>: Unique elements sorted by a <em>score</em> (numeric value).</li>
       <li><b>Ordering Rules</b>:
@@ -101,7 +100,7 @@
     </ul>
     <hr class="thin-line">
   
-    <h5>5. Hashes</h5>
+    <b>5. Hashes</b>
     <ul>
       <li><b>Structure</b>: Field-value pairs (e.g., <code>{student: "marks"}</code>).</li>
       <li><b>Use Cases</b>: Storing object attributes (e.g., user profiles, product details).</li>
@@ -109,7 +108,7 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Strings in Redis: Insertion and Retrieval</h2>
+<h5>Strings in Redis: Insertion and Retrieval</h5>
 <div>
     <ul>
       <li><b>SET Command</b>
@@ -177,7 +176,7 @@
 </div>
   
 <div>
-    <h5>Practice Commands</h5>
+    <b>Practice Commands</b>
     <ul>
       <li><code>SET Meta 300</code></li>
       <li><code>GET Meta</code></li>
@@ -192,11 +191,11 @@
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
 
-<h2 style="text-align: center;">Strings in Redis: Utility Commands</h2>
+<h5>Strings in Redis: Utility Commands</h5>
 <div>
     <ul>
       <li>
-        <h5>KEYS Command</h5>
+        <b>KEYS Command</b>
         <ul>
           <li><b>Purpose</b>: Lists all keys stored in Redis.</li>
           <li><b>Syntax</b>: <code>KEYS *</code></li>
@@ -205,7 +204,7 @@
       </li>
       <br>
       <li>
-        <h5>INCR Command</h5>
+        <b>INCR Command</b>
         <ul>
           <li><b>Purpose</b>: Increments a key's integer value by 1.</li>
           <li><b>Syntax</b>: <code>INCR key</code></li>
@@ -219,7 +218,7 @@
       </li>
       <br>
       <li>
-        <h5>INCRBY Command</h5>
+        <b>INCRBY Command</b>
         <ul>
           <li><b>Purpose</b>: Increments a key's value by a specified integer.</li>
           <li><b>Syntax</b>: <code>INCRBY key count</code></li>
@@ -228,7 +227,7 @@
       </li>
       <br>
       <li>
-        <h5>INCRBYFLOAT Command</h5>
+        <b>INCRBYFLOAT Command</b>
         <ul>
           <li><b>Purpose</b>: Increments a key's value by a floating-point number.</li>
           <li><b>Syntax</b>: <code>INCRBYFLOAT key floatValue</code></li>
@@ -237,7 +236,7 @@
       </li>
       <br>
       <li>
-        <h5>Terminal Example 1</h5>
+        <b>Terminal Example 1</b>
         <ul>
           <li><code>SET Apple 300</code> → Sets Apple’s value to 300.</li>
           <li><code>GET Apple</code> → Returns 300.</li>
@@ -249,7 +248,7 @@
       </li>
       <br>
       <li>
-        <h5>DECR Command</h5>
+        <b>DECR Command</b>
         <ul>
           <li><b>Purpose</b>: Decrements a key's integer value by 1.</li>
           <li><b>Syntax</b>: <code>DECR key</code></li>
@@ -258,7 +257,7 @@
       </li>
       <br>
       <li>
-        <h5>DECRBY Command</h5>
+        <b>DECRBY Command</b>
         <ul>
           <li><b>Purpose</b>: Decrements a key's value by a specified integer.</li>
           <li><b>Syntax</b>: <code>DECRBY key count</code></li>
@@ -267,7 +266,7 @@
       </li>
       <br>
       <li>
-        <h5>DEL Command</h5>
+        <b>DEL Command</b>
         <ul>
           <li><b>Purpose</b>: Deletes one or more keys.</li>
           <li><b>Syntax</b>: <code>DEL key</code></li>
@@ -276,7 +275,7 @@
       </li>
       <br>
       <li>
-        <h5>FLUSHALL Command</h5>
+        <b>FLUSHALL Command</b>
         <ul>
           <li><b>Purpose</b>: Deletes all keys in all Redis databases.</li>
           <li><b>Syntax</b>: <code>FLUSHALL</code></li>
@@ -285,7 +284,7 @@
       </li>
       <br>
       <li>
-        <h5>APPEND Command</h5>
+        <b>APPEND Command</b>
         <ul>
           <li><b>Purpose</b>: Appends a string to a key's value.</li>
           <li><b>Syntax</b>: <code>APPEND key stringToBeAppended</code></li>
@@ -294,7 +293,7 @@
       </li>
       <br>
       <li>
-        <h5>Terminal Example 2</h5>
+        <b>Terminal Example 2</b>
         <ul>
           <li><code>SET google 250</code> → Sets google’s value to 250.</li>
           <li><code>DECR google</code> → Value becomes 249.</li>
@@ -307,12 +306,12 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Lists in Redis: Insertion Commands</h2>
+<h5>Lists in Redis: Insertion Commands</h5>
 <div>
     <br>
     <li><b>Data Structure</b>: Redis lists are stored as linked lists with a <em>head</em> (left) and <em>tail</em> (right).</li>
     <br>  
-    <h5>1. LPUSH Command</h5>
+    <b>1. LPUSH Command</b>
     <ul>
       <li><b>Purpose</b>: Inserts one or more values at the <em>head</em> (left) of the list.</li>
       <li><b>Syntax</b>: <code>LPUSH key value1 value2 ...</code></li>
@@ -324,7 +323,7 @@
       </li>
     </ul>
   
-    <h5>2. LRANGE Command</h5>
+    <b>2. LRANGE Command</b>
     <ul>
       <li><b>Purpose</b>: Retrieves elements between a start and end index.</li>
       <li><b>Syntax</b>: <code>LRANGE key start end</code></li>
@@ -336,7 +335,7 @@
       </li>
     </ul>
   
-    <h5>3. LPOP Command</h5>
+    <b>3. LPOP Command</b>
     <ul>
       <li><b>Purpose</b>: Removes and returns the element at the <em>head</em> (left) of the list.</li>
       <li><b>Syntax</b>: <code>LPOP key</code></li>
@@ -347,7 +346,7 @@
       </li>
     </ul>
   
-    <h5>4. RPUSH Command</h5>
+    <b>4. RPUSH Command</b>
     <ul>
       <li><b>Purpose</b>: Inserts one or more values at the <em>tail</em> (right) of the list.</li>
       <li><b>Syntax</b>: <code>RPUSH key value1 value2 ...</code></li>
@@ -359,7 +358,7 @@
       </li>
     </ul>
   
-    <h5>5. RPOP Command</h5>
+    <b>5. RPOP Command</b>
     <ul>
       <li><b>Purpose</b>: Removes and returns the element at the <em>tail</em> (right) of the list.</li>
       <li><b>Syntax</b>: <code>RPOP key</code></li>
@@ -370,14 +369,14 @@
       </li>
     </ul>
   
-    <h5>6. DEL Command</h5>
+    <b>6. DEL Command</b>
     <ul>
       <li><b>Purpose</b>: Deletes the entire list associated with a key.</li>
       <li><b>Syntax</b>: <code>DEL key</code></li>
       <li><b>Example</b>: <code>DEL cars</code> → Removes the "cars" list.</li>
     </ul>
   
-    <h5>Summary Workflow Example</h5>
+    <b>Summary Workflow Example</b>
     <ul>
       <li><code>LPUSH cars toyota ford</code> → List: [ford, toyota]</li>
       <li><code>RPUSH cars honda</code> → List: [ford, toyota, honda]</li>
@@ -387,9 +386,9 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Lists in Redis: Modification Commands</h2> 
+<h5>Lists in Redis: Modification Commands</h5> 
 <div>
-    <h5>LLEN Command</h5>
+    <b>LLEN Command</b>
     <ul>
       <li><b>Purpose</b>: Get the length of a list.</li>
       <li><b>Syntax</b>: <code>LLEN key</code></li>
@@ -401,7 +400,7 @@
       </li>
     </ul>
   
-    <h5>LINDEX Command</h5>
+    <b>LINDEX Command</b>
     <ul>
       <li><b>Purpose</b>: Fetch an element at a specific index (0-based).</li>
       <li><b>Syntax</b>: <code>LINDEX key index</code></li>
@@ -412,7 +411,7 @@
       </li>
     </ul>
   
-    <h5>LSET Command</h5>
+    <b>LSET Command</b>
     <ul>
       <li><b>Purpose</b>: Update the value at a specific index.</li>
       <li><b>Syntax</b>: <code>LSET key index value</code></li>
@@ -423,7 +422,7 @@
       </li>
     </ul>
   
-    <h5>LPUSHX Command</h5>
+    <b>LPUSHX Command</b>
     <ul>
       <li><b>Purpose</b>: Add an element to the head <em>only if the list exists</em>.</li>
       <li><b>Syntax</b>: <code>LPUSHX key value</code></li>
@@ -435,7 +434,7 @@
       </li>
     </ul>
   
-    <h5>LINSERT Command</h5>
+    <b>LINSERT Command</b>
     <ul>
       <li><b>Purpose</b>: Insert an element before/after a specific pivot value.</li>
       <li><b>Syntax</b>: <code>LINSERT key BEFORE|AFTER pivot value</code></li>
@@ -451,10 +450,10 @@
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
 
-<h2 style="text-align: center;">Set in Redis: Insertion Commands</h2> 
+<h5>Set in Redis: Insertion Commands</h5> 
 <div>
   <div>
-    <h5>Redis Sets: Overview</h5>
+    <b>Redis Sets: Overview</b>
     <ul>
       <li><b>Purpose</b>: Store <em>unique</em> elements (no duplicates) with unordered storage.</li>
       <li><b>Internal Structure</b>: Uses hash tables for fast lookups.</li>
@@ -463,7 +462,7 @@
   </div>
   
   <div>
-    <h5>Key Commands for Sets</h5>
+    <b>Key Commands for Sets</b>
     <ul>
       <li>
         <b>SADD (Add Elements)</b>:
@@ -510,7 +509,7 @@
   </div>
   
   <div>
-    <h5>Example Workflow</h5>
+    <b>Example Workflow</b>
     <ul>
       <li><code>SADD set1 apple banana orange</code> → adds 3 elements.</li>
       <li><code>SMEMBERS set1</code> → returns [apple, banana, orange].</li>
@@ -520,7 +519,7 @@
   </div>
   
   <div>
-    <h5>Edge Cases</h5>
+    <b>Edge Cases</b>
     <ul>
       <li><b>Duplicate Insertion</b>: <code>SADD</code> ignores duplicates (returns <code>0</code>).</li>
       <li><b>Empty Sets</b>: <code>SMEMBERS</code> returns empty list if key doesn’t exist.</li>
@@ -530,9 +529,9 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Set in Redis: Modification Commands</h2> 
+<h5>Set in Redis: Modification Commands</h5> 
 <div>  
-    <h5>SUNION Command</h5>  
+    <b>SUNION Command</b>  
     <ul>  
       <li><b>Purpose</b>: Computes the union of two or more sets.</li>  
       <li><b>Syntax</b>: <code>SUNION key1 key2 ...</code></li>  
@@ -547,7 +546,7 @@
       </li>  
     </ul>  
   
-    <h5>SREM Command</h5>  
+    <b>SREM Command</b>  
     <ul>  
       <li><b>Purpose</b>: Removes specified elements from a set.</li>  
       <li><b>Syntax</b>: <code>SREM key value1 value2 ...</code></li>  
@@ -559,7 +558,7 @@
       </li>  
     </ul>  
   
-    <h5>SPOP Command</h5>  
+    <b>SPOP Command</b>  
     <ul>  
       <li><b>Purpose</b>: Removes and returns random element(s) from a set.</li>  
       <li><b>Syntax</b>: <code>SPOP key [count]</code></li>  
@@ -571,7 +570,7 @@
       </li>  
     </ul>  
   
-    <h5>SMOVE Command</h5>  
+    <b>SMOVE Command</b>  
     <ul>  
       <li><b>Purpose</b>: Moves an element from one set to another.</li>  
       <li><b>Syntax</b>: <code>SMOVE source_set dest_set member</code></li>  
@@ -588,7 +587,7 @@
       </li>  
     </ul>  
   
-    <h5>Terminal Example Walkthrough</h5>  
+    <b>Terminal Example Walkthrough</b>  
     <ul>  
       <li>Create sets:  
         <code>SADD berries strawberry blueberry</code>,  
@@ -602,15 +601,15 @@
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
 
-<h2 style="text-align: center;">Sorted Set in Redis: Insertion Commands</h2> 
+<h5>Sorted Set in Redis: Insertion Commands</h5> 
 <div>
-    <h5>Redis Sorted Sets (ZSets)</h5>
+    <b>Redis Sorted Sets (ZSets)</b>
     <ul>
       <li><b>Purpose</b>: Store elements in ascending order based on a numeric <b>score</b>.</li>
       <li><b>Uniqueness</b>: Elements are unique, but multiple elements can share the same score (sorted lexicographically in such cases).</li>
     </ul>
   
-    <h5>1. ZADD Command</h5>
+    <b>1. ZADD Command</b>
     <ul>
       <li><b>Syntax</b>: <code>ZADD key score value ...</code></li>
       <li><b>Use Case</b>: Add elements with scores to a sorted set.</li>
@@ -622,7 +621,7 @@
       </li>
     </ul>
   
-    <h5>2. ZRANGE Command</h5>
+    <b>2. ZRANGE Command</b>
     <ul>
       <li><b>Syntax</b>: <code>ZRANGE key start end</code></li>
       <li><b>Use Case</b>: Fetch elements within a positional range (ascending order).</li>
@@ -634,7 +633,7 @@
       </li>
     </ul>
   
-    <h5>3. ZRANGEBYSCORE Command</h5>
+    <b>3. ZRANGEBYSCORE Command</b>
     <ul>
       <li><b>Syntax</b>: <code>ZRANGEBYSCORE key min max</code></li>
       <li><b>Use Case</b>: Fetch elements within a <b>score range</b>.</li>
@@ -645,7 +644,7 @@
       </li>
     </ul>
   
-    <h5>4. ZCARD Command</h5>
+    <b>4. ZCARD Command</b>
     <ul>
       <li><b>Syntax</b>: <code>ZCARD key</code></li>
       <li><b>Use Case</b>: Get the total number of elements in a ZSet.</li>
@@ -656,7 +655,7 @@
       </li>
     </ul>
   
-    <h5>5. ZCOUNT Command</h5>
+    <b>5. ZCOUNT Command</b>
     <ul>
       <li><b>Syntax</b>: <code>ZCOUNT key min max</code></li>
       <li><b>Use Case</b>: Count elements within a score range.</li>
@@ -667,7 +666,7 @@
       </li>
     </ul>
   
-    <h5>Key Notes</h5>
+    <b>Key Notes</b>
     <ul>
       <li><b>Lexicographic Order</b>: Elements with the same score are sorted alphabetically (e.g., "Apple" before "Banana").</li>
       <li><b>Range Limits</b>: Use <code>-inf</code> and <code>+inf</code> for unbounded score ranges.</li>
@@ -677,13 +676,13 @@
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
 
-<h2 style="text-align: center;">Sorted Set in Redis: Modification Commands</h2>
+<h5>Sorted Set in Redis: Modification Commands</h5>
 <div>
 <div>
-    <h5>Redis Sorted Set Utility Commands</h5>
+    <b>Redis Sorted Set Utility Commands</b>
     <ul>
       <li>
-        <h5>ZREM (Remove Member)</h5>
+        <b>ZREM (Remove Member)</b>
         <ul>
           <li><b>Syntax</b>: <code>ZREM key member</code></li>
           <li><b>Description</b>: Removes a specific member from the sorted set.</li>
@@ -694,7 +693,7 @@
       </li>
   
       <li>
-        <h5>ZRANK (Get Member Index)</h5>
+        <b>ZRANK (Get Member Index)</b>
         <ul>
           <li><b>Syntax</b>: <code>ZRANK key member</code></li>
           <li><b>Description</b>: Returns the ascending rank (0-based index) of a member. Lower score = lower rank.</li>
@@ -705,7 +704,7 @@
       </li>
   
       <li>
-        <h5>ZREVRANK (Get Reverse Index)</h5>
+        <b>ZREVRANK (Get Reverse Index)</b>
         <ul>
           <li><b>Syntax</b>: <code>ZREVRANK key member</code></li>
           <li><b>Description</b>: Returns the descending rank (0-based index). Higher score = lower rank.</li>
@@ -716,7 +715,7 @@
       </li>
   
       <li>
-        <h5>ZSCORE (Get Member Score)</h5>
+        <b>ZSCORE (Get Member Score)</b>
         <ul>
           <li><b>Syntax</b>: <code>ZSCORE key member</code></li>
           <li><b>Description</b>: Fetches the score associated with a member.</li>
@@ -729,7 +728,7 @@
   </div>
   
   <div>
-    <h5>Terminal Workflow Example</h5>
+    <b>Terminal Workflow Example</b>
     <ul>
       <li><code>ZADD players 150 Alice 90 Bob 80 Charlie</code> → Creates a sorted set "players" with members and scores.</li>
       <li><code>ZREM players Alice</code> → Removes "Alice" from the set.</li>
@@ -742,10 +741,10 @@
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
 
-<h2 style="text-align: center;">Storing Hashes in Redis</h2>
+<h5>Storing Hashes in Redis</h5>
 <div>
     <div>
-        <h5>Redis Hash Commands: Key Concepts & Examples</h5>
+        <b>Redis Hash Commands: Key Concepts & Examples</b>
         <ul>
           <li>
             <b>Hash Data Structure</b>
@@ -823,7 +822,7 @@
       </div>
       
       <div>
-        <h5>Important Notes</h5>
+        <b>Important Notes</b>
         <ul>
           <li>All commands are case-sensitive</li>
           <li>Use <code>HSET</code> instead of deprecated <code>HMSET</code> in Redis ≥4.0.0</li>
@@ -833,7 +832,7 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Redis Publisher/Subscriber (Pub/Sub) Model</h2>
+<h5>Redis Publisher/Subscriber (Pub/Sub) Model</h5>
 <div>
     <ul>
       <li><b>Purpose</b>: Enables asynchronous messaging between applications using a message queue pattern.</li>
@@ -846,7 +845,7 @@
       </li>
     </ul>
   
-    <h5>Message Queue Basics</h5>
+    <b>Message Queue Basics</b>
     <ul>
       <li><b>Definition</b>: Temporary storage for messages where publishers send data and subscribers process it later.</li>
       <li><b>Use Case</b>:
@@ -857,7 +856,7 @@
       </li>
     </ul>
   
-    <h5>Redis as a Message Queue</h5>
+    <b>Redis as a Message Queue</b>
     <ul>
       <li><b>Channel Subscription</b>:
         <ul>
@@ -867,7 +866,7 @@
       </li>
     </ul>
   
-    <h5>Commands & Workflow</h5>
+    <b>Commands & Workflow</b>
     <ul>
       <li><b>Subscribe to a Channel</b>:
         <ul>
@@ -889,7 +888,7 @@
       </li>
     </ul>
   
-    <h5>Advanced Features</h5>
+    <b>Advanced Features</b>
     <ul>
       <li><b>Multiple Subscribers</b>:
         <ul>
@@ -906,7 +905,7 @@
       </li>
     </ul>
   
-    <h5>Key Scenarios & Edge Cases</h5>
+    <b>Key Scenarios & Edge Cases</b>
     <ul>
       <li><b>Message Persistence</b>: Redis Pub/Sub does <b>not store messages</b> if no subscribers are active.</li>
       <li><b>Scalability</b>: Suitable for real-time systems but lacks built-in retries or acknowledgment mechanisms.</li>
@@ -921,7 +920,7 @@
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
 
-<h2 style="text-align: center;">Redis Security</h2>
+<h5>Redis Security</h5>
 <div>
     
     <ul>
@@ -929,7 +928,7 @@
       <li>Security Limitation: Basic authentication with a single password; no user-level permissions.</li>
     </ul>
   
-    <h5>Authentication Setup</h5>
+    <b>Authentication Setup</b>
     <ul>
       <li><b>Default State</b>: Authentication disabled.</li>
       <li><b>Enable Password</b>:
@@ -946,7 +945,7 @@
       </li>
     </ul>
   
-    <h5>Command Restriction</h5>
+    <b>Command Restriction</b>
     <ul>
       <li><b>Why Restrict</b>: Prevent misuse of destructive commands (e.g., <code>FLUSHALL</code>).</li>
       <li><b>Method</b>: Rename commands in <code>redis.conf</code>:
@@ -963,7 +962,7 @@
       </li>
     </ul>
   
-    <h5>Example Scenario</h5>
+    <b>Example Scenario</b>
     <ul>
       <li><b>Goal</b>: Allow data reads but block deletions.</li>
       <li><b>Steps</b>:
@@ -975,7 +974,7 @@
       </li>
     </ul>
   
-    <h5>Key Security Limitations</h5>
+    <b>Key Security Limitations</b>
     <ul>
       <li>No granular user roles/permissions.</li>
       <li>Password is plain-text in config file.</li>
@@ -984,7 +983,7 @@
 </div>
 <hr style="border: none; border-top: 0.1px dotted #ccc; margin: 10px 0;">
 
-<h2 style="text-align: center;">Python code for Redis</h2>
+<h5>Python code for Redis</h5>
 <pre>
 import redis
 

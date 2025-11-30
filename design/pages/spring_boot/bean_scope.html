@@ -2,13 +2,13 @@
 
         <div class="content">
             <h1>Spring Bean Scope</h1>
-            <h3 class="section-title">What is Bean Scope in Spring?</h3>
+            <h5>What is Bean Scope in Spring?</h3>
             <p>In the Spring Framework, a bean scope defines the lifecycle of a bean (i.e., how many instances of a bean should be created and how Spring manages them). 
                 The scope dictates whether a new instance of a bean should be created with each request, or if the same instance should be shared across multiple requests.
             </p>
             <br>
 
-            <h3 class="section-title">Types of Bean Scopes</h3>
+            <h5>Types of Bean Scopes</h3>
             <ul>
                 <li><strong>Singleton (Default):</strong> Only one instance of the bean is created and shared across the application context.</li>
                 <li><strong>Prototype:</strong> A new instance of the bean is created every time it is requested.</li>
@@ -18,7 +18,7 @@
             </ul>
             <br>
 
-            <h3 class="section-title">1. Singleton Bean Scope</h3>
+            <h5>1. Singleton Bean Scope</h3>
             <p>The <strong>singleton scope</strong> is the default bean scope in Spring. It ensures that only one instance of the bean is created and is shared across all requests.</p>
             <ul>
                 <li><strong>Instance sharing:</strong> All components that need the bean will receive the same instance.</li>
@@ -57,7 +57,7 @@
             </pre>
             <br>
 
-            <h3 class="section-title">Eager vs Lazy Instantiation of Singleton Scope</h3>
+            <h5>Eager vs Lazy Instantiation of Singleton Scope</h3>
             <h5>Eager Instantiation (Default Behavior)</h5>
             <ul>
                 <li><strong>Definition:</strong> In Spring, by default, singleton beans are eagerly instantiated, meaning they are created as soon as the application context is loaded, regardless of whether they are used or not.</li>
@@ -108,15 +108,15 @@
             <img src="../../images/spring6.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
             <br>
 
-            <h3 class="section-title">2. Prototype</h3>
+            <h5>2. Prototype</h3>
                 <img src="../../images/bean11.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
             <br>
-            <h3 class="section-title">3. Request/Session/Application Scopes</h3>
+            <h5>3. Request/Session/Application Scopes</h3>
                 <img src="../../images/bean12.PNG" alt="Singleton Scope" style="display: block; margin: auto; width: 75%;" class="img-fluid">
             <br>
             
 
-            <h3 class="section-title">Interview Questions and Answers</h2>
+            <h5>Interview Questions and Answers</h2>
             <div class="interview-question">
                 <strong>What is the Singleton Scope in Spring, and how does it work?</strong>
             </div>

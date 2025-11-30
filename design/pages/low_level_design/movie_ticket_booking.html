@@ -1,8 +1,18 @@
 <div>
-    <h2 style="text-align: center;">Designing Movie Ticket Booking System</h2>    
-    <hr>
+    <h2 style="text-align: center;">Designing Movie Ticket Booking System</h2>   
+<div class="custom-container">
+    <ol>
+        <li><a href="#Requirements">Requirements </a></li>
+        <li><a href="#Sequnece">Sequnece Diagram </a></li>
+        <li><a href="#Components">Classes and Responsibilities </a></li>
+        <li><a href="#Code">Code Implementation </a></li>
+        <li><a href="#Explanation">Design Explanation </a></li>
+        <li><a href="#Considerations">Design Considerations </a></li>
+    </ol>
+</div>
+<hr>
 
-    <h5>Requirements:</h5>
+    <h5 id="Requirements">Requirements:</h5>
     <ul>
         <li>Users can view movies playing in various theaters.</li>
         <li>Users can select movies, theaters, and show timings for booking tickets.</li>
@@ -15,11 +25,12 @@
     </ul>
     <hr>
 
-    <h5>Sequnece Diagram</h5>
+
+    <h5 id="Sequnece">Sequnece Diagram</h5>
     <img src="../../../images/movie.png" alt="cache" style="display: block; margin: auto; width: 100%;">
     <hr>
 
-    <h5>Classes and Responsibilities:</h5>
+    <h5 id="Components">Classes and Responsibilities:</h5>
     <ul>
         <li><strong>Movie:</strong> Represents a movie with attributes like title, genre, and duration.</li>
         <li><strong>Theater:</strong> Represents a theater with its shows, seating, and movies.</li>
@@ -30,7 +41,7 @@
     </ul>
     <hr>
 
-    <h5>Code Implementation:</h5>
+    <h5 id="Code">Code Implementation:</h5>
     <pre>
 import java.util.*;
 
@@ -235,7 +246,7 @@ Seats Booked:
 Total Amount: $750.0
     </pre>
 <hr>
-    <h5>Explanation:</h5>
+    <h5 id="Explanation">Explanation:</h5>
     <ul>
         <li><strong>Movies:</strong> Movies are created with a title, genre, and duration.</li>
         <li><strong>Theater:</strong> The theater contains multiple shows.</li>
@@ -244,7 +255,7 @@ Total Amount: $750.0
     </ul>
     <hr>
 
-    <h5>Scalability Considerations:</h5>
+    <h5 id="Considerations">Scalability Considerations:</h5>
     <ul>
         <li>Use a database to store movies, theaters, and shows.</li>
         <li>Implement distributed locking mechanisms for concurrent seat booking.</li>
