@@ -1,39 +1,50 @@
-<h2 style="text-align: center;">Open/Closed Principle (OCP)</h2>
-<br>
+<h2 style="text-align: center">Open/Closed Principle (OCP)</h2>
+<br />
 <div class="custom-container">
-    <ol>
-        <li><a href="#intro">Introduction </a></li>
-        <li><a href="#violation">OCP violation</a></li>
-        <li><a href="#ocp">How to achieve OCP </a></li>
-        <li><a href="#how">How it complies with OCP </a></li>
-        <li><a href="#conclusion">Conclusion</a></li>
-    </ol>
+  <ol>
+    <li><a href="#intro">Introduction </a></li>
+    <li><a href="#violation">OCP violation</a></li>
+    <li><a href="#ocp">How to achieve OCP </a></li>
+    <li><a href="#how">How it complies with OCP </a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="intro">
-    <h5>Introduction</h5>
-        <p>
-            The <b>Open/Closed Principle (OCP)</b>is a foundational concept in object-oriented programming (OOP) that states:<br>
-            <b>"Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.".</b>
-        </p>
-        <p>
-            Modifying existing code can introduce new bugs and increase the cost of testing and maintaining the system. 
-            Therefore, the OCP ensures the system remains robust, maintainable, and flexible as new requirements are introduced.
-        </p>
+  <h5>Introduction</h5>
+  <p>
+    The <b>Open/Closed Principle (OCP)</b>is a foundational concept in
+    object-oriented programming (OOP) that states:<br />
+    <b
+      >"Software entities (classes, modules, functions, etc.) should be open for
+      extension, but closed for modification.".</b
+    >
+  </p>
+  <p>
+    Modifying existing code can introduce new bugs and increase the cost of
+    testing and maintaining the system. Therefore, the OCP ensures the system
+    remains robust, maintainable, and flexible as new requirements are
+    introduced.
+  </p>
 </div>
-<hr>
+<hr />
 
 <div id="violation">
-    <h5>OCP violation:</h5>
-    <b>Example: Notification System</b>
-    <p>
-        Imagine you are designing a notification system for a messaging platform. Initially, the system only supports email notifications.<br>
-        Later, you might want to add support for SMS notifications and, eventually, for push notifications.
-    </p>
-    
-    <p>Consider the initial implementation where the notification system is limited to email notifications.</p>
-    <pre>
+  <h5>OCP violation:</h5>
+  <b>Example: Notification System</b>
+  <p>
+    Imagine you are designing a notification system for a messaging platform.
+    Initially, the system only supports email notifications.<br />
+    Later, you might want to add support for SMS notifications and, eventually,
+    for push notifications.
+  </p>
+
+  <p>
+    Consider the initial implementation where the notification system is limited
+    to email notifications.
+  </p>
+  <pre>
         class NotificationService {
             public void sendNotification(String message, String type) {
                 if (type.equals("email")) {
@@ -45,13 +56,15 @@
                 System.out.println("Sending email: " + message);
             }
         }        
-    </pre>
-    <br>
-    <h5>Problem (OCP Violation):</h5>
-    <p>
-        For example, adding SMS notification support would require changing the class like this:
-    </p>
-    <pre>
+    </pre
+  >
+  <br />
+  <h5>Problem (OCP Violation):</h5>
+  <p>
+    For example, adding SMS notification support would require changing the
+    class like this:
+  </p>
+  <pre>
         class NotificationService {
             public void sendNotification(String message, String type) {
                 if (type.equals("email")) {
@@ -69,27 +82,41 @@
                 System.out.println("Sending SMS: " + message);
             }
         }
-        </pre>
-        <br>
-        <b>This violates OCP because:</b>
-        <ol>
-            <li>Every time a new notification type is added, we need to modify the existing code.</li>
-            <li>Adding new notification types becomes cumbersome and can introduce bugs if other parts of the method are accidentally affected.</li>  
-        </ol>
+        </pre
+  >
+  <br />
+  <b>This violates OCP because:</b>
+  <ol>
+    <li>
+      Every time a new notification type is added, we need to modify the
+      existing code.
+    </li>
+    <li>
+      Adding new notification types becomes cumbersome and can introduce bugs if
+      other parts of the method are accidentally affected.
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="ocp">
-    <h5>How to achieve OCP</h5>
-    <p>To adhere to the Open/Closed Principle, we can <b>refactor</b> the design by using <b>polymorphism</b> and <b>interfaces</b>. 
-        Instead of using conditionals (if-else or switch statements) to check the type of notification, 
-        we can define a <b>common interface</b> for all notification types and implement specific behaviors in separate classes.<br>
-        This way, the NotificationService class doesn’t need to be modified when we introduce new notification types — it simply works with the interface.
-    </p>
-    <b>Refactored Design (Complying with OCP):</b>
-    <p>We can create an interface Notification and then implement different notification types like EmailNotification, 
-        SmsNotification, and PushNotification.</p>
-    <pre>
+  <h5>How to achieve OCP</h5>
+  <p>
+    To adhere to the Open/Closed Principle, we can <b>refactor</b> the design by
+    using <b>polymorphism</b> and <b>interfaces</b>. Instead of using
+    conditionals (if-else or switch statements) to check the type of
+    notification, we can define a <b>common interface</b> for all notification
+    types and implement specific behaviors in separate classes.<br />
+    This way, the NotificationService class doesn’t need to be modified when we
+    introduce new notification types — it simply works with the interface.
+  </p>
+  <b>Refactored Design (Complying with OCP):</b>
+  <p>
+    We can create an interface Notification and then implement different
+    notification types like EmailNotification, SmsNotification, and
+    PushNotification.
+  </p>
+  <pre>
         <b>// Notification Interface</b>
         interface Notification {
             void send(String message);
@@ -134,25 +161,40 @@
         
     </pre>
 </div>
-<hr>
+<hr />
 
 <div id="how">
-    <h5>How it complies with OCP:</h5>
-    <ol>
-        <li>The NotificationService class is closed for modification: It no longer changes when new types of notifications are introduced.</li>
-        <li>The system is open for extension: You can add new notification types by implementing the Notification interface in a new class, without altering existing code.</li>
-    </ol>
+  <h5>How it complies with OCP:</h5>
+  <ol>
+    <li>
+      The NotificationService class is closed for modification: It no longer
+      changes when new types of notifications are introduced.
+    </li>
+    <li>
+      The system is open for extension: You can add new notification types by
+      implementing the Notification interface in a new class, without altering
+      existing code.
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="conclusion">
-    <h5>Conclusion</h5>
-    <p>
-        In the original design, adding new types of notifications (like SMS or Push) required modifying the existing NotificationService class, which violated the Open/Closed Principle.<br>
-        By refactoring the code and introducing an interface (Notification) with concrete implementations for each notification type (EmailNotification, SmsNotification, etc.), 
-        we now have a design that is open for extension (new notification types) but closed for modification (no changes required in existing code).</p>
-    <p>
-        This approach makes the system more flexible and maintainable as new requirements are introduced, ensuring that changes in one part of the system don't ripple through and cause issues in other parts.
-    </p>
+  <h5>Conclusion</h5>
+  <p>
+    In the original design, adding new types of notifications (like SMS or Push)
+    required modifying the existing NotificationService class, which violated
+    the Open/Closed Principle.<br />
+    By refactoring the code and introducing an interface (Notification) with
+    concrete implementations for each notification type (EmailNotification,
+    SmsNotification, etc.), we now have a design that is open for extension (new
+    notification types) but closed for modification (no changes required in
+    existing code).
+  </p>
+  <p>
+    This approach makes the system more flexible and maintainable as new
+    requirements are introduced, ensuring that changes in one part of the system
+    don't ripple through and cause issues in other parts.
+  </p>
 </div>
-<hr>
+<hr />

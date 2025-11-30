@@ -1,50 +1,96 @@
 <div>
-    <h1 style="text-align: center;">Docker Compose</h1>
-    <hr>
-    <p>Docker Compose is a tool provided by Docker to define and manage multi-container applications. It uses a <strong>YAML</strong> file to describe the services, networks, and volumes required for your application. With Docker Compose, you can specify the configuration and relationships between different containers, simplifying the setup and management of complex application environments.</p>
+  <h1 style="text-align: center">Docker Compose</h1>
+  <hr />
+  <p>
+    Docker Compose is a tool provided by Docker to define and manage
+    multi-container applications. It uses a <strong>YAML</strong> file to
+    describe the services, networks, and volumes required for your application.
+    With Docker Compose, you can specify the configuration and relationships
+    between different containers, simplifying the setup and management of
+    complex application environments.
+  </p>
 
-    <h4>Key Features:</h4>
-    <ul>
-        <li>Defines multiple services in a single YAML file.</li>
-        <li>Manages networks and volumes automatically.</li>
-        <li>Orchestrates container startup and dependencies seamlessly.</li>
-    </ul>
+  <h4>Key Features:</h4>
+  <ul>
+    <li>Defines multiple services in a single YAML file.</li>
+    <li>Manages networks and volumes automatically.</li>
+    <li>Orchestrates container startup and dependencies seamlessly.</li>
+  </ul>
 </div>
 <div>
-    <h3>Advantages of Docker Compose</h3>
-    <ul>
-        <li><strong>Single Command Execution:</strong> You can create and start all the containers defined in your Docker Compose file using a single command (<code>docker-compose up</code>).</li>
-        <li><strong>Orchestration:</strong> Docker Compose handles networking and ensures containers can communicate as defined in the configuration.</li>
-        <li><strong>Scaling:</strong> Easily scale services up or down by adjusting the configuration.</li>
-        <li><strong>Dependency Management:</strong> Ensures that dependent containers start in the correct order.</li>
-        <li><strong>Simplified Application Lifecycle:</strong> Makes it easy to stop, start, and update your application.</li>
-    </ul>
+  <h3>Advantages of Docker Compose</h3>
+  <ul>
+    <li>
+      <strong>Single Command Execution:</strong> You can create and start all
+      the containers defined in your Docker Compose file using a single command
+      (<code>docker-compose up</code>).
+    </li>
+    <li>
+      <strong>Orchestration:</strong> Docker Compose handles networking and
+      ensures containers can communicate as defined in the configuration.
+    </li>
+    <li>
+      <strong>Scaling:</strong> Easily scale services up or down by adjusting
+      the configuration.
+    </li>
+    <li>
+      <strong>Dependency Management:</strong> Ensures that dependent containers
+      start in the correct order.
+    </li>
+    <li>
+      <strong>Simplified Application Lifecycle:</strong> Makes it easy to stop,
+      start, and update your application.
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 <div>
-    <h3>Why Not Use CLI for Multiple Containers?</h3>
-    <p>Running multiple containers using the Docker CLI can become error-prone and cumbersome:</p>
-    <ul>
-        <li>Manual execution of multiple commands increases the risk of errors.</li>
-        <li>Commands written directly in the terminal are harder to maintain and lack clarity.</li>
-        <li>Version control for CLI commands is challenging compared to using a structured YAML file.</li>
-    </ul>
+  <h3>Why Not Use CLI for Multiple Containers?</h3>
+  <p>
+    Running multiple containers using the Docker CLI can become error-prone and
+    cumbersome:
+  </p>
+  <ul>
+    <li>Manual execution of multiple commands increases the risk of errors.</li>
+    <li>
+      Commands written directly in the terminal are harder to maintain and lack
+      clarity.
+    </li>
+    <li>
+      Version control for CLI commands is challenging compared to using a
+      structured YAML file.
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 <div>
-    <h3>How Docker Compose Works</h3>
-    <p>Docker Compose uses a YAML file (<code>docker-compose.yml</code>) to define the services, networks, and volumes of an application. When you run the <code>docker-compose up</code> command:</p>
-    <ul>
-        <li>Compose reads the YAML file and creates a network for the defined services.</li>
-        <li>It builds or pulls container images as specified.</li>
-        <li>Starts all services and ensures they are connected to the specified network.</li>
-        <li>Maintains the lifecycle of the containers, making it easy to scale, stop, or restart services.</li>
-    </ul>
+  <h3>How Docker Compose Works</h3>
+  <p>
+    Docker Compose uses a YAML file (<code>docker-compose.yml</code>) to define
+    the services, networks, and volumes of an application. When you run the
+    <code>docker-compose up</code> command:
+  </p>
+  <ul>
+    <li>
+      Compose reads the YAML file and creates a network for the defined
+      services.
+    </li>
+    <li>It builds or pulls container images as specified.</li>
+    <li>
+      Starts all services and ensures they are connected to the specified
+      network.
+    </li>
+    <li>
+      Maintains the lifecycle of the containers, making it easy to scale, stop,
+      or restart services.
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 <div>
-    <h3>docker-compose.yml</h3>
-    <pre>version: "3.8"  # Specifies the Docker Compose file format version
+  <h3>docker-compose.yml</h3>
+  <pre>
+version: "3.8"  # Specifies the Docker Compose file format version
 services:
   web:
     image: nginx:latest  # Specifies the image for the 'web' service
@@ -84,18 +130,30 @@ networks:
 
 volumes:
   db-data:                 # Defines a named volume for the database
-</pre>
+</pre
+  >
 
-    <h4>Explanation of Key Commands:</h4>
-    <ul>
-        <li><code>version</code>: Specifies the Docker Compose file format version.</li>
-        <li><code>services</code>: Defines the containers to be managed by Compose.</li>
-        <li><code>image</code>: Specifies the Docker image to use for a service.</li>
-        <li><code>build</code>: Builds an image using the specified Dockerfile and context.</li>
-        <li><code>ports</code>: Maps ports between the host and container.</li>
-        <li><code>volumes</code>: Defines persistent storage for containers.</li>
-        <li><code>depends_on</code>: Sets up service dependency order.</li>
-        <li><code>networks</code>: Connects services to custom networks for communication.</li>
-    </ul>
-
+  <h4>Explanation of Key Commands:</h4>
+  <ul>
+    <li>
+      <code>version</code>: Specifies the Docker Compose file format version.
+    </li>
+    <li>
+      <code>services</code>: Defines the containers to be managed by Compose.
+    </li>
+    <li>
+      <code>image</code>: Specifies the Docker image to use for a service.
+    </li>
+    <li>
+      <code>build</code>: Builds an image using the specified Dockerfile and
+      context.
+    </li>
+    <li><code>ports</code>: Maps ports between the host and container.</li>
+    <li><code>volumes</code>: Defines persistent storage for containers.</li>
+    <li><code>depends_on</code>: Sets up service dependency order.</li>
+    <li>
+      <code>networks</code>: Connects services to custom networks for
+      communication.
+    </li>
+  </ul>
 </div>

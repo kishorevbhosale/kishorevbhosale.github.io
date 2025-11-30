@@ -1,35 +1,43 @@
-<h2 style="text-align: center;">Interface Segregation Principle (ISP)</h2>
-<br>
+<h2 style="text-align: center">Interface Segregation Principle (ISP)</h2>
+<br />
 <div class="custom-container">
-    <ol>
-        <li><a href="#intro">Introduction </a></li>
-        <li><a href="#violation">ISP violation</a></li>
-        <li><a href="#isp">How to achieve ISP </a></li>
-        <li><a href="#key">Key points in the refactored design </a></li>
-    </ol>
+  <ol>
+    <li><a href="#intro">Introduction </a></li>
+    <li><a href="#violation">ISP violation</a></li>
+    <li><a href="#isp">How to achieve ISP </a></li>
+    <li><a href="#key">Key points in the refactored design </a></li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="intro">
-    <h5>Introduction</h5>
-    <p><b>"Clients should not be forced to depend on methods they do not use."</b></p>
-    <p>In simpler terms, ISP encourages the creation of small, specific interfaces rather than large, monolithic ones. 
-        A client (class or object) should only have to implement the methods that are relevant to its purpose. </p>
+  <h5>Introduction</h5>
+  <p>
+    <b>"Clients should not be forced to depend on methods they do not use."</b>
+  </p>
+  <p>
+    In simpler terms, ISP encourages the creation of small, specific interfaces
+    rather than large, monolithic ones. A client (class or object) should only
+    have to implement the methods that are relevant to its purpose.
+  </p>
 </div>
-<hr>
+<hr />
 
 <div id="violation">
-    <h5>ISP violation</h5>
-    <b>Example: Printer System</b>
-    <p>
-        Imagine you are building a system for managing various types of printers in an office.<br>
-        Initially, you might have a general Printer interface that includes methods for printing, scanning, faxing, and copying.<br>
-        However, not all printers support all of these functionalities — for instance, some printers may only print and 
-        copy but do not have fax or scan capabilities.
-    </p>
+  <h5>ISP violation</h5>
+  <b>Example: Printer System</b>
+  <p>
+    Imagine you are building a system for managing various types of printers in
+    an office.<br />
+    Initially, you might have a general Printer interface that includes methods
+    for printing, scanning, faxing, and copying.<br />
+    However, not all printers support all of these functionalities — for
+    instance, some printers may only print and copy but do not have fax or scan
+    capabilities.
+  </p>
 
-    <b>Violation of ISP code</b>
-    <pre>
+  <b>Violation of ISP code</b>
+  <pre>
         // Fat Interface: Violates ISP
     interface Printer {
         void print(String document);
@@ -85,21 +93,26 @@
     }
     </pre>
 
-    <b>Problem (ISP Violation)</b><br>
-    <p>The SimplePrinter class, which is a basic printer, does not support scanning or faxing. 
-        However, because it implements the Printer interface, it is forced to provide implementations for these methods. 
-        This leads to the unnecessary implementation of methods like scan() and fax(), which either throw exceptions or remain unimplemented.
-    </p>
+  <b>Problem (ISP Violation)</b><br />
+  <p>
+    The SimplePrinter class, which is a basic printer, does not support scanning
+    or faxing. However, because it implements the Printer interface, it is
+    forced to provide implementations for these methods. This leads to the
+    unnecessary implementation of methods like scan() and fax(), which either
+    throw exceptions or remain unimplemented.
+  </p>
 </div>
-<hr>
+<hr />
 
 <div id="isp">
-    <h5>How to achieve ISP </h5>
-    <p>
-        To comply with the Interface Segregation Principle, we should break the large, monolithic Printer interface into smaller, 
-        more specific interfaces. This way, each printer class only implements the interfaces relevant to its capabilities.
-    </p>
-    <pre>
+  <h5>How to achieve ISP</h5>
+  <p>
+    To comply with the Interface Segregation Principle, we should break the
+    large, monolithic Printer interface into smaller, more specific interfaces.
+    This way, each printer class only implements the interfaces relevant to its
+    capabilities.
+  </p>
+  <pre>
 // Segregated Interfaces adhering to ISP
 interface Printable {
     void print(String document);
@@ -152,23 +165,33 @@ class MultiFunctionPrinter implements Printable, Scannable, Faxable, Copyable {
         System.out.println("Copying: " + document);
     }
 }
-    </pre>
+    </pre
+  >
 </div>
-<hr>
+<hr />
 
 <div id="key">
-    <h5>Key Points in the refactored design:</h5>
-    <ol>
-        <li>Small, Specific Interfaces: We have now segregated the functionalities into smaller, 
-            more specific interfaces: Printable, Scannable, Faxable, and Copyable. 
-            This way, printer classes only implement the functionalities they actually support.</li>
+  <h5>Key Points in the refactored design:</h5>
+  <ol>
+    <li>
+      Small, Specific Interfaces: We have now segregated the functionalities
+      into smaller, more specific interfaces: Printable, Scannable, Faxable, and
+      Copyable. This way, printer classes only implement the functionalities
+      they actually support.
+    </li>
 
-        <li>SimplePrinter Class: The SimplePrinter now implements only the Printable and Copyable interfaces, 
-            which are the functionalities it supports. It no longer needs to provide implementations for scan() and fax(), 
-            which are irrelevant to its purpose.</li>
+    <li>
+      SimplePrinter Class: The SimplePrinter now implements only the Printable
+      and Copyable interfaces, which are the functionalities it supports. It no
+      longer needs to provide implementations for scan() and fax(), which are
+      irrelevant to its purpose.
+    </li>
 
-        <li>MultiFunctionPrinter Class: The MultiFunctionPrinter implements all four interfaces 
-            (Printable, Scannable, Faxable, Copyable), as it supports all the functionalities.</li>
-    </ol>
+    <li>
+      MultiFunctionPrinter Class: The MultiFunctionPrinter implements all four
+      interfaces (Printable, Scannable, Faxable, Copyable), as it supports all
+      the functionalities.
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />

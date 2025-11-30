@@ -1,45 +1,68 @@
 <div>
-    <h2 style="text-align: center;">Designing a Hotel Management System</h2>
+  <h2 style="text-align: center">Designing a Hotel Management System</h2>
 
+  <b>Requirements:</b>
+  <ul>
+    <li>Guests can book rooms, check-in, and check-out.</li>
+    <li>Manage different types of rooms: single, double, deluxe, and suite.</li>
+    <li>Track room availability and reservation status.</li>
+    <li>
+      Allow hotel staff to manage guest information, room assignments, and
+      billing.
+    </li>
+    <li>
+      Support multiple payment methods: cash, credit card, and online payment.
+    </li>
+    <li>Handle concurrent bookings and ensure data consistency.</li>
+    <li>Provide reporting and analytics features.</li>
+    <li>Scalable for a large number of rooms and guests.</li>
+  </ul>
+  <hr />
 
-    <b>Requirements:</b>
-    <ul>
-        <li>Guests can book rooms, check-in, and check-out.</li>
-        <li>Manage different types of rooms: single, double, deluxe, and suite.</li>
-        <li>Track room availability and reservation status.</li>
-        <li>Allow hotel staff to manage guest information, room assignments, and billing.</li>
-        <li>Support multiple payment methods: cash, credit card, and online payment.</li>
-        <li>Handle concurrent bookings and ensure data consistency.</li>
-        <li>Provide reporting and analytics features.</li>
-        <li>Scalable for a large number of rooms and guests.</li>
-    </ul>
-    <hr>
+  <h5>Sequnece Diagram</h5>
+  <img
+    src="../../../images/hotel.png"
+    alt="cache"
+    style="display: block; margin: auto; width: 100%"
+  />
+  <hr />
 
-    <h5>Sequnece Diagram</h5>
-    <img src="../../../images/hotel.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-    <hr>
+  <b>Low-Level Design:</b>
+  <p>The system includes the following key classes:</p>
+  <ul>
+    <li>
+      <strong>Room:</strong> Represents a room with type, number, and
+      availability status.
+    </li>
+    <li>
+      <strong>Guest:</strong> Represents a guest with name, contact details, and
+      reservation information.
+    </li>
+    <li>
+      <strong>Reservation:</strong> Tracks booking details, including check-in
+      and check-out dates.
+    </li>
+    <li>
+      <strong>HotelManagementSystem:</strong> Handles room availability, guest
+      information, and reservations.
+    </li>
+    <li>
+      <strong>Billing:</strong> Manages billing details and payment methods.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Low-Level Design:</b>
-    <p>The system includes the following key classes:</p>
-    <ul>
-        <li><strong>Room:</strong> Represents a room with type, number, and availability status.</li>
-        <li><strong>Guest:</strong> Represents a guest with name, contact details, and reservation information.</li>
-        <li><strong>Reservation:</strong> Tracks booking details, including check-in and check-out dates.</li>
-        <li><strong>HotelManagementSystem:</strong> Handles room availability, guest information, and reservations.</li>
-        <li><strong>Billing:</strong> Manages billing details and payment methods.</li>
-    </ul>
-    <hr>
-
-    <b>Code Implementation:</b>
-<pre>
+  <b>Code Implementation:</b>
+  <pre>
 import java.util.*;
 
 enum RoomType {
     SINGLE, DOUBLE, DELUXE, SUITE
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Room {
     private int roomNumber;
     private RoomType roomType;
@@ -67,9 +90,10 @@ class Room {
         isAvailable = available;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Guest {
     private String name;
     private String contact;
@@ -96,9 +120,10 @@ class Guest {
         this.reservation = reservation;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Reservation {
     private Room room;
     private Date checkInDate;
@@ -122,9 +147,10 @@ class Reservation {
         return checkOutDate;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class HotelManagementSystem {
     private List&lt;Room&gt; rooms = new ArrayList<>();
     private Map&lt;Integer, Guest&gt; guestMap = new HashMap<>();
@@ -177,9 +203,10 @@ class HotelManagementSystem {
         }
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 public class HotelManagementApp {
     public static void main(String[] args) {
         HotelManagementSystem system = new HotelManagementSystem();
@@ -206,10 +233,11 @@ public class HotelManagementApp {
         system.listAvailableRooms();
     }
 }
-</pre>
+</pre
+  >
 
-    <b>Sample Input and Output:</b>
-    <pre>
+  <b>Sample Input and Output:</b>
+  <pre>
 Input: 
     Add rooms: [101-SINGLE, 102-DOUBLE, 103-DELUXE, 104-SUITE]
     Book Room: Alice (RoomType: SINGLE)
@@ -232,25 +260,46 @@ Output:
     Room 102 - DOUBLE
     Room 103 - DELUXE
     Room 104 - SUITE
-    </pre>
-    <hr>
+    </pre
+  >
+  <hr />
 
-    <b>Design Considerations:</b>
-    <ul>
-        <li>Used enums for RoomType to ensure predefined types for rooms.</li>
-        <li>Implemented separation of concerns: Each class handles a specific responsibility (e.g., Room, Guest, Reservation).</li>
-        <li>Ensured scalability by using lists and maps for dynamic data storage.</li>
-        <li>Focused on data consistency by maintaining a single source of truth for reservations and guest details.</li>
-    </ul>
-    <hr>
+  <b>Design Considerations:</b>
+  <ul>
+    <li>Used enums for RoomType to ensure predefined types for rooms.</li>
+    <li>
+      Implemented separation of concerns: Each class handles a specific
+      responsibility (e.g., Room, Guest, Reservation).
+    </li>
+    <li>
+      Ensured scalability by using lists and maps for dynamic data storage.
+    </li>
+    <li>
+      Focused on data consistency by maintaining a single source of truth for
+      reservations and guest details.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Improvements & Extensions:</b>
-    <ul>
-        <li>Add a billing module to calculate charges based on stay duration and services used.</li>
-        <li>Include concurrent access management for real-time updates (e.g., synchronized methods or database transactions).</li>
-        <li>Implement support for additional features such as room cleaning status and maintenance schedules.</li>
-        <li>Introduce advanced search options for room availability based on filters like date, room type, and price range.</li>
-        <li>Integrate an external payment gateway for online payments.</li>
-    </ul>
-    <hr>
+  <b>Improvements & Extensions:</b>
+  <ul>
+    <li>
+      Add a billing module to calculate charges based on stay duration and
+      services used.
+    </li>
+    <li>
+      Include concurrent access management for real-time updates (e.g.,
+      synchronized methods or database transactions).
+    </li>
+    <li>
+      Implement support for additional features such as room cleaning status and
+      maintenance schedules.
+    </li>
+    <li>
+      Introduce advanced search options for room availability based on filters
+      like date, room type, and price range.
+    </li>
+    <li>Integrate an external payment gateway for online payments.</li>
+  </ul>
+  <hr />
 </div>

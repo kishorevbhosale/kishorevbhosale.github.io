@@ -1,9 +1,23 @@
-<h5><strong>Building a Distributed Replication System Using Spring Boot — With Heartbeats & Multi-Node Simulation</strong></h5>
-<hr>
+<h5>
+  <strong
+    >Building a Distributed Replication System Using Spring Boot — With
+    Heartbeats & Multi-Node Simulation</strong
+  >
+</h5>
+<hr />
 
-<p>Distributed systems power almost every modern platform — from social media feeds to e-commerce inventory tracking to data engineering pipelines. One of the foundational challenges in distributed systems is ensuring <strong>data replication</strong>, <strong>failover handling</strong>, and <strong>system reliability</strong> even when some nodes go down.</p>
+<p>
+  Distributed systems power almost every modern platform — from social media
+  feeds to e-commerce inventory tracking to data engineering pipelines. One of
+  the foundational challenges in distributed systems is ensuring
+  <strong>data replication</strong>, <strong>failover handling</strong>, and
+  <strong>system reliability</strong> even when some nodes go down.
+</p>
 
-<p>This project demonstrates how to build a simplified but realistic <strong>Distributed Replication POC</strong> using Spring Boot with:</p>
+<p>
+  This project demonstrates how to build a simplified but realistic
+  <strong>Distributed Replication POC</strong> using Spring Boot with:
+</p>
 
 <ul>
   <li>Leader–Follower Architecture</li>
@@ -13,14 +27,22 @@
   <li>CAP Theorem Trade-offs</li>
   <li>Multi-node Simulation via Spring Profiles</li>
 </ul>
-<img src="../../images/replication_poc.jpg"class="responsive-image">
+<img src="../../images/replication_poc.jpg" class="responsive-image" />
 
-<p><strong>Code Implementation: </strong><a href="https://github.com/kishorevbhosale/poc/tree/master/replication/replication">Github Link</a></p>
+<p>
+  <strong>Code Implementation: </strong
+  ><a
+    href="https://github.com/kishorevbhosale/poc/tree/master/replication/replication"
+    >Github Link</a
+  >
+</p>
 
-<hr>
+<hr />
 
 <h5><strong>1. Why Build This POC?</strong></h5>
-<p>This POC helps understand core distributed system principles by implementing:</p>
+<p>
+  This POC helps understand core distributed system principles by implementing:
+</p>
 
 <ul>
   <li>Leader–follower architecture</li>
@@ -31,21 +53,44 @@
   <li>Running multiple instances using Spring Boot profiles</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>2. High-Level Architecture</strong></h5>
-<p>We simulate three nodes using one codebase but run them with different profiles and ports:</p>
+<p>
+  We simulate three nodes using one codebase but run them with different
+  profiles and ports:
+</p>
 
 <table border="1" cellpadding="6" cellspacing="0">
-  <tr><th>Node</th><th>Profile</th><th>Port</th><th>Role</th></tr>
-  <tr><td>Node 1</td><td>primary</td><td>8080</td><td>Leader — accepts writes</td></tr>
-  <tr><td>Node 2</td><td>replica1</td><td>8081</td><td>Follower — replicates from primary</td></tr>
-  <tr><td>Node 3</td><td>replica2</td><td>8082</td><td>Follower — replicates from primary</td></tr>
+  <tr>
+    <th>Node</th>
+    <th>Profile</th>
+    <th>Port</th>
+    <th>Role</th>
+  </tr>
+  <tr>
+    <td>Node 1</td>
+    <td>primary</td>
+    <td>8080</td>
+    <td>Leader — accepts writes</td>
+  </tr>
+  <tr>
+    <td>Node 2</td>
+    <td>replica1</td>
+    <td>8081</td>
+    <td>Follower — replicates from primary</td>
+  </tr>
+  <tr>
+    <td>Node 3</td>
+    <td>replica2</td>
+    <td>8082</td>
+    <td>Follower — replicates from primary</td>
+  </tr>
 </table>
 
-<br>
+<br />
 
-<hr>
+<hr />
 
 <h5><strong>3. What Problems Does the POC Solve?</strong></h5>
 
@@ -69,25 +114,33 @@
   <li>System becomes consistent-first (CP in CAP theorem).</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>4. Data Flow Explained Step-by-Step</strong></h5>
 
 <ol>
-  <li><strong>Client → Primary</strong><br>
-      Client sends <code>POST /write</code> to store data.</li>
-  <br>
-  <li><strong>Primary → Replicas</strong><br>
-      Primary calls <code>/replicate</code> API on replica1 and replica2.</li>
-  <br>
-  <li><strong>Replicas perform heartbeats</strong><br>
-      Heartbeat checks primary availability every few seconds.</li>
-  <br>
-  <li><strong>Handling Primary Failure</strong><br>
-      Replicas stop taking writes and go into read-only mode.</li>
+  <li>
+    <strong>Client → Primary</strong><br />
+    Client sends <code>POST /write</code> to store data.
+  </li>
+  <br />
+  <li>
+    <strong>Primary → Replicas</strong><br />
+    Primary calls <code>/replicate</code> API on replica1 and replica2.
+  </li>
+  <br />
+  <li>
+    <strong>Replicas perform heartbeats</strong><br />
+    Heartbeat checks primary availability every few seconds.
+  </li>
+  <br />
+  <li>
+    <strong>Handling Primary Failure</strong><br />
+    Replicas stop taking writes and go into read-only mode.
+  </li>
 </ol>
 
-<hr>
+<hr />
 
 <h5><strong>5. System Components Explained</strong></h5>
 
@@ -115,7 +168,7 @@
   <li><code>GET /data/{key}</code> – fetch specific item</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>6. How the System Demonstrates CAP Theorem</strong></h5>
 
@@ -133,7 +186,7 @@
   <li>This demonstrates a CP (Consistency + Partition Tolerance) system</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>7. Running the System Locally (Multi-Node Setup)</strong></h5>
 
@@ -149,25 +202,33 @@
 <pre><code>mvn spring-boot:run -Dspring-boot.run.profiles=replica2
 </code></pre>
 
-<hr>
+<hr />
 
 <h5><strong>8. Test Scenarios</strong></h5>
 
 <ul>
-  <li><strong>Write Data to Primary</strong><br>
-      POST /write?key=name&value=John</li>
-  <br>
-  <li><strong>Verify Replication</strong><br>
-      GET /data on replicas</li>
-  <br>
-  <li><strong>Stop Primary</strong><br>
-      Observe heartbeat failures</li>
-  <br>
-  <li><strong>Restart Primary</strong><br>
-      Replicas reconnect automatically</li>
+  <li>
+    <strong>Write Data to Primary</strong><br />
+    POST /write?key=name&value=John
+  </li>
+  <br />
+  <li>
+    <strong>Verify Replication</strong><br />
+    GET /data on replicas
+  </li>
+  <br />
+  <li>
+    <strong>Stop Primary</strong><br />
+    Observe heartbeat failures
+  </li>
+  <br />
+  <li>
+    <strong>Restart Primary</strong><br />
+    Replicas reconnect automatically
+  </li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>9. What This POC Helps You Learn</strong></h5>
 
@@ -180,7 +241,7 @@
   <li>Real-world failure scenarios</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>10. Real-World Technologies Using Similar Ideas</strong></h5>
 
@@ -191,7 +252,7 @@
   <li>Kubernetes, Zookeeper, Etcd</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>11. Future Enhancements</strong></h5>
 <ul>
@@ -202,7 +263,7 @@
   <li>Gossip protocol</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5><strong>12. Conclusion</strong></h5>
 <p>This POC demonstrates how distributed systems achieve:</p>
@@ -215,6 +276,16 @@
   <li>Resilient data flow across nodes</li>
 </ul>
 
-<p>It offers a practical way to learn how real systems like <strong>MongoDB</strong>, <strong>Kafka</strong>, and <strong>Postgres</strong> work internally.</p>
+<p>
+  It offers a practical way to learn how real systems like
+  <strong>MongoDB</strong>, <strong>Kafka</strong>, and
+  <strong>Postgres</strong> work internally.
+</p>
 
-<p><strong>Full Code Available: </strong><a href="https://github.com/kishorevbhosale/poc/tree/master/replication/replication">Github Link</a></p>
+<p>
+  <strong>Full Code Available: </strong
+  ><a
+    href="https://github.com/kishorevbhosale/poc/tree/master/replication/replication"
+    >Github Link</a
+  >
+</p>

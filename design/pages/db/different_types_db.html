@@ -1,386 +1,539 @@
-<h2 style="text-align: center;">Different Types of Databases</h2>
-<br>
+<h2 style="text-align: center">Different Types of Databases</h2>
+<br />
 <div class="custom-container">
-    <ol>
-        <li><a href="#intro">Types</a></li>
-        <li><a href="#Relational">Relational Database (SQL)</a></li>
-        <li><a href="#Key-Value">Key-Value Store</a></li>
-        <li><a href="#Object-Oriented">Object-Oriented Database</a></li>
-        <li><a href="#Document">Document Database </a></li>
-        <li><a href="#Time-Series">Time-Series Database </a></li>
-        <li><a href="#Graph">Graph Database </a></li>
-        <li><a href="#In-Memory">In-Memory Database</a></li>
-        <li><a href="#Spatial">Spatial Database</a></li>
-        <li><a href="#BLOB">BLOB Database</a></li>
-        <li><a href="#Vector">Vector Database</a></li>
-        <li><a href="#Column-Oriented">Column-Oriented Database</a></li>
-        <li><a href="#Multi-Model">Multi-Model Database</a></li>
-        <li><a href="#Hierarchical">Hierarchical Database</a></li>
-    </ol>
+  <ol>
+    <li><a href="#intro">Types</a></li>
+    <li><a href="#Relational">Relational Database (SQL)</a></li>
+    <li><a href="#Key-Value">Key-Value Store</a></li>
+    <li><a href="#Object-Oriented">Object-Oriented Database</a></li>
+    <li><a href="#Document">Document Database </a></li>
+    <li><a href="#Time-Series">Time-Series Database </a></li>
+    <li><a href="#Graph">Graph Database </a></li>
+    <li><a href="#In-Memory">In-Memory Database</a></li>
+    <li><a href="#Spatial">Spatial Database</a></li>
+    <li><a href="#BLOB">BLOB Database</a></li>
+    <li><a href="#Vector">Vector Database</a></li>
+    <li><a href="#Column-Oriented">Column-Oriented Database</a></li>
+    <li><a href="#Multi-Model">Multi-Model Database</a></li>
+    <li><a href="#Hierarchical">Hierarchical Database</a></li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="intro">
-    <h5>Types</h5>
-    <ul>
-        <p>
-            Databases are crucial in software development because they provide structured storage and efficient retrieval of data, enabling applications to manage, update, and query large datasets seamlessly. 
-            They ensure data consistency, security, and scalability, making them the backbone of modern software systems. 
-            Choosing the right database type depends on the nature of the data, the application's performance requirements, and the relationships between data entities. 
-        </p>
-        <div class="image-container">
-            <div class="image-row">
-                <img src="../../images/dbt1.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt2.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt3.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt4.PNG" alt="Relational Database" class="img-fluid">
-            </div>
-        
-            <div class="image-row">
-                <img src="../../images/dbt5.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt6.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt7.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt8.PNG" alt="Relational Database" class="img-fluid">
-            </div>
-        
-            <div class="image-row">
-                <img src="../../images/dbt9.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt10.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt11.PNG" alt="Relational Database" class="img-fluid">
-                <img src="../../images/dbt12.PNG" alt="Relational Database" class="img-fluid">
-            </div>
-        </div>
-        
-        <p>In this article, we'll explore 13 common types of databases and discuss when to use them, along with examples.</p>
-    </ul>
+  <h5>Types</h5>
+  <ul>
+    <p>
+      Databases are crucial in software development because they provide
+      structured storage and efficient retrieval of data, enabling applications
+      to manage, update, and query large datasets seamlessly. They ensure data
+      consistency, security, and scalability, making them the backbone of modern
+      software systems. Choosing the right database type depends on the nature
+      of the data, the application's performance requirements, and the
+      relationships between data entities.
+    </p>
+    <div class="image-container">
+      <div class="image-row">
+        <img
+          src="../../images/dbt1.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt2.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt3.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt4.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+      </div>
+
+      <div class="image-row">
+        <img
+          src="../../images/dbt5.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt6.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt7.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt8.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+      </div>
+
+      <div class="image-row">
+        <img
+          src="../../images/dbt9.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt10.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt11.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+        <img
+          src="../../images/dbt12.PNG"
+          alt="Relational Database"
+          class="img-fluid"
+        />
+      </div>
+    </div>
+
+    <p>
+      In this article, we'll explore 13 common types of databases and discuss
+      when to use them, along with examples.
+    </p>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Relational">
-    <h5>1. Relational Database (SQL)</h5>
-    <ul>
-        <p>Relational databases use structured tables with predefined schemas and SQL for queries. They are ideal for structured data and enforcing relationships between datasets.</p>
-        <b>Use Cases:</b>
-        <ul>
-            <li>Financial transactions, e-commerce platforms, customer relationship management (CRM)</li>
-        </ul>
-        <b>Cloud Databases:</b>
-        <div class="example">
-        <ul>
-            <li>AWS: Amazon RDS (MySQL, PostgreSQL, Oracle)</li>
-            <li>Google Cloud: Cloud SQL</li>
-            <li>Azure: Azure SQL Database</li>
-        </ul>
-        </div>
-        <b>When to Use:</b>
-        <ul>
-            <li>When data structure is well-defined and relationships between entities are critical.</li>
-        </ul>
-    </ul>
-</div>
-<hr>
-
-<div id="Key-Value">
-    <h5>2. Key-Value Store</h5>
-    <ul>
-        <p>Key-value stores are highly efficient databases where data is stored as key-value pairs. They are fast and scalable for large volumes of simple data.</p>
-        <b>Use Cases:</b>
-        <ul>
-            <li>Session management, caching, real-time data processing</li>
-        </ul>
-        <b>Cloud Databases:</b>
-        <div class="example">
-        <ul>
-            <li>AWS: Amazon DynamoDB</li>
-            <li>Google Cloud: Cloud Firestore</li>
-            <li>Azure: Azure Cosmos DB (Table API)</li>
-        </ul>
-        </div>
-        <b>When to Use:</b>
-        <ul>
-            <li>For high-speed read/write operations where the data structure is simple.</li>
-        </ul>
-    </ul>
-</div>
-<hr>  
-
-<div id="Object-Oriented">
-    <h5>3. Object-Oriented Database</h5>
-    <ul>
-    <p>Object-oriented databases store data as objects, similar to object-oriented programming. They support complex data models with inheritance and relationships.</p>
+  <h5>1. Relational Database (SQL)</h5>
+  <ul>
+    <p>
+      Relational databases use structured tables with predefined schemas and SQL
+      for queries. They are ideal for structured data and enforcing
+      relationships between datasets.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Complex systems like CAD software, multimedia applications, and engineering simulations</li>
+      <li>
+        Financial transactions, e-commerce platforms, customer relationship
+        management (CRM)
+      </li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
-        <li>AWS: No direct offering, but can be implemented using RDS with object-relational mapping (ORM)</li>
-        <li>Google Cloud: Not directly supported, use Cloud SQL with ORM tools</li>
-        <li>Azure: No direct offering, use Cosmos DB with object models</li>
-    </ul>
+      <ul>
+        <li>AWS: Amazon RDS (MySQL, PostgreSQL, Oracle)</li>
+        <li>Google Cloud: Cloud SQL</li>
+        <li>Azure: Azure SQL Database</li>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>When the application needs to store complex data structures with object hierarchies.</li>
+      <li>
+        When data structure is well-defined and relationships between entities
+        are critical.
+      </li>
     </ul>
-    </ul>
+  </ul>
 </div>
-<hr>
-  
-<div id="Document">
-    <h5>4. Document Database</h5>
-    <ul>
-    <p>Document databases store semi-structured data as documents, typically in JSON or XML format. They offer flexibility in schema design and support fast querying.</p>
+<hr />
+
+<div id="Key-Value">
+  <h5>2. Key-Value Store</h5>
+  <ul>
+    <p>
+      Key-value stores are highly efficient databases where data is stored as
+      key-value pairs. They are fast and scalable for large volumes of simple
+      data.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Content management systems, real-time analytics, and product catalogs</li>
+      <li>Session management, caching, real-time data processing</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
+      <ul>
+        <li>AWS: Amazon DynamoDB</li>
+        <li>Google Cloud: Cloud Firestore</li>
+        <li>Azure: Azure Cosmos DB (Table API)</li>
+      </ul>
+    </div>
+    <b>When to Use:</b>
     <ul>
+      <li>
+        For high-speed read/write operations where the data structure is simple.
+      </li>
+    </ul>
+  </ul>
+</div>
+<hr />
+
+<div id="Object-Oriented">
+  <h5>3. Object-Oriented Database</h5>
+  <ul>
+    <p>
+      Object-oriented databases store data as objects, similar to
+      object-oriented programming. They support complex data models with
+      inheritance and relationships.
+    </p>
+    <b>Use Cases:</b>
+    <ul>
+      <li>
+        Complex systems like CAD software, multimedia applications, and
+        engineering simulations
+      </li>
+    </ul>
+    <b>Cloud Databases:</b>
+    <div class="example">
+      <ul>
+        <li>
+          AWS: No direct offering, but can be implemented using RDS with
+          object-relational mapping (ORM)
+        </li>
+        <li>
+          Google Cloud: Not directly supported, use Cloud SQL with ORM tools
+        </li>
+        <li>Azure: No direct offering, use Cosmos DB with object models</li>
+      </ul>
+    </div>
+    <b>When to Use:</b>
+    <ul>
+      <li>
+        When the application needs to store complex data structures with object
+        hierarchies.
+      </li>
+    </ul>
+  </ul>
+</div>
+<hr />
+
+<div id="Document">
+  <h5>4. Document Database</h5>
+  <ul>
+    <p>
+      Document databases store semi-structured data as documents, typically in
+      JSON or XML format. They offer flexibility in schema design and support
+      fast querying.
+    </p>
+    <b>Use Cases:</b>
+    <ul>
+      <li>
+        Content management systems, real-time analytics, and product catalogs
+      </li>
+    </ul>
+    <b>Cloud Databases:</b>
+    <div class="example">
+      <ul>
         <li>AWS: Amazon DocumentDB</li>
         <li>Google Cloud: Firestore</li>
         <li>Azure: Azure Cosmos DB (MongoDB API)</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>When dealing with semi-structured data that requires flexibility in data modeling.</li>
+      <li>
+        When dealing with semi-structured data that requires flexibility in data
+        modeling.
+      </li>
     </ul>
-    </ul>
+  </ul>
 </div>
-<hr>
-  
-  <div id="Time-Series">
-    <h5>5. Time-Series Database</h5>
-    <ul>
-    <p>Time-series databases are designed for storing and querying time-stamped data. They are optimized for handling large volumes of sequential data points over time.</p>
+<hr />
+
+<div id="Time-Series">
+  <h5>5. Time-Series Database</h5>
+  <ul>
+    <p>
+      Time-series databases are designed for storing and querying time-stamped
+      data. They are optimized for handling large volumes of sequential data
+      points over time.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>IoT data, stock trading, application performance monitoring</li>
+      <li>IoT data, stock trading, application performance monitoring</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon Timestream</li>
         <li>Google Cloud: Cloud Bigtable</li>
         <li>Azure: Azure Time Series Insights</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For applications that require storing and analyzing time-stamped data in real-time or historically.</li>
+      <li>
+        For applications that require storing and analyzing time-stamped data in
+        real-time or historically.
+      </li>
     </ul>
-    </ul>
-  </div>
-  <hr>
-  
-  <div id="Graph">
-    <h5>6. Graph Database</h5>
-    <ul>
-    <p>Graph databases store data in nodes and edges, representing entities and relationships. They are ideal for traversing complex networks of relationships.</p>
+  </ul>
+</div>
+<hr />
+
+<div id="Graph">
+  <h5>6. Graph Database</h5>
+  <ul>
+    <p>
+      Graph databases store data in nodes and edges, representing entities and
+      relationships. They are ideal for traversing complex networks of
+      relationships.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Social networks, fraud detection, recommendation engines</li>
+      <li>Social networks, fraud detection, recommendation engines</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon Neptune</li>
         <li>Google Cloud: Neo4j (Marketplace)</li>
         <li>Azure: Azure Cosmos DB (Gremlin API)</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>When relationships between entities are the primary focus of queries and analysis.</li>
+      <li>
+        When relationships between entities are the primary focus of queries and
+        analysis.
+      </li>
     </ul>
   </ul>
-  </div>
-  <hr>
+</div>
+<hr />
 
-    <div id="In-Memory">
-    <h5>7. In-Memory Database</h5>
-    <ul>
-    <p>In-memory databases store data directly in memory rather than on disk, offering ultra-fast read and write capabilities.</p>
+<div id="In-Memory">
+  <h5>7. In-Memory Database</h5>
+  <ul>
+    <p>
+      In-memory databases store data directly in memory rather than on disk,
+      offering ultra-fast read and write capabilities.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Real-time analytics, caching, session storage</li>
+      <li>Real-time analytics, caching, session storage</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon ElastiCache (Redis, Memcached)</li>
         <li>Google Cloud: Memorystore</li>
         <li>Azure: Azure Cache for Redis</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For applications requiring extremely fast data access, such as real-time dashboards or caching.</li>
+      <li>
+        For applications requiring extremely fast data access, such as real-time
+        dashboards or caching.
+      </li>
     </ul>
-    </ul>
-    </div>
-    <hr>
-  
-    <div id="Spatial">
-    <h5>8. Spatial Database</h5>
-    <ul>
-    <p>Spatial databases are designed to store and query spatial and geographic data. They support data types for location-based information.</p>
+  </ul>
+</div>
+<hr />
+
+<div id="Spatial">
+  <h5>8. Spatial Database</h5>
+  <ul>
+    <p>
+      Spatial databases are designed to store and query spatial and geographic
+      data. They support data types for location-based information.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>GIS systems, location-based services, and mapping applications</li>
+      <li>GIS systems, location-based services, and mapping applications</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon RDS (PostGIS extension for PostgreSQL)</li>
         <li>Google Cloud: Cloud Spanner with spatial extension</li>
         <li>Azure: Azure SQL Database (spatial support)</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For applications dealing with geographic and location data that require spatial queries.</li>
+      <li>
+        For applications dealing with geographic and location data that require
+        spatial queries.
+      </li>
     </ul>
-    </ul>
-    </div>
-    <hr>
-  
-    <div id="BLOB">
-    <h5>9. BLOB Database</h5>
-    <ul>
-    <p>BLOB (Binary Large Object) databases are designed to store large binary data like images, videos, and multimedia files.</p>
+  </ul>
+</div>
+<hr />
+
+<div id="BLOB">
+  <h5>9. BLOB Database</h5>
+  <ul>
+    <p>
+      BLOB (Binary Large Object) databases are designed to store large binary
+      data like images, videos, and multimedia files.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Multimedia storage, content delivery networks (CDNs), backups</li>
+      <li>Multimedia storage, content delivery networks (CDNs), backups</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon S3</li>
         <li>Google Cloud: Cloud Storage</li>
         <li>Azure: Azure Blob Storage</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For storing and serving large amounts of binary data such as images, videos, and backups.</li>
+      <li>
+        For storing and serving large amounts of binary data such as images,
+        videos, and backups.
+      </li>
     </ul>
-    </ul>
-    </div>
-    <hr>
-  
-    <div id="Vector">
-    <h5>10. Vector Database</h5>
-    <ul>
-    <p>Vector databases store high-dimensional vectors used in machine learning models, AI, and similarity search algorithms.</p>
+  </ul>
+</div>
+<hr />
+
+<div id="Vector">
+  <h5>10. Vector Database</h5>
+  <ul>
+    <p>
+      Vector databases store high-dimensional vectors used in machine learning
+      models, AI, and similarity search algorithms.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Recommendation engines, image similarity search, AI-driven applications</li>
+      <li>
+        Recommendation engines, image similarity search, AI-driven applications
+      </li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon OpenSearch with vector search plugin</li>
         <li>Google Cloud: Vertex AI with vector-based search</li>
         <li>Azure: Azure Cognitive Search (vector search support)</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For applications needing fast and scalable similarity searches over high-dimensional data.</li>
+      <li>
+        For applications needing fast and scalable similarity searches over
+        high-dimensional data.
+      </li>
     </ul>
-    </ul>
-    </div>
-    <hr>
-  
-    <div id="Column-Oriented">
-    <h5>11. Column-Oriented Database</h5>
-    <ul>
-    <p>Column-oriented databases store data by columns rather than rows, making them efficient for large-scale analytical queries.</p>
+  </ul>
+</div>
+<hr />
+
+<div id="Column-Oriented">
+  <h5>11. Column-Oriented Database</h5>
+  <ul>
+    <p>
+      Column-oriented databases store data by columns rather than rows, making
+      them efficient for large-scale analytical queries.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Data warehousing, business intelligence, analytics applications</li>
+      <li>Data warehousing, business intelligence, analytics applications</li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
+      <ul>
         <li>AWS: Amazon Redshift</li>
         <li>Google Cloud: BigQuery</li>
         <li>Azure: Azure Synapse Analytics</li>
-    </ul>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For analytical workloads involving large datasets and complex queries where reading specific columns is more efficient than rows.</li>
+      <li>
+        For analytical workloads involving large datasets and complex queries
+        where reading specific columns is more efficient than rows.
+      </li>
     </ul>
-    </ul>
-    </div>
-    <hr>
-  
-    <div id="Multi-Model">
-    <h5>12. Multi-Model Database</h5>
-    <ul>
-    <p>Multi-model databases support multiple data models (e.g., relational, document, graph) under a single engine, allowing flexibility in data management.</p>
+  </ul>
+</div>
+<hr />
+
+<div id="Multi-Model">
+  <h5>12. Multi-Model Database</h5>
+  <ul>
+    <p>
+      Multi-model databases support multiple data models (e.g., relational,
+      document, graph) under a single engine, allowing flexibility in data
+      management.
+    </p>
     <b>Use Cases:</b>
     <ul>
-        <li>Applications that require flexibility in managing different data types like graphs, documents, and key-value pairs.</li>
+      <li>
+        Applications that require flexibility in managing different data types
+        like graphs, documents, and key-value pairs.
+      </li>
     </ul>
     <b>Cloud Databases:</b>
     <div class="example">
-    <ul>
-        <li>AWS: Amazon Aurora (supports both relational and document models)</li>
+      <ul>
+        <li>
+          AWS: Amazon Aurora (supports both relational and document models)
+        </li>
         <li>Google Cloud: Google Cloud Spanner (multi-model support)</li>
-        <li>Azure: Azure Cosmos DB (supports multiple APIs: SQL, MongoDB, Gremlin, etc.)</li>
-    </ul>
+        <li>
+          Azure: Azure Cosmos DB (supports multiple APIs: SQL, MongoDB, Gremlin,
+          etc.)
+        </li>
+      </ul>
     </div>
     <b>When to Use:</b>
     <ul>
-        <li>For scenarios where the application requires a mix of data models, providing flexibility while using a single platform.</li>
+      <li>
+        For scenarios where the application requires a mix of data models,
+        providing flexibility while using a single platform.
+      </li>
     </ul>
+  </ul>
+</div>
+<hr />
+
+<div id="Hierarchical">
+  <h5>13. Hierarchical Database</h5>
+  <ul>
+    <p>
+      Hierarchical databases store data in a tree-like structure, where each
+      record has a single parent, and the relationships are one-to-many.
+    </p>
+    <b>Use Cases:</b>
+    <ul>
+      <li>
+        Banking systems, telecommunications directories, and applications with
+        predefined hierarchical relationships
+      </li>
     </ul>
-    </div>
-    <hr>
-  
-    <div id="Hierarchical">
-    <h5>13. Hierarchical Database</h5>
+
+    <b>Cloud Databases:</b>
+    <ul>
+      <div class="example">
         <ul>
-        <p>Hierarchical databases store data in a tree-like structure, where each record has a single parent, and the relationships are one-to-many.</p>
-        <b>Use Cases:</b>
-        <ul>
-            <li>Banking systems, telecommunications directories, and applications with predefined hierarchical relationships</li>
+          <li>AWS: Amazon DynamoDB (can model hierarchical data)</li>
+          <li>Google Cloud: Firestore (supports hierarchical data)</li>
+          <li>
+            Azure: Azure Cosmos DB (supports hierarchical document models)
+          </li>
         </ul>
-            
-        <b>Cloud Databases:</b>
-            <ul>
-            <div class="example">
-            <ul>
-                <li>AWS: Amazon DynamoDB (can model hierarchical data)</li>
-                <li>Google Cloud: Firestore (supports hierarchical data)</li>
-                <li>Azure: Azure Cosmos DB (supports hierarchical document models)</li>
-            </ul>
-            </div>
-            <b>When to Use:</b>
-            <ul>
-                <li>For applications with clear parent-child relationships, where data follows a strict hierarchy.</li>
-            </ul>
-            </ul>
-        </ul>
-    </div>
-    <hr>
-            
-  
-  
-    
-            
-            
-        
-    
-           
-            
-        
-    
-            
-            
+      </div>
+      <b>When to Use:</b>
+      <ul>
+        <li>
+          For applications with clear parent-child relationships, where data
+          follows a strict hierarchy.
+        </li>
+      </ul>
+    </ul>
+  </ul>
+</div>
+<hr />

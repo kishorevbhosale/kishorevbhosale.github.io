@@ -1,297 +1,467 @@
-<h2 style="text-align: center;">Distributed Cache</h2>
+<h2 style="text-align: center">Distributed Cache</h2>
 <div>
-    <h5>What is Cache?</h5>
-    <ul>
-        <li>A cache temporarily stores frequently accessed data in memory.</li>
-        <li>It serves data faster than querying the database.</li>
-    </ul>
-    <hr>
-    <h5>How it works?</h5>
-    <ul>
-        <li><b>Cache Hit:</b> Data is found in the cache and served quickly.</li>
-        <li><b>Cache Miss: </b>Data is retrieved from the database and added to the cache for future requests.</li>
-    </ul>
-    <hr>
-    <h5>Why Cache is Useful?</h5>
+  <h5>What is Cache?</h5>
+  <ul>
+    <li>A cache temporarily stores frequently accessed data in memory.</li>
+    <li>It serves data faster than querying the database.</li>
+  </ul>
+  <hr />
+  <h5>How it works?</h5>
+  <ul>
+    <li><b>Cache Hit:</b> Data is found in the cache and served quickly.</li>
     <li>
-        A cache is required to reduce latency and improve system performance by storing frequently accessed data in fast memory, minimizing the load on the database.
+      <b>Cache Miss: </b>Data is retrieved from the database and added to the
+      cache for future requests.
     </li>
-    <hr>
-    <h5>What is a Distributed Cache?</h5>
+  </ul>
+  <hr />
+  <h5>Why Cache is Useful?</h5>
+  <li>
+    A cache is required to reduce latency and improve system performance by
+    storing frequently accessed data in fast memory, minimizing the load on the
+    database.
+  </li>
+  <hr />
+  <h5>What is a Distributed Cache?</h5>
+  <p>
+    A distributed cache is a system where multiple servers coordinate to store
+    frequently accessed data, ensuring scalability and high availability.
+  </p>
+  <b>Benefits of Distributed Cache:</b>
+  <ul>
+    <li>
+      <b>Faster Access & Reduced Latency: </b>Speeds up responses by storing
+      frequently accessed data closer to the application.
+    </li>
+    <li>
+      <b>Improved Availability: </b>Ensures data is served even if the main
+      database is temporarily down.
+    </li>
+    <li>
+      <b>Reduced Load: </b>Offloads expensive database queries, decreasing
+      pressure on the database and network traffic.
+    </li>
+    <li>
+      <b>Stores Session Data: </b>Temporarily stores user session data for
+      smoother interactions.
+    </li>
+    <li>
+      <b>Cuts Network Costs: </b>Uses local resources to minimize data transfer
+      over the network.
+    </li>
+  </ul>
+  <hr />
+  <h5>Caching at Different Layers of a System</h5>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>System Layer</th>
+        <th>Technology in Use</th>
+        <th>Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Web</td>
+        <td>
+          HTTP cache headers, web accelerators, key-value store, CDNs, etc.
+        </td>
+        <td>Accelerate retrieval of static web content, and manage sessions</td>
+      </tr>
+      <tr>
+        <td>Application</td>
+        <td>Local cache and key-value data store</td>
+        <td>Accelerate application-level computations and data retrieval</td>
+      </tr>
+      <tr>
+        <td>Database</td>
+        <td>Database cache, buffers, and key-value data store</td>
+        <td>Reduce data retrieval latency and I/O load from database</td>
+      </tr>
+    </tbody>
+  </table>
+  <hr />
+  <h5>Types of Cache Writing Policies</h5>
+  <ol>
+    <li><b>Write-Through:</b></li>
+    <ul>
+      <li>
+        Data is written to the cache and the backing store simultaneously.
+      </li>
+      <li>Ensures consistency between the cache and the backing store.</li>
+      <li>Keeps the cache updated with the latest data.</li>
+      <li>
+        Higher latency for write operations as both cache and backing store are
+        updated.
+      </li>
+      <li>Systems where consistency is critical (e.g., financial systems).</li>
+    </ul>
+    <li><b>Write-Around:</b></li>
+    <ul>
+      <li>
+        Data is written directly to the backing store, bypassing the cache.
+      </li>
+      <li>
+        Cache is updated only on subsequent reads (if a cache miss occurs).
+      </li>
+      <li>
+        Reduces cache write operations, useful for data rarely read after
+        writing.
+      </li>
+      <li>Can lead to higher read latency due to cache misses.</li>
+      <li>Systems where write-heavy workloads dominate (e.g., log storage).</li>
+    </ul>
+    <li><b>Write-Back:</b></li>
+    <ul>
+      <li>
+        Data is written to the cache first and asynchronously updated to the
+        backing store later.
+      </li>
+      <li>Faster write operations as data is written to cache only.</li>
+      <li>Reduces the load on the backing store.</li>
+      <li>
+        Risk of data loss if the cache fails before the data is written back to
+        the store.
+      </li>
+      <li>
+        Systems prioritizing write performance (e.g., real-time analytics).
+      </li>
+    </ul>
+  </ol>
+  <hr />
+  <h5>Eviction Policies in Cache</h5>
+  <p>
+    Eviction policies are strategies used by caching systems to decide which
+    data to remove when the cache reaches its storage limit.
+  </p>
+  <ul>
+    <li>
+      Least recently used (LRU): Removes the data that has not been accessed for
+      the longest time.
+    </li>
+    <li>Most recently used (MRU): Removes the most recently accessed data.</li>
+    <li>
+      Least frequently used (LFU): Removes the data accessed the least number of
+      times.
+    </li>
+    <li>
+      Random Replacement: Randomly selects data to remove when the cache is
+      full.
+    </li>
+    <li>
+      Time-to-Live (TTL): Automatically removes data after a specified time.
+    </li>
+  </ul>
+  <hr />
+  <h5>Cache invalidation</h5>
+  <p>
+    Some cache data may become outdated over time, making it invalid and
+    requiring removal. To identify such stale entries, metadata like a
+    time-to-live (TTL) value is stored with each cache item, ensuring outdated
+    data is automatically deleted.
+  </p>
+  We can use two different approaches to deal with outdated items using TTL:
+  <ul>
+    <li>
+      <b>Active expiration: </b>This method actively checks the TTL of cache
+      entries through a daemon process or thread.
+    </li>
+    <li>
+      <b>Passive expiration: </b>This method checks the TTL of a cache entry at
+      the time of access.
+    </li>
+  </ul>
+  <hr />
+  <h5>Storage Mechanism in Distributed Cache</h5>
+  <ul>
+    <li><b>Data Placement Across Cache Servers:</b></li>
+    <ul>
+      <li>
+        Decide which data goes to which cache server using hashing algorithms.
+      </li>
+      <li>
+        Use <b>consistent hashing</b> to handle crashes or scaling efficiently.
+      </li>
+    </ul>
+
+    <li><b>Locating Data Inside a Cache Server:</b></li>
+    <ul>
+      <li>Use typical hash functions to find specific cache entries.</li>
+      <li>
+        Hashing helps locate data but doesn’t manage eviction or storage
+        strategies.
+      </li>
+    </ul>
+
+    <li><b>Data Structure for Cache Storage:</b></li>
+    <ul>
+      <li>Use a doubly linked list for simplicity and efficiency.</li>
+      <li>Supports constant-time operations for adding/removing data.</li>
+    </ul>
+
+    <li><b>Bloom Filters for Quick Checks:</b></li>
+    <ul>
+      <li>Use bloom filters to check if data is absent in the cache.</li>
+      <li>
+        Useful in large caching systems for quick lookups (with some
+        probabilistic errors).
+      </li>
+    </ul>
+
+    <li><b>Sharding in cache clusters</b></li>
     <p>
-        A distributed cache is a system where multiple servers coordinate to store frequently accessed data, ensuring scalability and high availability.
+      To avoid SPOF and high load on a single cache instance, we introduce
+      sharding. Sharding involves splitting up cache data among multiple cache
+      servers. It can be performed in the following two ways.
     </p>
-    <b>Benefits of Distributed Cache:</b>
     <ul>
-        <li><b>Faster Access & Reduced Latency: </b>Speeds up responses by storing frequently accessed data closer to the application.</li>
-        <li><b>Improved Availability: </b>Ensures data is served even if the main database is temporarily down.</li>
-        <li><b>Reduced Load: </b>Offloads expensive database queries, decreasing pressure on the database and network traffic.</li>
-        <li><b>Stores Session Data: </b>Temporarily stores user session data for smoother interactions.</li>
-        <li><b>Cuts Network Costs: </b>Uses local resources to minimize data transfer over the network.</li>
+      <li>
+        <b>Dedicated Cache Servers: </b>Separate cache from application servers
+        for flexible scaling.
+      </li>
+      <li>
+        <b>Co-located Cache: </b>Combine cache and service on the same host to
+        reduce hardware costs.
+      </li>
     </ul>
-    <hr>
-    <h5>Caching at Different Layers of a System</h5>
-    <table border="1">
-        <thead>
-          <tr>
-            <th>System Layer</th>
-            <th>Technology in Use</th>
-            <th>Usage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Web</td>
-            <td>HTTP cache headers, web accelerators, key-value store, CDNs, etc.</td>
-            <td>Accelerate retrieval of static web content, and manage sessions</td>
-          </tr>
-          <tr>
-            <td>Application</td>
-            <td>Local cache and key-value data store</td>
-            <td>Accelerate application-level computations and data retrieval</td>
-          </tr>
-          <tr>
-            <td>Database</td>
-            <td>Database cache, buffers, and key-value data store</td>
-            <td>Reduce data retrieval latency and I/O load from database</td>
-          </tr>
-        </tbody>
-      </table>
-      <hr>
-      <h5>Types of Cache Writing Policies</h5>
-      <ol>
-        <li><b>Write-Through:</b></li>
-        <ul>
-            <li>Data is written to the cache and the backing store simultaneously.</li>
-            <li>Ensures consistency between the cache and the backing store.</li>
-            <li>Keeps the cache updated with the latest data.</li>
-            <li>Higher latency for write operations as both cache and backing store are updated.</li>
-            <li>Systems where consistency is critical (e.g., financial systems).</li>
-        </ul>
-        <li><b>Write-Around:</b></li>
-        <ul>
-            <li>Data is written directly to the backing store, bypassing the cache.</li>
-            <li>Cache is updated only on subsequent reads (if a cache miss occurs).</li>
-            <li>Reduces cache write operations, useful for data rarely read after writing.</li>
-            <li>Can lead to higher read latency due to cache misses.</li>
-            <li>Systems where write-heavy workloads dominate (e.g., log storage).</li>
+  </ul>
+  <hr />
+  <h5>High-level Design of a Distributed Cache</h5>
+  <b>Functional Requirement:</b>
+  <ul>
+    <li>
+      <b>Insert Data: </b>Users should be able to add an entry to the cache.
+    </li>
+    <li>
+      <b>Retrieve Data: </b>Users should be able to fetch data using a specific
+      key.
+    </li>
+  </ul>
+  <b>NonFunctional Requirement:</b>
+  <ul>
+    <li>
+      <b>High Performance: </b> Cache should allow quick data retrieval and fast
+      insertions.
+    </li>
+    <li>
+      <b>Scalability: </b> The cache system must handle more requests as it
+      grows without slowdowns.
+    </li>
+    <li>
+      <b>High Availability: </b> The cache should remain accessible even during
+      failures or high traffic.
+    </li>
+    <li>
+      <b>Consistency: </b> Data in the cache must be accurate and up-to-date
+      across all servers.
+    </li>
+    <li>
+      <b>Affordability: </b> The caching system should be built with
+      cost-effective hardware.
+    </li>
+  </ul>
+  <b>API Design:</b>
+  <ul>
+    <li><b>Insertion:</b></li>
+    <pre>insert(key, value)</pre>
+    <li><b>Retrieval:</b></li>
+    <pre>retrieve(key)</pre>
+  </ul>
+  <img
+    src="../../images/distributed_cache_design.PNG"
+    alt="lb"
+    style="display: block; margin: auto; width: 80%"
+  />
+  <b>Cache Client:</b>
+  <ul>
+    <li>
+      This is a library in the application servers that holds information about
+      cache servers.
+    </li>
+    <li>
+      It uses hashing and search algorithms to select the appropriate cache
+      server for data insertion or retrieval.
+    </li>
+    <li>
+      All cache clients must have the same view of cache servers and follow the
+      same method for moving data to and from the servers.
+    </li>
+  </ul>
+  <b>Cache Server:</b>
+  <ul>
+    <li>These servers store and manage the cache data.</li>
+    <li>
+      All cache clients can access any cache server, and each server is
+      connected to a database for data retrieval or storage.
+    </li>
+    <li>
+      Cache clients use protocols like TCP or UDP to communicate with the cache
+      servers.
+    </li>
+    <li>
+      If a cache server goes down, clients treat it as a missed cache and handle
+      the request accordingly.
+    </li>
+  </ul>
+  <b>Some challenges:</b>
+  <ol>
+    <li>
+      How the cache client to realize the addition or failure of a cache server.
+    </li>
+    <div>
+      <b>Solution: </b>To solve this, we can use a configuration service that
+      constantly monitors the health of cache servers. The cache clients will be
+      notified automatically when a new cache server is added or if there’s a
+      failure. This way, no manual monitoring is needed, and the cache clients
+      can always get an updated list of available cache servers from the
+      configuration service.
+    </div>
+    <li>
+      How can we address the single point of failure (SPOF) issue caused by
+      having a single cache server for each data set, and how can we improve
+      performance when certain data (hotkeys) are frequently accessed?
+    </li>
+    <div>
+      <b>Solution: </b>A simple solution is to add replica nodes, starting with
+      one primary and two backup nodes in each cache shard. To prevent
+      inconsistencies, we perform synchronous writes over replicas when they are
+      in close proximity. By dividing cache data into shards, we can avoid
+      issues of unavailability and ensure efficient use of hardware resources.
+    </div>
+    <li>How Internal Working of cache server</li>
+    <div>
+      <b>Solution:</b>
+      Each cache client should use three mechanisms to store and evict entries
+      from the cache servers:
+      <img
+        src="../../images/dc_internal.png"
+        alt="lb"
+        style="display: block; margin: auto; width: 80%"
+      />
 
-        </ul>
-        <li><b>Write-Back:</b></li>
-        <ul>
-            <li>Data is written to the cache first and asynchronously updated to the backing store later.</li>
-            <li>Faster write operations as data is written to cache only.</li>
-            <li>Reduces the load on the backing store.</li>
-            <li>Risk of data loss if the cache fails before the data is written back to the store.</li>
-            <li>Systems prioritizing write performance (e.g., real-time analytics).</li>
-        </ul>
-      </ol>
-      <hr>
-      <h5>Eviction Policies in Cache</h5>
-      <p>Eviction policies are strategies used by caching systems to decide which data to remove when the cache reaches its storage limit.</p>
       <ul>
-        <li>Least recently used (LRU): Removes the data that has not been accessed for the longest time.</li>
-        <li>Most recently used (MRU): Removes the most recently accessed data.</li>
-        <li>Least frequently used (LFU): Removes the data accessed the least number of times.</li>
-        <li>Random Replacement: Randomly selects data to remove when the cache is full.</li>
-        <li>Time-to-Live (TTL): Automatically removes data after a specified time.</li>
+        <li>
+          Hash map: The cache server uses a hash map to store or locate
+          different entries inside the RAM of cache servers. The illustration
+          below shows that the map contains pointers to each cache value.
+        </li>
+        <li>
+          Doubly linked list: If we have to evict data from the cache, we
+          require a linked list so that we can order entries according to their
+          frequency of access. The illustration below depicts how entries are
+          connected using a doubly linked list.
+        </li>
+        <li>
+          Eviction policy: The eviction policy depends on the application
+          requirements. Here, we assume the least recently used (LRU) eviction
+          policy.
+        </li>
       </ul>
-      <hr>
-      <h5>Cache invalidation</h5>
-      <p>
-        Some cache data may become outdated over time, making it invalid and requiring removal. 
-        To identify such stale entries, metadata like a time-to-live (TTL) value is stored with each cache item, ensuring outdated data is automatically deleted.
-      </p>
-      We can use two different approaches to deal with outdated items using TTL:
-      <ul>
-        <li><b>Active expiration: </b>This method actively checks the TTL of cache entries through a daemon process or thread.</li>
-        <li><b>Passive expiration: </b>This method checks the TTL of a cache entry at the time of access.</li>
-      </ul>
-      <hr>
-      <h5>Storage Mechanism in Distributed Cache</h5>
-      <ul>
-        <li><b>Data Placement Across Cache Servers:</b></li>
-        <ul>
-            <li>Decide which data goes to which cache server using hashing algorithms.</li>
-            <li>Use <b>consistent hashing</b> to handle crashes or scaling efficiently.</li>
-        </ul>
-
-        <li><b>Locating Data Inside a Cache Server:</b></li>
-        <ul>
-            <li>Use typical hash functions to find specific cache entries.</li>
-            <li>Hashing helps locate data but doesn’t manage eviction or storage strategies.</li>
-        </ul>
-
-        <li><b>Data Structure for Cache Storage:</b></li>
-        <ul>
-            <li>Use a doubly linked list for simplicity and efficiency.</li>
-            <li>Supports constant-time operations for adding/removing data.</li>
-        </ul>
-
-        <li><b>Bloom Filters for Quick Checks:</b></li>
-        <ul>
-            <li>Use bloom filters to check if data is absent in the cache.</li>
-            <li>Useful in large caching systems for quick lookups (with some probabilistic errors).</li>
-        </ul>
-
-        <li><b>Sharding in cache clusters</b></li>
-        <p>
-            To avoid SPOF and high load on a single cache instance, we introduce sharding. 
-            Sharding involves splitting up cache data among multiple cache servers. 
-            It can be performed in the following two ways.
-        </p>
-        <ul>
-            <li><b>Dedicated Cache Servers: </b>Separate cache from application servers for flexible scaling.</li>
-            <li><b>Co-located Cache: </b>Combine cache and service on the same host to reduce hardware costs.</li>
-        </ul>
-      </ul>
-      <hr>
-      <h5>High-level Design of a Distributed Cache</h5>
-      <b>Functional Requirement:</b>
-      <ul>
-        <li><b>Insert Data: </b>Users should be able to add an entry to the cache.</li>
-        <li><b>Retrieve Data: </b>Users should be able to fetch data using a specific key.</li>
-      </ul>
-      <b>NonFunctional Requirement:</b>
-      <ul>
-        <li><b>High Performance:  </b> Cache should allow quick data retrieval and fast insertions.</li>
-        <li><b>Scalability:  </b> The cache system must handle more requests as it grows without slowdowns.</li>
-        <li><b>High Availability:  </b> The cache should remain accessible even during failures or high traffic.</li>
-        <li><b>Consistency:  </b> Data in the cache must be accurate and up-to-date across all servers.</li>
-        <li><b>Affordability:  </b> The caching system should be built with cost-effective hardware.</li>
-      </ul>
-      <b>API Design:</b>
-      <ul>
-        <li><b>Insertion:</b></li>
-        <pre>insert(key, value)</pre>
-        <li><b>Retrieval:</b></li>
-        <pre>retrieve(key)</pre>
-      </ul>
-      <img src="../../images/distributed_cache_design.PNG" alt="lb" style="display: block; margin: auto; width: 80%;">
-      <b>Cache Client:</b>
-      <ul>
-        <li>This is a library in the application servers that holds information about cache servers.</li>
-        <li>It uses hashing and search algorithms to select the appropriate cache server for data insertion or retrieval.</li>
-        <li>All cache clients must have the same view of cache servers and follow the same method for moving data to and from the servers.</li>
-     </ul>
-     <b>Cache Server:</b>
-     <ul>
-        <li>These servers store and manage the cache data.</li>
-        <li>All cache clients can access any cache server, and each server is connected to a database for data retrieval or storage.</li>
-        <li>Cache clients use protocols like TCP or UDP to communicate with the cache servers.</li>
-        <li>If a cache server goes down, clients treat it as a missed cache and handle the request accordingly.</li>
-     </ul>
-     <b>Some challenges:</b>
-     <ol>
-        <li>How the cache client to realize the addition or failure of a cache server.</li>
-        <div>
-            <b>Solution: </b>To solve this, we can use a configuration service that constantly monitors the health of cache servers. 
-            The cache clients will be notified automatically when a new cache server is added or if there’s a failure. 
-            This way, no manual monitoring is needed, and the cache clients can always get an updated list of available cache servers from the configuration service.
-        </div>
-        <li>How can we address the single point of failure (SPOF) issue caused by having a single cache server for each data set, 
-            and how can we improve performance when certain data (hotkeys) are frequently accessed?</li>
-        <div>
-            <b>Solution: </b>A simple solution is to add replica nodes, starting with one primary and two backup nodes in each cache shard. 
-            To prevent inconsistencies, we perform synchronous writes over replicas when they are in close proximity. 
-            By dividing cache data into shards, we can avoid issues of unavailability and ensure efficient use of hardware resources.
-        </div>
-        <li>How Internal Working of cache server</li>
-        <div>
-            <b>Solution:</b>
-        Each cache client should use three mechanisms to store and evict entries from the cache servers:
-        <img src="../../images/dc_internal.png" alt="lb" style="display: block; margin: auto; width: 80%;">
-
-        
-            <ul>
-                <li>Hash map: The cache server uses a hash map to store or locate different entries inside the RAM of cache servers. 
-                    The illustration below shows that the map contains pointers to each cache value.</li>
-                <li>Doubly linked list: If we have to evict data from the cache, we require a linked list so that we can order entries according to their frequency of access. 
-                    The illustration below depicts how entries are connected using a doubly linked list.</li>
-                <li>Eviction policy: The eviction policy depends on the application requirements. Here, we assume the least recently used (LRU) eviction policy.</li>
-            </ul>
-        </div>
-    </ol>
-    <b>Detail Desigh</b>
-    <img src="../../images/dc_detail.png" alt="lb" style="display: block; margin: auto; width: 50%;">
-    <ul>
-        <li>Client requests are routed through load balancers to cache clients on service hosts.</li>
-        <li>Cache clients use consistent hashing to identify and forward requests to the appropriate cache server.</li>
-        <li>Cache servers use primary and replica setups with the same mechanisms for storing and evicting entries.</li>
-        <li>A configuration service ensures clients have an updated view of cache servers.</li>
-        <li>Monitoring services track and report caching service metrics.</li>
-    </ul>
-    <hr>
-    <h5>Memcached vs Redis</h5>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Memcached</th>
-                <th>Redis</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Data Structure</td>
-                <td>Key-value store (string-based)</td>
-                <td>Supports multiple data structures (strings, lists, sets, sorted sets, hashes, etc.)</td>
-            </tr>
-            <tr>
-                <td>Persistence</td>
-                <td>No persistence, in-memory only</td>
-                <td>Supports persistence (RDB snapshots, AOF logs)</td>
-            </tr>
-            <tr>
-                <td>Eviction Policies</td>
-                <td>Least Recently Used (LRU), Least Frequently Used (LFU), etc.</td>
-                <td>LRU, LFU, volatile TTL, etc.</td>
-            </tr>
-            <tr>
-                <td>Memory Management</td>
-                <td>Memory allocated dynamically</td>
-                <td>Supports configurable memory limits with eviction options</td>
-            </tr>
-            <tr>
-                <td>Replication</td>
-                <td>No native replication support</td>
-                <td>Supports master-slave replication</td>
-            </tr>
-            <tr>
-                <td>Clustering</td>
-                <td>No native clustering support</td>
-                <td>Supports clustering for horizontal scalability</td>
-            </tr>
-            <tr>
-                <td>Data Expiration</td>
-                <td>Supports time-to-live (TTL) for cache expiry</td>
-                <td>Supports TTL, but with more advanced expiry options</td>
-            </tr>
-            <tr>
-                <td>Use Cases</td>
-                <td>Simple caching, session storage</td>
-                <td>Advanced caching, pub/sub, real-time analytics, queues, and more</td>
-            </tr>
-            <tr>
-                <td>Performance</td>
-                <td>Fast for simple key-value operations</td>
-                <td>Fast, but with more overhead for advanced data structures</td>
-            </tr>
-            <tr>
-                <td>Community and Ecosystem</td>
-                <td>Large community, widely adopted</td>
-                <td>Large community, highly active, many advanced tools and libraries</td>
-            </tr>
-        </tbody>
-    </table>
-    <hr>
-    <h5>Popular Distributed Cache Solutions in Cloud Environments</h5>
-    <ol>
-        <li>Amazon ElastiCache (AWS)</li>
-        <li>Azure Cache for Redis (Azure)</li>
-        <li>Google Cloud Memorystore (GCP)</li>
-        <li>Redis</li>
-        <li>Memcached</li>
-    </ol>
-    <hr>
+    </div>
+  </ol>
+  <b>Detail Desigh</b>
+  <img
+    src="../../images/dc_detail.png"
+    alt="lb"
+    style="display: block; margin: auto; width: 50%"
+  />
+  <ul>
+    <li>
+      Client requests are routed through load balancers to cache clients on
+      service hosts.
+    </li>
+    <li>
+      Cache clients use consistent hashing to identify and forward requests to
+      the appropriate cache server.
+    </li>
+    <li>
+      Cache servers use primary and replica setups with the same mechanisms for
+      storing and evicting entries.
+    </li>
+    <li>
+      A configuration service ensures clients have an updated view of cache
+      servers.
+    </li>
+    <li>Monitoring services track and report caching service metrics.</li>
+  </ul>
+  <hr />
+  <h5>Memcached vs Redis</h5>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Memcached</th>
+        <th>Redis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Data Structure</td>
+        <td>Key-value store (string-based)</td>
+        <td>
+          Supports multiple data structures (strings, lists, sets, sorted sets,
+          hashes, etc.)
+        </td>
+      </tr>
+      <tr>
+        <td>Persistence</td>
+        <td>No persistence, in-memory only</td>
+        <td>Supports persistence (RDB snapshots, AOF logs)</td>
+      </tr>
+      <tr>
+        <td>Eviction Policies</td>
+        <td>Least Recently Used (LRU), Least Frequently Used (LFU), etc.</td>
+        <td>LRU, LFU, volatile TTL, etc.</td>
+      </tr>
+      <tr>
+        <td>Memory Management</td>
+        <td>Memory allocated dynamically</td>
+        <td>Supports configurable memory limits with eviction options</td>
+      </tr>
+      <tr>
+        <td>Replication</td>
+        <td>No native replication support</td>
+        <td>Supports master-slave replication</td>
+      </tr>
+      <tr>
+        <td>Clustering</td>
+        <td>No native clustering support</td>
+        <td>Supports clustering for horizontal scalability</td>
+      </tr>
+      <tr>
+        <td>Data Expiration</td>
+        <td>Supports time-to-live (TTL) for cache expiry</td>
+        <td>Supports TTL, but with more advanced expiry options</td>
+      </tr>
+      <tr>
+        <td>Use Cases</td>
+        <td>Simple caching, session storage</td>
+        <td>
+          Advanced caching, pub/sub, real-time analytics, queues, and more
+        </td>
+      </tr>
+      <tr>
+        <td>Performance</td>
+        <td>Fast for simple key-value operations</td>
+        <td>Fast, but with more overhead for advanced data structures</td>
+      </tr>
+      <tr>
+        <td>Community and Ecosystem</td>
+        <td>Large community, widely adopted</td>
+        <td>
+          Large community, highly active, many advanced tools and libraries
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <hr />
+  <h5>Popular Distributed Cache Solutions in Cloud Environments</h5>
+  <ol>
+    <li>Amazon ElastiCache (AWS)</li>
+    <li>Azure Cache for Redis (Azure)</li>
+    <li>Google Cloud Memorystore (GCP)</li>
+    <li>Redis</li>
+    <li>Memcached</li>
+  </ol>
+  <hr />
 </div>

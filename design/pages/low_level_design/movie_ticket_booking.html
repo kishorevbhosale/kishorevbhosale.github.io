@@ -1,48 +1,73 @@
 <div>
-    <h2 style="text-align: center;">Designing Movie Ticket Booking System</h2>   
-<div class="custom-container">
+  <h2 style="text-align: center">Designing Movie Ticket Booking System</h2>
+  <div class="custom-container">
     <ol>
-        <li><a href="#Requirements">Requirements </a></li>
-        <li><a href="#Sequnece">Sequnece Diagram </a></li>
-        <li><a href="#Components">Classes and Responsibilities </a></li>
-        <li><a href="#Code">Code Implementation </a></li>
-        <li><a href="#Explanation">Design Explanation </a></li>
-        <li><a href="#Considerations">Design Considerations </a></li>
+      <li><a href="#Requirements">Requirements </a></li>
+      <li><a href="#Sequnece">Sequnece Diagram </a></li>
+      <li><a href="#Components">Classes and Responsibilities </a></li>
+      <li><a href="#Code">Code Implementation </a></li>
+      <li><a href="#Explanation">Design Explanation </a></li>
+      <li><a href="#Considerations">Design Considerations </a></li>
     </ol>
-</div>
-<hr>
+  </div>
+  <hr />
 
-    <h5 id="Requirements">Requirements:</h5>
-    <ul>
-        <li>Users can view movies playing in various theaters.</li>
-        <li>Users can select movies, theaters, and show timings for booking tickets.</li>
-        <li>The system should show seat arrangements and allow seat selection.</li>
-        <li>Users can make payments and confirm bookings.</li>
-        <li>Real-time seat availability updates to handle concurrent bookings.</li>
-        <li>Support for seat types (e.g., normal, premium) with different pricing.</li>
-        <li>Theater admins can manage movies, shows, and seating arrangements.</li>
-        <li>Scalable for high traffic and concurrent bookings.</li>
-    </ul>
-    <hr>
+  <h5 id="Requirements">Requirements:</h5>
+  <ul>
+    <li>Users can view movies playing in various theaters.</li>
+    <li>
+      Users can select movies, theaters, and show timings for booking tickets.
+    </li>
+    <li>The system should show seat arrangements and allow seat selection.</li>
+    <li>Users can make payments and confirm bookings.</li>
+    <li>Real-time seat availability updates to handle concurrent bookings.</li>
+    <li>
+      Support for seat types (e.g., normal, premium) with different pricing.
+    </li>
+    <li>Theater admins can manage movies, shows, and seating arrangements.</li>
+    <li>Scalable for high traffic and concurrent bookings.</li>
+  </ul>
+  <hr />
 
+  <h5 id="Sequnece">Sequnece Diagram</h5>
+  <img
+    src="../../../images/movie.png"
+    alt="cache"
+    style="display: block; margin: auto; width: 100%"
+  />
+  <hr />
 
-    <h5 id="Sequnece">Sequnece Diagram</h5>
-    <img src="../../../images/movie.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-    <hr>
+  <h5 id="Components">Classes and Responsibilities:</h5>
+  <ul>
+    <li>
+      <strong>Movie:</strong> Represents a movie with attributes like title,
+      genre, and duration.
+    </li>
+    <li>
+      <strong>Theater:</strong> Represents a theater with its shows, seating,
+      and movies.
+    </li>
+    <li>
+      <strong>Show:</strong> Represents a specific show with timing, movie, and
+      seating arrangement.
+    </li>
+    <li>
+      <strong>Seat:</strong> Represents an individual seat with attributes like
+      seat type and price.
+    </li>
+    <li>
+      <strong>Booking:</strong> Represents a user’s booking with selected seats
+      and payment details.
+    </li>
+    <li>
+      <strong>Admin:</strong> Allows admins to manage movies, shows, and
+      theaters.
+    </li>
+  </ul>
+  <hr />
 
-    <h5 id="Components">Classes and Responsibilities:</h5>
-    <ul>
-        <li><strong>Movie:</strong> Represents a movie with attributes like title, genre, and duration.</li>
-        <li><strong>Theater:</strong> Represents a theater with its shows, seating, and movies.</li>
-        <li><strong>Show:</strong> Represents a specific show with timing, movie, and seating arrangement.</li>
-        <li><strong>Seat:</strong> Represents an individual seat with attributes like seat type and price.</li>
-        <li><strong>Booking:</strong> Represents a user’s booking with selected seats and payment details.</li>
-        <li><strong>Admin:</strong> Allows admins to manage movies, shows, and theaters.</li>
-    </ul>
-    <hr>
-
-    <h5 id="Code">Code Implementation:</h5>
-    <pre>
+  <h5 id="Code">Code Implementation:</h5>
+  <pre>
 import java.util.*;
 
 class Movie {
@@ -68,9 +93,10 @@ class Movie {
         return duration;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Seat {
     private int seatNumber;
     private String seatType; // e.g., normal, premium
@@ -108,9 +134,10 @@ class Seat {
         }
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Show {
     private Movie movie;
     private String timing; // e.g., "6:00 PM"
@@ -143,9 +170,10 @@ class Show {
         return seats;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Theater {
     private String name;
     private List&lt;Show&gt; shows;
@@ -167,9 +195,10 @@ class Theater {
         shows.add(show);
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 class Booking {
     private Show show;
     private List&lt;Seat&gt; bookedSeats;
@@ -198,9 +227,10 @@ class Booking {
         System.out.println("Total Amount: $" + totalAmount);
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 public class MovieTicketBookingSystem {
     public static void main(String[] args) {
         // Sample Data
@@ -226,17 +256,18 @@ public class MovieTicketBookingSystem {
         booking.printBookingDetails();
     }
 }
-</pre>
-<hr>
-    <h5>Sample Input:</h5>
-    <ul>
-        <li>Movie: Avengers: Endgame</li>
-        <li>Show Timing: 6:00 PM</li>
-        <li>Seats Selected: 1, 2, 11</li>
-    </ul>
+</pre
+  >
+  <hr />
+  <h5>Sample Input:</h5>
+  <ul>
+    <li>Movie: Avengers: Endgame</li>
+    <li>Show Timing: 6:00 PM</li>
+    <li>Seats Selected: 1, 2, 11</li>
+  </ul>
 
-    <h5>Sample Output:</h5>
-    <pre>
+  <h5>Sample Output:</h5>
+  <pre>
 Movie: Avengers: Endgame
 Timing: 6:00 PM
 Seats Booked: 
@@ -244,22 +275,34 @@ Seats Booked:
  - Seat 2 (Premium)
  - Seat 11 (Normal)
 Total Amount: $750.0
-    </pre>
-<hr>
-    <h5 id="Explanation">Explanation:</h5>
-    <ul>
-        <li><strong>Movies:</strong> Movies are created with a title, genre, and duration.</li>
-        <li><strong>Theater:</strong> The theater contains multiple shows.</li>
-        <li><strong>Shows:</strong> Each show has a movie, timing, and seats. Premium and normal seats are initialized with different prices.</li>
-        <li><strong>Booking:</strong> When a booking is made, selected seats are marked as booked, and the total amount is calculated.</li>
-    </ul>
-    <hr>
+    </pre
+  >
+  <hr />
+  <h5 id="Explanation">Explanation:</h5>
+  <ul>
+    <li>
+      <strong>Movies:</strong> Movies are created with a title, genre, and
+      duration.
+    </li>
+    <li><strong>Theater:</strong> The theater contains multiple shows.</li>
+    <li>
+      <strong>Shows:</strong> Each show has a movie, timing, and seats. Premium
+      and normal seats are initialized with different prices.
+    </li>
+    <li>
+      <strong>Booking:</strong> When a booking is made, selected seats are
+      marked as booked, and the total amount is calculated.
+    </li>
+  </ul>
+  <hr />
 
-    <h5 id="Considerations">Scalability Considerations:</h5>
-    <ul>
-        <li>Use a database to store movies, theaters, and shows.</li>
-        <li>Implement distributed locking mechanisms for concurrent seat booking.</li>
-        <li>Integrate payment gateways for secure transactions.</li>
-    </ul>
-    <hr>
+  <h5 id="Considerations">Scalability Considerations:</h5>
+  <ul>
+    <li>Use a database to store movies, theaters, and shows.</li>
+    <li>
+      Implement distributed locking mechanisms for concurrent seat booking.
+    </li>
+    <li>Integrate payment gateways for secure transactions.</li>
+  </ul>
+  <hr />
 </div>

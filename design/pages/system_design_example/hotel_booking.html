@@ -1,317 +1,515 @@
 <div>
-    <h2 style="text-align: center;">Airbnb/Hotel booking</h2>
-    <hr>
+  <h2 style="text-align: center">Airbnb/Hotel booking</h2>
+  <hr />
 
-    <h3>Functional Requirements</h3>
-    
-    <div class="functional-requirements">
-        <div class="requirements-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Service</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Hotel Manager Requirements -->
-                    <tr>
-                        <td rowspan="3">Hotel Manager</td>
-                        <td>Onboarding</td>
-                        <td>Hotel managers should be able to register and onboard their properties onto the platform.</td>
-                    </tr>
-                    <tr>
-                        <td>Property Management</td>
-                        <td>
-                            Hotel managers should have the ability to update property details, such as:
-                            <ul>
-                                <li>Adding or removing rooms.</li>
-                                <li>Changing pricing.</li>
-                                <li>Uploading or updating images and descriptions.</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Booking Insights</td>
-                        <td>
-                            Hotel managers should be able to:
-                            <ul>
-                                <li>View all bookings for their property.</li>
-                                <li>Access insights into revenue, booking trends, and related analytics.</li>
-                            </ul>
-                        </td>
-                    </tr>
-    
-                    <!-- User Requirements -->
-                    <tr>
-                        <td rowspan="3">User</td>
-                        <td>Search Properties</td>
-                        <td>
-                            Users should be able to search for properties in a specific location with customizable filters, including:
-                            <ul>
-                                <li>Price range.</li>
-                                <li>Property type (e.g., beachfront, five-star).</li>
-                                <li>Other property attributes.</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Book Properties</td>
-                        <td>Users should be able to book properties directly from the platform.</td>
-                    </tr>
-                    <tr>
-                        <td>Manage Bookings</td>
-                        <td>Users should have the ability to view and manage their past and upcoming bookings.</td>
-                    </tr>
-    
-                    <!-- Analytics Scope -->
-                    <tr>
-                        <td>Analytics</td>
-                        <td>Analytics Enablement</td>
-                        <td>
-                            The system should be designed to support future analytics, such as:
-                            <ul>
-                                <li>User behavior.</li>
-                                <li>Booking trends.</li>
-                                <li>Performance metrics for properties.</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <hr>
+  <h3>Functional Requirements</h3>
 
-    <h3>Non-Functional Requirements</h3>
-    <div style="display: flex; flex-direction: column; width: 100%; border: 1px solid #ccc; border-radius: 5px; font-family: Arial, sans-serif;">
-        <!-- Header Row -->
-        <div style="display: flex; background-color: #f4f4f4; padding: 10px; font-weight: bold; border-bottom: 1px solid #ccc;">
-            <div style="flex: 1; padding: 5px;">Metric</div>
-            <div style="flex: 2; padding: 5px;">Target</div>
-        </div>
-        <!-- Row 1 -->
-        <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc;">
-            <div style="flex: 1; padding: 5px;">Latency</div>
-            <div style="flex: 2; padding: 5px;">The platform must respond quickly to user actions such as search, booking, or updating availability.</div>
-        </div>
-        <!-- Row 2 -->
-        <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc;">
-            <div style="flex: 1; padding: 5px;">Availability</div>
-            <div style="flex: 2; padding: 5px;">The system should be operational 99.99% of the time, ensuring no major downtime.</div>
-        </div>
-        <!-- Row 3 -->
-        <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc;">
-            <div style="flex: 1; padding: 5px;">Consistency</div>
-            <div style="flex: 2; padding: 5px;">Users must always see the most accurate and up-to-date availability of hotel rooms.</div>
-        </div>
-        <!-- Row 4 -->
-        <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc;">
-            <div style="flex: 1; padding: 5px;">Scalability</div>
-            <div style="flex: 2; padding: 5px;">Handle 120,000 concurrent requests</div>
-        </div>
-        <!-- Row 5 -->
-        <div style="display: flex; padding: 10px;">
-            <div style="flex: 1; padding: 5px;">Peak Traffic Handling</div>
-            <div style="flex: 2; padding: 5px;">10x surge capacity during holiday seasons</div>
-        </div>
+  <div class="functional-requirements">
+    <div class="requirements-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Service</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Hotel Manager Requirements -->
+          <tr>
+            <td rowspan="3">Hotel Manager</td>
+            <td>Onboarding</td>
+            <td>
+              Hotel managers should be able to register and onboard their
+              properties onto the platform.
+            </td>
+          </tr>
+          <tr>
+            <td>Property Management</td>
+            <td>
+              Hotel managers should have the ability to update property details,
+              such as:
+              <ul>
+                <li>Adding or removing rooms.</li>
+                <li>Changing pricing.</li>
+                <li>Uploading or updating images and descriptions.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Booking Insights</td>
+            <td>
+              Hotel managers should be able to:
+              <ul>
+                <li>View all bookings for their property.</li>
+                <li>
+                  Access insights into revenue, booking trends, and related
+                  analytics.
+                </li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- User Requirements -->
+          <tr>
+            <td rowspan="3">User</td>
+            <td>Search Properties</td>
+            <td>
+              Users should be able to search for properties in a specific
+              location with customizable filters, including:
+              <ul>
+                <li>Price range.</li>
+                <li>Property type (e.g., beachfront, five-star).</li>
+                <li>Other property attributes.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Book Properties</td>
+            <td>
+              Users should be able to book properties directly from the
+              platform.
+            </td>
+          </tr>
+          <tr>
+            <td>Manage Bookings</td>
+            <td>
+              Users should have the ability to view and manage their past and
+              upcoming bookings.
+            </td>
+          </tr>
+
+          <!-- Analytics Scope -->
+          <tr>
+            <td>Analytics</td>
+            <td>Analytics Enablement</td>
+            <td>
+              The system should be designed to support future analytics, such
+              as:
+              <ul>
+                <li>User behavior.</li>
+                <li>Booking trends.</li>
+                <li>Performance metrics for properties.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <hr>
-    <h5>High Level System Design:</h5>
+  </div>
+  <hr />
+
+  <h3>Non-Functional Requirements</h3>
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+    "
+  >
+    <!-- Header Row -->
+    <div
+      style="
+        display: flex;
+        background-color: #f4f4f4;
+        padding: 10px;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+      "
+    >
+      <div style="flex: 1; padding: 5px">Metric</div>
+      <div style="flex: 2; padding: 5px">Target</div>
+    </div>
+    <!-- Row 1 -->
+    <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc">
+      <div style="flex: 1; padding: 5px">Latency</div>
+      <div style="flex: 2; padding: 5px">
+        The platform must respond quickly to user actions such as search,
+        booking, or updating availability.
+      </div>
+    </div>
+    <!-- Row 2 -->
+    <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc">
+      <div style="flex: 1; padding: 5px">Availability</div>
+      <div style="flex: 2; padding: 5px">
+        The system should be operational 99.99% of the time, ensuring no major
+        downtime.
+      </div>
+    </div>
+    <!-- Row 3 -->
+    <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc">
+      <div style="flex: 1; padding: 5px">Consistency</div>
+      <div style="flex: 2; padding: 5px">
+        Users must always see the most accurate and up-to-date availability of
+        hotel rooms.
+      </div>
+    </div>
+    <!-- Row 4 -->
+    <div style="display: flex; padding: 10px; border-bottom: 1px solid #ccc">
+      <div style="flex: 1; padding: 5px">Scalability</div>
+      <div style="flex: 2; padding: 5px">
+        Handle 120,000 concurrent requests
+      </div>
+    </div>
+    <!-- Row 5 -->
+    <div style="display: flex; padding: 10px">
+      <div style="flex: 1; padding: 5px">Peak Traffic Handling</div>
+      <div style="flex: 2; padding: 5px">
+        10x surge capacity during holiday seasons
+      </div>
+    </div>
+  </div>
+  <hr />
+  <h5>High Level System Design:</h5>
+  <ul>
+    <img
+      src="../../../images/airbnb.png"
+      alt="cache"
+      style="display: block; margin: auto; width: 100%"
+    />
+    <br />
+    <li><b>UI Hotel Manager:</b></li>
     <ul>
-        <img src="../../../images/airbnb.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-        <br>
-        <li><b>UI Hotel Manager:</b></li>
-        <ul>
-            <li>Hotel managers interact with the UI to onboard onto the platform.</li>
-            <li>UI is used for managing hotel details, adding new rooms, or making modifications.</li>
-        </ul>
-
-        <li><b>Load Balancer:</b></li>
-        <ul>
-            <li>Routes requests from the UI to the appropriate backend services (e.g., hotel service, search service, booking service).</li>
-        </ul>
-
-        <li><b>Hotel Service: </b></li>
-        
-        <ul>
-            <li>Handles the hotel management lifecycle, including onboarding and updates.</li>
-            <li>Can scale by adding multiple nodes to handle spikes in traffic.</li>
-            <li>Uses a clustered MySQL database (with one master and multiple slaves) for storing relational hotel data.</li>
-        </ul>
-        <li><b>CDN:</b></li>
-        <ul>
-            <li>Images are stored in a CDN (Content Delivery Network).</li>
-            <li>URLs to images stored in MySQL database.</li>
-        </ul>
-        <li><b>Kafka Cluster:</b></li>
-        <ul>
-            <li>Handles event streaming for hotel data modifications </li>
-            <li>All changes (e.g., new hotel data, room modifications) are published to Kafka.</li>
-            <li>Multiple consumers pull data from Kafka to update their respective databases (e.g., search data stores).</li>
-        </ul>
-        <li><b>Search Consumer: </b></li>
-        <ul>
-            <li>Updates search data based on hotel changes.</li>
-            <li>Consumes data from Kafka.</li>
-            <li>Updates Elasticsearch, which powers the search functionality on the platform.</li>
-        </ul>
-        <li><b>Elasticsearch (Search Database):</b></li>
-        <ul>
-            <li>Handles the search functionality, supporting fuzzy search for misspelled hotel names and similar queries.</li>
-            <li>Stores hotel data pulled from Kafka via the search consumer.</li>
-        </ul>
-
-        <li><b>Search Service:</b></li>
-        <ul>
-            <li>Users submit search queries (e.g., location, date range, hotel tags).</li>
-            <li>Communicates with the Elasticsearch cluster to fetch relevant search results.</li>
-            <li>Can scale by adding more nodes to the Kafka cluster, search consumers, or Elasticsearch nodes.</li>
-        </ul>
-
-
-        <li><b>Booking Service:</b></li>
-        <ul>
-            <li>Booking requests from users are routed to the Booking Service via the load balancer.</li>
-            <li>Data is stored in a separate MySQL database (distinct from the hotel service database).</li>
-            <li><b>Why Separate MySQL Databases?: </b>To manage different scaling needs for <b>hotel data</b> and <b>booking data</b>.</li>
-            <b>Booking Process:</b>
-            <ul>
-                <li>Booking information is saved.</li>
-                <li>A request is sent to the Payment Service.</li>
-                <li>Upon successful payment, the booking is confirmed.</li>
-            </ul>
-        </ul>
-
-        <li><b>Kafka (Booking Events):</b></li>
-        <ul>
-            <li>Booking events (successful, cancelled) are sent to Kafka.</li>
-            <li>Update: Search Consumer reads these events and updates search data (e.g., removing fully booked rooms from search results).</li>
-        </ul>
-
-        <li><b>Archival Service:</b></li>
-        <ul>
-            <li>Archived Data: Once bookings are completed or cancelled, data is moved to a Cassandra cluster..</li>
-            <li>Booking data remains in MySQL.</li>
-            <li><b>Why Cassandra?: </b>Cassandra handles large amounts of writes and reads efficiently, ideal for storing archived booking data that doesn’t require complex queries.
-            </li>
-        </ul>
-
-        <li><b>Notification Service:</b></li>
-        <ul>
-            <li>Notifies users and hotels about booking status changes (e.g., confirmation, cancellation, payment success).</li>
-            <li>Consumes events from Kafka.</li>
-            <li>Sends notifications (e.g., email, SMS) to the relevant users or hotel staff.</li>
-        </ul>
-
-        <li><b> Booking Management Service: </b></li>
-        <ul>
-            <li>Provides read-only views for users and hotel staff about bookings.</li>
-            <li><b>Active Bookings: </b>Data from MySQL (active bookings).</li>
-            <li><b>Archived Bookings: </b>Data from Cassandra (completed or cancelled bookings).</li>
-            <li><b>Cache: </b>Uses Redis as a cache to reduce load on MySQL for frequently queried data (e.g., bookings by a specific user).</li>
-        </ul>
-
-        <li><b>Analytics and Reporting</b></li>
-        <ul>
-            <li>Provides business insights (e.g., revenue, best-performing hotels).</li>
-            <li>Data from Kafka (hotel details, bookings, transactions) is consumed by a Spark Streaming service.</li>
-            <li>The data is pushed into a Hadoop cluster.</li>
-            <li>Data Processing: Hive queries or other analytics tools process the data and generate reports.
-            </li>
-        </ul>
-
-        <li><b>Scaling and Redundancy:</b></li>
-        <b>Horizontal Scalability</b>
-        <ul>
-            <li>All key services (e.g., hotel service, search service, booking service) are designed to scale horizontally.</li>
-            <li>This is achieved by adding more nodes to the Kafka cluster, search nodes, and MySQL slaves as needed.</li>
-            <li>Load balancers handle traffic distribution to ensure no single point of failure.</li>
-        </ul>
-
+      <li>Hotel managers interact with the UI to onboard onto the platform.</li>
+      <li>
+        UI is used for managing hotel details, adding new rooms, or making
+        modifications.
+      </li>
     </ul>
 
-    <hr>
-    <h4>Scenarios:</h4>
-    <div>
-        <h5>Booking Process: Handling Payment and Room Availability</h5>
-      
-        <b>1. Inserting Booking and Decrementing Quantity</b>
-        <p>When a booking is made:</p>
-        <ul>
-          <li>A record is created in the <strong>booking table</strong> with details like room, user, and booking status.</li>
-          <li>The room quantity in the <strong>available_rooms table</strong> is decreased (e.g., from 7 to 6).</li>
-          <li>This action is performed within a MySQL transaction, ensuring ACID properties (Atomicity, Consistency, Isolation, Durability).</li>
-          <li>If two users attempt to book the last room simultaneously, only one transaction will succeed due to the constraint that <strong>available_quantity cannot be negative</strong>.</li>
-          For e.g.
-          <li>User 1 books a room (Room ID: 5) with a quantity of 1, for a specific date range (e.g., "dt" to "dt+1").</li>
-          <li>The system checks if enough rooms are available. If 7 rooms are available, the booking is successful, and the room quantity is decremented.</li>
-          <li>The booking status is set to <strong>RESERVED</strong> and the room is temporarily blocked in the available_rooms table.</li>
-        </ul>
-      
-        <b>2. Time-Limited Reservation</b>
-        <p>The reserved room cannot stay indefinitely:</p>
-        <ul>
-          <li>If payment is successful within a set time (e.g., 5 minutes), the booking will proceed.</li>
-          <li>If the payment fails or the time expires, the room is "unreserved" and made available for other customers.</li>
-          <li>We use Redis TTL (Time To Live) to manage this expiration process, leveraging Redis' built-in callback feature to notify when the reservation has expired.</li>
-        </ul>
-      
-        <b>3. Handling Different Payment Scenarios</b>
-        <p>There are four possible outcomes after a booking:</p>
-        <ul>
-          <li><strong>Payment Success</strong>: 
-            <ul>
-              <li>The booking status is updated to "BOOKED".</li>
-              <li>An <strong>invoice_id</strong> is generated from the Payment Service.</li>
-              <li>A Kafka event is sent to notify the system that the booking is complete.</li>
-            </ul>
-          </li>
-      
-          <li><strong>Payment Failure</strong>: 
-            <ul>
-              <li>The booking status is updated to "CANCELLED".</li>
-              <li>No invoice is created.</li>
-              <li>The room is made available again by incrementing the <strong>available_quantity</strong> in the <em>available_rooms</em> table.</li>
-            </ul>
-          </li>
-      
-          <li><strong>Redis TTL Expiry</strong>: 
-            <ul>
-              <li>If the reservation expires without successful payment, the status is set to "CANCELLED".</li>
-              <li>The room is unreserved, and the <strong>available_quantity</strong> is increased.</li>
-              <li>Again, no invoice is generated.</li>
-            </ul>
-          </li>
-      
-          <li><strong>Key Expiry and Payment Success Simultaneously</strong>: 
-            <ul>
-              <li>If the reservation expired and the payment was successful after that, two approaches are possible:</li>
-              <li>1. Revert the payment and refund the user.</li>
-              <li>2. If rooms are available, book the room for the user despite the reservation expiring.</li>
-              <li>The second option depends on system requirements and can be discussed with the interviewer.</li>
-            </ul>
-          </li>
-        </ul>
-      
-        <b>4. Redis Key Expiry Caveats</b>
-        <ul>
-          <li>Redis key expiry is not exact; there could be a slight delay in the callback notification.</li>
-          <li>For example, if a key expires at 10:00, the callback might come at 10:01 or later.</li>
-          <li>This delay doesn't cause significant issues, but if precision is required, further measures may be necessary.</li>
-        </ul>
-    </div>
-    <hr>
+    <li><b>Load Balancer:</b></li>
+    <ul>
+      <li>
+        Routes requests from the UI to the appropriate backend services (e.g.,
+        hotel service, search service, booking service).
+      </li>
+    </ul>
 
-    <div id="database-schema">
-        <h3>Database Schema</h3>
-        
-        <div id="hotels-table">
-          <h5>1. Hotels Table</h5>
-          <p>Stores information about hotels.</p>
-          <p><b>Table Name:</b> hotels</p>
-          <pre>
+    <li><b>Hotel Service: </b></li>
+
+    <ul>
+      <li>
+        Handles the hotel management lifecycle, including onboarding and
+        updates.
+      </li>
+      <li>Can scale by adding multiple nodes to handle spikes in traffic.</li>
+      <li>
+        Uses a clustered MySQL database (with one master and multiple slaves)
+        for storing relational hotel data.
+      </li>
+    </ul>
+    <li><b>CDN:</b></li>
+    <ul>
+      <li>Images are stored in a CDN (Content Delivery Network).</li>
+      <li>URLs to images stored in MySQL database.</li>
+    </ul>
+    <li><b>Kafka Cluster:</b></li>
+    <ul>
+      <li>Handles event streaming for hotel data modifications</li>
+      <li>
+        All changes (e.g., new hotel data, room modifications) are published to
+        Kafka.
+      </li>
+      <li>
+        Multiple consumers pull data from Kafka to update their respective
+        databases (e.g., search data stores).
+      </li>
+    </ul>
+    <li><b>Search Consumer: </b></li>
+    <ul>
+      <li>Updates search data based on hotel changes.</li>
+      <li>Consumes data from Kafka.</li>
+      <li>
+        Updates Elasticsearch, which powers the search functionality on the
+        platform.
+      </li>
+    </ul>
+    <li><b>Elasticsearch (Search Database):</b></li>
+    <ul>
+      <li>
+        Handles the search functionality, supporting fuzzy search for misspelled
+        hotel names and similar queries.
+      </li>
+      <li>Stores hotel data pulled from Kafka via the search consumer.</li>
+    </ul>
+
+    <li><b>Search Service:</b></li>
+    <ul>
+      <li>
+        Users submit search queries (e.g., location, date range, hotel tags).
+      </li>
+      <li>
+        Communicates with the Elasticsearch cluster to fetch relevant search
+        results.
+      </li>
+      <li>
+        Can scale by adding more nodes to the Kafka cluster, search consumers,
+        or Elasticsearch nodes.
+      </li>
+    </ul>
+
+    <li><b>Booking Service:</b></li>
+    <ul>
+      <li>
+        Booking requests from users are routed to the Booking Service via the
+        load balancer.
+      </li>
+      <li>
+        Data is stored in a separate MySQL database (distinct from the hotel
+        service database).
+      </li>
+      <li>
+        <b>Why Separate MySQL Databases?: </b>To manage different scaling needs
+        for <b>hotel data</b> and <b>booking data</b>.
+      </li>
+      <b>Booking Process:</b>
+      <ul>
+        <li>Booking information is saved.</li>
+        <li>A request is sent to the Payment Service.</li>
+        <li>Upon successful payment, the booking is confirmed.</li>
+      </ul>
+    </ul>
+
+    <li><b>Kafka (Booking Events):</b></li>
+    <ul>
+      <li>Booking events (successful, cancelled) are sent to Kafka.</li>
+      <li>
+        Update: Search Consumer reads these events and updates search data
+        (e.g., removing fully booked rooms from search results).
+      </li>
+    </ul>
+
+    <li><b>Archival Service:</b></li>
+    <ul>
+      <li>
+        Archived Data: Once bookings are completed or cancelled, data is moved
+        to a Cassandra cluster..
+      </li>
+      <li>Booking data remains in MySQL.</li>
+      <li>
+        <b>Why Cassandra?: </b>Cassandra handles large amounts of writes and
+        reads efficiently, ideal for storing archived booking data that doesn’t
+        require complex queries.
+      </li>
+    </ul>
+
+    <li><b>Notification Service:</b></li>
+    <ul>
+      <li>
+        Notifies users and hotels about booking status changes (e.g.,
+        confirmation, cancellation, payment success).
+      </li>
+      <li>Consumes events from Kafka.</li>
+      <li>
+        Sends notifications (e.g., email, SMS) to the relevant users or hotel
+        staff.
+      </li>
+    </ul>
+
+    <li><b> Booking Management Service: </b></li>
+    <ul>
+      <li>
+        Provides read-only views for users and hotel staff about bookings.
+      </li>
+      <li><b>Active Bookings: </b>Data from MySQL (active bookings).</li>
+      <li>
+        <b>Archived Bookings: </b>Data from Cassandra (completed or cancelled
+        bookings).
+      </li>
+      <li>
+        <b>Cache: </b>Uses Redis as a cache to reduce load on MySQL for
+        frequently queried data (e.g., bookings by a specific user).
+      </li>
+    </ul>
+
+    <li><b>Analytics and Reporting</b></li>
+    <ul>
+      <li>
+        Provides business insights (e.g., revenue, best-performing hotels).
+      </li>
+      <li>
+        Data from Kafka (hotel details, bookings, transactions) is consumed by a
+        Spark Streaming service.
+      </li>
+      <li>The data is pushed into a Hadoop cluster.</li>
+      <li>
+        Data Processing: Hive queries or other analytics tools process the data
+        and generate reports.
+      </li>
+    </ul>
+
+    <li><b>Scaling and Redundancy:</b></li>
+    <b>Horizontal Scalability</b>
+    <ul>
+      <li>
+        All key services (e.g., hotel service, search service, booking service)
+        are designed to scale horizontally.
+      </li>
+      <li>
+        This is achieved by adding more nodes to the Kafka cluster, search
+        nodes, and MySQL slaves as needed.
+      </li>
+      <li>
+        Load balancers handle traffic distribution to ensure no single point of
+        failure.
+      </li>
+    </ul>
+  </ul>
+
+  <hr />
+  <h4>Scenarios:</h4>
+  <div>
+    <h5>Booking Process: Handling Payment and Room Availability</h5>
+
+    <b>1. Inserting Booking and Decrementing Quantity</b>
+    <p>When a booking is made:</p>
+    <ul>
+      <li>
+        A record is created in the <strong>booking table</strong> with details
+        like room, user, and booking status.
+      </li>
+      <li>
+        The room quantity in the <strong>available_rooms table</strong> is
+        decreased (e.g., from 7 to 6).
+      </li>
+      <li>
+        This action is performed within a MySQL transaction, ensuring ACID
+        properties (Atomicity, Consistency, Isolation, Durability).
+      </li>
+      <li>
+        If two users attempt to book the last room simultaneously, only one
+        transaction will succeed due to the constraint that
+        <strong>available_quantity cannot be negative</strong>.
+      </li>
+      For e.g.
+      <li>
+        User 1 books a room (Room ID: 5) with a quantity of 1, for a specific
+        date range (e.g., "dt" to "dt+1").
+      </li>
+      <li>
+        The system checks if enough rooms are available. If 7 rooms are
+        available, the booking is successful, and the room quantity is
+        decremented.
+      </li>
+      <li>
+        The booking status is set to <strong>RESERVED</strong> and the room is
+        temporarily blocked in the available_rooms table.
+      </li>
+    </ul>
+
+    <b>2. Time-Limited Reservation</b>
+    <p>The reserved room cannot stay indefinitely:</p>
+    <ul>
+      <li>
+        If payment is successful within a set time (e.g., 5 minutes), the
+        booking will proceed.
+      </li>
+      <li>
+        If the payment fails or the time expires, the room is "unreserved" and
+        made available for other customers.
+      </li>
+      <li>
+        We use Redis TTL (Time To Live) to manage this expiration process,
+        leveraging Redis' built-in callback feature to notify when the
+        reservation has expired.
+      </li>
+    </ul>
+
+    <b>3. Handling Different Payment Scenarios</b>
+    <p>There are four possible outcomes after a booking:</p>
+    <ul>
+      <li>
+        <strong>Payment Success</strong>:
+        <ul>
+          <li>The booking status is updated to "BOOKED".</li>
+          <li>
+            An <strong>invoice_id</strong> is generated from the Payment
+            Service.
+          </li>
+          <li>
+            A Kafka event is sent to notify the system that the booking is
+            complete.
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Payment Failure</strong>:
+        <ul>
+          <li>The booking status is updated to "CANCELLED".</li>
+          <li>No invoice is created.</li>
+          <li>
+            The room is made available again by incrementing the
+            <strong>available_quantity</strong> in the
+            <em>available_rooms</em> table.
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Redis TTL Expiry</strong>:
+        <ul>
+          <li>
+            If the reservation expires without successful payment, the status is
+            set to "CANCELLED".
+          </li>
+          <li>
+            The room is unreserved, and the
+            <strong>available_quantity</strong> is increased.
+          </li>
+          <li>Again, no invoice is generated.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Key Expiry and Payment Success Simultaneously</strong>:
+        <ul>
+          <li>
+            If the reservation expired and the payment was successful after
+            that, two approaches are possible:
+          </li>
+          <li>1. Revert the payment and refund the user.</li>
+          <li>
+            2. If rooms are available, book the room for the user despite the
+            reservation expiring.
+          </li>
+          <li>
+            The second option depends on system requirements and can be
+            discussed with the interviewer.
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <b>4. Redis Key Expiry Caveats</b>
+    <ul>
+      <li>
+        Redis key expiry is not exact; there could be a slight delay in the
+        callback notification.
+      </li>
+      <li>
+        For example, if a key expires at 10:00, the callback might come at 10:01
+        or later.
+      </li>
+      <li>
+        This delay doesn't cause significant issues, but if precision is
+        required, further measures may be necessary.
+      </li>
+    </ul>
+  </div>
+  <hr />
+
+  <div id="database-schema">
+    <h3>Database Schema</h3>
+
+    <div id="hotels-table">
+      <h5>1. Hotels Table</h5>
+      <p>Stores information about hotels.</p>
+      <p><b>Table Name:</b> hotels</p>
+      <pre>
       Columns:
         - hotel_id: VARCHAR(255) [Primary Key]
         - name: VARCHAR(255)
@@ -322,14 +520,15 @@
         - manager_id: VARCHAR(255)
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </pre>
-        </div>
-        
-        <div id="users-table">
-          <h5>2. Users Table</h5>
-          <p>Stores information about users who use the platform.</p>
-          <p><b>Table Name:</b> users</p>
-          <pre>
+          </pre
+      >
+    </div>
+
+    <div id="users-table">
+      <h5>2. Users Table</h5>
+      <p>Stores information about users who use the platform.</p>
+      <p><b>Table Name:</b> users</p>
+      <pre>
       Columns:
         - user_id: VARCHAR(255) [Primary Key]
         - name: VARCHAR(255)
@@ -338,14 +537,15 @@
         - password_hash: VARCHAR(255)
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </pre>
-        </div>
-        
-        <div id="bookings-table">
-          <h5>3. Bookings Table</h5>
-          <p>Stores booking details for users.</p>
-          <p><b>Table Name:</b> bookings</p>
-          <pre>
+          </pre
+      >
+    </div>
+
+    <div id="bookings-table">
+      <h5>3. Bookings Table</h5>
+      <p>Stores booking details for users.</p>
+      <p><b>Table Name:</b> bookings</p>
+      <pre>
       Columns:
         - booking_id: VARCHAR(255) [Primary Key]
         - hotel_id: VARCHAR(255) [Foreign Key to hotels(hotel_id)]
@@ -357,14 +557,15 @@
         - total_amount: DECIMAL(10, 2)
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </pre>
-        </div>
-        
-        <div id="payments-table">
-          <h5>4. Payments Table</h5>
-          <p>Stores payment information for bookings.</p>
-          <p><b>Table Name:</b> payments</p>
-          <pre>
+          </pre
+      >
+    </div>
+
+    <div id="payments-table">
+      <h5>4. Payments Table</h5>
+      <p>Stores payment information for bookings.</p>
+      <p><b>Table Name:</b> payments</p>
+      <pre>
       Columns:
         - payment_id: VARCHAR(255) [Primary Key]
         - booking_id: VARCHAR(255) [Foreign Key to bookings(booking_id)]
@@ -373,13 +574,17 @@
         - status: ENUM('PENDING', 'SUCCESS', 'FAILED')
         - created_at: TIMESTAMP
         - updated_at: TIMESTAMP
-          </pre>
-        </div>
-        
-        <div id="search-index">
-          <h5>5. ElasticSearch Index</h5>
-          <p>Used for searching hotels based on criteria like location, amenities, and availability.</p>
-          <pre>
+          </pre
+      >
+    </div>
+
+    <div id="search-index">
+      <h5>5. ElasticSearch Index</h5>
+      <p>
+        Used for searching hotels based on criteria like location, amenities,
+        and availability.
+      </p>
+      <pre>
       Index Name: hotels_index
       Fields:
         - hotel_id: VARCHAR(255)
@@ -388,14 +593,15 @@
         - available_rooms: INT
         - price_per_night: DECIMAL(10, 2)
         - amenities: JSON
-          </pre>
-        </div>
-        
-        <div id="cassandra-archival">
-          <h5>6. Cassandra Archival</h5>
-          <p>Stores historical booking data for analysis.</p>
-          <p><b>Table Name:</b> bookings_archive</p>
-          <pre>
+          </pre
+      >
+    </div>
+
+    <div id="cassandra-archival">
+      <h5>6. Cassandra Archival</h5>
+      <p>Stores historical booking data for analysis.</p>
+      <p><b>Table Name:</b> bookings_archive</p>
+      <pre>
       Columns:
         - booking_id: VARCHAR(255) [Primary Key]
         - hotel_id: VARCHAR(255)
@@ -406,36 +612,40 @@
         - status: ENUM('BOOKED', 'CANCELLED', 'COMPLETED')
         - total_amount: DECIMAL(10, 2)
         - archived_at: TIMESTAMP
-          </pre>
-        </div>
-        
-        <div id="kafka-event-log">
-          <h5>7. Kafka Event Log</h5>
-          <p>Logs events for notifications and analytics.</p>
-          <p><b>Table Name:</b> kafka_event_log</p>
-          <pre>
+          </pre
+      >
+    </div>
+
+    <div id="kafka-event-log">
+      <h5>7. Kafka Event Log</h5>
+      <p>Logs events for notifications and analytics.</p>
+      <p><b>Table Name:</b> kafka_event_log</p>
+      <pre>
       Columns:
         - event_id: VARCHAR(255) [Primary Key]
         - event_type: ENUM('BOOKING_CONFIRMED', 'BOOKING_CANCELLED', 'PAYMENT_SUCCESS', 'PAYMENT_FAILED')
         - payload: JSON
         - created_at: TIMESTAMP
-          </pre>
-        </div>
-      </div>
-      
-    
-    <hr>
-    <h3>API Design</h3>
-    <div id="hotel-service">
-        <h5>1. Hotel Service</h5>
-        <ul>
-            <p>The Hotel Service handles hotel-related data such as adding new hotels, updating details, and fetching information for managers.</p>
-            
-            <div id="add-hotel">
-            <b>A) Add a Hotel</b>
-            <p><strong>Endpoint:</strong> POST /hotels</p>
-            <p><strong>Request Body:</strong></p>
-            <pre>
+          </pre
+      >
+    </div>
+  </div>
+
+  <hr />
+  <h3>API Design</h3>
+  <div id="hotel-service">
+    <h5>1. Hotel Service</h5>
+    <ul>
+      <p>
+        The Hotel Service handles hotel-related data such as adding new hotels,
+        updating details, and fetching information for managers.
+      </p>
+
+      <div id="add-hotel">
+        <b>A) Add a Hotel</b>
+        <p><strong>Endpoint:</strong> POST /hotels</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
             {
                 "name": "Hotel Paradise",
                 "location": "New York",
@@ -443,39 +653,43 @@
                 "amenities": ["WiFi", "Pool", "Gym"],
                 "manager_id": "manager123"
             }
-                </pre>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+        <p><strong>Response:</strong></p>
+        <pre>
             {
                 "hotel_id": "hotel123",
                 "message": "Hotel added successfully"
             }
-                </pre>
-                </div>
-                
-                <div id="update-hotel">
-                <b>B) Update Hotel Details</b>
-                <p><strong>Endpoint:</strong> PUT /hotels/{hotel_id}</p>
-                <p><strong>Request Body:</strong></p>
-                <pre>
+                </pre
+        >
+      </div>
+
+      <div id="update-hotel">
+        <b>B) Update Hotel Details</b>
+        <p><strong>Endpoint:</strong> PUT /hotels/{hotel_id}</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
             {
                 "name": "Hotel Paradise Deluxe",
                 "amenities": ["WiFi", "Pool", "Spa"]
             }
-                </pre>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+        <p><strong>Response:</strong></p>
+        <pre>
                 {
                     "message": "Hotel details updated successfully"
                 }
-                </pre>
-                </div>
-                
-                <div id="get-hotel-info">
-                <b>C) Get Hotel Information</b>
-                <p><strong>Endpoint:</strong> GET /hotels/{hotel_id}</p>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+      </div>
+
+      <div id="get-hotel-info">
+        <b>C) Get Hotel Information</b>
+        <p><strong>Endpoint:</strong> GET /hotels/{hotel_id}</p>
+        <p><strong>Response:</strong></p>
+        <pre>
                 {
                     "hotel_id": "hotel123",
                     "name": "Hotel Paradise",
@@ -484,22 +698,28 @@
                     "available_rooms": 20,
                     "amenities": ["WiFi", "Pool", "Gym"]
                 }
-                </pre>
-                </div>
-        </ul>
+                </pre
+        >
       </div>
-      
-      <div id="search-service">
-        <h5>2. Search Service</h5>
-        <p>This service provides APIs to search for available hotels based on criteria such as location, dates, and amenities.</p>
-        <ul>
-                <div id="search-hotels">
-                <b>Search Hotels</b>
-                <p><strong>Endpoint:</strong> GET /search</p>
-                <p><strong>Request Parameters:</strong></p>
-                <pre>location=New York&checkin_date=2025-01-15&checkout_date=2025-01-20&amenities=WiFi</pre>
-                <p><strong>Response:</strong></p>
-                <pre>
+    </ul>
+  </div>
+
+  <div id="search-service">
+    <h5>2. Search Service</h5>
+    <p>
+      This service provides APIs to search for available hotels based on
+      criteria such as location, dates, and amenities.
+    </p>
+    <ul>
+      <div id="search-hotels">
+        <b>Search Hotels</b>
+        <p><strong>Endpoint:</strong> GET /search</p>
+        <p><strong>Request Parameters:</strong></p>
+        <pre>
+location=New York&checkin_date=2025-01-15&checkout_date=2025-01-20&amenities=WiFi</pre
+        >
+        <p><strong>Response:</strong></p>
+        <pre>
             [
                 {
                 "hotel_id": "hotel123",
@@ -516,20 +736,24 @@
                 "price_per_night": 200
                 }
             ]
-                </pre>
-                </div>
-        </ul>
+                </pre
+        >
       </div>
-      
-      <div id="booking-service">
-        <h5>3. Booking Service</h5>
-        <p>This service manages the booking process, including reservation creation, status updates, and cancellations.</p>
-        <ul>
-                <div id="create-booking">
-                <b>A) Create a Booking</b>
-                <p><strong>Endpoint:</strong> POST /bookings</p>
-                <p><strong>Request Body:</strong></p>
-                <pre>
+    </ul>
+  </div>
+
+  <div id="booking-service">
+    <h5>3. Booking Service</h5>
+    <p>
+      This service manages the booking process, including reservation creation,
+      status updates, and cancellations.
+    </p>
+    <ul>
+      <div id="create-booking">
+        <b>A) Create a Booking</b>
+        <p><strong>Endpoint:</strong> POST /bookings</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
             {
                 "hotel_id": "hotel123",
                 "user_id": "user789",
@@ -537,33 +761,36 @@
                 "checkout_date": "2025-01-20",
                 "rooms": 1
             }
-                </pre>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+        <p><strong>Response:</strong></p>
+        <pre>
             {
                 "booking_id": "booking456",
                 "status": "RESERVED",
                 "message": "Booking created successfully"
             }
-                </pre>
-                </div>
-                
-                <div id="cancel-booking">
-                <b>B) Cancel a Booking</b>
-                <p><strong>Endpoint:</strong> PUT /bookings/{booking_id}/cancel</p>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+      </div>
+
+      <div id="cancel-booking">
+        <b>B) Cancel a Booking</b>
+        <p><strong>Endpoint:</strong> PUT /bookings/{booking_id}/cancel</p>
+        <p><strong>Response:</strong></p>
+        <pre>
             {
                 "message": "Booking cancelled successfully"
             }
-                </pre>
-                </div>
-                
-                <div id="get-booking-details">
-                <b>C) Get Booking Details</b>
-                <p><strong>Endpoint:</strong> GET /bookings/{booking_id}</p>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+      </div>
+
+      <div id="get-booking-details">
+        <b>C) Get Booking Details</b>
+        <p><strong>Endpoint:</strong> GET /bookings/{booking_id}</p>
+        <p><strong>Response:</strong></p>
+        <pre>
             {
                 "booking_id": "booking456",
                 "hotel_id": "hotel123",
@@ -573,20 +800,24 @@
                 "checkout_date": "2025-01-20",
                 "rooms": 1
             }
-                </pre>
-                </div>
-        </ul>
+                </pre
+        >
       </div>
-      
-      <div id="payment-service">
-        <h5>4. Payment Service</h5>
-        <p>This service processes payments and communicates success or failure to the booking service.</p>
-        <ul>
-                <div id="initiate-payment">
-                <b>A) Initiate Payment</b>
-                <p><strong>Endpoint:</strong> POST /payments</p>
-                <p><strong>Request Body:</strong></p>
-                <pre>
+    </ul>
+  </div>
+
+  <div id="payment-service">
+    <h5>4. Payment Service</h5>
+    <p>
+      This service processes payments and communicates success or failure to the
+      booking service.
+    </p>
+    <ul>
+      <div id="initiate-payment">
+        <b>A) Initiate Payment</b>
+        <p><strong>Endpoint:</strong> POST /payments</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
             {
                 "booking_id": "booking456",
                 "amount": 750,
@@ -597,41 +828,47 @@
                 "cvv": "123"
                 }
             }
-                </pre>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+        <p><strong>Response:</strong></p>
+        <pre>
             {
                 "payment_id": "payment789",
                 "status": "SUCCESS",
                 "message": "Payment processed successfully"
             }
-                </pre>
-                </div>
-                
-                <div id="get-payment-status">
-                <b>B) Get Payment Status</b>
-                <p><strong>Endpoint:</strong> GET /payments/{payment_id}</p>
-                <p><strong>Response:</strong></p>
-                <pre>
+                </pre
+        >
+      </div>
+
+      <div id="get-payment-status">
+        <b>B) Get Payment Status</b>
+        <p><strong>Endpoint:</strong> GET /payments/{payment_id}</p>
+        <p><strong>Response:</strong></p>
+        <pre>
             {
                 "payment_id": "payment789",
                 "status": "SUCCESS",
                 "amount": 750
             }
-                </pre>
-                </div>
-        </ul>
+                </pre
+        >
       </div>
-      
-      <div id="booking-mgmt-service">
-        <h5>5. Booking Management Service</h5>
-        <p>This service allows users to view and manage their bookings, including retrieving booking history.</p>
-        <ul>
-                <div id="view-user-bookings">
-                <b>View User Bookings</b>
-                <p><strong>Endpoint:</strong> GET /users/{user_id}/bookings</p>
-                <p><strong>Response:</strong></p>
-                <pre>
+    </ul>
+  </div>
+
+  <div id="booking-mgmt-service">
+    <h5>5. Booking Management Service</h5>
+    <p>
+      This service allows users to view and manage their bookings, including
+      retrieving booking history.
+    </p>
+    <ul>
+      <div id="view-user-bookings">
+        <b>View User Bookings</b>
+        <p><strong>Endpoint:</strong> GET /users/{user_id}/bookings</p>
+        <p><strong>Response:</strong></p>
+        <pre>
             [
                 {
                 "booking_id": "booking123",
@@ -648,32 +885,37 @@
                 "status": "CANCELLED"
                 }
             ]
-                </pre>
-                </div>
-        </ul>
+                </pre
+        >
       </div>
-      
-      <div id="kafka-notifications">
-        <h5>6. Notification Kafka Consumer</h5>
-        <p>This service listens to Kafka events for updates such as booking status changes and sends notifications to users.</p>
-        <ul>
-            <p><strong>Example Kafka Event:</strong></p>
-            <pre>
+    </ul>
+  </div>
+
+  <div id="kafka-notifications">
+    <h5>6. Notification Kafka Consumer</h5>
+    <p>
+      This service listens to Kafka events for updates such as booking status
+      changes and sends notifications to users.
+    </p>
+    <ul>
+      <p><strong>Example Kafka Event:</strong></p>
+      <pre>
             {
                 "event_type": "BOOKING_CONFIRMED",
                 "user_id": "user789",
                 "booking_id": "booking456",
                 "message": "Your booking at Hotel Paradise has been confirmed."
             }
-                </pre>
-        </ul>
-      </div>
-      
-      <div id="kafka-archival">
-        <h5>7. Archival Kafka Consumer</h5>
-        <p>Manages data archival to Cassandra and Hadoop for historical analysis and storage.</p>
-      </div>
-      
-    
-    
+                </pre
+      >
+    </ul>
+  </div>
+
+  <div id="kafka-archival">
+    <h5>7. Archival Kafka Consumer</h5>
+    <p>
+      Manages data archival to Cassandra and Hadoop for historical analysis and
+      storage.
+    </p>
+  </div>
 </div>

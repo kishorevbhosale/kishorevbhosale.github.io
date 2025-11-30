@@ -1,41 +1,51 @@
-<h2 style="text-align: center;">Liskov Substitution Principle (LSP)</h2>
-<br>
+<h2 style="text-align: center">Liskov Substitution Principle (LSP)</h2>
+<br />
 <div class="custom-container">
-    <ol>
-        <li><a href="#intro">Introduction </a></li>
-        <li><a href="#violation">LSP violation</a></li>
-        <li><a href="#lsp">How to achieve LSP </a></li>
-        <li><a href="#key">Key points in the refactored design </a></li>
-    </ol>
+  <ol>
+    <li><a href="#intro">Introduction </a></li>
+    <li><a href="#violation">LSP violation</a></li>
+    <li><a href="#lsp">How to achieve LSP </a></li>
+    <li><a href="#key">Key points in the refactored design </a></li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="intro">
-    <h5>Introduction:</h5>
-    <p>
-        <b>Objects of a superclass should be replaceable with objects of its subclasses without affecting the correctness of the program.</b>.<br>
-        In simpler terms, if class B is a subclass of class A, then objects of class A should be able to be replaced by objects of class B 
-        without causing any errors or changing the desirable behavior of the program. 
-    </p>
-    <p>
-        The key idea is that subtypes must adhere to the contract of their base type. 
-        If a subclass deviates from the behavior of the base class in a way that violates the base class’s expectations, then LSP is violated. 
-        This leads to problems like unexpected behavior or errors when you try to substitute the subclass where the base class is expected.
-    </p>
+  <h5>Introduction:</h5>
+  <p>
+    <b
+      >Objects of a superclass should be replaceable with objects of its
+      subclasses without affecting the correctness of the program.</b
+    >.<br />
+    In simpler terms, if class B is a subclass of class A, then objects of class
+    A should be able to be replaced by objects of class B without causing any
+    errors or changing the desirable behavior of the program.
+  </p>
+  <p>
+    The key idea is that subtypes must adhere to the contract of their base
+    type. If a subclass deviates from the behavior of the base class in a way
+    that violates the base class’s expectations, then LSP is violated. This
+    leads to problems like unexpected behavior or errors when you try to
+    substitute the subclass where the base class is expected.
+  </p>
 </div>
-<hr>
+<hr />
 
 <div id="violation">
-    <h5>LSP violation</h5>
-        <p>Let’s assume the Car class has a method refuel(), which fills the tank with gasoline. However, for an electric car, this concept doesn’t make sense 
-            because it doesn’t have a fuel tank, but instead, it has a battery that needs charging.
-        </p>
-        <p>
-            If we are not careful, this difference in behavior could lead to a violation of LSP because the ElectricCar class cannot correctly implement 
-            the behavior of refuel() that makes sense for the Car class.
-        </p>
-    <b>Code for LSP Violation</b>
-    <pre>
+  <h5>LSP violation</h5>
+  <p>
+    Let’s assume the Car class has a method refuel(), which fills the tank with
+    gasoline. However, for an electric car, this concept doesn’t make sense
+    because it doesn’t have a fuel tank, but instead, it has a battery that
+    needs charging.
+  </p>
+  <p>
+    If we are not careful, this difference in behavior could lead to a violation
+    of LSP because the ElectricCar class cannot correctly implement the behavior
+    of refuel() that makes sense for the Car class.
+  </p>
+  <b>Code for LSP Violation</b>
+  <pre>
         // Base Class: Car
         class Car {
             public void refuel() {
@@ -67,30 +77,38 @@
             }
         }
         
-    </pre>
-    <br>
-    <b>Explanation of the LSP Violation:</b>
-    <p>In the above code, the method <b>refuel()</b> is part of the Car class, which implies that all Car subclasses should support 
-        this behavior. However, the ElectricCar class throws an exception when refuel() is called, which violates the 
-        Liskov Substitution Principle. This happens because the ElectricCar class doesn’t behave as expected when substituted for a Car.
-    </p>
-    <p>
-        The client code (refuelCar() method) expects all Car objects, including ElectricCar, to be refueled, but ElectricCar breaks this assumption.
-    </p>
+    </pre
+  >
+  <br />
+  <b>Explanation of the LSP Violation:</b>
+  <p>
+    In the above code, the method <b>refuel()</b> is part of the Car class,
+    which implies that all Car subclasses should support this behavior. However,
+    the ElectricCar class throws an exception when refuel() is called, which
+    violates the Liskov Substitution Principle. This happens because the
+    ElectricCar class doesn’t behave as expected when substituted for a Car.
+  </p>
+  <p>
+    The client code (refuelCar() method) expects all Car objects, including
+    ElectricCar, to be refueled, but ElectricCar breaks this assumption.
+  </p>
 </div>
-<hr>
+<hr />
 
 <div id="lsp">
-    <h5>How to achieve LSP</h5>
-    <p>
-        To achieve LSP compliance, we need to rethink the design so that each subclass correctly represents the behavior of its superclass. 
-        One way to solve this is by splitting the Car class into two separate abstractions: one for fuel-powered cars and one for electric-powered cars. 
-        We can introduce a common base class (or interface) like Vehicle that contains shared behavior, 
-        and then separate the logic for refueling and recharging into different subclasses.
-    </p>
+  <h5>How to achieve LSP</h5>
+  <p>
+    To achieve LSP compliance, we need to rethink the design so that each
+    subclass correctly represents the behavior of its superclass. One way to
+    solve this is by splitting the Car class into two separate abstractions: one
+    for fuel-powered cars and one for electric-powered cars. We can introduce a
+    common base class (or interface) like Vehicle that contains shared behavior,
+    and then separate the logic for refueling and recharging into different
+    subclasses.
+  </p>
 
-    <b>Refactored Code Following LSP:</b>
-    <pre>
+  <b>Refactored Code Following LSP:</b>
+  <pre>
         <b>// Base Class: Vehicle</b>
         abstract class Vehicle {
             public abstract void start();
@@ -138,14 +156,21 @@
         }
     </pre>
 </div>
-<hr>
+<hr />
 
 <div id="key">
-    <h5>Key points in the refactored design:</h5>
-    <ol>
-        <li>Common Base Class (Vehicle): Both FuelCar and ElectricCar now extend Vehicle, which provides shared behavior (start() method).</li>
-        <li>Specific Behaviors in Subclasses: The FuelCar class provides a refuel() method, while the ElectricCar class provides a recharge() method. 
-            Now, each class has behavior specific to its type without violating the contract of its parent class.</li>
-    </ol>
+  <h5>Key points in the refactored design:</h5>
+  <ol>
+    <li>
+      Common Base Class (Vehicle): Both FuelCar and ElectricCar now extend
+      Vehicle, which provides shared behavior (start() method).
+    </li>
+    <li>
+      Specific Behaviors in Subclasses: The FuelCar class provides a refuel()
+      method, while the ElectricCar class provides a recharge() method. Now,
+      each class has behavior specific to its type without violating the
+      contract of its parent class.
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />

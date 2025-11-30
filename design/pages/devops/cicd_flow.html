@@ -1,51 +1,115 @@
 <div>
-    <h1 style="text-align: center;">How CI/CD Works - Workflow Diagram</h1>
-    <hr>
-    <p>CI/CD (Continuous Integration and Continuous Deployment) is a process that automates the integration of code changes and the deployment of applications. Below is a detailed explanation of how it works based on the diagram provided:</p>
-    <img src="../../../images/cicd.gif" style="display: block; margin: auto; width: 50%;" class="img-fluid">
+  <h1 style="text-align: center">How CI/CD Works - Workflow Diagram</h1>
+  <hr />
+  <p>
+    CI/CD (Continuous Integration and Continuous Deployment) is a process that
+    automates the integration of code changes and the deployment of
+    applications. Below is a detailed explanation of how it works based on the
+    diagram provided:
+  </p>
+  <img
+    src="../../../images/cicd.gif"
+    style="display: block; margin: auto; width: 50%"
+    class="img-fluid"
+  />
 
-    <!--<img src="../../../images/cicd-flow.png" style="display: block; margin: auto; width: 70%;" class="img-fluid">-->
-    <br>
-    <h5>1. Feature Branch Development</h5>
-    <p>Developers create a separate feature branch to work on new features or bug fixes. This ensures that their changes do not affect the stable main branch. Once the code is ready, it is pushed to a remote repository like GitHub or GitLab.</p>
+  <!--<img src="../../../images/cicd-flow.png" style="display: block; margin: auto; width: 70%;" class="img-fluid">-->
+  <br />
+  <h5>1. Feature Branch Development</h5>
+  <p>
+    Developers create a separate feature branch to work on new features or bug
+    fixes. This ensures that their changes do not affect the stable main branch.
+    Once the code is ready, it is pushed to a remote repository like GitHub or
+    GitLab.
+  </p>
 
-    <h5>2. Code Push to Git</h5>
-    <p>After the developer finishes the feature and has tested it locally, they push the code to the version control system (VCS). This triggers the CI process.</p>
+  <h5>2. Code Push to Git</h5>
+  <p>
+    After the developer finishes the feature and has tested it locally, they
+    push the code to the version control system (VCS). This triggers the CI
+    process.
+  </p>
 
-    <h5>3. Continuous Integration Starts</h5>
-    <ul>
-        <li>The CI server (e.g., Jenkins) detects the new code push and initiates a build.</li>
-        <li>It compiles the application, packages it, and prepares it for testing.</li>
-        <li>Automated checks are run to ensure the code adheres to quality standards, including syntax and structure checks.</li>
-    </ul>
+  <h5>3. Continuous Integration Starts</h5>
+  <ul>
+    <li>
+      The CI server (e.g., Jenkins) detects the new code push and initiates a
+      build.
+    </li>
+    <li>
+      It compiles the application, packages it, and prepares it for testing.
+    </li>
+    <li>
+      Automated checks are run to ensure the code adheres to quality standards,
+      including syntax and structure checks.
+    </li>
+  </ul>
 
-    <h5>4. Running Unit Tests</h5>
-    <p>The system runs automated unit tests to ensure that the new changes work as expected and do not break existing functionality. If any test fails, the process halts, and the developer is notified to fix the issues.</p>
+  <h5>4. Running Unit Tests</h5>
+  <p>
+    The system runs automated unit tests to ensure that the new changes work as
+    expected and do not break existing functionality. If any test fails, the
+    process halts, and the developer is notified to fix the issues.
+  </p>
 
-    <h5>5. Fixing Issues and Retrying</h5>
-    <p>If there are issues, the developer fixes the code and pushes it again to the repository. The CI process restarts, and the new code is built and tested. This cycle continues until all tests pass successfully.</p>
+  <h5>5. Fixing Issues and Retrying</h5>
+  <p>
+    If there are issues, the developer fixes the code and pushes it again to the
+    repository. The CI process restarts, and the new code is built and tested.
+    This cycle continues until all tests pass successfully.
+  </p>
 
-    <h5>6. Code Review and Approval</h5>
-    <p>Once the code passes all tests, it undergoes a manual review. This is where team members review the pull request to ensure the new changes meet the project standards and coding best practices.</p>
+  <h5>6. Code Review and Approval</h5>
+  <p>
+    Once the code passes all tests, it undergoes a manual review. This is where
+    team members review the pull request to ensure the new changes meet the
+    project standards and coding best practices.
+  </p>
 
-    <h5>7. Merging to Main Branch</h5>
-    <p>After the code is approved, it is merged into the main branch. This is the main codebase, which reflects the latest stable version of the application.</p>
+  <h5>7. Merging to Main Branch</h5>
+  <p>
+    After the code is approved, it is merged into the main branch. This is the
+    main codebase, which reflects the latest stable version of the application.
+  </p>
 
-    <h5>8. Building the Main Branch</h5>
-    <p>The CI system automatically builds the main branch with the new changes. Further tests, such as regression tests and security scans, are run to ensure that the merged code is stable.</p>
+  <h5>8. Building the Main Branch</h5>
+  <p>
+    The CI system automatically builds the main branch with the new changes.
+    Further tests, such as regression tests and security scans, are run to
+    ensure that the merged code is stable.
+  </p>
 
-    <h5>9. Creating a Docker Image</h5>
-    <p>Once the application is built and passes all tests, it is packaged as a Docker image. This image can be pushed to a Docker registry (e.g., DockerHub, AWS ECR) for deployment.</p>
+  <h5>9. Creating a Docker Image</h5>
+  <p>
+    Once the application is built and passes all tests, it is packaged as a
+    Docker image. This image can be pushed to a Docker registry (e.g.,
+    DockerHub, AWS ECR) for deployment.
+  </p>
 
-    <h5>10. Continuous Deployment</h5>
-    <ul>
-        <li>The Docker image is deployed to the production environment, often via a Kubernetes (K8S) cluster.</li>
-        <li>CD automates the deployment process, ensuring that the latest changes are released to users without manual intervention.</li>
-    </ul>
+  <h5>10. Continuous Deployment</h5>
+  <ul>
+    <li>
+      The Docker image is deployed to the production environment, often via a
+      Kubernetes (K8S) cluster.
+    </li>
+    <li>
+      CD automates the deployment process, ensuring that the latest changes are
+      released to users without manual intervention.
+    </li>
+  </ul>
 
-    <h5>11. Deployment Success</h5>
-    <p>Once the deployment to the Kubernetes cluster is successful, the new version of the application is live. This completes the CI/CD process, allowing new features and bug fixes to be delivered to users quickly and efficiently.</p>
+  <h5>11. Deployment Success</h5>
+  <p>
+    Once the deployment to the Kubernetes cluster is successful, the new version
+    of the application is live. This completes the CI/CD process, allowing new
+    features and bug fixes to be delivered to users quickly and efficiently.
+  </p>
 
-    <h5>Summary</h5>
-    <p>In summary, the CI/CD pipeline automates the integration of new code, testing, and deployment. By following this process, development teams can release updates quickly and with high confidence, knowing that automated tests and checks have been performed at each stage.</p>
+  <h5>Summary</h5>
+  <p>
+    In summary, the CI/CD pipeline automates the integration of new code,
+    testing, and deployment. By following this process, development teams can
+    release updates quickly and with high confidence, knowing that automated
+    tests and checks have been performed at each stage.
+  </p>
 </div>

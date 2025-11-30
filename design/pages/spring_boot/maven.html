@@ -1,36 +1,50 @@
-<h2 style="text-align: center;">Understanding of Mavne Structure</h2>
-<br>
+<h2 style="text-align: center">Understanding of Mavne Structure</h2>
+<br />
 <div class="custom-container">
   <h5>Table of Contents</h5>
-    <ol>
-        <li><a href="#maven-intro">Introduction to Maven</a></li>
-        <li><a href="#maven-uses">What Maven Provides</a></li>
-        <li><a href="#maven-project-structure">Maven Project Structure</a></li>
-        <li><a href="#pom-types">POM Types</a></li>
-        <li><a href="#maven-build-lifecycle">Maven Build Lifecycle (Phases with Spring Boot Examples)</a></li>
-        <li><a href="#maven-key-points">Key Points to Remember</a></li>
-    </ol>
+  <ol>
+    <li><a href="#maven-intro">Introduction to Maven</a></li>
+    <li><a href="#maven-uses">What Maven Provides</a></li>
+    <li><a href="#maven-project-structure">Maven Project Structure</a></li>
+    <li><a href="#pom-types">POM Types</a></li>
+    <li>
+      <a href="#maven-build-lifecycle"
+        >Maven Build Lifecycle (Phases with Spring Boot Examples)</a
+      >
+    </li>
+    <li><a href="#maven-key-points">Key Points to Remember</a></li>
+  </ol>
 </div>
-<hr>
-<h5 id="maven-intro"> Introduction to Maven</h5>
+<hr />
+<h5 id="maven-intro">Introduction to Maven</h5>
 <ul>
-  <li><b>Maven</b> is a build automation and project management tool for Java &amp; Spring Boot applications.</li>
-  <li>It uses <b>POM (Project Object Model)</b> to define project configuration.</li>
+  <li>
+    <b>Maven</b> is a build automation and project management tool for Java
+    &amp; Spring Boot applications.
+  </li>
+  <li>
+    It uses <b>POM (Project Object Model)</b> to define project configuration.
+  </li>
   <li><b>Maven</b> → defines <b>what to do</b>.</li>
   <li><b>Ant</b> → defines <b>what to do and how to do</b>.</li>
-  <li>When you run a Maven command, it looks for <b>pom.xml</b> in the current directory.</li>
+  <li>
+    When you run a Maven command, it looks for <b>pom.xml</b> in the current
+    directory.
+  </li>
 </ul>
-<hr>
+<hr />
 
-<h5 id="maven-uses"> What Maven Provides</h5>
+<h5 id="maven-uses">What Maven Provides</h5>
 <ul>
   <li><b>Build generation</b> → Compile, test, package Spring Boot JAR/WAR.</li>
-  <li><b>Dependency resolution</b> → Downloads Spring Boot starter dependencies.</li>
+  <li>
+    <b>Dependency resolution</b> → Downloads Spring Boot starter dependencies.
+  </li>
   <li><b>Documentation</b> → Generates Javadocs, project reports.</li>
 </ul>
-<hr>
+<hr />
 
-<h5 id="maven-project-structure"> Maven Project Structure</h5>
+<h5 id="maven-project-structure">Maven Project Structure</h5>
 <pre>
 my-springboot-app/
  ├── pom.xml                 (Project Object Model)
@@ -44,17 +58,29 @@ my-springboot-app/
          └── resources
 </pre>
 <ul>
-  <li><b>src/main/java</b> → Application code (Spring Boot controllers, services, repos).</li>
-  <li><b>src/main/resources</b> → Config (application.yml, logback.xml, static files).</li>
+  <li>
+    <b>src/main/java</b> → Application code (Spring Boot controllers, services,
+    repos).
+  </li>
+  <li>
+    <b>src/main/resources</b> → Config (application.yml, logback.xml, static
+    files).
+  </li>
   <li><b>src/test/java</b> → Unit tests using JUnit/Mockito.</li>
 </ul>
-<hr>
+<hr />
 
-<h5 id="pom-types"> POM Types</h5>
+<h5 id="pom-types">POM Types</h5>
 <ul>
-  <li><b>Parent POM</b>: Common configs for multi-module Spring Boot projects.</li>
-  <li><b>Super POM</b>: Default Maven POM (all projects inherit from it implicitly).</li>
-  <li><b>Repositories</b>:
+  <li>
+    <b>Parent POM</b>: Common configs for multi-module Spring Boot projects.
+  </li>
+  <li>
+    <b>Super POM</b>: Default Maven POM (all projects inherit from it
+    implicitly).
+  </li>
+  <li>
+    <b>Repositories</b>:
     <ul>
       <li><b>Local repo</b> → <b>~/.m2/repository</b></li>
       <li><b>Remote repo</b> → Central, Nexus, Artifactory</li>
@@ -87,9 +113,11 @@ my-springboot-app/
   &lt;/dependency&gt;
 &lt;/dependencies&gt;
 </pre>
-<hr>
+<hr />
 
-<h5 id="maven-build-lifecycle"> Maven Build Lifecycle (Phases with Spring Boot Examples)</h5>
+<h5 id="maven-build-lifecycle">
+  Maven Build Lifecycle (Phases with Spring Boot Examples)
+</h5>
 <ul>
   <li>Maven lifecycle = <b>sequence of phases</b>.</li>
   <li>Running a phase executes all <b>previous phases</b>.</li>
@@ -99,7 +127,10 @@ my-springboot-app/
 <b>✅ Phase 1: validate</b>
 <ul>
   <li>Ensures project structure is valid.</li>
-  <li>In Spring Boot → can run <b>Checkstyle/Spotless plugin</b> for code style validation.</li>
+  <li>
+    In Spring Boot → can run <b>Checkstyle/Spotless plugin</b> for code style
+    validation.
+  </li>
 </ul>
 <pre>
 # Validate project
@@ -120,7 +151,7 @@ mvn validate
   &lt;/executions&gt;
 &lt;/plugin&gt;
 </pre>
-<hr class="thin-line">
+<hr class="thin-line" />
 
 <b>✅ Phase 2: compile</b>
 <ul>
@@ -142,7 +173,7 @@ mvn compile
   &lt;/configuration&gt;
 &lt;/plugin&gt;
 </pre>
-<hr class="thin-line">
+<hr class="thin-line" />
 
 <b>✅ Phase 3: test</b>
 <ul>
@@ -160,7 +191,7 @@ mvn test
   &lt;version&gt;3.1.2&lt;/version&gt;
 &lt;/plugin&gt;
 </pre>
-<hr class="thin-line">
+<hr class="thin-line" />
 
 <b>✅ Phase 4: package</b>
 <ul>
@@ -177,7 +208,7 @@ mvn package
   &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
 &lt;/plugin&gt;
 </pre>
-<hr class="thin-line">
+<hr class="thin-line" />
 
 <b>✅ Phase 5: verify</b>
 <ul>
@@ -202,7 +233,7 @@ mvn verify
   &lt;/executions&gt;
 &lt;/plugin&gt;
 </pre>
-<hr class="thin-line">
+<hr class="thin-line" />
 
 <b>✅ Phase 6: install</b>
 <ul>
@@ -220,7 +251,7 @@ mvn install
   &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
-<hr class="thin-line">
+<hr class="thin-line" />
 
 <b>✅ Phase 7: deploy</b>
 <ul>
@@ -243,13 +274,19 @@ mvn deploy
   &lt;/snapshotRepository&gt;
 &lt;/distributionManagement&gt;
 </pre>
-<hr>
+<hr />
 
-<h5 id="maven-key-points"> Key Points to Remember</h5>
+<h5 id="maven-key-points">Key Points to Remember</h5>
 <ul>
-  <li><b>Run mvn test</b> → validate → compile → test (all previous phases included).</li>
-  <li><b>Goal</b> = task (e.g., <b>compiler:compile</b>, <b>spring-boot:run</b>).</li>
-  <li><b>settings.xml</b> → Used to define:
+  <li>
+    <b>Run mvn test</b> → validate → compile → test (all previous phases
+    included).
+  </li>
+  <li>
+    <b>Goal</b> = task (e.g., <b>compiler:compile</b>, <b>spring-boot:run</b>).
+  </li>
+  <li>
+    <b>settings.xml</b> → Used to define:
     <ul>
       <li>Local repo path</li>
       <li>Remote server credentials</li>
@@ -257,4 +294,4 @@ mvn deploy
     </ul>
   </li>
 </ul>
-<hr>
+<hr />

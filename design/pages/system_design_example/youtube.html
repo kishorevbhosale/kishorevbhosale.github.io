@@ -1,231 +1,297 @@
-<h2 style="text-align: center;">Design Youtube/Netflix</h2>
-<br>
+<h2 style="text-align: center">Design Youtube/Netflix</h2>
+<br />
 <div class="custom-container">
   <h5>Table of Contents</h5>
   <ol>
     <li><a href="#Functional Requirements">Functional Requirements</a></li>
-    <li><a href="#Nonfunctional Requirements">Nonfunctional Requirements</a></li>
+    <li>
+      <a href="#Nonfunctional Requirements">Nonfunctional Requirements</a>
+    </li>
     <li><a href="#Resource Estimation">Resource Estimation</a></li>
     <li><a href="#Storage Estimation">Storage Estimation</a></li>
     <li><a href="#Bandwidth Estimation">Bandwidth Estimation</a></li>
-    <li><a href="#Number of Servers Estimation">Number of Servers Estimation</a></li>
+    <li>
+      <a href="#Number of Servers Estimation">Number of Servers Estimation</a>
+    </li>
     <li><a href="#Building Blocks">Building Blocks</a></li>
     <li><a href="#High Level Design - youtube">High Level Design</a></li>
-    <li><a href="#Why there is server between client and encoder">Server between client and encoder</a></li>
+    <li>
+      <a href="#Why there is server between client and encoder"
+        >Server between client and encoder</a
+      >
+    </li>
     <li><a href="#API design">API design</a></li>
-    <li><a href="#Detail Design and Flow Using AWS">Detail Design Using AWS</a></li>
-    <li><a href="#Fulfilling requirements using AWS">Fulfilling requirements using AWS</a></li>
-    <li><a href="#Followup Questions and Answers">Followup Questions and Answers</a></li>
+    <li>
+      <a href="#Detail Design and Flow Using AWS">Detail Design Using AWS</a>
+    </li>
+    <li>
+      <a href="#Fulfilling requirements using AWS"
+        >Fulfilling requirements using AWS</a
+      >
+    </li>
+    <li>
+      <a href="#Followup Questions and Answers"
+        >Followup Questions and Answers</a
+      >
+    </li>
   </ol>
 </div>
-<hr>
+<hr />
 
 <div id="Functional Requirements">
-    <h5>Functional Requirements</h5>
-    <ul>
-        <li>Stream videos</li>
-        <li>Upload videos</li>
-        <li>Search videos according to titles</li>
-        <li>Like and dislike videos</li>
-        <li>Add comments to videos</li>
-        <li>View thumbnails</li>
-    </ul>
+  <h5>Functional Requirements</h5>
+  <ul>
+    <li>Stream videos</li>
+    <li>Upload videos</li>
+    <li>Search videos according to titles</li>
+    <li>Like and dislike videos</li>
+    <li>Add comments to videos</li>
+    <li>View thumbnails</li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Nonfunctional Requirements">
-    <h5>Nonfunctional Requirements</h5>
-    <ul>
-        <li>High availability</li>
-        <li>Scalability</li>
-        <li>Good performance</li>
-    </ul>
+  <h5>Nonfunctional Requirements</h5>
+  <ul>
+    <li>High availability</li>
+    <li>Scalability</li>
+    <li>Good performance</li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Resource Estimation">
-    <h5>Resource Estimation</h5>
-    <ul>
-        <li>Total number of users = <strong>1.5 billion</strong></li>
-        <li>Active daily users = <strong>500 million</strong></li>
-        <li>Average length of video = <strong>5 min</strong></li>
-        <li>Size of 5 min video before encoding = <strong>600 MB</strong></li>
-        <li>Size of 5 min video after encoding = <strong>30 MB</strong></li>
-    </ul>
+  <h5>Resource Estimation</h5>
+  <ul>
+    <li>Total number of users = <strong>1.5 billion</strong></li>
+    <li>Active daily users = <strong>500 million</strong></li>
+    <li>Average length of video = <strong>5 min</strong></li>
+    <li>Size of 5 min video before encoding = <strong>600 MB</strong></li>
+    <li>Size of 5 min video after encoding = <strong>30 MB</strong></li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Storage Estimation">
-    <h5>Storage Estimation</h5>
-    <ul>
-        <li>500 hours of video uploaded per minute</li>
-        <li>Each 5 min video = 30 MB → storage per minute of video = <strong>6
-                MB/min</strong></li>
-        <li>
-            Total storage per minute =
-            <em>Total upload/min × Storage per minute</em> =
-            500 × 60 × 6 = <strong>180,000 MB ≈ 180 GB/min</strong>
-        </li>
-    </ul>
+  <h5>Storage Estimation</h5>
+  <ul>
+    <li>500 hours of video uploaded per minute</li>
+    <li>
+      Each 5 min video = 30 MB → storage per minute of video =
+      <strong>6 MB/min</strong>
+    </li>
+    <li>
+      Total storage per minute =
+      <em>Total upload/min × Storage per minute</em> = 500 × 60 × 6 =
+      <strong>180,000 MB ≈ 180 GB/min</strong>
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Bandwidth Estimation">
-    <h5>Bandwidth Estimation</h5>
-    <ul>
-        <li>Video uploaded per minute = <strong>500 hours = 30,000
-                minutes</strong></li>
-        <li>Average 5 min video size before encoding = <strong>600 MB</strong></li>
-        <li>Size per minute of video = 600 ÷ 5 = <strong>120 MB/min</strong></li>
-        <li>Size per second = 120 ÷ 60 = <strong>2 MB/s</strong></li>
-        <li>
-            Bandwidth = 30,000 × 2 MB/s × 8 bits =
-            <strong>480,000 Mbps = 480 Gbps</strong>
-        </li>
-    </ul>
+  <h5>Bandwidth Estimation</h5>
+  <ul>
+    <li>
+      Video uploaded per minute = <strong>500 hours = 30,000 minutes</strong>
+    </li>
+    <li>Average 5 min video size before encoding = <strong>600 MB</strong></li>
+    <li>Size per minute of video = 600 ÷ 5 = <strong>120 MB/min</strong></li>
+    <li>Size per second = 120 ÷ 60 = <strong>2 MB/s</strong></li>
+    <li>
+      Bandwidth = 30,000 × 2 MB/s × 8 bits =
+      <strong>480,000 Mbps = 480 Gbps</strong>
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Number of Servers Estimation">
-    <h5>Number of Servers Estimation</h5>
-    <ul>
-        <li>Active daily users = <strong>500 million</strong></li>
-        <li>Peak requests = <strong>500 million requests/second</strong></li>
-        <li>
-            Servers needed = 500,000,000 ÷ 64,000 ≈ <strong>8,000 servers</strong>
-            <br>(Assumption: 1 server can handle ~64K requests/sec)
-        </li>
-    </ul>
+  <h5>Number of Servers Estimation</h5>
+  <ul>
+    <li>Active daily users = <strong>500 million</strong></li>
+    <li>Peak requests = <strong>500 million requests/second</strong></li>
+    <li>
+      Servers needed = 500,000,000 ÷ 64,000 ≈ <strong>8,000 servers</strong>
+      <br />(Assumption: 1 server can handle ~64K requests/sec)
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Building Blocks">
-    <h5>Building Blocks</h5>
-    <ul>
-        <li><strong>Databases:</strong> store metadata (videos, thumbnails,
-            comments, users)</li>
-        <li><strong>Blob Storage:</strong> store original and encoded video
-            files</li>
-        <li><strong>CDN:</strong> distribute content closer to users, reduce
-            latency</li>
-        <li><strong>Load Balancers:</strong> distribute millions of requests across
-            servers</li>
-        <li><strong>Servers:</strong> process application logic & user requests</li>
-        <li><strong>Encoders/Transcoders:</strong> compress & convert videos into
-            multiple formats/resolutions</li>
-    </ul>
+  <h5>Building Blocks</h5>
+  <ul>
+    <li>
+      <strong>Databases:</strong> store metadata (videos, thumbnails, comments,
+      users)
+    </li>
+    <li>
+      <strong>Blob Storage:</strong> store original and encoded video files
+    </li>
+    <li>
+      <strong>CDN:</strong> distribute content closer to users, reduce latency
+    </li>
+    <li>
+      <strong>Load Balancers:</strong> distribute millions of requests across
+      servers
+    </li>
+    <li><strong>Servers:</strong> process application logic & user requests</li>
+    <li>
+      <strong>Encoders/Transcoders:</strong> compress & convert videos into
+      multiple formats/resolutions
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="High Level Design - youtube">
-    <h5>High Level Design - youtube</h5>
-    <br>
-    <img src="../../../images/Youtube-HLD.jpg" class="responsive-image">
-    <br>
-    <ol>
-        <li>Client uploads video → request goes to Application Server.</li>
-        <li>Server sends raw video to Encoder for multi-format transcoding (240p–4K,
-            HLS/DASH).</li>
-        <li>Server extracts and stores metadata (title, tags, thumbnails) in
-            Metadata DB.</li>
-        <li>Encoded video chunks are stored in Blob/Object Storage (e.g., S3).</li>
-        <li>Blob Storage pushes video chunks to CDN (e.g., CloudFront) for global
-            caching.</li>
-        <li>Client requests video from CDN edge location.</li>
-        <li>CDN serves cached chunks directly or fetches from Blob Storage if not
-            cached.</li>
-    </ol>
+  <h5>High Level Design - youtube</h5>
+  <br />
+  <img src="../../../images/Youtube-HLD.jpg" class="responsive-image" />
+  <br />
+  <ol>
+    <li>Client uploads video → request goes to Application Server.</li>
+    <li>
+      Server sends raw video to Encoder for multi-format transcoding (240p–4K,
+      HLS/DASH).
+    </li>
+    <li>
+      Server extracts and stores metadata (title, tags, thumbnails) in Metadata
+      DB.
+    </li>
+    <li>Encoded video chunks are stored in Blob/Object Storage (e.g., S3).</li>
+    <li>
+      Blob Storage pushes video chunks to CDN (e.g., CloudFront) for global
+      caching.
+    </li>
+    <li>Client requests video from CDN edge location.</li>
+    <li>
+      CDN serves cached chunks directly or fetches from Blob Storage if not
+      cached.
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="Why there is server between client and encoder">
-    <h5>Why there is server between client and encoder</h5>
-    <ol>
-        <li><b>Security & Authentication</b> – Clients should not directly access
-            internal encoding infrastructure; the
-            server enforces auth, rate-limiting, validation, and quota checks.</li>
-        <li><b>Load Balancing & Orchestration</b> – Server decides which encoder
-            worker should process the video; encoders
-            usually run in a distributed cluster.</li>
-        <li><b>Metadata Handling</b> – Server extracts and stores metadata (title,
-            description, tags, thumbnails) in a
-            Metadata DB while passing video to encoder.</li>
-        <li><b>Asynchronous Processing</b> – Upload is long-running, so the server
-            enqueues the job in a message queue and
-            returns success immediately; encoder workers pick jobs
-            asynchronously.</li>
-        <li><b>Error Handling & Retries</b> – If encoding fails, the server can
-            retry, redirect to another encoder, or
-            notify the client.</li>
-        <li><b>Separation of Concerns</b> – Server acts as API + control plane;
-            encoder acts as data plane (CPU/GPU
-            processing); both can scale independently.</li>
-        <li><b>Audit & Analytics</b> – Server logs uploads and processing details
-            for monitoring, billing, and abuse
-            prevention.</li>
-    </ol>
+  <h5>Why there is server between client and encoder</h5>
+  <ol>
+    <li>
+      <b>Security & Authentication</b> – Clients should not directly access
+      internal encoding infrastructure; the server enforces auth, rate-limiting,
+      validation, and quota checks.
+    </li>
+    <li>
+      <b>Load Balancing & Orchestration</b> – Server decides which encoder
+      worker should process the video; encoders usually run in a distributed
+      cluster.
+    </li>
+    <li>
+      <b>Metadata Handling</b> – Server extracts and stores metadata (title,
+      description, tags, thumbnails) in a Metadata DB while passing video to
+      encoder.
+    </li>
+    <li>
+      <b>Asynchronous Processing</b> – Upload is long-running, so the server
+      enqueues the job in a message queue and returns success immediately;
+      encoder workers pick jobs asynchronously.
+    </li>
+    <li>
+      <b>Error Handling & Retries</b> – If encoding fails, the server can retry,
+      redirect to another encoder, or notify the client.
+    </li>
+    <li>
+      <b>Separation of Concerns</b> – Server acts as API + control plane;
+      encoder acts as data plane (CPU/GPU processing); both can scale
+      independently.
+    </li>
+    <li>
+      <b>Audit & Analytics</b> – Server logs uploads and processing details for
+      monitoring, billing, and abuse prevention.
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="API design">
-    <h5>API design</h5>
-    <h6>1. Upload Video API</h6>
-    <ol>
-        <li><strong>Method:</strong> <code>POST /api/v1/videos</code></li>
-        <li><strong>Headers:</strong>
-            <ul>
-                <li><code>Authorization: Bearer &lt;token&gt;</code></li>
-                <li><code>Content-Type: multipart/form-data</code></li>
-            </ul>
-        </li>
-        <li><strong>Body:</strong>
-            <pre>{
+  <h5>API design</h5>
+  <h6>1. Upload Video API</h6>
+  <ol>
+    <li><strong>Method:</strong> <code>POST /api/v1/videos</code></li>
+    <li>
+      <strong>Headers:</strong>
+      <ul>
+        <li><code>Authorization: Bearer &lt;token&gt;</code></li>
+        <li><code>Content-Type: multipart/form-data</code></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Body:</strong>
+      <pre>
+{
     "title": "My Travel Vlog",
     "description": "Exploring Bali",
     "tags": ["travel", "vlog", "bali"],
     "file": &lt;binary_video_file&gt;
     }
-    </pre>
-        </li>
-        <li><strong>Response:</strong>
-            <pre>{
+    </pre
+      >
+    </li>
+    <li>
+      <strong>Response:</strong>
+      <pre>
+{
     "videoId": "vid_12345",
     "status": "processing"
     }
-    </pre>
-        </li>
-    </ol>
-    <hr class="thin-line">
+    </pre
+      >
+    </li>
+  </ol>
+  <hr class="thin-line" />
 
-    <h6>2. Stream Video API</h6>
-    <ol>
-        <li><strong>Method:</strong> <code>GET
-                /api/v1/videos/{videoId}/stream</code></li>
-        <li><strong>Headers:</strong>
-            <ul>
-                <li><code>Authorization: Bearer &lt;token&gt;</code> (optional for
-                    public videos)</li>
-            </ul>
+  <h6>2. Stream Video API</h6>
+  <ol>
+    <li>
+      <strong>Method:</strong> <code>GET /api/v1/videos/{videoId}/stream</code>
+    </li>
+    <li>
+      <strong>Headers:</strong>
+      <ul>
+        <li>
+          <code>Authorization: Bearer &lt;token&gt;</code> (optional for public
+          videos)
         </li>
-        <li><strong>Query Params:</strong> <code>quality=720p</code>,
-            <code>format=HLS</code></li>
-        <li><strong>Response:</strong> Returns <code>.m3u8</code> playlist or video
-            chunks (served via CDN)</li>
-    </ol>
-    <hr class="thin-line">
+      </ul>
+    </li>
+    <li>
+      <strong>Query Params:</strong> <code>quality=720p</code>,
+      <code>format=HLS</code>
+    </li>
+    <li>
+      <strong>Response:</strong> Returns <code>.m3u8</code> playlist or video
+      chunks (served via CDN)
+    </li>
+  </ol>
+  <hr class="thin-line" />
 
-    <h6>3. Search Videos API</h6>
-    <ol>
-        <li><strong>Method:</strong> <code>GET /api/v1/videos/search</code></li>
-        <li><strong>Query Params:</strong>
-            <ul>
-                <li><code>q=travel vlog</code></li>
-                <li><code>page=1</code></li>
-                <li><code>limit=20</code></li>
-            </ul>
-        </li>
-        <li><strong>Response:</strong>
-            <pre>{
+  <h6>3. Search Videos API</h6>
+  <ol>
+    <li><strong>Method:</strong> <code>GET /api/v1/videos/search</code></li>
+    <li>
+      <strong>Query Params:</strong>
+      <ul>
+        <li><code>q=travel vlog</code></li>
+        <li><code>page=1</code></li>
+        <li><code>limit=20</code></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Response:</strong>
+      <pre>
+{
     "results": [
         {
         "videoId": "vid_12345",
@@ -235,297 +301,449 @@
         }
     ]
     }
-    </pre>
-        </li>
-    </ol>
-    <hr class="thin-line">
+    </pre
+      >
+    </li>
+  </ol>
+  <hr class="thin-line" />
 
-    <h6>4. Like / Dislike Video API</h6>
-    <ol>
-        <li><strong>Method:</strong>
-            <ul>
-                <li><code>POST /api/v1/videos/{videoId}/like</code></li>
-                <li><code>POST /api/v1/videos/{videoId}/dislike</code></li>
-            </ul>
-        </li>
-        <li><strong>Headers:</strong> <code>Authorization: Bearer
-                &lt;token&gt;</code></li>
-        <li><strong>Response:</strong>
-            <pre>{
+  <h6>4. Like / Dislike Video API</h6>
+  <ol>
+    <li>
+      <strong>Method:</strong>
+      <ul>
+        <li><code>POST /api/v1/videos/{videoId}/like</code></li>
+        <li><code>POST /api/v1/videos/{videoId}/dislike</code></li>
+      </ul>
+    </li>
+    <li>
+      <strong>Headers:</strong> <code>Authorization: Bearer &lt;token&gt;</code>
+    </li>
+    <li>
+      <strong>Response:</strong>
+      <pre>
+{
     "videoId": "vid_12345",
     "likes": 1023,
     "dislikes": 45
     }
-    </pre>
-        </li>
-    </ol>
-    <hr class="thin-line">
+    </pre
+      >
+    </li>
+  </ol>
+  <hr class="thin-line" />
 
-    <h6>5. Comment on Video API</h6>
-    <ol>
-        <li><strong>Method:</strong> <code>POST
-                /api/v1/videos/{videoId}/comments</code></li>
-        <li><strong>Headers:</strong> <code>Authorization: Bearer
-                &lt;token&gt;</code></li>
-        <li><strong>Body:</strong>
-            <pre>{
+  <h6>5. Comment on Video API</h6>
+  <ol>
+    <li>
+      <strong>Method:</strong>
+      <code>POST /api/v1/videos/{videoId}/comments</code>
+    </li>
+    <li>
+      <strong>Headers:</strong> <code>Authorization: Bearer &lt;token&gt;</code>
+    </li>
+    <li>
+      <strong>Body:</strong>
+      <pre>
+{
     "comment": "Amazing video! Keep it up 👏"
     }
-    </pre>
-        </li>
-        <li><strong>Response:</strong>
-            <pre>{
+    </pre
+      >
+    </li>
+    <li>
+      <strong>Response:</strong>
+      <pre>
+{
     "commentId": "cmt_98765",
     "videoId": "vid_12345",
     "userId": "usr_1111",
     "comment": "Amazing video! Keep it up 👏",
     "createdAt": "2025-08-18T10:00:00Z"
     }
-    </pre>
-        </li>
-    </ol>
-    <hr class="thin-line">
+    </pre
+      >
+    </li>
+  </ol>
+  <hr class="thin-line" />
 
-    <h6>6. Get Thumbnails API</h6>
-    <ol>
-        <li><strong>Method:</strong> <code>GET
-                /api/v1/videos/{videoId}/thumbnails</code></li>
-        <li><strong>Response:</strong>
-            <pre>{
+  <h6>6. Get Thumbnails API</h6>
+  <ol>
+    <li>
+      <strong>Method:</strong>
+      <code>GET /api/v1/videos/{videoId}/thumbnails</code>
+    </li>
+    <li>
+      <strong>Response:</strong>
+      <pre>
+{
             "thumbnails": [
                     {"resolution": "120x90", "url": "https://cdn.example.com/thumbs/vid_12345_120x90.jpg"},
                     {"resolution": "480x360", "url": "https://cdn.example.com/thumbs/vid_12345_480x360.jpg"},
                     {"resolution": "1280x720", "url": "https://cdn.example.com/thumbs/vid_12345_1280x720.jpg"}
                 ]
             }
-            </pre>
-        </li>
-    </ol>
+            </pre
+      >
+    </li>
+  </ol>
 </div>
-<hr>
+<hr />
 
 <div id="Detail Design and Flow Using AWS">
-    <h5>Detail Design and Flow Using AWS</h5>
-    <br>
-    <img src="../../../images/youtube-detailed-hld.jpg" class="responsive-image">
-    <br>
-    <h6>📌 Overview</h6>
-    <ul>
+  <h5>Detail Design and Flow Using AWS</h5>
+  <br />
+  <img
+    src="../../../images/youtube-detailed-hld.jpg"
+    class="responsive-image"
+  />
+  <br />
+  <h6>📌 Overview</h6>
+  <ul>
     <li>High-level YouTube-like architecture implemented on AWS</li>
     <li>Goals: durability, scalability, low latency, global delivery</li>
-    <li>Core components: CloudFront, ALB, Web/App servers, S3, MediaConvert, DynamoDB, RDS</li>
-    </ul>
-    <hr class="thin-line">
+    <li>
+      Core components: CloudFront, ALB, Web/App servers, S3, MediaConvert,
+      DynamoDB, RDS
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-    <b>🏗️ Components & Responsibilities</b>
-    <ul>
+  <b>🏗️ Components & Responsibilities</b>
+  <ul>
     <li><strong>User</strong> → Browser or mobile client</li>
-    <li><strong>Amazon CloudFront (CDN)</strong> → Edge caching for low latency</li>
-    <li><strong>ALB (Application Load Balancer)</strong> → Routes traffic, SSL termination</li>
+    <li>
+      <strong>Amazon CloudFront (CDN)</strong> → Edge caching for low latency
+    </li>
+    <li>
+      <strong>ALB (Application Load Balancer)</strong> → Routes traffic, SSL
+      termination
+    </li>
     <li><strong>Web Servers</strong> → Serve UI, session, static content</li>
-    <li><strong>Application Servers</strong> → Business logic, uploads, metadata</li>
+    <li>
+      <strong>Application Servers</strong> → Business logic, uploads, metadata
+    </li>
     <li><strong>S3 Upload Bucket</strong> → Temporary raw video uploads</li>
-    <li><strong>AWS MediaConvert</strong> → Transcoding to multiple bitrates</li>
+    <li>
+      <strong>AWS MediaConvert</strong> → Transcoding to multiple bitrates
+    </li>
     <li><strong>S3 Blob Storage</strong> → Stores transcoded video assets</li>
     <li><strong>DynamoDB</strong> → Video metadata, encoding status</li>
     <li><strong>RDS/DynamoDB</strong> → User profiles, watch history</li>
-    </ul>
-    <hr class="thin-line">
+  </ul>
+  <hr class="thin-line" />
 
-    <b>▶️ Watch Flow</b>
-    <ol>
+  <b>▶️ Watch Flow</b>
+  <ol>
     <li>User requests a video (client → CloudFront)</li>
-    <li>CloudFront checks cache:
-        <ul>
+    <li>
+      CloudFront checks cache:
+      <ul>
         <li><strong>Hit</strong> → Serve directly from edge</li>
         <li><strong>Miss</strong> → Forward to origin (S3 or ALB)</li>
-        </ul>
+      </ul>
     </li>
     <li>App server fetches metadata (DynamoDB/RDS)</li>
     <li>Generates signed URLs / playback manifest</li>
     <li>Client streams video via CloudFront (adaptive bitrate)</li>
-    </ol>
-    <hr class="thin-line">
+  </ol>
+  <hr class="thin-line" />
 
-    <b>⬆️ Upload Flow</b>
-    <ol>
+  <b>⬆️ Upload Flow</b>
+  <ol>
     <li>User uploads video (client → ALB → App server)</li>
     <li>App server generates pre-signed S3 upload URL</li>
     <li>User uploads raw video → <strong>S3 Upload Bucket</strong></li>
     <li>App server updates metadata (status = uploaded)</li>
-    <li>Triggers MediaConvert job → encodes video → stores in <strong>S3 Blob Storage</strong></li>
+    <li>
+      Triggers MediaConvert job → encodes video → stores in
+      <strong>S3 Blob Storage</strong>
+    </li>
     <li>Metadata updated (status = ready, add final URLs)</li>
     <li>CloudFront serves transcoded video to users</li>
-    </ol>
-    <hr class="thin-line">
+  </ol>
+  <hr class="thin-line" />
 
-    <b>💾 Data & Storage Patterns</b>
-    <ul>
-    <li><strong>S3</strong> → Large objects, lifecycle to Glacier for cold storage</li>
+  <b>💾 Data & Storage Patterns</b>
+  <ul>
+    <li>
+      <strong>S3</strong> → Large objects, lifecycle to Glacier for cold storage
+    </li>
     <li><strong>DynamoDB</strong> → Metadata (videoId → JSON metadata)</li>
-    <li><strong>RDS</strong> → Relational data (users, transactions, watch history)</li>
+    <li>
+      <strong>RDS</strong> → Relational data (users, transactions, watch
+      history)
+    </li>
     <li>Use signed URLs & IAM roles for secure access</li>
-    </ul>
-    <hr class="thin-line">
+  </ul>
+  <hr class="thin-line" />
 
-    <b>⚡ Scalability & Reliability</b>
-    <ul>
+  <b>⚡ Scalability & Reliability</b>
+  <ul>
     <li>Autoscale App/Web servers (EKS, EC2 ASG)</li>
     <li>CloudFront reduces latency and origin load</li>
     <li>S3 multipart/resumable uploads for large files</li>
     <li>Asynchronous transcoding with queues (SQS/EventBridge)</li>
     <li>RDS with Multi-AZ, read replicas, backups</li>
-    </ul>
-    <hr class="thin-line">
+  </ul>
+  <hr class="thin-line" />
 
-    <b>🔒 Security & Monitoring</b>
-    <ul>
+  <b>🔒 Security & Monitoring</b>
+  <ul>
     <li>HTTPS everywhere (TLS via CloudFront/ALB)</li>
     <li>IAM roles (no static keys)</li>
     <li>Audit: CloudTrail + GuardDuty</li>
     <li>Monitoring: CloudWatch metrics, logs, alarms</li>
     <li>Protection: WAF, rate limiting, bot detection</li>
-    </ul>
+  </ul>
 </div>
-<hr>
+<hr />
 <div id="Fulfilling requirements using AWS">
-    <h5>📌 Fulfilling requirements using AWS</h5>
+  <h5>📌 Fulfilling requirements using AWS</h5>
 
-    <h6>⚡ Low Latency / Smooth Streaming</h6>
-    <ul>
-    <li><strong>CloudFront (CDN)</strong> → Edge caching near ISPs ensures low latency video delivery.</li>
-    <li><strong>S3 + EFS + DynamoDB</strong> → Different storage for blobs, metadata, thumbnails for optimized access.</li>
-    <li><strong>ElastiCache (Redis/Memcached)</strong> → Distributed caching for metadata & frequently accessed content.</li>
-    <li><strong>CloudFront Memory Cache + Regional Edge Caches</strong> → Serve most-viewed content quickly.</li>
-    </ul>
-    <hr class="thin-line">
+  <h6>⚡ Low Latency / Smooth Streaming</h6>
+  <ul>
+    <li>
+      <strong>CloudFront (CDN)</strong> → Edge caching near ISPs ensures low
+      latency video delivery.
+    </li>
+    <li>
+      <strong>S3 + EFS + DynamoDB</strong> → Different storage for blobs,
+      metadata, thumbnails for optimized access.
+    </li>
+    <li>
+      <strong>ElastiCache (Redis/Memcached)</strong> → Distributed caching for
+      metadata & frequently accessed content.
+    </li>
+    <li>
+      <strong>CloudFront Memory Cache + Regional Edge Caches</strong> → Serve
+      most-viewed content quickly.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-    <h6>📈 Scalability</h6>
-    <ul>
-    <li><strong>Auto Scaling Groups (EC2/EKS)</strong> → Horizontally scale web & app servers.</li>
-    <li><strong>Aurora / DynamoDB</strong> → Scale beyond traditional MySQL limits (Aurora auto-scaling, DynamoDB partitions).</li>
-    <li><strong>S3</strong> → Virtually unlimited object storage, automatically scales with demand.</li>
-    </ul>
-    <hr class="thin-line">
+  <h6>📈 Scalability</h6>
+  <ul>
+    <li>
+      <strong>Auto Scaling Groups (EC2/EKS)</strong> → Horizontally scale web &
+      app servers.
+    </li>
+    <li>
+      <strong>Aurora / DynamoDB</strong> → Scale beyond traditional MySQL limits
+      (Aurora auto-scaling, DynamoDB partitions).
+    </li>
+    <li>
+      <strong>S3</strong> → Virtually unlimited object storage, automatically
+      scales with demand.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-    <h6>✅ Availability</h6>
-    <ul>
-    <li><strong>Multi-AZ RDS / DynamoDB Global Tables</strong> → Redundancy across AZs & regions.</li>
-    <li><strong>S3 Cross-Region Replication</strong> → Ensures data durability & disaster recovery.</li>
-    <li><strong>Route 53 + Global Accelerator</strong> → Traffic steering to healthy regions.</li>
+  <h6>✅ Availability</h6>
+  <ul>
+    <li>
+      <strong>Multi-AZ RDS / DynamoDB Global Tables</strong> → Redundancy across
+      AZs & regions.
+    </li>
+    <li>
+      <strong>S3 Cross-Region Replication</strong> → Ensures data durability &
+      disaster recovery.
+    </li>
+    <li>
+      <strong>Route 53 + Global Accelerator</strong> → Traffic steering to
+      healthy regions.
+    </li>
     <li><strong>ALB/NLB</strong> → Exclude unhealthy servers automatically.</li>
-    </ul>
-    <hr class="thin-line">
+  </ul>
+  <hr class="thin-line" />
 
-    <h6>🔒 Reliability</h6>
-    <ul>
-    <li><strong>DynamoDB Partitioning</strong> → Data sharding avoids bottlenecks.</li>
-    <li><strong>Redundant Hardware in AWS AZs</strong> → Built-in fault tolerance.</li>
-    <li><strong>CloudWatch + Health Checks</strong> → Heartbeat monitoring, auto-removal of faulty nodes.</li>
-    <li><strong>Consistent Hashing via DynamoDB / ElastiCache</strong> → Smooth scaling, balanced load distribution.</li>
-    </ul>
-
+  <h6>🔒 Reliability</h6>
+  <ul>
+    <li>
+      <strong>DynamoDB Partitioning</strong> → Data sharding avoids bottlenecks.
+    </li>
+    <li>
+      <strong>Redundant Hardware in AWS AZs</strong> → Built-in fault tolerance.
+    </li>
+    <li>
+      <strong>CloudWatch + Health Checks</strong> → Heartbeat monitoring,
+      auto-removal of faulty nodes.
+    </li>
+    <li>
+      <strong>Consistent Hashing via DynamoDB / ElastiCache</strong> → Smooth
+      scaling, balanced load distribution.
+    </li>
+  </ul>
 </div>
-<hr>
+<hr />
 
 <div id="Followup Questions and Answers">
-    <h5>Followup Questions and Answers</h5>
-        <h6>1. Why do we need a server between the client and the encoder?</h6>
-        <ul>
-        <li>The server acts as a secure gateway performing authentication, authorization, and throttling.</li>
-        <li>It orchestrates encoding jobs asynchronously, extracts and stores metadata, manages retries upon failure, and decouples encoding workload from client requests for better scalability.</li>
-        </ul>
-        <hr class="thin-line">
+  <h5>Followup Questions and Answers</h5>
+  <h6>1. Why do we need a server between the client and the encoder?</h6>
+  <ul>
+    <li>
+      The server acts as a secure gateway performing authentication,
+      authorization, and throttling.
+    </li>
+    <li>
+      It orchestrates encoding jobs asynchronously, extracts and stores
+      metadata, manages retries upon failure, and decouples encoding workload
+      from client requests for better scalability.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>2. How does the video upload process work end-to-end?</h6>
-        <ul>
-        <li>Users upload videos via the API to the Application Server, which generates a pre-signed S3 upload URL.</li>
-        <li>The raw video is uploaded to an S3 Upload Bucket asynchronously.</li>
-        <li>The Application Server updates metadata to 'uploaded' state, triggers AWS MediaConvert for transcoding, and stores encoded output in Blob Storage.</li>
-        <li>Finally, metadata is updated with ready status and CDN URLs.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>2. How does the video upload process work end-to-end?</h6>
+  <ul>
+    <li>
+      Users upload videos via the API to the Application Server, which generates
+      a pre-signed S3 upload URL.
+    </li>
+    <li>The raw video is uploaded to an S3 Upload Bucket asynchronously.</li>
+    <li>
+      The Application Server updates metadata to 'uploaded' state, triggers AWS
+      MediaConvert for transcoding, and stores encoded output in Blob Storage.
+    </li>
+    <li>Finally, metadata is updated with ready status and CDN URLs.</li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>3. How is scalability achieved in this architecture?</h6>
-        <ul>
-        <li>Using AWS Auto Scaling Groups for Web and Application servers, partitioned and globally distributed databases (DynamoDB, Aurora), and a highly scalable object store (S3).</li>
-        <li>CDN (CloudFront) caches content globally, reducing origin load and latency.</li>
-        <li>Asynchronous processing via SQS/EventBridge further decouples services, allowing independent scaling.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>3. How is scalability achieved in this architecture?</h6>
+  <ul>
+    <li>
+      Using AWS Auto Scaling Groups for Web and Application servers, partitioned
+      and globally distributed databases (DynamoDB, Aurora), and a highly
+      scalable object store (S3).
+    </li>
+    <li>
+      CDN (CloudFront) caches content globally, reducing origin load and
+      latency.
+    </li>
+    <li>
+      Asynchronous processing via SQS/EventBridge further decouples services,
+      allowing independent scaling.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>4. How is low latency and smooth streaming ensured?</h6>
-        <ul>
-        <li>CloudFront's edge locations cache video chunks close to users, minimizing latency.</li>
-        <li>Adaptive bitrate streaming is supported through AWS MediaConvert, allowing clients to switch video quality based on network conditions.</li>
-        <li>ElastiCache (Redis/Memcached) speeds up metadata retrieval.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>4. How is low latency and smooth streaming ensured?</h6>
+  <ul>
+    <li>
+      CloudFront's edge locations cache video chunks close to users, minimizing
+      latency.
+    </li>
+    <li>
+      Adaptive bitrate streaming is supported through AWS MediaConvert, allowing
+      clients to switch video quality based on network conditions.
+    </li>
+    <li>ElastiCache (Redis/Memcached) speeds up metadata retrieval.</li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>5. What databases are used and why?</h6>
-        <ul>
-        <li><strong>DynamoDB</strong> for metadata and encoding status because of its low latency and scalable key-value capabilities.</li>
-        <li><strong>Amazon RDS/Aurora</strong> for relational data such as user profiles and transactions, benefiting from ACID compliance and multi-AZ reliability.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>5. What databases are used and why?</h6>
+  <ul>
+    <li>
+      <strong>DynamoDB</strong> for metadata and encoding status because of its
+      low latency and scalable key-value capabilities.
+    </li>
+    <li>
+      <strong>Amazon RDS/Aurora</strong> for relational data such as user
+      profiles and transactions, benefiting from ACID compliance and multi-AZ
+      reliability.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>6. How is data durability and availability ensured?</h6>
-        <ul>
-        <li>S3 offers 11 nines durability with cross-region replication for disaster recovery.</li>
-        <li>RDS operates in multi-AZ mode with automated backups and failovers.</li>
-        <li>DynamoDB global tables replicate data across regions.</li>
-        <li>Health checks and auto-scaling maintain availability.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>6. How is data durability and availability ensured?</h6>
+  <ul>
+    <li>
+      S3 offers 11 nines durability with cross-region replication for disaster
+      recovery.
+    </li>
+    <li>RDS operates in multi-AZ mode with automated backups and failovers.</li>
+    <li>DynamoDB global tables replicate data across regions.</li>
+    <li>Health checks and auto-scaling maintain availability.</li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>7. How is security managed in this architecture?</h6>
-        <ul>
-        <li>All API endpoints use HTTPS with TLS.</li>
-        <li>IAM roles grant least privilege access to resources.</li>
-        <li>Pre-signed URLs provide time-limited access for uploads.</li>
-        <li>AWS WAF protects APIs.</li>
-        <li>CloudTrail and GuardDuty monitor and alert for suspicious activities.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>7. How is security managed in this architecture?</h6>
+  <ul>
+    <li>All API endpoints use HTTPS with TLS.</li>
+    <li>IAM roles grant least privilege access to resources.</li>
+    <li>Pre-signed URLs provide time-limited access for uploads.</li>
+    <li>AWS WAF protects APIs.</li>
+    <li>
+      CloudTrail and GuardDuty monitor and alert for suspicious activities.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>8. How does the system handle video encoding failures?</h6>
-        <ul>
-        <li>Encoding jobs are processed asynchronously with reliable queues.</li>
-        <li>On failure, jobs can be retried or redirected to alternate encoding workers.</li>
-        <li>The Application Server monitors job statuses and notifies clients or triggers alerts for manual intervention.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>8. How does the system handle video encoding failures?</h6>
+  <ul>
+    <li>Encoding jobs are processed asynchronously with reliable queues.</li>
+    <li>
+      On failure, jobs can be retried or redirected to alternate encoding
+      workers.
+    </li>
+    <li>
+      The Application Server monitors job statuses and notifies clients or
+      triggers alerts for manual intervention.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>9. Why use both S3 Upload Bucket and Blob Storage?</h6>
-        <ul>
-        <li>The Upload Bucket temporarily holds raw user uploads separate from encoded video files.</li>
-        <li>This separation helps manage lifecycle policies, access controls, and provides controlled ingestion for the encoding pipeline.</li>
-        <li>Blob Storage holds encoded, optimized video chunks ready for streaming.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>9. Why use both S3 Upload Bucket and Blob Storage?</h6>
+  <ul>
+    <li>
+      The Upload Bucket temporarily holds raw user uploads separate from encoded
+      video files.
+    </li>
+    <li>
+      This separation helps manage lifecycle policies, access controls, and
+      provides controlled ingestion for the encoding pipeline.
+    </li>
+    <li>
+      Blob Storage holds encoded, optimized video chunks ready for streaming.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>10. How are user interactions like likes, comments handled?</h6>
-        <ul>
-        <li>These are typically stored in DynamoDB for low latency writes and reads.</li>
-        <li>Transactional operations requiring strong consistency might use RDS.</li>
-        <li>Caching with ElastiCache improves performance for frequently accessed data.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>10. How are user interactions like likes, comments handled?</h6>
+  <ul>
+    <li>
+      These are typically stored in DynamoDB for low latency writes and reads.
+    </li>
+    <li>
+      Transactional operations requiring strong consistency might use RDS.
+    </li>
+    <li>
+      Caching with ElastiCache improves performance for frequently accessed
+      data.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>11. What kind of CDN caching strategy is used?</h6>
-        <ul>
-        <li>CloudFront uses edge caching with regional edge caches.</li>
-        <li>Popular videos are quickly available without hitting origin.</li>
-        <li>Cache invalidation policy ensures updated content availability.</li>
-        <li>Signed URLs restrict unauthorized CDN access.</li>
-        </ul>
-        <hr class="thin-line">
+  <h6>11. What kind of CDN caching strategy is used?</h6>
+  <ul>
+    <li>CloudFront uses edge caching with regional edge caches.</li>
+    <li>Popular videos are quickly available without hitting origin.</li>
+    <li>Cache invalidation policy ensures updated content availability.</li>
+    <li>Signed URLs restrict unauthorized CDN access.</li>
+  </ul>
+  <hr class="thin-line" />
 
-        <h6>12. How does the system support different video qualities and formats?</h6>
-        <ul>
-        <li>AWS MediaConvert transcodes uploaded videos into multiple resolutions and streaming formats (HLS/DASH).</li>
-        <li>Video manifests (.m3u8) allow client players to select appropriate streams dynamically based on bandwidth.</li>
-        </ul>
-        <hr class="thin-line">
-
+  <h6>
+    12. How does the system support different video qualities and formats?
+  </h6>
+  <ul>
+    <li>
+      AWS MediaConvert transcodes uploaded videos into multiple resolutions and
+      streaming formats (HLS/DASH).
+    </li>
+    <li>
+      Video manifests (.m3u8) allow client players to select appropriate streams
+      dynamically based on bandwidth.
+    </li>
+  </ul>
+  <hr class="thin-line" />
 </div>

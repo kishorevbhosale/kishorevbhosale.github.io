@@ -1,36 +1,89 @@
 <div>
-    <h2 style="text-align: center;">Designing Splitwise</h2>
+  <h2 style="text-align: center">Designing Splitwise</h2>
 
+  <b>Requirements</b>
+  <ul>
+    <li>
+      The system should allow users to create accounts and manage their profile
+      information.
+    </li>
+    <li>
+      Users should be able to create groups and add other users to the groups.
+    </li>
+    <li>
+      Users should be able to add expenses within a group, specifying the
+      amount, description, and participants.
+    </li>
+    <li>
+      The system should automatically split the expenses among the participants
+      based on their share.
+    </li>
+    <li>
+      Users should be able to view their individual balances with other users
+      and settle up the balances.
+    </li>
+    <li>
+      The system should support different split methods, such as equal split,
+      percentage split, and exact amounts.
+    </li>
+    <li>
+      Users should be able to view their transaction history and group expenses.
+    </li>
+    <li>
+      The system should handle concurrent transactions and ensure data
+      consistency.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Requirements</b>
-    <ul>
-        <li>The system should allow users to create accounts and manage their profile information.</li>
-        <li>Users should be able to create groups and add other users to the groups.</li>
-        <li>Users should be able to add expenses within a group, specifying the amount, description, and participants.</li>
-        <li>The system should automatically split the expenses among the participants based on their share.</li>
-        <li>Users should be able to view their individual balances with other users and settle up the balances.</li>
-        <li>The system should support different split methods, such as equal split, percentage split, and exact amounts.</li>
-        <li>Users should be able to view their transaction history and group expenses.</li>
-        <li>The system should handle concurrent transactions and ensure data consistency.</li>
-    </ul>
-    <hr>
+  <b>Design Components:</b>
+  <ul>
+    <li>
+      The User class represents a user in the Splitwise system, with properties
+      such as ID, name, email, and a map to store balances with other users.
+    </li>
+    <li>
+      The Group class represents a group in Splitwise, containing a list of
+      member users and a list of expenses.
+    </li>
+    <li>
+      The Expense class represents an expense within a group, with properties
+      such as ID, amount, description, the user who paid, and a list of splits.
+    </li>
+    <li>
+      The Split class is an abstract class representing the split of an expense.
+      It is extended by EqualSplit, PercentSplit, and ExactSplit classes to
+      handle different split methods.
+    </li>
+    <li>
+      The Transaction class represents a transaction between two users, with
+      properties such as ID, sender, receiver, and amount.
+    </li>
+    <li>
+      The SplitwiseService class is the main class that manages the Splitwise
+      system. It follows the Singleton pattern to ensure only one instance of
+      the service exists.
+    </li>
+    <li>
+      The SplitwiseService class provides methods for adding users, groups, and
+      expenses, splitting expenses, updating balances, settling balances, and
+      creating transactions.
+    </li>
+    <li>
+      Multi-threading is achieved using concurrent data structures such as
+      ConcurrentHashMap and CopyOnWriteArrayList to handle concurrent access to
+      shared resources.
+    </li>
+    <li>
+      The SplitwiseDemo class demonstrates the usage of the Splitwise system by
+      creating users, a group, adding an expense, settling balances, and
+      printing user balances.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Design Components:</b>
-    <ul>
-        <li>The User class represents a user in the Splitwise system, with properties such as ID, name, email, and a map to store balances with other users.</li>
-        <li>The Group class represents a group in Splitwise, containing a list of member users and a list of expenses.</li>
-        <li>The Expense class represents an expense within a group, with properties such as ID, amount, description, the user who paid, and a list of splits.</li>
-        <li>The Split class is an abstract class representing the split of an expense. It is extended by EqualSplit, PercentSplit, and ExactSplit classes to handle different split methods.</li>
-        <li>The Transaction class represents a transaction between two users, with properties such as ID, sender, receiver, and amount.</li>
-        <li>The SplitwiseService class is the main class that manages the Splitwise system. It follows the Singleton pattern to ensure only one instance of the service exists.</li>
-        <li>The SplitwiseService class provides methods for adding users, groups, and expenses, splitting expenses, updating balances, settling balances, and creating transactions.</li>
-        <li>Multi-threading is achieved using concurrent data structures such as ConcurrentHashMap and CopyOnWriteArrayList to handle concurrent access to shared resources.</li>
-        <li>The SplitwiseDemo class demonstrates the usage of the Splitwise system by creating users, a group, adding an expense, settling balances, and printing user balances.</li>
-    </ul>
-    <hr>
-
-    <b>Code Implementation:</b>
-<pre>
+  <b>Code Implementation:</b>
+  <pre>
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -56,18 +109,20 @@ abstract class Split {
         this.amount = amount;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Equal Split
 class EqualSplit extends Split {
     public EqualSplit(User user) {
         super(user);
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Percent Split
 class PercentSplit extends Split {
     private double percentage;
@@ -81,18 +136,20 @@ class PercentSplit extends Split {
         return percentage;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Exact Split
 class ExactSplit extends Split {
     public ExactSplit(User user) {
         super(user);
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // User class
 class User {
     private String id;
@@ -119,9 +176,10 @@ class User {
         return balances;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Expense class
 class Expense {
     private String id;
@@ -150,9 +208,10 @@ class Expense {
         return paidBy;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Group class
 class Group {
     private String id;
@@ -183,9 +242,10 @@ class Group {
         expenses.add(expense);
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Splitwise Service
 class SplitwiseService {
     private static SplitwiseService instance;
@@ -254,9 +314,10 @@ class SplitwiseService {
         }
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Demo Class
 public class SplitwiseDemo {
     public static void main(String[] args) {
@@ -288,17 +349,20 @@ public class SplitwiseDemo {
         service.settleBalance(u2, u1);
     }
 }
-</pre>
+</pre
+  >
 
-    <b>Input:</b>
-    <ul>
-        <li>Alice pays $100 for dinner, split equally among Alice, Bob, and Charlie.</li>
-        <li>Balances are printed for all users.</li>
-        <li>Bob settles balance with Alice.</li>
-    </ul>
+  <b>Input:</b>
+  <ul>
+    <li>
+      Alice pays $100 for dinner, split equally among Alice, Bob, and Charlie.
+    </li>
+    <li>Balances are printed for all users.</li>
+    <li>Bob settles balance with Alice.</li>
+  </ul>
 
-    <b>Output:</b>
-    <pre>
+  <b>Output:</b>
+  <pre>
 Balances for Alice:
   Owes Bob: 33.33333333333333
   Owes Charlie: 33.33333333333333
@@ -307,31 +371,47 @@ Balances for Bob:
 Balances for Charlie:
   Owes Alice: -33.33333333333333
 Settled balance of 33.33333333333333 between Bob and Alice
-    </pre>
-    <hr>
+    </pre
+  >
+  <hr />
 
-    <b>Explanation of the Code:</b>
-    <ul>
-        <li><strong>User:</strong> Represents users with unique IDs and balances.</li>
-        <li><strong>Group:</strong> Represents a group with members and expenses.</li>
-        <li><strong>Expense:</strong> Represents an expense with splits among participants.</li>
-        <li><strong>Split:</strong> Abstract base class for different split methods.</li>
-        <li><strong>SplitwiseService:</strong> Singleton managing the entire Splitwise logic.</li>
-    </ul>
-    <hr>
+  <b>Explanation of the Code:</b>
+  <ul>
+    <li>
+      <strong>User:</strong> Represents users with unique IDs and balances.
+    </li>
+    <li>
+      <strong>Group:</strong> Represents a group with members and expenses.
+    </li>
+    <li>
+      <strong>Expense:</strong> Represents an expense with splits among
+      participants.
+    </li>
+    <li>
+      <strong>Split:</strong> Abstract base class for different split methods.
+    </li>
+    <li>
+      <strong>SplitwiseService:</strong> Singleton managing the entire Splitwise
+      logic.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Design Considerations:</b>
-    <ul>
-        <li>Thread-safe implementation with ConcurrentHashMap and CopyOnWriteArrayList.</li>
-        <li>Extensibility with support for different split types.</li>
-        <li>Single responsibility principle applied across classes.</li>
-    </ul>
-    <hr>
+  <b>Design Considerations:</b>
+  <ul>
+    <li>
+      Thread-safe implementation with ConcurrentHashMap and
+      CopyOnWriteArrayList.
+    </li>
+    <li>Extensibility with support for different split types.</li>
+    <li>Single responsibility principle applied across classes.</li>
+  </ul>
+  <hr />
 
-    <b>Improvements:</b>
-    <ul>
-        <li>Support for percentages and exact split methods in the demo.</li>
-        <li>Enhanced UI for better user experience.</li>
-    </ul>
-    <hr>
+  <b>Improvements:</b>
+  <ul>
+    <li>Support for percentages and exact split methods in the demo.</li>
+    <li>Enhanced UI for better user experience.</li>
+  </ul>
+  <hr />
 </div>

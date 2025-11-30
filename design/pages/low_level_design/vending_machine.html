@@ -1,54 +1,97 @@
 <div>
-    <h2 style="text-align: center;">Designing a Vending Machine</h2>
+  <h2 style="text-align: center">Designing a Vending Machine</h2>
 
-    <div class="custom-container">
-        <ol>
-        <li><a href="#Requirements">Requirements </a></li>
-        <li><a href="#Sequnece">Sequnece Diagram </a></li>
-        <li><a href="#Components">Components </a></li>
-        <li><a href="#Code">Code Implementation </a></li>
-        <li><a href="#Explanation">Design Explanation </a></li>
-        <li><a href="#Considerations">Design Considerations </a></li>
-        </ol>
-    </div>
-    <hr>
-    <div id="Requirements">
-        <h5>Requirements:</h5>
-        <ul>
-            <li>The vending machine should support multiple products with different prices and quantities.</li>
-            <li>The machine should accept coins and notes of different denominations.</li>
-            <li>The machine should dispense the selected product and return change if necessary.</li>
-            <li>The machine should keep track of the available products and their quantities.</li>
-            <li>The machine should handle multiple transactions concurrently and ensure data consistency.</li>
-            <li>The machine should provide an interface for restocking products and collecting money.</li>
-            <li>The machine should handle exceptional scenarios, such as insufficient funds or out-of-stock products.</li>
-        </ul>
-    </div>
-    <hr>
+  <div class="custom-container">
+    <ol>
+      <li><a href="#Requirements">Requirements </a></li>
+      <li><a href="#Sequnece">Sequnece Diagram </a></li>
+      <li><a href="#Components">Components </a></li>
+      <li><a href="#Code">Code Implementation </a></li>
+      <li><a href="#Explanation">Design Explanation </a></li>
+      <li><a href="#Considerations">Design Considerations </a></li>
+    </ol>
+  </div>
+  <hr />
+  <div id="Requirements">
+    <h5>Requirements:</h5>
+    <ul>
+      <li>
+        The vending machine should support multiple products with different
+        prices and quantities.
+      </li>
+      <li>
+        The machine should accept coins and notes of different denominations.
+      </li>
+      <li>
+        The machine should dispense the selected product and return change if
+        necessary.
+      </li>
+      <li>
+        The machine should keep track of the available products and their
+        quantities.
+      </li>
+      <li>
+        The machine should handle multiple transactions concurrently and ensure
+        data consistency.
+      </li>
+      <li>
+        The machine should provide an interface for restocking products and
+        collecting money.
+      </li>
+      <li>
+        The machine should handle exceptional scenarios, such as insufficient
+        funds or out-of-stock products.
+      </li>
+    </ul>
+  </div>
+  <hr />
 
-    <div id="Sequnece">
-        <h5>Sequnece Diagram</h5>
-        <img src="../../../images/vending_machine.png" alt="cache" style="display: block; margin: auto; width: 80%;">
-        <hr>
-    </div>
+  <div id="Sequnece">
+    <h5>Sequnece Diagram</h5>
+    <img
+      src="../../../images/vending_machine.png"
+      alt="cache"
+      style="display: block; margin: auto; width: 80%"
+    />
+    <hr />
+  </div>
 
-    <div id="Components">
-        <h5>Components:</h5>
-        <p>The system will consist of the following classes:</p>
-        <ul>
-            <li><strong>Product:</strong> Class to represent the products with their price and quantity.</li>
-            <li><strong>Coin/Note:</strong> Class to represent different denominations of coins and notes.</li>
-            <li><strong>VendingMachine:</strong> The core class responsible for handling transactions, accepting coins/notes, dispensing products, and maintaining inventory.</li>
-            <li><strong>Transaction:</strong> Class to represent a single transaction, tracking the inserted money and the product selected.</li>
-            <li><strong>InventoryManager:</strong> A class responsible for managing the products in the vending machine (restocking, checking availability).</li>
-            <li><strong>CashManager:</strong> A class responsible for managing the coins and notes in the machine (for storing and returning change).</li>
-        </ul>
-    </div>
-    <hr>
-    
-    <div id="Code">
-        <h5>Code Implementation:</h5>
-        <pre>
+  <div id="Components">
+    <h5>Components:</h5>
+    <p>The system will consist of the following classes:</p>
+    <ul>
+      <li>
+        <strong>Product:</strong> Class to represent the products with their
+        price and quantity.
+      </li>
+      <li>
+        <strong>Coin/Note:</strong> Class to represent different denominations
+        of coins and notes.
+      </li>
+      <li>
+        <strong>VendingMachine:</strong> The core class responsible for handling
+        transactions, accepting coins/notes, dispensing products, and
+        maintaining inventory.
+      </li>
+      <li>
+        <strong>Transaction:</strong> Class to represent a single transaction,
+        tracking the inserted money and the product selected.
+      </li>
+      <li>
+        <strong>InventoryManager:</strong> A class responsible for managing the
+        products in the vending machine (restocking, checking availability).
+      </li>
+      <li>
+        <strong>CashManager:</strong> A class responsible for managing the coins
+        and notes in the machine (for storing and returning change).
+      </li>
+    </ul>
+  </div>
+  <hr />
+
+  <div id="Code">
+    <h5>Code Implementation:</h5>
+    <pre>
 package com.lld;
 
 import java.util.HashMap;
@@ -223,22 +266,41 @@ Dispensing: Chips
 Returning change: 5 cents.
 Collecting money: 5 cents.
         </pre>
-    </div>
+  </div>
 
-<hr>
-    <div id="Considerations">
-        <h5>Design Considerations:</h5>
-        <ul>
-            <li><strong>Concurrency:</strong> To handle concurrent transactions, we can make use of synchronization in key methods like inserting money or updating the product inventory to ensure data consistency.</li>
-            <li><strong>Error Handling:</strong> The design checks for product availability and sufficient funds before dispensing products and returning change. More error handling can be added for cases like invalid coin insertion or invalid inputs.</li>
-            <li><strong>Restocking & Money Collection:</strong> Separate methods to restock products and collect money allow for easy maintenance and operational control.</li>
-        </ul>
-    </div>
-<hr>
-    <h5>Improvements & Extensions:</h5>
+  <hr />
+  <div id="Considerations">
+    <h5>Design Considerations:</h5>
     <ul>
-        <li>Implementing exact change functionality (i.e., returning coins/notes in appropriate denominations).</li>
-        <li>Enhancing inventory tracking with more sophisticated stock management (e.g., product expiration date).</li>
-        <li>Adding functionality for user refunds in case of malfunction.</li>
+      <li>
+        <strong>Concurrency:</strong> To handle concurrent transactions, we can
+        make use of synchronization in key methods like inserting money or
+        updating the product inventory to ensure data consistency.
+      </li>
+      <li>
+        <strong>Error Handling:</strong> The design checks for product
+        availability and sufficient funds before dispensing products and
+        returning change. More error handling can be added for cases like
+        invalid coin insertion or invalid inputs.
+      </li>
+      <li>
+        <strong>Restocking & Money Collection:</strong> Separate methods to
+        restock products and collect money allow for easy maintenance and
+        operational control.
+      </li>
     </ul>
+  </div>
+  <hr />
+  <h5>Improvements & Extensions:</h5>
+  <ul>
+    <li>
+      Implementing exact change functionality (i.e., returning coins/notes in
+      appropriate denominations).
+    </li>
+    <li>
+      Enhancing inventory tracking with more sophisticated stock management
+      (e.g., product expiration date).
+    </li>
+    <li>Adding functionality for user refunds in case of malfunction.</li>
+  </ul>
 </div>

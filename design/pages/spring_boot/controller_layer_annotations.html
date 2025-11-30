@@ -1,24 +1,31 @@
-<h2 style="text-align: center;">Understanding of Mavne Structure</h2>
-<br>
+<h2 style="text-align: center">Understanding of Mavne Structure</h2>
+<br />
 <div class="custom-container">
   <h5>Table of Contents</h5>
-    <ol>
-        <li><a href="#controller">@Controller</a></li>
-        <li><a href="#restcontroller">@RestController</a></li>
-        <li><a href="#responsebody">@ResponseBody</a></li>
-        <li><a href="#requestmapping">@RequestMapping and Derived Annotations</a></li>
-        <li><a href="#requestparam">@RequestParam</a></li>
-        <li><a href="#pathvariable">@PathVariable</a></li>
-        <li><a href="#requestbody">@RequestBody</a></li>
-        <li><a href="#responseentity">@ResponseEntity</a></li>
-    </ol>
+  <ol>
+    <li><a href="#controller">@Controller</a></li>
+    <li><a href="#restcontroller">@RestController</a></li>
+    <li><a href="#responsebody">@ResponseBody</a></li>
+    <li>
+      <a href="#requestmapping">@RequestMapping and Derived Annotations</a>
+    </li>
+    <li><a href="#requestparam">@RequestParam</a></li>
+    <li><a href="#pathvariable">@PathVariable</a></li>
+    <li><a href="#requestbody">@RequestBody</a></li>
+    <li><a href="#responseentity">@ResponseEntity</a></li>
+  </ol>
 </div>
-<hr>
-<h5 id="controller"> @Controller</h5>
+<hr />
+<h5 id="controller">@Controller</h5>
 <ul>
-  <li><b>Definition:</b> Marks a class as a Spring MVC Controller. It returns a <b>View</b> (like JSP, Thymeleaf) instead of JSON/XML by default.</li>
+  <li>
+    <b>Definition:</b> Marks a class as a Spring MVC Controller. It returns a
+    <b>View</b> (like JSP, Thymeleaf) instead of JSON/XML by default.
+  </li>
   <li>Used in MVC pattern for handling web requests.</li>
-  <li>If you need REST APIs, you typically use <b>@RestController</b> instead.</li>
+  <li>
+    If you need REST APIs, you typically use <b>@RestController</b> instead.
+  </li>
 </ul>
 <pre>
 @Controller
@@ -29,12 +36,18 @@ public class HomeController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="restcontroller"> @RestController</h5>
+<h5 id="restcontroller">@RestController</h5>
 <ul>
-  <li><b>Definition:</b> Shortcut annotation = <b>@Controller</b> + <b>@ResponseBody</b>.</li>
-  <li>Automatically serializes returned objects to JSON/XML (using <b>Jackson</b> by default).</li>
+  <li>
+    <b>Definition:</b> Shortcut annotation = <b>@Controller</b> +
+    <b>@ResponseBody</b>.
+  </li>
+  <li>
+    Automatically serializes returned objects to JSON/XML (using
+    <b>Jackson</b> by default).
+  </li>
 </ul>
 <pre>
 @RestController
@@ -46,13 +59,19 @@ public class UserController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="responsebody"> @ResponseBody</h5>
+<h5 id="responsebody">@ResponseBody</h5>
 <ul>
-  <li><b>Definition:</b> Tells Spring to serialize method return value into the HTTP response body.</li>
+  <li>
+    <b>Definition:</b> Tells Spring to serialize method return value into the
+    HTTP response body.
+  </li>
   <li>If not used, Spring assumes return value is a <b>view name</b>.</li>
-  <li><b>Advantages:</b> Converts Java objects → JSON/XML automatically using HttpMessageConverters.</li>
+  <li>
+    <b>Advantages:</b> Converts Java objects → JSON/XML automatically using
+    HttpMessageConverters.
+  </li>
 </ul>
 <pre>
 @Controller
@@ -64,13 +83,16 @@ public class UserController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="requestmapping"> @RequestMapping and Derived Annotations</h5>
+<h5 id="requestmapping">@RequestMapping and Derived Annotations</h5>
 <ul>
-  <li><b>@RequestMapping:</b> Maps HTTP requests to handler methods/classes.</li>
+  <li>
+    <b>@RequestMapping:</b> Maps HTTP requests to handler methods/classes.
+  </li>
   <li>Can define: path, method, headers, consumes, produces.</li>
-  <li><b>Derived annotations:</b>
+  <li>
+    <b>Derived annotations:</b>
     <ul>
       <li><b>@GetMapping</b></li>
       <li><b>@PostMapping</b></li>
@@ -95,13 +117,20 @@ public class UserController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="requestparam"> @RequestParam</h5>
+<h5 id="requestparam">@RequestParam</h5>
 <ul>
   <li>Extracts query parameters from URL.</li>
-  <li>Supports type conversion: primitive, wrapper, String, Enum, custom objects.</li>
-  <li><b>Example URL:</b> <b>http://localhost:8080/api/fetchUser?firstName=Kishor&amp;lastName=Bhosale</b></li>
+  <li>
+    Supports type conversion: primitive, wrapper, String, Enum, custom objects.
+  </li>
+  <li>
+    <b>Example URL:</b>
+    <b
+      >http://localhost:8080/api/fetchUser?firstName=Kishor&amp;lastName=Bhosale</b
+    >
+  </li>
 </ul>
 <pre>
 @RestController
@@ -149,9 +178,9 @@ public class AddressController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="pathvariable"> @PathVariable</h5>
+<h5 id="pathvariable">@PathVariable</h5>
 <ul>
   <li>Binds URI template variable to method parameter.</li>
   <li>Example URL: <b>/api/users/101</b></li>
@@ -167,13 +196,15 @@ public class UserController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="requestbody"> @RequestBody</h5>
+<h5 id="requestbody">@RequestBody</h5>
 <ul>
   <li>Binds HTTP request body → Java object.</li>
   <li>Uses <b>Jackson</b> (default) or Gson for JSON ↔ Object conversion.</li>
-  <li>Field mapping is done by <b>matching JSON keys with POJO field names</b>.</li>
+  <li>
+    Field mapping is done by <b>matching JSON keys with POJO field names</b>.
+  </li>
 </ul>
 <pre>
 public class User {
@@ -192,11 +223,14 @@ public class UserController {
     }
 }
 </pre>
-<hr>
+<hr />
 
-<h5 id="responseentity"> @ResponseEntity</h5>
+<h5 id="responseentity">@ResponseEntity</h5>
 <ul>
-  <li>Represents the complete HTTP response: <b>status</b>, <b>headers</b>, <b>body</b>.</li>
+  <li>
+    Represents the complete HTTP response: <b>status</b>, <b>headers</b>,
+    <b>body</b>.
+  </li>
   <li>Provides fine-grained control compared to just returning objects.</li>
 </ul>
 <pre>
@@ -213,4 +247,4 @@ public class UserController {
     }
 }
 </pre>
-<hr>
+<hr />

@@ -1,122 +1,234 @@
-<h2 style="text-align: center;">System Design Interview - Tips</h2>
-<br>
+<h2 style="text-align: center">System Design Interview - Tips</h2>
+<br />
 <div class="custom-container">
-    <h5>Table of Contents</h5>
-    <ol>
-        <li><a href="#requirements">Clarify Requirements</a></li>
-        <li><a href="#entities">Identify Core Entities</a></li>
-        <li><a href="#api">Define the API / System Interface</a></li>
-        <li><a href="#dataflow">Optional: Outline the Data Flow</a></li>
-        <li><a href="#architecture">High-Level Architecture</a></li>
-        <li><a href="#deepdive">Deep Dive & Scaling Discussion</a></li>
-    </ol>
+  <h5>Table of Contents</h5>
+  <ol>
+    <li><a href="#requirements">Clarify Requirements</a></li>
+    <li><a href="#entities">Identify Core Entities</a></li>
+    <li><a href="#api">Define the API / System Interface</a></li>
+    <li><a href="#dataflow">Optional: Outline the Data Flow</a></li>
+    <li><a href="#architecture">High-Level Architecture</a></li>
+    <li><a href="#deepdive">Deep Dive & Scaling Discussion</a></li>
+  </ol>
 </div>
-<hr>
+<hr />
 <h5 id="requirements">1. Clarify Requirements</h5>
-<p>Start by narrowing down what the system must do and the expectations around its behavior.</p>
+<p>
+  Start by narrowing down what the system must do and the expectations around
+  its behavior.
+</p>
 
 <b>1.1 Functional Requirements</b>
 <ul>
-  <li>List the top 2–3 essential “The user/client should be able to…” actions.</li>
-  <li>Use clarifying questions to validate assumptions (e.g., “Should the system handle X?”, “What happens if Y occurs?”).</li>
-  <li>Focus on the primary workflow — avoid deep feature lists that distract from core design.</li>
+  <li>
+    List the top 2–3 essential “The user/client should be able to…” actions.
+  </li>
+  <li>
+    Use clarifying questions to validate assumptions (e.g., “Should the system
+    handle X?”, “What happens if Y occurs?”).
+  </li>
+  <li>
+    Focus on the primary workflow — avoid deep feature lists that distract from
+    core design.
+  </li>
   <li>Prioritize based on what is most critical for a working MVP.</li>
 </ul>
 
 <b>1.2 Non-Functional Requirements</b>
 <ul>
-  <li>Choose 3–5 system qualities that actually influence design (scalability, consistency, latency, etc.).</li>
-  <li>Add numerical targets whenever possible (e.g., “API response <200ms”).</li>
-  <li>Consider the CAP trade-off your system should favor (consistency vs availability).</li>
-  <li>Evaluate environmental limitations (e.g., low-bandwidth users, memory-limited devices).</li>
+  <li>
+    Choose 3–5 system qualities that actually influence design (scalability,
+    consistency, latency, etc.).
+  </li>
+  <li>
+    Add numerical targets whenever possible (e.g., “API response <200ms”).
+  </li>
+  <li>
+    Consider the CAP trade-off your system should favor (consistency vs
+    availability).
+  </li>
+  <li>
+    Evaluate environmental limitations (e.g., low-bandwidth users,
+    memory-limited devices).
+  </li>
   <li>Determine whether read-heavy or write-heavy scaling is needed.</li>
-  <li>Factor in data durability expectations (e.g., acceptable vs unacceptable data loss).</li>
-  <li>Account for security needs (authorization, encryption, privacy guarantees).</li>
+  <li>
+    Factor in data durability expectations (e.g., acceptable vs unacceptable
+    data loss).
+  </li>
+  <li>
+    Account for security needs (authorization, encryption, privacy guarantees).
+  </li>
   <li>Assess fault tolerance expectations (redundancy, failover behavior).</li>
-  <li>Check for legal or compliance constraints (GDPR, financial regulations, retention rules).</li>
+  <li>
+    Check for legal or compliance constraints (GDPR, financial regulations,
+    retention rules).
+  </li>
 </ul>
 
 <b>1.3 Capacity Estimation</b>
 <ul>
-  <li>Perform calculations only when they meaningfully direct design choices.</li>
-  <li>Skip generic math (DAU, QPS, storage) unless it changes an approach (e.g., sharding a Top-K data structure).</li>
-  <li>Tell the interviewer you will calculate when needed during design, not upfront.</li>
-  <li>Use quick ballpark values rather than detailed arithmetic — the goal is design impact, not precision.</li>
+  <li>
+    Perform calculations only when they meaningfully direct design choices.
+  </li>
+  <li>
+    Skip generic math (DAU, QPS, storage) unless it changes an approach (e.g.,
+    sharding a Top-K data structure).
+  </li>
+  <li>
+    Tell the interviewer you will calculate when needed during design, not
+    upfront.
+  </li>
+  <li>
+    Use quick ballpark values rather than detailed arithmetic — the goal is
+    design impact, not precision.
+  </li>
 </ul>
 
-<hr>
+<hr />
 
 <h5 id="entities">2. Identify Core Entities</h5>
 
-<p>Map out the main objects or resources that form the backbone of your system.</p>
+<p>
+  Map out the main objects or resources that form the backbone of your system.
+</p>
 <ul>
-  <li>List foundational nouns the system revolves around (e.g., User, Tweet, Session, Order).</li>
+  <li>
+    List foundational nouns the system revolves around (e.g., User, Tweet,
+    Session, Order).
+  </li>
   <li>Base them on functional requirements, not implementation guesses.</li>
   <li>Expect the entity list to grow or evolve as you design.</li>
   <li>Use clear names to avoid confusion later; avoid overly generic terms.</li>
-  <li>Don’t attempt a full schema here — only the “what,” not the “details.”</li>
+  <li>
+    Don’t attempt a full schema here — only the “what,” not the “details.”
+  </li>
 </ul>
 
-<hr>
+<hr />
 
 <h5 id="api">3. Define the API / System Interface</h5>
-<p>Specify how external clients or internal components interact with your system.</p>
+<p>
+  Specify how external clients or internal components interact with your system.
+</p>
 
 <b>Protocol Selection</b>
 <ul>
   <li><b>REST</b>: Safe default; fits most interview problems.</li>
-  <li><b>GraphQL</b>: Appropriate for systems serving diverse clients that need customizable data responses.</li>
-  <li><b>gRPC/RPC</b>: Best for high-performance internal communication between microservices.</li>
+  <li>
+    <b>GraphQL</b>: Appropriate for systems serving diverse clients that need
+    customizable data responses.
+  </li>
+  <li>
+    <b>gRPC/RPC</b>: Best for high-performance internal communication between
+    microservices.
+  </li>
 </ul>
 
 <b>API Design Guidelines</b>
 <ul>
-  <li>Use consistent plural resource names (e.g., <code>/users</code>, <code>/orders</code>).</li>
+  <li>
+    Use consistent plural resource names (e.g., <code>/users</code>,
+    <code>/orders</code>).
+  </li>
   <li>Map endpoints directly to core features.</li>
-  <li>Infer the current user through authentication tokens, not request bodies.</li>
-  <li>Keep request/response structures simple and aligned with core entities.</li>
-  <li>Flag features that need real-time interactions (WebSockets, SSE), but define standard APIs first.</li>
+  <li>
+    Infer the current user through authentication tokens, not request bodies.
+  </li>
+  <li>
+    Keep request/response structures simple and aligned with core entities.
+  </li>
+  <li>
+    Flag features that need real-time interactions (WebSockets, SSE), but define
+    standard APIs first.
+  </li>
 </ul>
 
-<hr>
+<hr />
 
 <h5 id="dataflow">4. Optional: Outline the Data Flow</h5>
-<p>Describe only if the problem involves multi-step transformations or pipelines.</p>
+<p>
+  Describe only if the problem involves multi-step transformations or pipelines.
+</p>
 <ul>
-  <li>Summarize the high-level sequence of actions (e.g., “ingest → enrich → index → serve”).</li>
+  <li>
+    Summarize the high-level sequence of actions (e.g., “ingest → enrich → index
+    → serve”).
+  </li>
   <li>Highlight where data is transformed and where it is stored.</li>
   <li>Use this to guide later architectural decisions.</li>
   <li>Keep it simple — a linear list is usually enough.</li>
 </ul>
 
-<hr>
+<hr />
 
 <h5 id="architecture">5. High-Level Architecture</h5>
-<p>Construct an initial version of the system using basic components and clear data flow.</p>
+<p>
+  Construct an initial version of the system using basic components and clear
+  data flow.
+</p>
 <ul>
-  <li>Start from the API and walk through how each request is handled end-to-end.</li>
-  <li>Draw essential components only: load balancers, app servers, data stores, caches, queues.</li>
+  <li>
+    Start from the API and walk through how each request is handled end-to-end.
+  </li>
+  <li>
+    Draw essential components only: load balancers, app servers, data stores,
+    caches, queues.
+  </li>
   <li>Explain what data is written or fetched at each stage.</li>
-  <li>Add important schema fields near the database component (only the fields that matter to your logic).</li>
-  <li>Avoid premature optimization — note advanced ideas but postpone implementing them.</li>
+  <li>
+    Add important schema fields near the database component (only the fields
+    that matter to your logic).
+  </li>
+  <li>
+    Avoid premature optimization — note advanced ideas but postpone implementing
+    them.
+  </li>
   <li>Talk through each box and arrow to show reasoning and ensure clarity.</li>
-  <li>Keep the initial design functional before adding scaling or resilience features.</li>
+  <li>
+    Keep the initial design functional before adding scaling or resilience
+    features.
+  </li>
 </ul>
 
-<hr>
+<hr />
 
 <h5 id="deepdive">6. Deep Dive & Scaling Discussion</h5>
-<p>Refine and strengthen the system by exploring bottlenecks, trade-offs, and improvements.</p>
+<p>
+  Refine and strengthen the system by exploring bottlenecks, trade-offs, and
+  improvements.
+</p>
 <ul>
-  <li>Re-evaluate how the design meets non-functional requirements (availability, latency, scale).</li>
+  <li>
+    Re-evaluate how the design meets non-functional requirements (availability,
+    latency, scale).
+  </li>
   <li>Add caches, sharding, replication, and async processing where needed.</li>
-  <li>Point out slow paths and optimize them (e.g., feed generation, search speed).</li>
-  <li>Discuss trade-offs (e.g., <b>fanout-on-read</b> vs <b>fanout-on-write</b> for timelines).</li>
+  <li>
+    Point out slow paths and optimize them (e.g., feed generation, search
+    speed).
+  </li>
+  <li>
+    Discuss trade-offs (e.g., <b>fanout-on-read</b> vs
+    <b>fanout-on-write</b> for timelines).
+  </li>
   <li>Address potential failure scenarios and how the system recovers.</li>
-  <li>Consider hotspots (e.g., celebrity accounts, trending queries, write bursts).</li>
-  <li>Lead the conversation if senior; respond effectively to interviewer nudges if junior.</li>
+  <li>
+    Consider hotspots (e.g., celebrity accounts, trending queries, write
+    bursts).
+  </li>
+  <li>
+    Lead the conversation if senior; respond effectively to interviewer nudges
+    if junior.
+  </li>
 </ul>
 
-<hr>
+<hr />
 
-<p><b>This framework serves as a fast and reliable checklist, helping you stay focused and confidently deliver a complete system design within the interview’s limited time.</b></p>
+<p>
+  <b
+    >This framework serves as a fast and reliable checklist, helping you stay
+    focused and confidently deliver a complete system design within the
+    interview’s limited time.</b
+  >
+</p>

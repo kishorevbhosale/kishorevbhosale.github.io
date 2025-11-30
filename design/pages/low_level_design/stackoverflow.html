@@ -1,37 +1,76 @@
 <div>
-    <h2 style="text-align: center;">Design for Stack Overflow</h2>
+  <h2 style="text-align: center">Design for Stack Overflow</h2>
 
+  <b>Requirements</b>
+  <ul>
+    <li>
+      Users can post questions, answer questions, and comment on questions and
+      answers.
+    </li>
+    <li>Users can vote on questions and answers.</li>
+    <li>Questions should have tags associated with them.</li>
+    <li>
+      Users can search for questions based on keywords, tags, or user profiles.
+    </li>
+    <li>
+      The system should assign reputation score to users based on their activity
+      and the quality of their contributions.
+    </li>
+    <li>
+      The system should handle concurrent access and ensure data consistency.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Requirements</b>
-    <ul>
-        <li>Users can post questions, answer questions, and comment on questions and answers.</li>
-        <li>Users can vote on questions and answers.</li>
-        <li>Questions should have tags associated with them.</li>
-        <li>Users can search for questions based on keywords, tags, or user profiles.</li>
-        <li>The system should assign reputation score to users based on their activity and the quality of their contributions.</li>
-        <li>The system should handle concurrent access and ensure data consistency.</li>
-    </ul>
-    <hr>
+  <h5>Sequnece Diagram</h5>
+  <img
+    src="../../../images/stackoverflow.png"
+    alt="cache"
+    style="display: block; margin: auto; width: 100%"
+  />
+  <hr />
 
-    <h5>Sequnece Diagram</h5>
-    <img src="../../../images/stackoverflow.png" alt="cache" style="display: block; margin: auto; width: 100%;">
-    <hr>
+  <b>Design Components:</b>
+  <ul>
+    <li>
+      The User class represents a user of the Stack Overflow system, with
+      properties such as id, username, email, and reputation.
+    </li>
+    <li>
+      The Question class represents a question posted by a user, with properties
+      such as id, title, content, author, answers, comments, tags, votes and
+      creation date.
+    </li>
+    <li>
+      The Answer class represents an answer to a question, with properties such
+      as id, content, author, associated question, comments, votes and creation
+      date.
+    </li>
+    <li>
+      The Comment class represents a comment on a question or an answer, with
+      properties such as id, content, author, and creation date.
+    </li>
+    <li>
+      The Tag class represents a tag associated with a question, with properties
+      such as id and name.
+    </li>
+    <li>The Vote class represents vote associated with a question/answer.</li>
+    <li>
+      The StackOverflow class is the main class that manages the Stack Overflow
+      system. It provides methods for creating user, posting questions, answers,
+      and comments, voting on questions and answers, searching for questions,
+      and retrieving questions by tags and users.
+    </li>
+    <li>
+      The StackOverflowDemo class demonstrates the usage of the Stack Overflow
+      system by creating users, posting questions and answers, voting, searching
+      for questions, and retrieving questions by tags and users.
+    </li>
+  </ul>
+  <hr />
 
-    <b>Design Components:</b>
-    <ul>
-        <li>The User class represents a user of the Stack Overflow system, with properties such as id, username, email, and reputation.</li>
-        <li>The Question class represents a question posted by a user, with properties such as id, title, content, author, answers, comments, tags, votes and creation date.</li>
-        <li>The Answer class represents an answer to a question, with properties such as id, content, author, associated question, comments, votes and creation date.</li>
-        <li>The Comment class represents a comment on a question or an answer, with properties such as id, content, author, and creation date.</li>
-        <li>The Tag class represents a tag associated with a question, with properties such as id and name.</li>
-        <li>The Vote class represents vote associated with a question/answer.</li>
-        <li>The StackOverflow class is the main class that manages the Stack Overflow system. It provides methods for creating user, posting questions, answers, and comments, voting on questions and answers, searching for questions, and retrieving questions by tags and users.</li>
-        <li>The StackOverflowDemo class demonstrates the usage of the Stack Overflow system by creating users, posting questions and answers, voting, searching for questions, and retrieving questions by tags and users.</li>
-    </ul>
-    <hr>
-    
-    <b>Code Implementation</b>
-<pre>
+  <b>Code Implementation</b>
+  <pre>
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,9 +106,10 @@ class User {
         this.reputation += points;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Tag Class
 class Tag {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -85,9 +125,10 @@ class Tag {
         return name;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Comment Class
 class Comment {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -103,9 +144,10 @@ class Comment {
         this.creationDate = LocalDateTime.now();
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Vote Class
 class Vote {
     private User voter;
@@ -120,9 +162,10 @@ class Vote {
         return value;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Answer Class
 class Answer {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -150,9 +193,10 @@ class Answer {
         votes += vote.getValue();
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Question Class
 class Question {
     private static final AtomicInteger idGenerator = new AtomicInteger(1);
@@ -198,9 +242,10 @@ class Question {
         return answers;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // StackOverflow Class
 class StackOverflow {
     private List&lt;User&gt; users;
@@ -239,9 +284,10 @@ class StackOverflow {
         return result;
     }
 }
-</pre>
+</pre
+  >
 
-<pre>
+  <pre>
 // Demonstration Class
 public class StackOverflowDemo {
     public static void main(String[] args) {
@@ -270,35 +316,36 @@ public class StackOverflowDemo {
         }
     }
 }
-</pre>
+</pre
+  >
 
-    <b>Sample Input and Output</b>
-    <p>Input:</p>
-    <ul>
-        <li>Create users: JohnDoe and JaneDoe</li>
-        <li>JohnDoe posts a question</li>
-        <li>JaneDoe answers the question</li>
-    </ul>
-    <p>Output:</p>
-    <code>
-    Question: How to learn Java?<br>
+  <b>Sample Input and Output</b>
+  <p>Input:</p>
+  <ul>
+    <li>Create users: JohnDoe and JaneDoe</li>
+    <li>JohnDoe posts a question</li>
+    <li>JaneDoe answers the question</li>
+  </ul>
+  <p>Output:</p>
+  <code>
+    Question: How to learn Java?<br />
     Answer: Start with the basics and practice daily.
-    </code>
-    <hr>
+  </code>
+  <hr />
 
-    <b>Explanation</b>
-    <ul>
-        <li>User creates questions and answers.</li>
-        <li>Answers and comments are tied to specific questions.</li>
-        <li>Search functionality allows filtering by keywords.</li>
-    </ul>
-    <hr>
+  <b>Explanation</b>
+  <ul>
+    <li>User creates questions and answers.</li>
+    <li>Answers and comments are tied to specific questions.</li>
+    <li>Search functionality allows filtering by keywords.</li>
+  </ul>
+  <hr />
 
-    <b>Design Considerations</b>
-    <ul>
-        <li>Thread-safe ID generation using AtomicInteger.</li>
-        <li>Separate classes for clear responsibility and modularity.</li>
-        <li>Expandable for more features, e.g., voting, tags.</li>
-    </ul>
-    <hr>
+  <b>Design Considerations</b>
+  <ul>
+    <li>Thread-safe ID generation using AtomicInteger.</li>
+    <li>Separate classes for clear responsibility and modularity.</li>
+    <li>Expandable for more features, e.g., voting, tags.</li>
+  </ul>
+  <hr />
 </div>
