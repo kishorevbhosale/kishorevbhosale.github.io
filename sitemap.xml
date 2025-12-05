@@ -20,6 +20,22 @@
         <priority>0.8</priority>
     </url>
     
+    <!-- Privacy Policy -->
+    <url>
+        <loc>https://kishorevbhosale.github.io/design/pages/privacy-policy.html</loc>
+        <lastmod>2025-01-27</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Terms of Service -->
+    <url>
+        <loc>https://kishorevbhosale.github.io/design/pages/terms-of-service.html</loc>
+        <lastmod>2025-01-27</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
     <!-- DSA Pages -->
     <url>
         <loc>https://kishorevbhosale.github.io/design/pages/dsa/string.html</loc>
