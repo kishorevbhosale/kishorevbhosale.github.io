@@ -2,6 +2,32 @@
   <h2 style="text-align: center">
     Key Annotations for Spring Boot Microservices
   </h2>
+  <hr>
+  <div class="custom-container" style="margin-bottom: 30px;">
+    <h3>Introduction</h3>
+    <p>
+      Spring Boot provides a comprehensive set of annotations that simplify the development of microservices. 
+      These annotations reduce boilerplate code and enable developers to build robust, scalable microservices 
+      with minimal configuration. Understanding these annotations is crucial for building production-ready 
+      microservices applications.
+    </p>
+    <p>
+      This guide covers the essential annotations used in Spring Boot microservices, including REST controllers, 
+      dependency injection, configuration, and service discovery annotations. Each annotation is explained with 
+      practical examples to help you understand their usage in real-world scenarios.
+    </p>
+    <h4>Why Annotations Matter in Microservices:</h4>
+    <ul>
+      <li><strong>Reduced Configuration:</strong> Annotations eliminate the need for XML configuration files</li>
+      <li><strong>Code Clarity:</strong> Annotations make the code more readable and self-documenting</li>
+      <li><strong>Dependency Injection:</strong> Enable automatic dependency injection and component scanning</li>
+      <li><strong>RESTful APIs:</strong> Simplify the creation of REST endpoints</li>
+      <li><strong>Configuration Management:</strong> Externalize configuration for different environments</li>
+    </ul>
+  </div>
+  <hr>
+  
+  <h3>REST Controller Annotations</h3>
   <h4>@RestController</h4>
   <p>
     Combines @Controller and @ResponseBody. It indicates that a class is a
@@ -196,4 +222,25 @@
         }
     </pre
   >
+</div>
+
+<hr>
+<div class="custom-container" style="margin-top: 30px;">
+  <h3>Summary</h3>
+  <p>
+    Understanding and properly using these annotations is essential for building robust Spring Boot microservices. 
+    These annotations provide a declarative way to configure your application, reducing boilerplate code and improving 
+    code readability. When building microservices, always consider:
+  </p>
+  <ul>
+    <li><strong>RESTful Design:</strong> Use appropriate HTTP method annotations (@GetMapping, @PostMapping, etc.)</li>
+    <li><strong>Dependency Injection:</strong> Leverage @Autowired, @Component, @Service, and @Repository for loose coupling</li>
+    <li><strong>Configuration:</strong> Use @ConfigurationProperties and @Value for externalized configuration</li>
+    <li><strong>Error Handling:</strong> Implement @ExceptionHandler and @ControllerAdvice for centralized exception handling</li>
+    <li><strong>Security:</strong> Apply @PreAuthorize and @Secured for method-level security</li>
+  </ul>
+  <p>
+    By mastering these annotations, you'll be able to build scalable, maintainable microservices that follow Spring Boot 
+    best practices and are ready for production deployment.
+  </p>
 </div>
