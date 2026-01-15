@@ -1,8 +1,21 @@
-<div class="container">
-    <h2 style="text-align: center;">Quicly Build a Microservice using Spring Boot</h2>
-        <hr>
+<h2 style="text-align: center;">Build a Microservice using Spring Boot</h2>
+<br>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#empty">1. Build Empty Spring Boot Application</a></li>            
+        <li><a href="#db-logic">2. Build Database-Related Logic (Entities, Repositories, and DTOs)</a></li>
+        <li><a href="#business-logic">3. Build Business Logic (Service Layer)</a></li>
+        <li><a href="#exception">4. Build Global Exception Handling Logic</a></li>
+        <li><a href="#validation">5. Perform Data Validation on the Input</a></li>
+        <li><a href="#auditing">6. Perform Auditing Using Spring Data JPA</a></li>
+        <li><a href="#openapi">7. Documenting REST API Using Springdoc OpenAPI</a></li>
+    </ol>
+</div>
+<hr>
+
         <div class="content">
-            <h5>1. Build Empty Spring Boot Application</h3>
+            <h5 id="empty">1. Build Empty Spring Boot Application</h5>            
             <p>Create a new Spring Boot project using Spring Initializr or your preferred IDE.</p>
             <p>
                 Include the following dependencies:
@@ -26,7 +39,9 @@
             </pre>
             
             <br>
-            <h5>2. Build Database-Related Logic (Entities, Repositories, and DTOs)</h3>
+            <hr>
+
+            <h5 id="db-logic">2. Build Database-Related Logic (Entities, Repositories, and DTOs)</h5>
             <p>
                 Define a database entity using the <b>@Entity</b> annotation, a primary key using <b>@Id</b>, and a repository interface.
             </p>
@@ -57,7 +72,8 @@
             </pre>
 
             <br>
-            <h5>3. Build Business Logic (Service Layer)</h3>
+            <hr>
+            <h5 id="business-logic">3. Build Business Logic (Service Layer)</h5>
             <p>
                 Create a service class with business logic using <b>@Service</b> and <b>@Transactional</b>.
             </p>
@@ -80,7 +96,8 @@
             </pre>
 
             <br>
-            <h5>4. Build Global Exception Handling Logic</h3>
+            <hr>
+            <h5 id="exception">4. Build Global Exception Handling Logic</h5>
             <p>
                 Use <b>@ControllerAdvice</b> and <b>@ExceptionHandler</b> to handle exceptions globally.
             </p>
@@ -96,7 +113,8 @@
             </pre>
 
             <br>
-            <h5>5. Perform Data Validation on the Input</h3>
+            <hr>
+            <h5 id="validation">5. Perform Data Validation on the Input</h5>
             <p>
                 Use <b>@Valid</b>, <b>@NotNull</b>, <b>@Size</b>, and other validation annotations in DTOs.
             </p>
@@ -128,7 +146,8 @@
             </pre>
 
             <br>
-            <h5>6. Perform Auditing Using Spring Data JPA</h3>
+            <hr>
+            <h5 id="auditing">6. Perform Auditing Using Spring Data JPA</h5>
             <p>
                 Enable auditing using <b>@EnableJpaAuditing</b> and mark the entity fields with auditing annotations like <b>@CreatedDate</b> and <b>@LastModifiedDate</b>.
             </p>
@@ -158,7 +177,8 @@
             </pre>
 
             <br>
-            <h5>7. Documenting REST API Using Springdoc OpenAPI</h3>
+            <hr>
+            <h5 id="openapi">7. Documenting REST API Using Springdoc OpenAPI</h5>
             <p>
                 Add annotations such as <b>@Operation</b>, <b>@ApiResponse</b>, and <b>@Schema</b> to document your API.
             </p>

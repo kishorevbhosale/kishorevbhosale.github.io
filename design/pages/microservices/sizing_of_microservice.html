@@ -1,22 +1,45 @@
-<div class="container">
-    <h2 style="text-align: center;">Right-Sizing and Identifying Service Boundaries</h2>
-        <hr>
-        <div class="content">
-                <br>
-                <h5>1. Why Right-Sizing Microservices is Important</h3>
+<h2 style="text-align: center;">Right-Sizing and Identifying Service Boundaries</h2>
+
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#why">Why Right-Sizing Microservices is Important</h3>
+        <li><a href="#ddd">Domain-Driven Design (DDD) Sizing</h3>
+        <li><a href="#ddd-steps">Steps for DDD-based Microservice Sizing</a></li>
+        <li><a href="#ddd-example">Example of DDD in Microservice Sizing</a></li>
+        <li><a href="#ddd-pros">Pros of DDD-based Sizing</a></li>
+        <li><a href="#ddd-cons">Cons of DDD-based Sizing</a></li>
+        <li><a href="#ddd-challenges">Challenges & Solutions</a></li>
+        <li><a href="#event">Event Storming Sizing</h3>
+        <li><a href="#event-steps">Steps for Event Storming-based Microservice Sizing</a></li>
+        <li><a href="#event-example">Example of Event Storming Sizing</a></li>
+        <li><a href="#event-pros">Pros of Event Storming Sizing</a></li>
+        <li><a href="#event-cons">Cons of Event Storming Sizing</a></li>
+        <li><a href="#event-challenges">Challenges & Solutions</a></li>
+        <li><a href="#conclusion">Conclusion: Choosing Between DDD and Event Storming</a></li>
+        <li><a href="#bank">Example of microservices for bank application</a></li>
+    </ol>
+</div>
+<hr>
+
+<div class="content">
+                <h5 id="why">Why Right-Sizing Microservices is Important</h3>
                 <ul>
                     <li>Avoids monolith services that are too large or complex.</li>
                     <li>Prevents over-segmentation into too many tiny microservices, causing communication overhead.</li>
                     <li>Ensures microservices are easy to manage, scale, and deploy independently.</li>
                 </ul>
+                
+                <hr>
 
-                <br>
-                <h5>2. Domain-Driven Design (DDD) Sizing</h3>
+                <h5 id="ddd">Domain-Driven Design (DDD) Sizing</h3>
                 <p>
                     <strong>Domain-Driven Design (DDD)</strong> is a strategic approach that helps break down systems into meaningful bounded contexts based on business logic.
                 </p>
+                
+                <hr>
 
-                <h5>Steps for DDD-based Microservice Sizing</h5>
+                <h5 id="ddd-steps">Steps for DDD-based Microservice Sizing</h5>
                 <ul>
                     <li>
                         <span class="highlight">Identify Bounded Contexts:</span> Break down your application into business subdomains (e.g., for an e-commerce system: Order Management, Product Catalog, and Payment).
@@ -31,8 +54,10 @@
                         <span class="highlight">Use Ubiquitous Language:</span> Ensure that all teams (developers, product managers, etc.) use the same terminology to avoid miscommunication.
                     </li>
                 </ul>
+                
+                <hr>
 
-                <h5>Example of DDD in Microservice Sizing</h5>
+                <h5 id="ddd-example">Example of DDD in Microservice Sizing</h5>
                 <div class="example">
                 <p>
                     Consider an e-commerce system with several subdomains: <strong>Product Catalog</strong>, <strong>Order Management</strong>, and <strong>Customer Support</strong>. Each subdomain is a candidate for a microservice. For instance:
@@ -43,40 +68,49 @@
                     <li><strong>Customer Support Service:</strong> Deals with customer queries and complaints.</li>
                 </ul>
                 </div>
+                
+                <hr>
 
-                <h5>Pros of DDD-based Sizing</h5>
+                <h5 id="ddd-pros">Pros of DDD-based Sizing</h5>
                 <ul>
                     <li>Services align closely with business logic and domains.</li>
                     <li>Encapsulation of business logic makes services more cohesive.</li>
                     <li>Scales with large teams and complex systems, as different teams own different contexts.</li>
                 </ul>
+                
+                <hr>
 
-                <h5>Cons of DDD-based Sizing</h5>
+                <h5 id="ddd-cons">Cons of DDD-based Sizing</h5>
                 <ul>
                     <li>Requires a deep understanding of business domains, which may be time-consuming.</li>
                     <li>Not suitable for small or less complex systems where the boundaries are unclear.</li>
                     <li>Can lead to communication issues if the team doesn't properly define bounded contexts.</li>
                 </ul>
+                
+                <hr>
 
-                <h5>Challenges & Solutions</h5>
+                <h5 id="ddd-challenges">Challenges & Solutions</h5>
                 <ul>
                     <li>
-                        <strong>Challenge:</strong> Defining clear boundaries between contexts can be tricky.<br>
+                        <strong>Challenge:</strong> Defining clear boundaries between contexts can be tricky.
                         <strong>Solution:</strong> Use continuous feedback from business stakeholders and iterate on context boundaries.
                     </li>
                     <li>
-                        <strong>Challenge:</strong> Over-compartmentalization of services can lead to complex integration.<br>
+                        <strong>Challenge:</strong> Over-compartmentalization of services can lead to complex integration.
                         <strong>Solution:</strong> Keep bounded contexts reasonably sized and ensure proper communication between them.
                     </li>
                 </ul>
+                
+                <hr>
 
-                <br>
-                <h5>3. Event Storming Sizing</h3>
+                <h5 id="event">Event Storming Sizing</h3>
                 <p>
                     <strong>Event Storming</strong> is a collaborative workshop technique where business events drive the discovery of service boundaries. The goal is to understand how the system behaves based on domain events.
                 </p>
+                
+                <hr>
 
-                <h5>Steps for Event Storming-based Microservice Sizing</h5>
+                <h5 id="event-steps">Steps for Event Storming-based Microservice Sizing</h5>
                 <ul>
                     <li>
                         <span class="highlight">Gather Domain Events:</span> Identify key domain events (e.g., "Order Placed", "Payment Processed").
@@ -91,8 +125,10 @@
                         <span class="highlight">Define Service Boundaries:</span> Define service boundaries around aggregates that process similar events.
                     </li>
                 </ul>
+                
+                <hr>
 
-                <h5>Example of Event Storming Sizing</h5>
+                <h5 id="event-example">Example of Event Storming Sizing</h5>
                 <div class="example">
                 <p>
                     For an e-commerce system, domain events might include:
@@ -106,35 +142,42 @@
                     Using Event Storming, you might group events such as "Order Placed" and "Payment Processed" together, forming the basis for an "Order Management" service. "Product Added to Cart" might belong to a "Shopping Cart" service.
                 </p>
                 </div>
+                
+                <hr>
 
-                <h5>Pros of Event Storming Sizing</h5>
+                <h5 id="event-pros">Pros of Event Storming Sizing</h5>
                 <ul>
                     <li>Involves all stakeholders in the design process, ensuring alignment with business requirements.</li>
                     <li>Helps visualize complex systems in a simple, event-driven way.</li>
                     <li>Encourages discussion and exploration of system behaviors.</li>
                 </ul>
+                
+                <hr>
 
-                <h5>Cons of Event Storming Sizing</h5>
+                <h5 id="event-cons">Cons of Event Storming Sizing</h5>
                 <ul>
                     <li>Workshops may be time-consuming and require extensive collaboration.</li>
                     <li>May lead to over-segmentation if every event is turned into a service boundary.</li>
                     <li>Relies heavily on capturing the correct domain events, which can be difficult in large systems.</li>
                 </ul>
+                
+                <hr>
 
-                <h5>Challenges & Solutions</h5>
+                <h5 id="event-challenges">Challenges & Solutions</h5>
                 <ul>
                     <li>
-                        <strong>Challenge:</strong> Identifying all relevant events can be difficult, especially in complex domains.<br>
+                        <strong>Challenge:</strong> Identifying all relevant events can be difficult, especially in complex domains.
                         <strong>Solution:</strong> Start with high-level events and refine the details over multiple sessions.
                     </li>
                     <li>
-                        <strong>Challenge:</strong> Over-segmenting services based on too many domain events.<br>
+                        <strong>Challenge:</strong> Over-segmenting services based on too many domain events.
                         <strong>Solution:</strong> Focus on core domain events and group related ones into cohesive services.
                     </li>
                 </ul>
+                
+                <hr>
 
-                <br>
-                <h5>4. Conclusion: Choosing Between DDD and Event Storming</h3>
+                <h5 id="conclusion">Conclusion: Choosing Between DDD and Event Storming</h5>
                 <ul>
                     <li>
                         <strong>Domain-Driven Design (DDD)</strong> works best when you have a good understanding of the business domains and want to model services around core business logic.
@@ -146,7 +189,10 @@
                         Both approaches are not mutually exclusive and can be combined depending on the complexity of the system and the clarity of the business logic.
                     </li>
                 </ul>
-                <h5>Example of microservices for bank application</h3>
+                
+                <hr>
+
+                <h5 id="bank">Example of microservices for bank application</h5>
                 <img src="../../images/micro3.PNG" style="display: block; margin: auto; width: 70%;" class="img-fluid">
             </div>
         </div>

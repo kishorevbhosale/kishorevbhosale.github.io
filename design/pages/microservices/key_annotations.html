@@ -1,10 +1,29 @@
-<div>
-  <h2 style="text-align: center">
-    Key Annotations for Spring Boot Microservices
-  </h2>
-  <hr>
-  <div class="custom-container" style="margin-bottom: 30px;">
-    <h3>Introduction</h3>
+<h2 style="text-align: center;">Key Annotations for Spring Boot Microservices</h2>
+<br>
+<div class="custom-container">
+    <h5>Table of Contents</h5>
+    <ol>
+        <li><a href="#intro">Introduction</a></li>    
+        <li><a href="#why">Why Annotations Matter in Microservices:</a></li>
+        <li><a href="#restc">@RestController</a></li>
+        <li><a href="#restm">@RequestMapping</a></li>
+        <li><a href="#get">@GetMapping</a></li>
+        <li><a href="#post">@PostMapping</a></li>
+        <li><a href="#put">@PutMapping</a></li>
+        <li><a href="#del">@DeleteMapping</a></li>
+        <li><a href="#pathv">@PathVariable</a></li>
+        <li><a href="#reqb">@RequestBody</a></li>
+        <li><a href="#reqp">@RequestParam</a></li>
+        <li><a href="#exch">@ExceptionHandler</a></li>
+        <li><a href="#cross">@CrossOrigin</a></li>
+        <li><a href="#summary">Summary</a></li>
+    </ol>
+</div>
+<hr>
+
+<div class="content">
+
+    <h5 id="intro">Introduction</h5>    
     <p>
       Spring Boot provides a comprehensive set of annotations that simplify the development of microservices. 
       These annotations reduce boilerplate code and enable developers to build robust, scalable microservices 
@@ -16,7 +35,10 @@
       dependency injection, configuration, and service discovery annotations. Each annotation is explained with 
       practical examples to help you understand their usage in real-world scenarios.
     </p>
-    <h4>Why Annotations Matter in Microservices:</h4>
+    <br>
+    <hr>
+
+  <h5 id="why">Why Annotations Matter in Microservices:</h5>
     <ul>
       <li><strong>Reduced Configuration:</strong> Annotations eliminate the need for XML configuration files</li>
       <li><strong>Code Clarity:</strong> Annotations make the code more readable and self-documenting</li>
@@ -24,11 +46,11 @@
       <li><strong>RESTful APIs:</strong> Simplify the creation of REST endpoints</li>
       <li><strong>Configuration Management:</strong> Externalize configuration for different environments</li>
     </ul>
-  </div>
-  <hr>
+    <br>
+    <hr>
   
-  <h3>REST Controller Annotations</h3>
-  <h4>@RestController</h4>
+  
+ <h5 id="restc">@RestController</h5>
   <p>
     Combines @Controller and @ResponseBody. It indicates that a class is a
     Spring MVC controller where every method returns a domain object instead of
@@ -43,12 +65,13 @@
                 return "Hello, World!";
             }
         }
-    </pre
-  >
-</div>
+  </pre>
 
-<div>
-  <h4>@RequestMapping</h4>
+<br>
+<hr>
+
+
+  <h5 id="restm">@RequestMapping</h5>
   <p>
     Used to map web requests to a specific handler class or method. It can be
     applied at the class or method level.
@@ -62,12 +85,13 @@
                 return "Hello, World!";
             }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@GetMapping</h4>
+<br>
+<hr>
+
+
+  <h5 id="get">@GetMapping</h5>
   <p>
     A shortcut for @RequestMapping with method=RequestMethod.GET. Used for
     handling GET requests.
@@ -80,12 +104,12 @@
                 return "Hello, World!";
             }
         }
-    </pre
-  >
-</div>
+    </pre>
+<br>
+<hr>
 
-<div>
-  <h4>@PostMapping</h4>
+
+  <h5 id="post">@PostMapping</h5>
   <p>
     A shortcut for @RequestMapping with method=RequestMethod.POST. Used for
     handling POST requests.
@@ -98,12 +122,13 @@
                 return "Data created: " + data;
             }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@PutMapping</h4>
+<br>
+<hr>
+
+
+  <h5 id="put">@PutMapping</h5>
   <p>
     A shortcut for @RequestMapping with method=RequestMethod.PUT. Used for
     handling PUT requests.
@@ -116,12 +141,13 @@
                 return "Data updated: " + data;
             }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@DeleteMapping</h4>
+<br>
+<hr>
+
+
+  <h5 id="del">@DeleteMapping</h5>
   <p>
     A shortcut for @RequestMapping with method=RequestMethod.DELETE. Used for
     handling DELETE requests.
@@ -134,12 +160,12 @@
                 return "Deleted ID: " + id;
             }
         }
-    </pre
-  >
-</div>
+    </pre>
+<br>
+<hr>
 
-<div>
-  <h4>@PathVariable</h4>
+
+  <h5 id="pathv">@PathVariable</h5>
   <p>Used to extract values from the URI and bind them to method parameters.</p>
   <pre>
         @RestController
@@ -149,12 +175,13 @@
                 return "User ID: " + id;
             }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@RequestBody</h4>
+<br>
+<hr>
+
+
+  <h5 id="reqb">@RequestBody</h5>
   <p>
     Maps the body of the HTTP request to a Java object. Useful for handling JSON
     data.
@@ -173,12 +200,13 @@
             public String getName() { return name; }
             public void setName(String name) { this.name = name; }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@RequestParam</h4>
+<br>
+<hr>
+
+
+  <h5 id="reqp">@RequestParam</h5>
   <p>Used to extract query parameters from the URL.</p>
   <pre>
         @RestController
@@ -188,12 +216,13 @@
                 return "Hello, " + name;
             }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@ExceptionHandler</h4>
+<br>
+<hr>
+
+
+  <h5 id="exch">@ExceptionHandler</h5>
   <p>Used to handle exceptions in a specific controller or globally.</p>
   <pre>
         @RestController
@@ -204,12 +233,12 @@
                 return "Error: " + e.getMessage();
             }
         }
-    </pre
-  >
-</div>
+    </pre>
 
-<div>
-  <h4>@CrossOrigin</h4>
+<br>
+<hr>
+
+  <h5 id="cross">@CrossOrigin</h5>
   <p>Enables cross-origin resource sharing (CORS).</p>
   <pre>
         @RestController
@@ -220,13 +249,11 @@
                 return "Data";
             }
         }
-    </pre
-  >
-</div>
-
+    </pre>
+<br>
 <hr>
-<div class="custom-container" style="margin-top: 30px;">
-  <h3>Summary</h3>
+
+<<h5 id="summary">Summary</h5>
   <p>
     Understanding and properly using these annotations is essential for building robust Spring Boot microservices. 
     These annotations provide a declarative way to configure your application, reducing boilerplate code and improving 
