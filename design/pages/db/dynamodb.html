@@ -1,4 +1,9 @@
-<h2 style="text-align: center;">DynamoDB</h2>
+<title>Amazon DynamoDB Complete Guide - Concepts, Indexes & Python Scripts</title>
+<meta name="description" content="Master Amazon DynamoDB covering basic concepts, data types, partitioning, capacity units, querying vs scanning, secondary indexes (GSI/LSI), CloudWatch monitoring, and Python boto3 scripts.">
+<meta name="keywords" content="DynamoDB, Amazon DynamoDB, AWS, NoSQL, partition key, sort key, secondary index, GSI, LSI, capacity units, Python boto3, DynamoDB tutorial">
+<meta name="robots" content="index, follow">
+
+<h2>DynamoDB</h2>
 <br>
 <div class="custom-container">
     <b>About DynamoDB</b>
@@ -177,7 +182,7 @@
 <hr>
 
 <div id="basic">
-  <h2 style="text-align: center;">DynamoDB Basic Concepts</h2>
+  <h2>DynamoDB Basic Concepts</h2>
     <ul>
         <li><b>Tables:</b>
           <ul>
@@ -236,7 +241,7 @@
 <hr>
 
 <div id="types">
-  <h2 style="text-align: center;">Data Types</h2>
+  <h2>Data Types</h2>
     <ul>
         <li><b>Scalar Types:</b>
           <ul>
@@ -314,7 +319,7 @@
 <hr>
 
 <div id="Partitions">
-  <h2 style="text-align: center;">Understanding DynamoDB Partitions</h2>
+  <h2>Understanding DynamoDB Partitions</h2>
     <ul>
         <li><strong>How DynamoDB Distributes Data:</strong>
           <ul>
@@ -336,7 +341,7 @@
 <hr>
 
 <div id="pk">
-  <h2 style="text-align: center;">Primary Key and Range Key</h2>
+  <h2>Primary Key and Range Key</h2>
     <h5>Why Do We Need a Primary Key?</h5>
         <ul>
         <li>A primary key is like the key in a key-value store (like a hash map).</li>
@@ -403,7 +408,7 @@
 <hr>
 
 <div id="Capacity">
-  <h2 style="text-align: center;">DynamoDB Capacity Units - Charges</h2>
+  <h2>DynamoDB Capacity Units - Charges</h2>
     <h5>How DynamoDB Charges</h5>
     <ul>
       <li>DynamoDB charges based on the frequency of <b>reads</b> and <b>writes</b>, not the storage used.</li>
@@ -480,7 +485,7 @@
 <hr>
 
 <div id="query-scanning">
-  <h2 style="text-align: center;">Querying and Scanning in DynamoDB</h2>
+  <h2>Querying and Scanning in DynamoDB</h2>
   <h5>Options for Reading Data</h5>
     <ul>
       <li><b>Querying:</b> Faster and more efficient way to retrieve data.</li>
@@ -535,7 +540,7 @@
 <hr>
 
 <div id="in-aws">
-  <h2 style="text-align: center;">Perform DynamoDB Tasks in AWS</h2>
+  <h2>Perform DynamoDB Tasks in AWS</h2>
   <b>1. Find DynamoDB Service</b>
         <ul>
           <li>Log in to your AWS Management Console.</li>
@@ -587,7 +592,7 @@
 <hr>
 
 <div id="create-table">
-  <h2 style="text-align: center;">Creating Table in DynamoDB</h2>
+  <h2>Creating Table in DynamoDB</h2>
   
     <ul>
         <li> Using AWS command Line</li>
@@ -605,7 +610,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="create-item">
-  <h2 style="text-align: center;">Creating Items in DynamoDB</h2>
+  <h2>Creating Items in DynamoDB</h2>
   <ul>
         <li>
           <b>1. Using the PutItem API</b>
@@ -686,7 +691,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="script-access">
-  <h2 style="text-align: center;">Python Script to access DynamoDB</h2>
+  <h2>Python Script to access DynamoDB</h2>
   <p>
         Perform following task using python:
         <ul>
@@ -786,7 +791,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="script-bulk">
-  <h2 style="text-align: center;">Python Script to insert bulk data into DynamoDB</h2>
+  <h2>Python Script to insert bulk data into DynamoDB</h2>
   <ul>
         <li>DynamoDB has a limit of 25 items per batch, and each batch cannot exceed 16 MB in size.</li>
     </ul>
@@ -854,7 +859,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="secondary">
-  <h2 style="text-align: center;">Secondary Index</h2>
+  <h2>Secondary Index</h2>
   <p>
     Querying on the primary key is fast, but it can only give us a limited set of access patterns. <br>
     The scan can give us any access pattern, but it is slow and costly.<br>
@@ -1050,7 +1055,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="script-secondary">
-  <h2 style="text-align: center;">Python Script for Secondary Index</h2>
+  <h2>Python Script for Secondary Index</h2>
   Write script for following tasks:
     <ul>
         <li>Create a table.</li>
@@ -1255,7 +1260,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="monitor">
-  <h2 style="text-align: center;">CloudWatch Monitoring for DynamoDB</h2>
+  <h2>CloudWatch Monitoring for DynamoDB</h2>
   The following technologies are available for logging and monitoring AWS services:
     <ul>
         <li>CloudWatch alarms</li>
@@ -1344,7 +1349,7 @@ AttributeName=userId,KeyType=HASH \
 <hr>
 
 <div id="insta">
-  <h2 style="text-align: center;">Use Case - Instagram Stories using DynamoDB</h2>
+  <h2>Use Case - Instagram Stories using DynamoDB</h2>
   <p>To create a DynamoDB database for the Instagram Stories feature, follow these steps:</p>
     <p>
         We will design a DynamoDB database to store and manage Instagram stories. The project involves three primary steps:

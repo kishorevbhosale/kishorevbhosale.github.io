@@ -3,456 +3,557 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="About Kishor Bhosale - Backend Developer specializing in Java, Spring Boot, Microservices, and System Design"
-    />
-    <meta
-      name="keywords"
-      content="Kishor Bhosale, Backend Developer, Java Developer, Spring Boot, Microservices, System Design, AWS"
-    />
+    <meta name="description" content="About Kishor Bhosale — Backend Developer specializing in Java, Spring Boot, Microservices, and System Design." />
+    <meta name="keywords" content="Kishor Bhosale, Backend Developer, Java Developer, Spring Boot, Microservices, System Design, AWS" />
     <meta name="author" content="Kishor Bhosale" />
     <meta name="robots" content="index, follow" />
-    <meta
-      property="og:title"
-      content="About Kishor Bhosale - Backend Developer"
-    />
-    <meta
-      property="og:description"
-      content="Passionate software engineer with expertise in Java, backend development, and scalable system design."
-    />
+    <meta property="og:title" content="About Kishor Bhosale — Backend Developer" />
+    <meta property="og:description" content="Passionate software engineer with expertise in Java, backend development, and scalable system design." />
     <meta property="og:type" content="profile" />
-    <title>About Me - Kishor Bhosale | Tech Preparation Zone</title>
+    <title>About Me — Kishor Bhosale | Tech Preparation Zone</title>
 
-    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Google Fonts - Inter -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap 5.3 -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    />
-
-    <!-- FontAwesome for Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-
-    <!-- Bootstrap Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-
-    <!-- Custom CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../styles.css" />
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="../images/favicon.png" />
 
     <style>
-      .about-section {
-        background: linear-gradient(
-          135deg,
-          var(--accent-secondary),
-          var(--accent-primary)
-        );
-        color: white;
-        padding: 80px 0;
+      body { padding-top: 0; background: var(--bg-secondary); }
+
+      /* ---------- Top Bar ---------- */
+      .about-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        padding: 10px 0;
+      }
+      .about-topbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 900px;
+      }
+      .about-topbar a {
+        color: var(--text-secondary);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .about-topbar a:hover { color: var(--accent-primary); text-decoration: none; }
+      .about-topbar .topbar-brand {
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+      }
+      .about-topbar .theme-btn {
+        background: none;
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+      }
+      .about-topbar .theme-btn:hover {
+        background: var(--accent-light);
+        color: var(--accent-primary);
+        border-color: var(--accent-primary);
+      }
+
+      /* ---------- Hero ---------- */
+      .about-hero {
+        background: var(--header-bg);
+        color: #fff;
+        padding: 56px 0 48px;
+        text-align: center;
         position: relative;
         overflow: hidden;
       }
-
-      .about-section::before {
+      .about-hero::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-        opacity: 0.3;
+        inset: 0;
+        background: radial-gradient(ellipse at 30% 60%, rgba(255,255,255,0.06) 0%, transparent 50%);
       }
+      .about-hero .container { position: relative; z-index: 1; max-width: 720px; }
 
-      .about-section .container {
-        position: relative;
-        z-index: 1;
-      }
-
-      .profile-img {
-        width: 180px;
-        height: 180px;
+      .hero-avatar {
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
-        border: 4px solid white;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 2.75rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 16px;
+      }
+      .hero-name { font-size: 1.75rem; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.02em; }
+      .hero-role { font-size: 0.9375rem; color: rgba(255,255,255,0.65); margin-bottom: 16px; font-weight: 400; }
+
+      .hero-links { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
+      .hero-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+      .hero-links a:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); color: #fff; text-decoration: none; }
+
+      .hero-bio {
+        max-width: 520px;
+        margin: 0 auto;
+        font-size: 0.875rem;
+        line-height: 1.65;
+        color: rgba(255,255,255,0.7);
       }
 
-      .social-icons a {
-        margin: 0 10px;
-        color: white;
-        font-size: 24px;
-        transition: all 0.3s ease;
-        display: inline-block;
-      }
+      /* ---------- Main Layout ---------- */
+      .about-main { max-width: 820px; margin: 0 auto; padding: 0 16px; }
 
-      .social-icons a:hover {
-        color: #ffcc00;
-        transform: translateY(-3px);
-      }
+      .about-block { padding: 40px 0; }
+      .about-block + .about-block { border-top: 1px solid var(--border-color); }
 
-      .progress {
-        height: 10px;
-        background: var(--bg-tertiary);
-        border-radius: 10px;
-        overflow: hidden;
+      .block-label {
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--accent-primary);
+        margin-bottom: 4px;
       }
-
-      .progress-bar {
-        background: var(--accent-gradient);
-        border-radius: 10px;
-        transition: width 1s ease;
-      }
-
-      .btn-custom {
-        background: var(--accent-gradient);
-        color: white;
-        border-radius: 25px;
-        padding: 12px 30px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        border: none;
-      }
-
-      .btn-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(75, 108, 183, 0.4);
-        color: white;
-      }
-
-      .contact-section {
-        background: var(--bg-primary);
-        padding: 60px 0;
-        border-radius: 15px;
-        margin-top: 40px;
-        box-shadow: var(--shadow-md);
-      }
-
-      .skill-card {
-        background: var(--bg-primary);
-        padding: 20px;
-        border-radius: 10px;
+      .block-heading {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
         margin-bottom: 20px;
-        box-shadow: var(--shadow-sm);
-        transition: all 0.3s ease;
       }
 
-      .skill-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-md);
+      /* ---------- Stat Cards ---------- */
+      .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+      .stat-card-item {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 16px 12px;
+        text-align: center;
+        transition: all 0.2s ease;
+      }
+      .stat-card-item:hover { box-shadow: var(--shadow-sm); }
+      .stat-card-item .val { font-size: 1.5rem; font-weight: 800; color: var(--accent-primary); line-height: 1; }
+      .stat-card-item .lbl { font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+      /* ---------- Expertise Cards ---------- */
+      .expertise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .exp-card {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        transition: all 0.2s ease;
+      }
+      .exp-card:hover { box-shadow: var(--shadow-sm); }
+      .exp-icon {
+        width: 40px; height: 40px;
+        border-radius: var(--radius-sm);
+        background: var(--accent-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        color: var(--accent-primary);
+        margin-bottom: 10px;
+      }
+      .exp-card h5 { font-size: 0.9375rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+      .exp-card p { font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.55; }
+
+      /* ---------- Skill Pills ---------- */
+      .pill-group { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+      .pill-group:last-child { margin-bottom: 0; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 50px;
+        font-size: 0.775rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        transition: all 0.2s ease;
+      }
+      .pill:hover { border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-light); }
+      .pill i { font-size: 0.8rem; color: var(--accent-primary); }
+      .pill-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 6px;
       }
 
-      .section-divider {
-        height: 3px;
-        background: var(--accent-gradient);
-        border: none;
-        margin: 40px 0;
-        border-radius: 2px;
+      /* ---------- Timeline ---------- */
+      .timeline { position: relative; padding-left: 24px; }
+      .timeline::before { content: ''; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--border-color); }
+      .tl-item { position: relative; padding-bottom: 24px; }
+      .tl-item:last-child { padding-bottom: 0; }
+      .tl-dot { position: absolute; left: -20px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-primary); border: 2px solid var(--bg-secondary); }
+      .tl-year { font-size: 0.7rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 2px; }
+      .tl-title { font-size: 0.9375rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1px; }
+      .tl-company { font-size: 0.775rem; font-weight: 500; color: var(--text-muted); margin-bottom: 4px; }
+      .tl-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; }
+
+      /* ---------- Values ---------- */
+      .values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .val-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        transition: all 0.2s ease;
+      }
+      .val-item:hover { box-shadow: var(--shadow-sm); }
+      .val-icon {
+        width: 36px; height: 36px;
+        border-radius: var(--radius-sm);
+        background: var(--accent-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.9rem;
+        color: var(--accent-primary);
+      }
+      .val-item h6 { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+      .val-item p { font-size: 0.775rem; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+      /* ---------- Contact ---------- */
+      .contact-card {
+        background: var(--header-bg);
+        color: #fff;
+        border-radius: var(--radius-lg);
+        padding: 32px 24px;
+        text-align: center;
+      }
+      .contact-card h3 { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+      .contact-card p { color: rgba(255,255,255,0.65); font-size: 0.875rem; margin-bottom: 16px; }
+      .contact-card .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.12);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.25);
+        padding: 9px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+      .contact-card .cta-btn:hover { background: rgba(255,255,255,0.22); color: #fff; text-decoration: none; }
+
+      /* ---------- Footer ---------- */
+      .about-footer {
+        background: var(--header-bg) !important;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+        margin-top: 40px;
+      }
+      .about-footer p { color: rgba(255,255,255,0.6); margin: 0; font-size: 0.775rem; }
+      .about-footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+      .about-footer a:hover { color: #fff; text-decoration: underline; }
+
+      /* ---------- Mobile ---------- */
+      @media (max-width: 768px) {
+        .about-hero { padding: 40px 0 32px; }
+        .hero-avatar { width: 80px; height: 80px; font-size: 2rem; }
+        .hero-name { font-size: 1.375rem; }
+        .hero-role { font-size: 0.85rem; }
+        .hero-bio { font-size: 0.8125rem; }
+        .about-block { padding: 28px 0; }
+        .block-heading { font-size: 1.125rem; margin-bottom: 16px; }
+        .stat-cards { grid-template-columns: repeat(2, 1fr); }
+        .stat-card-item { padding: 12px 8px; }
+        .stat-card-item .val { font-size: 1.25rem; }
+        .expertise-grid { grid-template-columns: 1fr; }
+        .exp-card { padding: 16px; }
+        .values-grid { grid-template-columns: 1fr; }
+        .contact-card { padding: 24px 16px; }
+        .contact-card h3 { font-size: 1.05rem; }
+        .tl-desc { font-size: 0.775rem; }
+      }
+
+      @media (max-width: 480px) {
+        .about-hero { padding: 32px 0 24px; }
+        .hero-avatar { width: 64px; height: 64px; font-size: 1.5rem; margin-bottom: 12px; }
+        .hero-name { font-size: 1.2rem; }
+        .hero-links a { width: 32px; height: 32px; font-size: 0.85rem; }
+        .stat-card-item .val { font-size: 1.1rem; }
+        .about-main { padding: 0 12px; }
       }
     </style>
   </head>
 
   <body>
-    <!-- Header Section -->
-    <header class="header text-white py-3" role="banner">
-      <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
-        <div
-          class="container d-flex justify-content-between align-items-center"
-        >
-          <div class="flex-grow-1 text-center">
-            <h1 class="blog-title m-0">
-              <a href="../index.html" class="text-white text-decoration-none"
-                >Tech Preparation Zone</a
-              >
-            </h1>
-          </div>
-
-          <!-- Navigation Links -->
-          <div class="d-none d-md-flex align-items-center gap-3">
-            <a
-              href="../index.html"
-              class="btn btn-outline-light btn-sm"
-              aria-label="Home"
-            >
-              <i class="bi bi-house-fill me-1" aria-hidden="true"></i> Home
-            </a>
-            <!-- <a href="about_me.html" class="btn btn-outline-light btn-sm active" aria-label="About Me">
-                        <i class="bi bi-person-fill me-1" aria-hidden="true"></i> About
-                    </a>
-                    <a href="#contact" class="btn btn-outline-light btn-sm" aria-label="Contact">
-                        <i class="bi bi-envelope-fill me-1" aria-hidden="true"></i> Contact
-                    </a> -->
-            <!-- Theme Toggle -->
-            <button
-              class="btn btn-outline-light btn-sm"
-              id="themeToggle"
-              aria-label="Toggle dark mode"
-            >
-              <i class="bi bi-moon-fill" id="themeIcon" aria-hidden="true"></i>
-            </button>
-          </div>
-
-          <!-- Mobile Menu Button -->
-          <div class="d-md-none">
-            <button
-              class="btn btn-outline-light btn-sm"
-              id="themeToggleMobile"
-              aria-label="Toggle dark mode"
-            >
-              <i
-                class="bi bi-moon-fill"
-                id="themeIconMobile"
-                aria-hidden="true"
-              ></i>
-            </button>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <!-- About Section -->
-    <section class="about-section text-center" role="main">
+    <!-- Top Bar -->
+    <nav class="about-topbar">
       <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-            <!-- Profile Image Placeholder -->
-            <div class="mb-4">
-              <div
-                class="profile-img mx-auto d-flex align-items-center justify-content-center bg-white text-dark"
-                style="font-size: 4rem"
-              >
-                <i class="bi bi-person-circle"></i>
-              </div>
-            </div>
-
-            <h1 class="display-4 mb-3">Kishor Bhosale</h1>
-            <h3 class="mb-4">
-              Backend Developer | Java | Python | System Design
-            </h3>
-
-            <div class="social-icons mt-4 mb-4">
-              <a
-                href="https://www.linkedin.com/in/kishor-bhosale/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-              >
-                <i class="fab fa-linkedin" aria-hidden="true"></i>
-              </a>
-              <!-- <a href="https://github.com/kishorevbhosale" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                        </a> -->
-              <a href="mailto:kishorevbhosale@gmail.com" aria-label="Email">
-                <i class="fas fa-envelope" aria-hidden="true"></i>
-              </a>
-            </div>
-
-            <p class="lead px-md-5">
-              I am a passionate software engineer with expertise in Java,
-              backend development, and scalable system design. With years of
-              experience building high-performance applications, I love solving
-              complex problems and optimizing software architecture for maximum
-              efficiency.
-            </p>
-
-            <!-- <a href="Kishor Bhosale - Resume.pdf" class="btn btn-custom mt-4" download aria-label="Download Resume">
-                        <i class="bi bi-download me-2" aria-hidden="true"></i> Download Resume
-                    </a> -->
-          </div>
+        <a href="../index.html"><i class="bi bi-arrow-left"></i> Home</a>
+        <span class="topbar-brand">Kishor Bhosale</span>
+        <div class="d-flex align-items-center gap-2">
+          <button class="theme-btn" id="aboutThemeToggle" aria-label="Toggle theme">
+            <i class="bi bi-moon-fill" id="aboutThemeIcon"></i>
+          </button>
         </div>
       </div>
-    </section>
+    </nav>
 
-    <!-- Skills Section -->
-    <section class="container mt-5 mb-5" aria-labelledby="skills-heading">
-      <h2 id="skills-heading" class="text-center mb-5">My Skills</h2>
-
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <div class="skill-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="mb-0">
-                <i class="bi bi-cup-hot me-2" aria-hidden="true"></i> Java &
-                Spring Boot
-              </h5>
-              <span class="badge bg-primary">90%</span>
-            </div>
-            <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style="width: 90%"
-                aria-valuenow="90"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 mb-4">
-          <div class="skill-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="mb-0">
-                <i class="bi bi-diagram-3 me-2" aria-hidden="true"></i>
-                Microservices & System Design
-              </h5>
-              <span class="badge bg-primary">85%</span>
-            </div>
-            <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style="width: 85%"
-                aria-valuenow="85"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 mb-4">
-          <div class="skill-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="mb-0">
-                <i class="bi bi-database me-2" aria-hidden="true"></i>
-                Databases, Kafka, Redis
-              </h5>
-              <span class="badge bg-primary">80%</span>
-            </div>
-            <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style="width: 80%"
-                aria-valuenow="80"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 mb-4">
-          <div class="skill-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="mb-0">
-                <i class="bi bi-cloud me-2" aria-hidden="true"></i> Cloud &
-                DevOps (AWS, Docker, CI/CD)
-              </h5>
-              <span class="badge bg-primary">75%</span>
-            </div>
-            <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style="width: 75%"
-                aria-valuenow="75"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="section-divider" />
-
-    <!-- Contact Section -->
-    <section
-      class="contact-section text-center"
-      id="contact"
-      aria-labelledby="contact-heading"
-    >
+    <!-- Hero -->
+    <section class="about-hero">
       <div class="container">
-        <h2 id="contact-heading" class="mb-4">Contact Me</h2>
-        <p class="lead mb-4">Have a project in mind? Let's work together!</p>
-        <a
-          href="https://mail.google.com/mail/?view=cm&to=kishorevbhosale@gmail.com"
-          class="btn btn-custom"
-          target="_blank"
-        >
-          <i class="bi bi-envelope-fill me-2"></i> Send an Email
-        </a>
+        <div class="hero-avatar"><i class="bi bi-person"></i></div>
+        <h1 class="hero-name">Kishor Bhosale</h1>
+        <p class="hero-role">Backend Developer &middot; Java &middot; System Design &middot; Cloud</p>
+        <div class="hero-links">
+          <a href="https://www.linkedin.com/in/kishor-bhosale/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com/kishorevbhosale" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="mailto:kishorevbhosale@gmail.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+        </div>
+        <p class="hero-bio">
+          Software engineer focused on building resilient, high-throughput backend systems.
+          I work primarily with Java and Spring Boot, designing distributed microservices
+          that scale, and mentoring engineers on system design and best practices.
+        </p>
       </div>
     </section>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">
-      <i class="bi bi-arrow-up" aria-hidden="true"></i>
-    </button>
+    <main class="about-main">
+
+      <!-- Stats -->
+      <div class="about-block">
+        <div class="stat-cards">
+          <div class="stat-card-item"><span class="val">7+</span><span class="lbl">Years Exp</span></div>
+          <div class="stat-card-item"><span class="val">120+</span><span class="lbl">Articles</span></div>
+          <div class="stat-card-item"><span class="val">10+</span><span class="lbl">Projects</span></div>
+          <div class="stat-card-item"><span class="val">50+</span><span class="lbl">Topics</span></div>
+        </div>
+      </div>
+
+      <!-- Expertise -->
+      <section class="about-block">
+        <p class="block-label">What I Do</p>
+        <h2 class="block-heading">Areas of Expertise</h2>
+        <div class="expertise-grid">
+          <div class="exp-card">
+            <div class="exp-icon"><i class="bi bi-braces"></i></div>
+            <h5>Backend Engineering</h5>
+            <p>Designing robust APIs, microservices, and event-driven systems with Java, Spring Boot, and Hibernate.</p>
+          </div>
+          <div class="exp-card">
+            <div class="exp-icon"><i class="bi bi-diagram-3"></i></div>
+            <h5>System Design</h5>
+            <p>Architecting distributed systems that handle millions of requests — load balancing, caching, and consistency trade-offs.</p>
+          </div>
+          <div class="exp-card">
+            <div class="exp-icon"><i class="bi bi-cloud"></i></div>
+            <h5>Cloud &amp; DevOps</h5>
+            <p>Deploying containerized workloads on AWS with Docker, Kubernetes, CI/CD pipelines, and infrastructure-as-code.</p>
+          </div>
+          <div class="exp-card">
+            <div class="exp-icon"><i class="bi bi-database"></i></div>
+            <h5>Data &amp; Messaging</h5>
+            <p>Working with PostgreSQL, MongoDB, Redis, and Kafka to build reliable data pipelines and real-time systems.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="about-block">
+        <p class="block-label">Tech Stack</p>
+        <h2 class="block-heading">Skills &amp; Technologies</h2>
+
+        <p class="pill-label">Languages &amp; Frameworks</p>
+        <div class="pill-group">
+          <span class="pill"><i class="bi bi-cup-hot"></i> Java</span>
+          <span class="pill"><i class="bi bi-filetype-py"></i> Python</span>
+          <span class="pill"><i class="bi bi-gear"></i> Spring Boot</span>
+          <span class="pill"><i class="bi bi-layers"></i> Spring Cloud</span>
+          <span class="pill"><i class="bi bi-diagram-2"></i> Hibernate / JPA</span>
+          <span class="pill"><i class="bi bi-code-slash"></i> REST APIs</span>
+          <span class="pill"><i class="bi bi-arrow-left-right"></i> gRPC</span>
+        </div>
+
+        <p class="pill-label">Databases &amp; Messaging</p>
+        <div class="pill-group">
+          <span class="pill"><i class="bi bi-database"></i> PostgreSQL</span>
+          <span class="pill"><i class="bi bi-database"></i> MySQL</span>
+          <span class="pill"><i class="bi bi-hdd-stack"></i> MongoDB</span>
+          <span class="pill"><i class="bi bi-lightning"></i> Redis</span>
+          <span class="pill"><i class="bi bi-arrow-repeat"></i> Apache Kafka</span>
+          <span class="pill"><i class="bi bi-envelope"></i> RabbitMQ</span>
+        </div>
+
+        <p class="pill-label">Infrastructure &amp; Tools</p>
+        <div class="pill-group">
+          <span class="pill"><i class="bi bi-cloud"></i> AWS</span>
+          <span class="pill"><i class="fab fa-docker"></i> Docker</span>
+          <span class="pill"><i class="bi bi-box"></i> Kubernetes</span>
+          <span class="pill"><i class="bi bi-git"></i> Git</span>
+          <span class="pill"><i class="bi bi-arrow-clockwise"></i> CI/CD</span>
+          <span class="pill"><i class="bi bi-graph-up"></i> Grafana / Prometheus</span>
+          <span class="pill"><i class="bi bi-terminal"></i> Linux</span>
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section class="about-block">
+        <p class="block-label">Career</p>
+        <h2 class="block-heading">Professional Experience</h2>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2021 — Present</div>
+            <div class="tl-title">Senior Software Engineer</div>
+            <div class="tl-company">Enterprise Product Company</div>
+            <div class="tl-desc">
+              Leading backend development for a high-traffic platform handling millions of daily transactions.
+              Designing microservices with Spring Boot, implementing event-driven architectures with Kafka,
+              and mentoring junior engineers on system design patterns.
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2019 — 2021</div>
+            <div class="tl-title">Software Engineer</div>
+            <div class="tl-company">Technology Services Firm</div>
+            <div class="tl-desc">
+              Built and maintained RESTful microservices, optimized database queries for sub-100ms latency,
+              and implemented distributed caching with Redis. Contributed to CI/CD pipeline improvements
+              reducing deployment time by 40%.
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2017 — 2019</div>
+            <div class="tl-title">Junior Developer</div>
+            <div class="tl-company">Software Startup</div>
+            <div class="tl-desc">
+              Started professional career building Java-based web applications.
+              Gained hands-on experience with Spring MVC, Hibernate ORM, and relational databases.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Values -->
+      <section class="about-block">
+        <p class="block-label">How I Work</p>
+        <h2 class="block-heading">Engineering Philosophy</h2>
+        <div class="values-grid">
+          <div class="val-item">
+            <div class="val-icon"><i class="bi bi-bullseye"></i></div>
+            <div>
+              <h6>Simplicity First</h6>
+              <p>Prefer clear, maintainable solutions over clever abstractions. Code should be easy to read and reason about.</p>
+            </div>
+          </div>
+          <div class="val-item">
+            <div class="val-icon"><i class="bi bi-speedometer2"></i></div>
+            <div>
+              <h6>Performance Matters</h6>
+              <p>Measure first, optimize second. Understand the bottleneck before reaching for a cache or a queue.</p>
+            </div>
+          </div>
+          <div class="val-item">
+            <div class="val-icon"><i class="bi bi-people"></i></div>
+            <div>
+              <h6>Team Over Individual</h6>
+              <p>Great systems are built by great teams. I invest time in code reviews, documentation, and knowledge sharing.</p>
+            </div>
+          </div>
+          <div class="val-item">
+            <div class="val-icon"><i class="bi bi-book"></i></div>
+            <div>
+              <h6>Always Learning</h6>
+              <p>Technology evolves fast. I stay current through papers, open-source projects, and writing about what I learn.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="about-block">
+        <div class="contact-card">
+          <h3>Let's Connect</h3>
+          <p>Whether it's a project idea, a technical discussion, or a collaboration opportunity — I'd love to hear from you.</p>
+          <a href="https://mail.google.com/mail/?view=cm&to=kishorevbhosale@gmail.com" class="cta-btn" target="_blank">
+            <i class="bi bi-envelope"></i> Send an Email
+          </a>
+        </div>
+      </section>
+
+    </main>
 
     <!-- Footer -->
-    <footer class="footer text-white py-4 mt-5" role="contentinfo">
+    <footer class="about-footer" role="contentinfo">
       <div class="container">
-        <div class="row">
-          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-            <h5>Tech Preparation Zone</h5>
-            <p class="mb-0">Passionate about Technology & Innovation.</p>
-          </div>
-          <div class="col-md-6 text-center text-md-end">
-            <div class="social-links mb-3">
-              <a
-                href="https://linkedin.com/in/kishorevbhosale"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                class="text-white me-3"
-              >
-                <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
-              </a>
-              <a
-                href="https://github.com/kishorevbhosale"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                class="text-white me-3"
-              >
-                <i class="fab fa-github fa-lg" aria-hidden="true"></i>
-              </a>
-              <a
-                href="mailto:kishorevbhosale@gmail.com"
-                aria-label="Email"
-                class="text-white"
-              >
-                <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
-              </a>
-            </div>
-            <div class="footer-links mb-2">
-              <a href="pages/privacy-policy.html" class="text-white me-3 text-decoration-none">Privacy Policy</a>
-              <a href="pages/terms-of-service.html" class="text-white me-3 text-decoration-none">Terms of Service</a>
-              <a href="about_me.html" class="text-white text-decoration-none">About</a>
-            </div>
-            <p class="mb-0">
-              &copy; 2025 | Kishor Bhosale | All rights reserved.
-            </p>
-          </div>
-        </div>
+        <p>&copy; 2026 Kishor Bhosale &middot; <a href="../index.html">Tech Preparation Zone</a></p>
       </div>
     </footer>
 
-    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js"></script>
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme') || 'light';
+        if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        updateIcon(saved);
+
+        var btn = document.getElementById('aboutThemeToggle');
+        if (btn) {
+          btn.addEventListener('click', function () {
+            var cur = document.documentElement.getAttribute('data-theme') || 'light';
+            var next = cur === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateIcon(next);
+          });
+        }
+
+        function updateIcon(theme) {
+          var icon = document.getElementById('aboutThemeIcon');
+          if (icon) icon.className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+        }
+      })();
+    </script>
   </body>
 </html>

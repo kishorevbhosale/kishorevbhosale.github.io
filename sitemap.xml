@@ -1,433 +1,680 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    
-    <!-- Home Page -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- Homepage -->
     <url>
-        <loc>https://kishorevbhosale.github.io/</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
-    
-    <!-- About Page -->
+
+    <!-- About -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/about_me.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/about_me.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.6</priority>
     </url>
-    
-    <!-- Privacy Policy -->
+
+    <!-- DSA -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/privacy-policy.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    
-    <!-- Terms of Service -->
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/terms-of-service.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    
-    <!-- DSA Pages -->
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/dsa/string.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/dsa/string.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/dsa/two-pointers.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/dsa/two-pointers.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
-    
-    <!-- Java Pages -->
+
+    <!-- Java -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/basic-java.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/java/basic-java.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/java/java-ecosystem.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/java-ecosystem.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/java/oops.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/java/collection_framework.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/java/exception_handling.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/oops.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/java/memory_management.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/multithreading.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/java/multithreading.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/exception_handling.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/java/java-8.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/memory_management.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/collection_framework.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/java/java-8.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
+
     <!-- SOLID Principles -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/solid/srp.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/solid/srp.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/solid/ocp.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/solid/ocp.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/solid/lsp.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/solid/lsp.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/solid/isp.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/solid/isp.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/solid/dip.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/solid/dip.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
-    
+
     <!-- Design Patterns -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/design_pattern/introduction.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/design_pattern/introduction.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/design_pattern/creational/creational_dp.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/design_pattern/creational/creational_dp.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/design_pattern/creational/singleton.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/design_pattern/creational/singleton.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
-    
+
     <!-- Databases -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/db/database.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/db/database.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/db/different_types_db.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/db/different_types_db.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/db/database-choice.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/db/database-choice.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/db/dynamodb.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/db/redis.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/db/elasticsearch.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/db/elasticsearch.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/db/redis.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/db/dynamodb.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-    
+
+    <!-- Low-Level Design -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/parking_lot.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/design_elevator.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/vending_machine.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/atm.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/movie_ticket_booking.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/library_management.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/restaurnat_book.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/hotel_booking.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/stackoverflow.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/cache.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/logger.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/low_level_design/splitwise.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
     <!-- System Design Theory -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/zero_to_million.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/sd_interview_tips.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/estimation.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/building_blocks.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/building_blocks.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/estimation.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/dns.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/zero_to_million.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/scalability.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/load_balancer.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/performance_scalability.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/websocket.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/distributed_cache.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_theory/distributed_cache.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/queues.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-    
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/dns.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/cdn.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/protocols.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/load_balancer.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/proxy_vs_reverse_proxy.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/websocket.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_theory/cap.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
     <!-- System Design Examples -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_example/url_shortner.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/url_shortner.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_example/hotel_booking.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/hotel_booking.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_example/ecommerce.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/ecommerce.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_example/whatsapp.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/whatsapp.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_example/youtube.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/system_design_example/notification.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <!-- Low Level Design -->
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/parking_lot.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/design_elevator.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/library_management.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/vending_machine.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/movie_ticket_booking.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/atm.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/stackoverflow.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/cache.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/splitwise.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/low_level_design/logger.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <!-- Spring Boot -->
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/spring_boot/introduction.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/notification.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/spring_boot/servlet.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/sequence_generator.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/spring_boot/maven.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/system_design_example/youtube.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/spring_boot/crud.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/spring_boot/spring_beans.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/spring_boot/aop.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
+
     <!-- Microservices -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/microservices/mono_vs_micro.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/mono_vs_micro.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/microservices/building_microservice.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/building_microservice.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-    
-    <!-- Interview Pages -->
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/interview/java.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/interview/microservices.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/interview/spring-boot.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/interview/distributed-systems.html</loc>
-        <lastmod>2025-01-27</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    
-    <!-- Papers -->
-    <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/papers/dynamodb.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/key_annotations.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://kishorevbhosale.github.io/design/pages/papers/read_blog.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/sizing_of_microservice.html</loc>
+        <lastmod>2026-02-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
-    
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/benefits_cloud-native_ms.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/cloud-native_application.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/15_factors.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/config_management.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/liveness_readiness.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/deployment_portability_scalability.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/microservices/service_discovery.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Spring Boot -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/introduction.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/servlet.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/maven.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/crud.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/controller_layer_annotations.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/spring_beans.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/bean_scope.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/spring_bean_autowiring.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/aop.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/stereotype_annotations.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/spring_boot_annotations.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/exception_handling.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/input_data_validation.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/spring_boot/rest_api_documentation.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- DevOps -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/devops/cicd_flow.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/devops/git_commands.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/devops/docker_commands.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/devops/docker-compose.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- General Concepts -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/general/osi_layer.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/general/api_performace.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/general/rest_api_auth.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- API Design -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/api_design/stripe_processor.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- DDIA -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/ddia/chapter-1.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Interview Prep -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/interview/java.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/interview/microservices.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/interview/spring-boot.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/interview/project-based.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/interview/kafka-redis-aws.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/interview/distributed-systems.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Papers & Blogs -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/papers/dynamodb.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/papers/mapreduce.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/papers/read_blog.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- POCs -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/pocs/distributed_replication.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Legal -->
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/privacy-policy.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://www.preparationzone.com/#design/pages/terms-of-service.html</loc>
+        <lastmod>2026-02-26</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
 </urlset>
-
-
-
-
