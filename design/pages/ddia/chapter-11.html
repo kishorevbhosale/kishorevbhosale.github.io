@@ -1,0 +1,244 @@
+<title>DDIA Chapter 11 — Stream Processing</title>
+<meta name="description" content="Chapter 11 DDIA: Kafka internals, event time vs processing time, watermarks, stream joins, exactly-once semantics, CDC — FAANG Q&A.">
+
+<h2>Chapter 11 — Stream Processing</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> Stream processing handles unbounded, continuously arriving data in near-real-time. Batch processing is a special case — a stream that ended. Key challenges: handling late-arriving events, joins between infinite streams, and exactly-once processing semantics. Kafka + Flink/Kafka Streams is the industry standard stack.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> Messaging Systems — Comparison</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Pattern</th><th>How it works</th><th>Best for</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Direct call</strong></td><td>HTTP/RPC directly from producer to consumer</td><td>Simple, low-volume, synchronous</td><td>Webhooks</td></tr>
+    <tr><td><strong>Message queue</strong></td><td>Broker holds messages; deleted after ACK; no replay</td><td>Task queues, work distribution, RPC-style async</td><td>RabbitMQ, SQS</td></tr>
+    <tr><td><strong>Log-based broker</strong></td><td>Immutable append-only log; consumer tracks own offset; full replay</td><td>Event sourcing, CDC, high-throughput streaming, fan-out</td><td>Kafka, Kinesis, Pulsar</td></tr>
+  </tbody>
+</table>
+
+<h4 class="section-heading"><span class="section-number">2</span> Kafka Internals</h4>
+
+<ul class="key-points">
+  <li><strong>Topic → Partitions:</strong> A topic is split into N partitions. Each partition = ordered, immutable, append-only log stored on disk.</li>
+  <li><strong>Offset:</strong> Each message has a sequential offset within its partition. Consumers track their own committed offset — broker doesn't need per-consumer state per message.</li>
+  <li><strong>Consumer groups:</strong> Each consumer group gets a complete copy of the stream. Within a group: each partition assigned to exactly one consumer → guaranteed ordered processing per partition.</li>
+  <li><strong>Retention:</strong> Configurable by time (7 days) or size (100GB). Messages NOT deleted on consume. Consumer can re-read by resetting offset (replay).</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Kafka — Topic with 3 Partitions, 2 Consumer Groups</div>
+  <pre>
+  Topic: order-events (3 partitions)
+  ────────────────────────────────────────────────────────────────────────
+  Partition 0: [off=0: OrderPlaced] [off=1: PaymentFailed] [off=2: Cancelled]
+  Partition 1: [off=0: OrderPlaced] [off=1: OrderShipped]  [off=2: Delivered]
+  Partition 2: [off=0: PaymentOK]   [off=1: OrderRefunded] ...
+
+  Consumer Group A (Notification Service):    Consumer Group B (Analytics):
+    Consumer A1 → reads Partition 0               Consumer B1 → reads Partition 0, 1
+    Consumer A2 → reads Partition 1               Consumer B2 → reads Partition 2
+    Consumer A3 → reads Partition 2
+
+  Groups are FULLY INDEPENDENT — B's progress never affects A's offset.
+  Both see the same messages. Zero copy: OS sendfile() from page cache to socket.
+
+  Performance: 1M+ messages/sec per broker with zero-copy + sequential I/O.
+  Adding a consumer to Group B: doesn't affect Group A at all.</pre>
+</div>
+
+<h5 class="subsection-heading">Why Kafka is Fast</h5>
+<ul class="key-points">
+  <li><strong>Sequential disk I/O:</strong> Append-only log → sequential writes → 500MB/s on HDD, 2GB/s on SSD. No random writes.</li>
+  <li><strong>Zero-copy:</strong> <code>sendfile()</code> syscall transfers from page cache directly to network socket. No user-space copy. Modern Kafka: ~500MB/s throughput per broker.</li>
+  <li><strong>Batching:</strong> Producers batch messages (configurable: up to 16KB per batch or 5ms wait). One network round-trip for 1000 messages vs 1000 round trips.</li>
+  <li><strong>Consumer manages offset:</strong> Broker doesn't track per-message consumer state. Simpler broker, higher throughput.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">3</span> Event Time vs Processing Time</h4>
+
+<ul class="key-points">
+  <li><strong>Event time:</strong> when the event actually occurred (in the event payload, e.g., click_timestamp).</li>
+  <li><strong>Processing time:</strong> when the stream processor received and processed the event.</li>
+  <li><strong>Difference matters:</strong> Mobile app offline for 2 hours → sends 2 hours of cached events on reconnect → processing time is 2 hours after event time. Queries using processing time show wrong hourly metrics.</li>
+</ul>
+
+<div class="warn-box">ALWAYS use event time for business metrics (revenue per minute, sessions per hour, error rates per deployment). Processing time gives wrong results for late events, replays, and system restarts. Only use processing time for internal operational metrics.</div>
+
+<h5 class="subsection-heading">Watermarks — Estimating Event Time Completeness</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Watermark Advancing and Late Event Handling</div>
+  <pre>
+  Events arriving (event_time, processing_time):
+    (10:01, 10:02)  → watermark = 10:01 - 3min = 09:58
+    (10:05, 10:06)  → watermark advances to 10:02  (5min window start now "complete")
+    (10:08, 10:07)  → watermark advances to 10:05
+    (09:55, 10:09)  ← LATE EVENT: event_time=09:55, watermark=10:05 → 10min late!
+                       Options: a) Drop silently (simple)
+                                b) Update already-emitted result (side output)
+                                c) Place in allowed-lateness buffer (Flink: up to N mins)
+
+  Window [10:00 - 10:05) fires when: watermark ≥ 10:05
+  → Waits for late-arriving events up to 3 minutes.
+  → If events can be up to 3 min late: set allowed_lateness = 3min
+  → Late events after 3min: side output for separate handling (DLQ, manual review)
+
+  Trade-off: larger lateness tolerance → more accurate but higher latency in results.
+  Twitter: allows 15s lateness for real-time trending topics.
+  Ad systems: 48h lateness window for conversion attribution (ads → purchases).</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">4</span> Stream Joins</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Join Type</th><th>Description</th><th>Example</th><th>Implementation</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Stream-Stream (Windowed)</strong></td><td>Both streams buffered in time window; join events within window</td><td>Clicks stream + Impressions stream → CTR per ad</td><td>Flink CoProcessFunction with window state</td></tr>
+    <tr><td><strong>Stream-Table (Enrichment)</strong></td><td>Enrich stream events with data from slowly-changing table (loaded as local state)</td><td>User activity stream + user-profile table → add username/country</td><td>Kafka Streams KTable join; Flink broadcast state</td></tr>
+    <tr><td><strong>Table-Table (Materialized View)</strong></td><td>Both inputs are change streams (CDC). Output = maintained denormalized view</td><td>Follows CDC + Tweets CDC → precomputed timeline per user</td><td>Flink stateful operator with RocksDB state backend</td></tr>
+  </tbody>
+</table>
+
+<h4 class="section-heading"><span class="section-number">5</span> Exactly-Once Processing</h4>
+
+<ul class="key-points">
+  <li><strong>At-most-once:</strong> fire and forget. Crashes lose messages. Never retry. Acceptable for: metrics aggregation (approximate counts fine).</li>
+  <li><strong>At-least-once:</strong> retry on failure. Possible duplicates. Acceptable if processing is idempotent (writing to DynamoDB with idempotency key).</li>
+  <li><strong>Exactly-once:</strong> each event processed exactly once even on failure. Required for: financial aggregations, counter increments, any non-idempotent operation.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Exactly-Once with Flink Checkpointing + Kafka Transactions</div>
+  <pre>
+  Flink checkpoint protocol (Chandy-Lamport distributed snapshot):
+  1. JobManager broadcasts checkpoint barrier into all source partitions
+  2. Each operator: on receiving barrier → snapshot current state to durable store (S3)
+  3. After all barriers reach all sinks → checkpoint COMPLETE
+  4. Kafka sink: commit Kafka transaction (atomic: advance offset + write output)
+
+  On failure/restart:
+  5. Restore from last complete checkpoint → replay Kafka from checkpointed offset
+  6. Input events between checkpoint and failure: reprocessed (at-least-once from sources)
+  7. But Kafka sink: atomic transaction → output for those events either committed or not
+  8. Result: each input event produces output exactly once in Kafka
+
+  Configuration:
+    env.enableCheckpointing(60_000);           // checkpoint every 60 seconds
+    env.getCheckpointConfig().setCheckpointingMode(EXACTLY_ONCE);
+    FlinkKafkaProducer sink = new FlinkKafkaProducer(
+        topic, schema, props, Semantic.EXACTLY_ONCE);  // uses Kafka transactions</pre>
+</div>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Design a real-time fraud detection system processing 2 million transactions/second. Walk through the complete architecture.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>Kafka → Flink → multi-sink</strong> architecture. Kafka ingests and buffers the firehose; Flink performs stateful enrichment, velocity checks, and rule evaluation in-stream; results fan out to block-card APIs, analyst UIs, and audit stores. Total latency: ~15ms — easily meets a 100ms SLA. The key design choices are: event-time windowing for correctness, RocksDB state backend for scale, and exactly-once semantics for no missed or duplicate alerts.</p>
+      <h6>Kafka Ingestion Layer</h6>
+      <ul>
+        <li>Topic: <code>transactions</code> with 200 partitions. Message: <code>{card_id, merchant_id, amount, country, device_fingerprint, event_time}</code>. Partitioned by card_id → all events for a given card go to the same partition → preserves per-card ordering. Retention: 7 days (enables replay for model retraining).</li>
+      </ul>
+      <h6>Flink Stream Processing</h6>
+      <pre>// Step 1: Enrich with cardholder profile (broadcast state pattern)
+DataStream&lt;EnrichedTxn&gt; enriched = txnStream
+    .connect(cardProfileStream.broadcast(profileStateDesc))
+    .process(new EnrichWithProfileFunction());
+    // Adds: home_country, historical_avg_amount, card_risk_score
+
+// Step 2: Velocity checks — tumbling 1-hour window per card
+enriched.keyBy("card_id")
+    .window(TumblingEventTimeWindows.of(Time.hours(1)))
+    .aggregate(new VelocityAggregator())
+    // Computes: txn_count, total_amount, distinct_countries, distinct_merchants
+    // Flag if: count > 20 OR distinct_countries > 3 in 1h
+
+// Step 3: Pattern detection — 5-minute sliding window per card
+.process(new FraudRuleEngine())
+    // Rules: amount > 3× historical_avg; country-hop in 30min;
+    //        micro-transactions followed by large txn (structuring)</pre>
+      <h6>Output Fanout</h6>
+      <ul>
+        <li>Kafka topic <code>fraud-alerts</code> → card block service (blocks card in &lt;50ms), SMS notification service</li>
+        <li>Elasticsearch → fraud analyst investigation dashboard (search by card, merchant, amount range)</li>
+        <li>PostgreSQL → audit log + ML model retraining dataset</li>
+      </ul>
+      <h6>Scale and Reliability</h6>
+      <ul>
+        <li><strong>Scale:</strong> 2M TPS / 200 partitions = 10K TPS/partition. 200 Flink task managers × 8 task slots = 1600 parallel tasks, each handling ~1250 TPS. State backend: RocksDB (persists to disk for per-card velocity state across billions of cards without OOM). Checkpoint to S3 every 30s.</li>
+        <li><strong>Exactly-once:</strong> Flink two-phase commit with Kafka transactional producer. On job restart, Kafka consumers reset to checkpointed offsets → no missed or duplicate fraud alerts.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The hardest design decision is the state backend. In-memory state gives &lt;1ms lookups but limits state to executor RAM — fine for a few million cards. RocksDB state backend persists to NVMe, supports tens of billions of keys, but has ~1ms higher lookup latency. At 2M TPS per-card velocity state, RocksDB is the only option that scales. I always mention this trade-off because it demonstrates production experience."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">What is CDC? How does Debezium + Kafka implement it, and why does it power the outbox pattern?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct"><strong>Change Data Capture (CDC)</strong> reads the database's existing WAL (Write-Ahead Log) — the same log used for durability and replication — and converts every INSERT/UPDATE/DELETE into a structured event stream. The database already records every change in order; CDC just exposes it. Debezium implements CDC as a Kafka connector, making every DB table change immediately available as a Kafka topic message within milliseconds.</p>
+      <h6>How Debezium Works</h6>
+      <ul>
+        <li><strong>PostgreSQL:</strong> Debezium creates a logical replication slot. PostgreSQL sends the WAL stream to Debezium as if it were a replica. Debezium converts WAL entries to JSON/Avro events and publishes to Kafka topic <code>dbserver.schema.tablename</code>.</li>
+        <li><strong>MySQL:</strong> Debezium acts as a MySQL binlog consumer (same protocol as MySQL replicas). Zero polling overhead; events arrive within milliseconds of the commit.</li>
+        <li><strong>Event format:</strong> Each event contains: <code>{before: {row_state_before}, after: {row_state_after}, op: "c/u/d", ts_ms, source: {txid, lsn}}</code>. Applications get full before/after state for each change.</li>
+      </ul>
+      <h6>Powering the Outbox Pattern</h6>
+      <pre>-- Application writes: SINGLE ACID transaction
+BEGIN;
+INSERT INTO orders (id, user_id, total) VALUES (42, 1, 100.00);
+INSERT INTO outbox (id, event_type, payload, created_at)
+  VALUES (gen_uuid(), 'ORDER_CREATED',
+    '{"orderId":42,"userId":1,"total":100.00}', now());
+COMMIT;  -- Both committed atomically OR both rolled back
+
+-- Debezium: reads outbox table CDC events from WAL
+-- → publishes to Kafka topic "order-events"
+-- → marks row as processed (or uses Debezium Outbox Router to auto-delete)</pre>
+      <ul>
+        <li><strong>Why this solves dual-write perfectly:</strong> Application writes to exactly ONE system (its own DB). Event publishing is delegated to Debezium — a separate process. If the app crashes after COMMIT, Debezium picks up the outbox row on next WAL read. If Debezium crashes, it resumes from its committed Kafka offset — no events lost, no events duplicated (at-least-once; consumers use idempotency keys for exactly-once).</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "CDC + outbox is the pattern I recommend for all event-driven microservices. It's better than dual-write (which is unsafe), better than polling the DB (which is inefficient), and better than message-first publishing (which loses events if the DB write fails). The key insight is that the DB WAL is already an ordered, durable event log — CDC just unlocks that value."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Your Flink job computes 5-minute revenue windows. It crashes for 10 minutes. On restart, are results correct? How?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Yes, results are <strong>exactly correct</strong> — provided you use event-time windows and Flink checkpointing. On restart, Flink restores from the last checkpoint (rewinding Kafka offsets to that point), replays all events that arrived during the outage, places them into the correct windows based on their embedded event timestamps, and produces the same window results as if the job had never failed.</p>
+      <h6>What Happens on Restart</h6>
+      <ul>
+        <li><strong>1. Restore checkpoint from S3:</strong> The checkpoint contains: (a) Kafka consumer offsets at checkpoint time (e.g., partition 0 → offset 450000), and (b) all in-flight window state (partial 5-min aggregates that hadn't yet been emitted).</li>
+        <li><strong>2. Replay missed messages:</strong> Flink resets Kafka consumers to checkpointed offsets. Kafka still has all messages (7-day retention). All 10 minutes of missed events are replayed in order at full processing speed (much faster than real-time).</li>
+        <li><strong>3. Event-time placement:</strong> Each replayed event has an embedded <code>event_time</code> field. Flink places each event into the correct 5-minute window based on that timestamp — not the current wall clock. This is the critical difference from processing-time windows (which would place all replayed events into the "current" window and produce wrong results).</li>
+        <li><strong>4. Watermark advancement:</strong> During replay, the watermark advances quickly (historical events processed in fast-forward). All pending windows close and fire during catchup. Downstream Kafka receives a burst of completed window results corresponding to the missed period — expected and correct.</li>
+      </ul>
+      <h6>Configuration for Production</h6>
+      <pre>// Checkpoint every 30 seconds to S3
+env.enableCheckpointing(30_000, CheckpointingMode.EXACTLY_ONCE);
+env.getCheckpointConfig().setMinPauseBetweenCheckpoints(10_000);
+env.getCheckpointConfig().enableExternalizedCheckpoints(
+    ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
+// Restart strategy: 3 attempts, 5s delay
+env.setRestartStrategy(
+    RestartStrategies.fixedDelayRestart(3, Time.seconds(5)));</pre>
+      <ul>
+        <li><strong>Recovery speed:</strong> 10-min outage × 30-sec checkpoint interval = max 30 seconds of events to replay per partition. At 10K events/sec/partition × 30s = 300K events per partition. Flink processes these in seconds — catchup typically completes in 30–60 seconds regardless of outage length (bounded by checkpoint interval, not outage duration).</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The key interview answer is: the correctness guarantee comes from the <em>combination</em> of event-time processing AND Flink checkpointing. Event-time alone doesn't help if you lose in-flight state. Checkpointing alone doesn't help if you use processing-time windows (replayed events all land in the wrong window). Together: 100% correct results even after multi-hour outages — as long as Kafka retains the data."</div>
+    </div>
+  </details>
+</div>

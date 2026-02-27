@@ -1,0 +1,304 @@
+<title>DDIA Chapter 9 — Consistency and Consensus</title>
+<meta name="description" content="Chapter 9 DDIA: Linearizability, CAP theorem, Raft consensus, 2PC, ZooKeeper, total order broadcast — FAANG interview Q&A.">
+
+<h2>Chapter 9 — Consistency and Consensus</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> The most theoretically rich chapter. Covers: (1) <strong>Linearizability</strong> — the strongest single-object consistency model, (2) <strong>CAP theorem</strong> — the partition trade-off, (3) <strong>Total Order Broadcast</strong> — the foundation of consensus, (4) <strong>2PC</strong> — distributed atomic transactions and why they're blocking, (5) <strong>Raft</strong> — how distributed systems elect leaders and agree on values despite failures.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> Linearizability (Strong Consistency)</h4>
+
+<ul class="key-points">
+  <li><strong>Definition:</strong> Make a distributed system <em>appear</em> as if there is only ONE copy of data, and all operations are atomic. A read must return the most recently written value.</li>
+  <li><strong>Key constraint:</strong> Once ANY client reads a new value, ALL subsequent reads by ANY client must return the same or newer value. No going backwards.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Linearizability Violation — "Going Backwards" is Forbidden</div>
+  <pre>
+  x starts = 0. Client A writes x=1.
+
+  Timeline:
+  Client A: ───────── write(x=1) completes at t=5 ──────────────────────────────►
+  Client B: ──────────────────── read(x) at t=6 → returns ??? ─────────────────►
+  Client C: ──────────────────────────────────── read(x) at t=7 → returns ??? ──►
+
+  Linearizable: any of these are OK:
+    B=0, C=0   ✓  (A's write not yet visible to B or C)
+    B=0, C=1   ✓  (B read before write "took effect"; C read after)
+    B=1, C=1   ✓  (both read the new value)
+
+  NOT linearizable (forbidden):
+    B=1, C=0   ✗  (C read AFTER B saw the new value but saw OLD value — went backwards!)</pre>
+</div>
+
+<h5 class="subsection-heading">When Is Linearizability Required?</h5>
+<ul class="key-points">
+  <li><strong>Leader election:</strong> only ONE node can be leader at a time. Requires linearizable compare-and-set register. (ZooKeeper, etcd provide this.)</li>
+  <li><strong>Unique constraints:</strong> "Is this username taken?" must be linearizable. Two concurrent registrations of the same username, both passing a non-linearizable check = duplicate accounts.</li>
+  <li><strong>Cross-channel dependencies:</strong> Upload image to S3 → publish Kafka message "image ready for processing" → image resizer reads S3. If S3 read is eventually consistent (stale replica), resizer reads the old file. Fix: use S3's strongly consistent reads (AWS S3 strong consistency launched December 2020) OR include a version in the message and require S3 to return that specific version.</li>
+  <li><strong>Cost:</strong> linearizability requires coordination across replicas → higher write latency; unavailability during network partition.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">2</span> CAP Theorem — The Real Meaning</h4>
+
+<div class="diagram-box">
+  <div class="diagram-label">CAP Theorem — The Correct Framing</div>
+  <pre>
+  Popular misunderstanding: "Choose 2 of 3: Consistency, Availability, Partition tolerance"
+  Reality: P (Partition tolerance) is NOT optional in real networks.
+           Network partitions WILL happen (fiber cuts, NIC failures, overloaded switches).
+           You CANNOT choose to not tolerate partitions.
+
+  The REAL choice (only during a network partition):
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  CP (Consistent): Refuse requests when partition prevents quorum.   │
+  │  "I'd rather fail than serve stale data."                           │
+  │  → ZooKeeper, etcd, HBase, CockroachDB, Spanner                     │
+  │                                                                      │
+  │  AP (Available): Return possibly stale data. Never refuse requests. │
+  │  "I'd rather serve old data than be unavailable."                   │
+  │  → Cassandra, DynamoDB, Riak, CouchDB, Voldemort                    │
+  └──────────────────────────────────────────────────────────────────────┘
+  When no partition: both C and A achievable simultaneously.
+  PACELC extends CAP: when no partition, trade-off is Latency vs Consistency.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">3</span> Lamport Timestamps &amp; Total Order Broadcast</h4>
+
+<h5 class="subsection-heading">Lamport Timestamps</h5>
+
+<div class="code-block">
+  <div class="code-label">Lamport Timestamp Algorithm</div>
+  <pre>
+// Each node maintains: int counter = 0;
+
+// On any local event:
+counter++;
+
+// When sending a message:
+send(message, timestamp=counter);
+
+// When receiving a message:
+counter = max(own_counter, received_timestamp) + 1;
+
+// Key property:
+// If A "happened before" B → lamport(A) < lamport(B)
+// Concurrent events: ordered arbitrarily by (counter, node_id)
+// Limitation: lamport(A) < lamport(B) does NOT mean A happened before B
+//             (could be concurrent events with arbitrary ordering)
+
+// Example:
+// Node 1 events: (1,n1), (2,n1), (3,n1)
+// Node 2 events: (1,n2), (2,n2)
+// Node 2 receives msg from Node 1 with ts=3 → Node 2 counter = max(2,3)+1 = 4
+// Both nodes now have consistent total ordering by (counter, node_id)</pre>
+</div>
+
+<h5 class="subsection-heading">Total Order Broadcast</h5>
+<ul class="key-points">
+  <li><strong>Two properties:</strong> (1) <em>Reliable delivery:</em> if one non-crashed node delivers a message, all non-crashed nodes eventually deliver it. (2) <em>Totally ordered:</em> all nodes deliver messages in the same order.</li>
+  <li><strong>Equivalent to consensus:</strong> if you have total order broadcast, you can implement consensus (and vice versa). They are computationally equivalent problems.</li>
+  <li><strong>Used by:</strong> ZooKeeper (ZAB protocol), Kafka (partition log), Raft log replication.</li>
+  <li>Example: Kafka partition ordering — all consumers in the same consumer group see messages in the same order within a partition → exactly one ordering for that partition.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">4</span> Two-Phase Commit (2PC)</h4>
+
+<div class="diagram-box">
+  <div class="diagram-label">2PC Protocol — and Why It Blocks on Coordinator Failure</div>
+  <pre>
+  PHASE 1 — Prepare:
+  Coordinator → ALL participants: "Prepare to commit txn-123?"
+  Each participant:
+    - Writes all redo/undo info to durable WAL
+    - Acquires all locks needed for the transaction
+    - Replies: YES (can commit) or NO (must abort)
+
+  PHASE 2 — Commit/Abort:
+  If all said YES:
+    Coordinator writes "COMMIT txn-123" to own durable log  ← POINT OF NO RETURN
+    Coordinator → participants: "COMMIT"
+    Participants commit and release locks.
+
+  If any said NO:
+    Coordinator → participants: "ABORT"
+    Participants rollback.
+
+  ── The blocking failure scenario ────────────────────────────────────────────
+  All participants voted YES and are waiting for coordinator's COMMIT or ABORT.
+  Coordinator crashes AFTER writing COMMIT to its log, BEFORE sending to participants.
+  Participants are "in-doubt":
+    → Cannot unilaterally commit (coordinator might have decided ABORT)
+    → Cannot unilaterally abort (coordinator might have decided COMMIT — and others may have committed)
+  PARTICIPANTS HOLD LOCKS, BLOCKING OTHER TRANSACTIONS.
+  System stuck until coordinator recovers. Could be minutes to hours.
+  ── Modern alternative ────────────────────────────────────────────────────────
+  Saga pattern (compensating transactions) preferred for microservices.
+  Coordinator HA via Raft consensus (CockroachDB, Spanner): new coordinator takes over.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">5</span> Raft Consensus Algorithm</h4>
+
+<ul class="key-points">
+  <li>Designed for <strong>understandability</strong> (vs. Paxos). Used by: etcd, CockroachDB, TiKV, InfluxDB, Consul, HashiCorp Vault, YugabyteDB.</li>
+  <li>Three node states: <strong>Follower</strong> (default), <strong>Candidate</strong> (running for election), <strong>Leader</strong> (handles all writes + replication).</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Raft Leader Election &amp; Log Replication</div>
+  <pre>
+  LEADER ELECTION:
+  ─────────────────────────────────────────────────────────────────────────────
+  All nodes start as Followers. Random election timeout: 150-300ms.
+  If follower receives no heartbeat within timeout:
+    → become Candidate → increment term → vote for self → send RequestVote to all
+
+  RequestVote granted if:
+    (a) haven't voted yet this term  AND
+    (b) candidate's log is at least as up-to-date as voter's log  (safety!)
+
+  Majority votes (n/2 + 1) → become Leader → send heartbeats every 50ms
+
+  Safety guarantee: only a node with the MOST COMPLETE LOG can win.
+  Committed entries can NEVER be lost during leader change.
+
+  LOG REPLICATION:
+  ─────────────────────────────────────────────────────────────────────────────
+  Client write → Leader appends to log: [index=42, term=3, entry="SET x=5"]
+  Leader → AppendEntries RPC to all followers (parallel)
+  Commit: entry committed when majority (n/2+1) nodes ACK receipt
+  5-node cluster: needs 3 ACKs → tolerates 2 simultaneous node failures.
+
+  After commit: leader applies to state machine, returns to client.
+  Followers apply committed entries in order → identical state machines.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">6</span> ZooKeeper &amp; etcd — Coordination Services</h4>
+
+<ul class="key-points">
+  <li><strong>Purpose:</strong> "A small, slow DB for coordinating everything else." Not for user data — metadata, locks, leader election, service discovery.</li>
+  <li><strong>ZooKeeper:</strong> uses ZAB (ZooKeeper Atomic Broadcast). Used by Kafka (old controller), HBase, Hadoop YARN. Requires odd number of nodes (typically 3 or 5 for quorum).</li>
+  <li><strong>etcd:</strong> uses Raft. gRPC API. Used by Kubernetes (stores ALL cluster state). Simpler operationally than ZooKeeper.</li>
+  <li><strong>Ephemeral nodes/leases:</strong> auto-deleted when client session expires (node dies) → other nodes subscribe to delete events → instant failure detection without polling.</li>
+  <li><strong>Watch/Subscribe:</strong> "Notify me when /config/feature_flags changes" → push notification within milliseconds. No polling. Used for distributed config management, service discovery.</li>
+</ul>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Kubernetes stores all cluster state in etcd. What happens when etcd loses quorum, and how do you recover?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">etcd uses Raft consensus — it requires a quorum (majority) of nodes to process any write. A 3-node cluster losing 2 nodes has no majority → etcd <strong>refuses all writes</strong> (CP system: consistent but unavailable). The Kubernetes API server can no longer create/update/delete objects. Existing pods keep running (kubelet is independent), but the control plane is effectively frozen until quorum is restored.</p>
+      <h6>Why Refuse All Writes?</h6>
+      <ul>
+        <li>If the remaining node accepted writes, it and the two "unreachable" nodes (which might just be partitioned, not dead) could diverge. On reconnect: conflicting state = split-brain. The control plane could schedule two pods for the same node, or have two conflicting leaders. etcd correctly refuses writes to prevent this entirely.</li>
+        <li>etcd is a CP system by design. For a coordination store, consistency is the right choice — the cost of split-brain cluster state is far worse than temporary write unavailability.</li>
+      </ul>
+      <h6>Recovery Procedure</h6>
+      <ul>
+        <li><strong>1. Assess:</strong> <code>etcdctl endpoint health --endpoints=node1:2379,node2:2379,node3:2379</code> — identifies which nodes are up/down.</li>
+        <li><strong>2. Remove failed member:</strong> <code>etcdctl member remove &lt;member-id&gt;</code> (from a healthy node)</li>
+        <li><strong>3. Add replacement member:</strong> <code>etcdctl member add &lt;name&gt; --peer-urls=https://new-node:2380</code></li>
+        <li><strong>4. Start etcd on new node:</strong> with <code>--initial-cluster-state=existing</code>. Node bootstraps by receiving all committed log entries from the current leader via Raft log replication.</li>
+        <li><strong>Disaster (all nodes lost):</strong> <code>etcdctl snapshot restore snapshot.db --data-dir=/var/lib/etcd</code>. This is why <strong>automated etcd snapshots every 30 minutes</strong> are non-negotiable for production Kubernetes clusters.</li>
+      </ul>
+      <h6>Production Architecture</h6>
+      <ul>
+        <li>5 etcd nodes across 3 AZs (tolerates 2 node failures, 1 full AZ failure). Alert on <code>etcd_server_has_leader == 0</code> (PagerDuty, 24/7). Separate etcd from API server nodes for independent failure domains.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "etcd is the single most critical component in a Kubernetes cluster. If etcd is unavailable, the entire control plane is down. This is why production clusters use 5 nodes (not 3) — the extra 2 nodes exist purely for failure tolerance, not performance. The backup and restore procedure should be tested quarterly, not just documented."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Design a distributed "items in cart" counter across 50 global regions. Which consistency model, and how does checkout work?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>eventual consistency with CRDT counters</strong> for cart increments during browsing — cross-region coordination for every "Add to Cart" click would add 150–300ms latency (unacceptable UX). Switch to a <strong>linearizable inventory check</strong> only at checkout time, where correctness matters (can't sell items you don't have).</p>
+      <h6>Cart Counter — Eventual Consistency (AP)</h6>
+      <ul>
+        <li><strong>Why AP here:</strong> User A in US adds item; User B in EU sees count as 3 instead of 4 for 100ms → zero business harm. Eventual consistency is appropriate.</li>
+        <li><strong>CRDT G-Counter per region:</strong> Each region maintains its own counter increment. Global count = sum across all regions. No cross-region coordination needed for writes. Read = sum of all regional counters at query time.</li>
+        <li><strong>Cassandra implementation:</strong></li>
+      </ul>
+      <pre>CREATE TABLE cart_item_counts (
+  cart_id UUID PRIMARY KEY,
+  item_count COUNTER
+);
+-- Atomic local write:
+UPDATE cart_item_counts SET item_count = item_count + 1
+WHERE cart_id = :id;
+-- Cassandra counter columns handle distributed counter semantics
+-- Write: LOCAL_QUORUM (intra-region fast), Replication: async cross-region</pre>
+      <h6>Checkout — Strong Consistency (CP)</h6>
+      <ul>
+        <li>Cart counter was approximate. At checkout, the source of truth is the <strong>inventory database</strong>. Use a pessimistic lock: <code>SELECT quantity FROM inventory WHERE item_id=:id FOR UPDATE</code>. If quantity &gt; 0 → charge and decrement. If 0 → sold out. This single linearizable check, done once at checkout, is correct and the latency cost (one synchronous DB call) is acceptable at checkout time (user expects a brief "processing" delay).</li>
+        <li><strong>Two-layer model:</strong> Cart (eventual consistency, CRDT, &lt;5ms writes) → Inventory (linearizable, single-shard, 5–20ms). Optimistic at browse time; authoritative at purchase time.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "I explicitly distinguish the consistency requirement at each stage of the user journey. During browsing: eventual consistency is correct — approximate counts are fine. During checkout: strong consistency is required — can't oversell inventory. Using the same consistency model for both wastes either latency (strong everywhere) or correctness (eventual at checkout). The split approach gives optimal UX and correctness."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Walk through Raft leader election step by step. What mathematically prevents two leaders from being elected in the same term?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Raft uses randomized election timeouts to stagger candidate starts, and a <strong>one-vote-per-term-per-node</strong> rule stored durably to prevent two candidates from winning simultaneously. The mathematical guarantee: any two majorities of n nodes must share at least one node — that shared node can only vote for one candidate, so two candidates cannot both get majority votes in the same term.</p>
+      <h6>Step-by-Step Election (5-node cluster)</h6>
+      <ul>
+        <li><strong>Trigger:</strong> Node 3's random election timeout (150–300ms) fires first. Node 3 transitions to Candidate, increments term to 2, votes for itself, sends <code>RequestVote(term=2, lastLogTerm=T, lastLogIndex=I)</code> to all nodes.</li>
+        <li><strong>Vote granting — both conditions must hold:</strong>
+          <ul>
+            <li>(a) Voter hasn't voted in term 2 yet (stored durably on disk — survives crashes)</li>
+            <li>(b) Candidate's log is at least as complete: <code>(candidateLastTerm, candidateLastIndex) ≥ (voterLastTerm, voterLastIndex)</code> — ensures a candidate missing committed entries cannot win</li>
+          </ul>
+        </li>
+        <li><strong>Majority:</strong> Node 3 receives votes from Nodes 1, 2, 4 (3/5 = majority). Node 3 becomes Leader for term=2. Sends AppendEntries heartbeats immediately to reset other nodes' election timers and suppress competing candidates.</li>
+      </ul>
+      <h6>Why Exactly One Leader is Mathematically Guaranteed</h6>
+      <ul>
+        <li>Majority = ⌊n/2⌋ + 1 nodes. For n=5: majority = 3. If candidate A wins 3 votes, candidate B needs 3 votes from the remaining 5 nodes. But 2 nodes already voted for A → candidate B can get at most 3 votes (the 3 non-A-voters). However, one of A's voters might overlap — by pigeonhole, any two sets of 3 from 5 nodes must share at least 1 node. That shared node votes only once → B cannot win.</li>
+        <li><strong>Split vote (tie):</strong> Neither candidate gets majority → election timeout → new election in term=3 with new random timeouts → probability of tie decreases each round.</li>
+      </ul>
+      <h6>Safety: Committed Entries Never Lost</h6>
+      <ul>
+        <li>If an entry is committed (replicated to majority), vote-granting rule (b) ensures any future leader MUST have that entry. Candidates without it will lose because voters with more complete logs will reject their vote request.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Explain why random timeouts matter: "Without randomization, all 5 nodes would timeout at the same time, all become candidates simultaneously, all votes would split evenly → infinite elections. Randomized timeouts give one node a head start, making it the natural first candidate. In practice, Raft elects a new leader in 150–300ms — fast enough that applications typically can't even notice the brief unavailability."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">Why is 2PC called "blocking," and how does CockroachDB eliminate the coordinator single-point-of-failure?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">2PC is blocking because <strong>participants cannot make progress if the coordinator crashes after Phase 1</strong>. Participants voted YES and are holding row locks — they can't unilaterally commit (risk: some participants got COMMIT, others didn't → inconsistency) or abort (risk: same). They're stuck until the coordinator recovers. CockroachDB eliminates this by storing the coordinator's COMMIT decision in a Raft-replicated transaction record that any node can read and act on.</p>
+      <h6>The Blocking Problem in Detail</h6>
+      <ul>
+        <li><strong>Sequence:</strong> Coordinator writes "PREPARE txn-123" to WAL → sends PREPARE to participants → all vote YES → coordinator writes "COMMIT txn-123" to WAL → coordinator crashes before sending COMMIT to participants.</li>
+        <li><strong>Participants' dilemma:</strong> Each holds row locks. They know they voted YES but don't know the final decision. They cannot abort (coordinator might have sent COMMIT to some) and cannot commit (coordinator might have crashed before deciding). They wait.</li>
+        <li><strong>Duration:</strong> Until the coordinator machine is repaired. Minutes in cloud environments. Hours if hardware replacement needed. All rows those transactions touch are <strong>unavailable to other transactions</strong> for this entire duration.</li>
+      </ul>
+      <h6>CockroachDB's Solution</h6>
+      <ul>
+        <li>The coordinator writes its COMMIT decision to a <strong>transaction record</strong> stored as a key-value entry in CockroachDB's distributed storage — backed by Raft, replicated to 3 nodes.</li>
+        <li>If the coordinator fails, <em>any</em> other node can read the transaction record, see the COMMIT decision, and send it to in-doubt participants. The transaction resolves in seconds regardless of coordinator failure.</li>
+        <li>This effectively distributes the coordinator's durability, eliminating the single-point-of-failure. 2PC's safety is preserved; its liveness (blocking) property is eliminated.</li>
+        <li><strong>Google Spanner:</strong> Same principle — Paxos groups back the coordinator, ensuring the commit decision survives any single node failure.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The 2PC blocking problem is why most distributed systems avoid it. The alternatives are: (a) Saga with compensating transactions (eventual consistency), (b) CockroachDB/Spanner-style Raft-backed coordinator (linearizable, non-blocking), or (c) simply avoid multi-shard transactions by designing data locality carefully. Option (c) is usually the most practical — if all data for a transaction lives on one shard, 2PC is never needed."</div>
+    </div>
+  </details>
+</div>

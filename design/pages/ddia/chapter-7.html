@@ -1,0 +1,325 @@
+<title>DDIA Chapter 7 — Transactions</title>
+<meta name="description" content="Chapter 7 DDIA: ACID, 6 race conditions, isolation levels, MVCC, 2PL, SSI — the most important chapter for database and system design interviews.">
+
+<h2>Chapter 7 — Transactions</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> A transaction groups reads and writes into a logical unit — all succeed (commit) or all fail (rollback). The hardest problem is <strong>isolation</strong>: preventing concurrent transactions from interfering. This chapter covers all 6 race conditions, all 4 isolation levels, and 3 concurrency control mechanisms — the most-tested topic in database design interviews.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> ACID Properties</h4>
+
+<ul class="key-points">
+  <li><strong>Atomicity:</strong> "All or nothing." Either all operations in the transaction commit, or none do. If any step fails → rollback → DB as if nothing happened. Mechanism: WAL (Write-Ahead Log). Key capability is the ability to <em>abort</em>. Note: Atomicity ≠ atomic CPU operations.</li>
+  <li><strong>Consistency:</strong> Application invariants always hold (sum of all account balances unchanged, FK constraints satisfied). The DB enforces column constraints (NOT NULL, UNIQUE, FK); the app ensures higher-level invariants. <em>C is actually an application responsibility — the DB can't enforce domain logic.</em></li>
+  <li><strong>Isolation:</strong> Concurrent transactions behave as if they executed serially. Full isolation (Serializable) is expensive — most DBs offer weaker defaults. The hardest property to get right.</li>
+  <li><strong>Durability:</strong> Once committed, data survives crashes (power loss, OS crash, HW failure). Mechanism: WAL flushed to disk before commit ACK + replication to multiple nodes.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">2</span> The Six Race Conditions — Memorize These</h4>
+
+<div class="note-box">These 6 race conditions are the core of every isolation interview question. Map each to its isolation level fix.</div>
+
+<h5 class="subsection-heading">Race 1: Dirty Read</h5>
+<div class="diagram-box">
+  <div class="diagram-label">Dirty Read — Reading Uncommitted Data</div>
+  <pre>
+  t=1: Tx1 updates account_balance: 1000 → 900  (not yet committed)
+  t=2: Tx2 reads account_balance → 900           ← reads uncommitted data!
+  t=3: Tx1 ROLLBACK (hardware error) → balance reverts to 1000
+  t=4: Tx2 uses 900 to make a decision — based on data that NEVER EXISTED!
+  ──────────────────────────────────────────────────────────────────────
+  Analogy: seeing a colleague's half-written email before they've finished it.
+  Prevented by: Read Committed isolation level and above.</pre>
+</div>
+
+<h5 class="subsection-heading">Race 2: Dirty Write</h5>
+<ul class="key-points">
+  <li>Tx1 starts updating row. Before Tx1 commits, Tx2 overwrites the same row. Final state mixes writes from two transactions.</li>
+  <li><em>Example:</em> Car listing. Tx1 (buyer Alice): updates listing.buyer=Alice + inserts invoice for Alice. Tx2 (buyer Bob): updates listing.buyer=Bob + inserts invoice for Bob. Tx2 overwrites Tx1's listing update. Result: listing.buyer=Bob but invoice=Alice → inconsistent.</li>
+  <li><strong>Prevented by:</strong> Read Committed (row-level write locks).</li>
+</ul>
+
+<h5 class="subsection-heading">Race 3: Read Skew (Non-Repeatable Read)</h5>
+<div class="diagram-box">
+  <div class="diagram-label">Read Skew — Backup Sees Inconsistent Snapshot</div>
+  <pre>
+  Invariant: Account1 + Account2 should always = $1000 (transfer, not creation).
+  Account1 = $500, Account2 = $500. Total = $1000 ✓
+
+  t=1: Backup/Audit process reads Account1 → $500
+  t=2: Transfer: Account1 $500→$400; Account2 $500→$600 (both committed)
+  t=3: Backup reads Account2 → $600
+
+  Backup sees: $500 + $600 = $1100 — "money appeared from nowhere!"
+  The read at t=1 and t=3 are in different consistent states.
+  ──────────────────────────────────────────────────────────────────────
+  Real impact: bank audits fail; backup restoration produces wrong state.
+  Prevented by: Snapshot Isolation (Repeatable Read). DB takes a point-in-time snapshot.</pre>
+</div>
+
+<h5 class="subsection-heading">Race 4: Lost Update</h5>
+<div class="code-block">
+  <div class="code-label">Lost Update — Read-Modify-Write Cycle Race</div>
+  <pre>
+  Wikipedia page edit conflict example:
+
+  Tx1: read(page_content) → "Hello World"   Tx2: read(page_content) → "Hello World"
+  Tx1: append "!"                           Tx2: append "?"
+  Tx1: write("Hello World!")                Tx2: write("Hello World?")
+  Tx1: commit                               Tx2: commit (OVERWRITES Tx1!)
+  Final: "Hello World?" — Tx1's edit is LOST!
+
+  ── Solutions ──────────────────────────────────────────────────────────────────
+  Atomic operation: UPDATE page SET content = content || '!' WHERE id=42
+                    → DB does the read-modify-write internally (atomic)
+
+  Explicit lock:    BEGIN; SELECT content FROM page WHERE id=42 FOR UPDATE;
+                    -- other transactions BLOCKED here
+                    UPDATE page SET content = ... WHERE id=42; COMMIT;
+
+  Compare-and-set:  UPDATE page SET content='Hello World!'
+                    WHERE id=42 AND content='Hello World'
+                    → fails if concurrent update happened (check rows_affected=0)
+
+  OCC (Optimistic): detect at commit time via conflict detection
+                    → abort Tx1 or Tx2, retry the loser.</pre>
+</div>
+
+<h5 class="subsection-heading">Race 5: Write Skew — The Sneaky One</h5>
+<div class="diagram-box">
+  <div class="diagram-label">Write Skew — Hospital On-Call Scheduling</div>
+  <pre>
+  Invariant: At least 1 doctor must be on-call at all times.
+  Current state: Alice = on_call=true, Bob = on_call=true. Count = 2.
+
+  Tx1 (Alice requests day off):   SELECT count(*) WHERE on_call=true → 2
+                                  "Safe to go off call (count > 1)"
+                                  UPDATE SET on_call=false WHERE doctor='Alice'
+
+  Tx2 (Bob requests day off):     SELECT count(*) WHERE on_call=true → 2 (same snapshot!)
+                                  "Safe to go off call (count > 1)"
+                                  UPDATE SET on_call=false WHERE doctor='Bob'
+
+  Both transactions commit independently (they touch DIFFERENT rows — no row conflict!)
+  Final: Alice = false, Bob = false. Count = 0. INVARIANT VIOLATED!
+
+  ── Why Snapshot Isolation fails here ──────────────────────────────────────────
+  Each transaction writes to a different row → no write-write conflict detected.
+  The problem is each read a STALE view of the count (the premise becomes false).
+  ── Only fix ────────────────────────────────────────────────────────────────────
+  SERIALIZABLE isolation. Or: SELECT ... FOR UPDATE on the count check (predicate lock).</pre>
+</div>
+
+<h5 class="subsection-heading">Race 6: Phantom Read</h5>
+<ul class="key-points">
+  <li>Tx1 reads "are there any bookings for room 101 at 2pm?" → 0 rows → inserts booking. Tx2 does the same → both get 0 rows → both insert → double booking.</li>
+  <li>Phantom = a row that APPEARS due to another transaction's INSERT matching your WHERE clause. No existing row to lock — the absence is what matters.</li>
+  <li><strong>Hard to prevent:</strong> you can't lock a row that doesn't exist yet. Solutions: predicate locks (lock the WHERE condition), index-range locks (approximate predicate at index level), serializable isolation, or materialization (pre-create lock rows for every possible time slot).</li>
+  <li><strong>Prevented by:</strong> Serializable isolation only.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">3</span> Isolation Levels — What Each Prevents</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Isolation Level</th><th>Dirty Read</th><th>Dirty Write</th><th>Read Skew</th><th>Lost Update</th><th>Write Skew</th><th>Phantom</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Read Uncommitted</strong></td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td></tr>
+    <tr><td><strong>Read Committed</strong></td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td></tr>
+    <tr><td><strong>Snapshot Isolation (SI)</strong></td><td>✅</td><td>✅</td><td>✅</td><td>Partially ✅</td><td>❌</td><td>❌</td></tr>
+    <tr><td><strong>Serializable</strong></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+  </tbody>
+</table>
+
+<h4 class="section-heading"><span class="section-number">4</span> Concurrency Control Mechanisms</h4>
+
+<h5 class="subsection-heading">MVCC — How Snapshot Isolation Works</h5>
+<ul class="key-points">
+  <li>Every write creates a <strong>new version</strong> of the row (never overwrite in place). Each version tagged with: created_by_txid and deleted_by_txid.</li>
+  <li>Transaction Tx100 sees: all versions created by transactions with txid ≤ 100 that were committed before Tx100 started, and not deleted before Tx100 started.</li>
+  <li><strong>Reader-writer non-blocking:</strong> readers see an older snapshot; writers create new versions. No lock contention between readers and writers. Long-running backups don't block OLTP writes.</li>
+  <li>PostgreSQL VACUUM cleans up old versions; MySQL InnoDB purge thread does the same.</li>
+</ul>
+
+<h5 class="subsection-heading">2PL vs SSI</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Two-Phase Locking (Pessimistic) vs SSI (Optimistic)</div>
+  <pre>
+  2PL (Two-Phase Locking) — Pessimistic:
+  ───────────────────────────────────────────────────────────────
+  Read:  acquire SHARED lock (multiple readers OK; blocks writers)
+  Write: acquire EXCLUSIVE lock (blocks all readers AND writers)
+  All locks held until COMMIT (two phases: growing + shrinking)
+  Deadlock: Tx1 holds row A, wants row B. Tx2 holds row B, wants row A.
+  → DB detects cycle → aborts one → client must retry.
+  Predicate locks: lock ALL rows matching WHERE condition (including future rows!)
+  Index-range locks: approximate predicate at index granularity. More practical.
+
+  SSI (Serializable Snapshot Isolation) — Optimistic:
+  ───────────────────────────────────────────────────────────────
+  Transactions run without blocking (based on MVCC snapshots).
+  DB tracks "anti-dependencies": what did each Tx READ that another Tx WROTE?
+  At commit time: if anti-dependency creates a cycle → abort one → retry.
+  Example: if Tx1's read result was invalidated by Tx2's write → Tx1 aborts.
+  ✅ No blocking → high throughput. No deadlocks (only aborts).
+  ✅ Much better performance than 2PL when conflict rate is low.
+  ❌ Under high contention: many aborts → retry overhead. 2PL may outperform.
+  Used by: PostgreSQL SERIALIZABLE (since 9.1), FoundationDB.</pre>
+</div>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Design a concert seat reservation system that prevents double-booking. Which isolation level and locking strategy?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>SELECT FOR UPDATE</strong> (pessimistic locking) for the check-and-book operation. This acquires a row lock on the specific seat before checking availability, ensuring no other transaction can book it until yours commits or rolls back. For Ticketmaster-scale, back it with a Redis reservation hold (SETNX + TTL) as a fast pre-check layer.</p>
+      <h6>The Race Condition</h6>
+      <ul>
+        <li>Two users check seat 14C simultaneously → both read <code>status='AVAILABLE'</code> → both decide to book → both UPDATE → last writer wins → one booking silently overwrites the other. This is a <strong>write skew</strong> on a single row with a check-then-act pattern.</li>
+      </ul>
+      <h6>Solution 1 — SELECT FOR UPDATE (Production Standard)</h6>
+      <pre>BEGIN;
+-- Lock the row BEFORE checking availability
+SELECT id, status FROM seats
+WHERE seat_number = '14C' FOR UPDATE;
+-- Other transactions trying to FOR UPDATE on seat 14C now BLOCK here.
+-- Once unblocked, they'll see the committed status.
+
+UPDATE seats SET status='BOOKED', user_id=:uid
+WHERE seat_number='14C' AND status='AVAILABLE';
+-- If 0 rows affected: another transaction already booked it → rollback + show error
+COMMIT;</pre>
+      <h6>Solution 2 — Unique Constraint (Cleaner Design)</h6>
+      <ul>
+        <li>Create a <code>bookings</code> table with <code>UNIQUE(seat_id)</code>. Two concurrent INSERTs for the same seat: first succeeds, second gets a unique constraint violation → database-enforced, no application lock needed. Simpler and scales better — database engine optimizes constraint enforcement.</li>
+      </ul>
+      <h6>Solution 3 — Serializable SSI (PostgreSQL)</h6>
+      <ul>
+        <li><code>SET TRANSACTION ISOLATION LEVEL SERIALIZABLE</code>. PostgreSQL Serializable Snapshot Isolation detects the check-then-act anti-dependency and aborts one of the concurrent transactions. Application retries. Cost: ~10–20% higher latency, occasional serialization failures to handle. Correct by default.</li>
+      </ul>
+      <h6>Ticketmaster Scale — Redis Pre-Reservation</h6>
+      <ul>
+        <li><code>SET seat:14C user_id NX PX 300000</code> — atomic compare-and-set with 5-minute TTL. If NX succeeds, user has a reservation hold. Then DB transaction confirms booking before TTL expires. Redis SETNX is ~microseconds vs DB SELECT FOR UPDATE which requires disk I/O. Redis TTL auto-releases abandoned holds.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Identify the exact anomaly name: "This is a write-skew with phantom reads. SELECT FOR UPDATE prevents it by converting the optimistic read into a pessimistic lock acquisition, forcing serialization of the check-then-book pattern." Then proactively mention: "For high-concurrency situations, I'd prefer the unique constraint approach — it pushes conflict detection to the DB engine which is more efficient than application-level locks."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Your bank's transfer service occasionally loses money — debits happen but credits don't. Walk through every bug and fix.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Transfer from Account A to Account B has five distinct failure modes. <strong>Every single one</strong> has been hit in production at real financial companies. The correct implementation uses: single DB transaction (wraps both debit + credit), SELECT FOR UPDATE (prevents lost update), idempotency key (prevents duplicate on retry), and Saga pattern (for cross-service transfers).</p>
+      <h6>Bug 1 — Lost Update (most common)</h6>
+      <pre>-- WRONG: Two concurrent transfers both read balance=500, both compute 500-100=400
+SELECT balance FROM accounts WHERE id=A;  -- sees 500
+SELECT balance FROM accounts WHERE id=A;  -- other txn also sees 500
+UPDATE accounts SET balance=400 WHERE id=A;  -- first: ok
+UPDATE accounts SET balance=400 WHERE id=A;  -- second: WRONG (should be 300)
+
+-- CORRECT: Atomic SQL update + SELECT FOR UPDATE
+UPDATE accounts SET balance = balance - 100
+WHERE id=A AND balance >= 100;  -- 0 rows affected = insufficient funds</pre>
+      <h6>Bug 2 — Crash Between Debit and Credit</h6>
+      <ul>
+        <li>Debit account A succeeds. Application crashes. Credit never executes. <strong>Fix: wrap both in a single <code>@Transactional</code>.</strong> DB WAL rolls back the debit on crash recovery. Atomicity.</li>
+      </ul>
+      <h6>Bug 3 — Read Skew in Audit</h6>
+      <ul>
+        <li>Audit reads A=500 → transfer runs (A→400, B→600) → audit reads B=500 (old snapshot). Reports total = 1100 (should be 1100). Fix: use <code>REPEATABLE READ</code> for audit transactions → consistent snapshot across the entire audit run.</li>
+      </ul>
+      <h6>Bug 4 — Duplicate Transfer on Retry</h6>
+      <pre>// CORRECT: Idempotency key prevents double-processing
+@Transactional(isolation = Isolation.REPEATABLE_READ)
+public void transfer(String transferId, long fromId, long toId, BigDecimal amount) {
+    if (transferRepo.exists(transferId)) return; // same result, no double-charge
+    Account from = accountRepo.findByIdForUpdate(fromId); // SELECT FOR UPDATE
+    Account to   = accountRepo.findByIdForUpdate(toId);   // consistent ordering avoids deadlock
+    from.debit(amount);
+    to.credit(amount);
+    transferRepo.save(new Transfer(transferId, ...)); // idempotency record
+} // autocommit on success, autorollback on exception</pre>
+      <h6>Bug 5 — Cross-Database Transfer (A in DB1, B in DB2)</h6>
+      <ul>
+        <li>No single ACID transaction can span two databases. Use <strong>Saga pattern</strong>: Debit A (DB1) → publish event → Credit B (DB2). If B credit fails → compensating transaction: Re-credit A. Use the outbox pattern to guarantee event delivery. This gives eventual consistency, not immediate consistency — acceptable for inter-bank transfers with audit trails.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Mention the deadlock risk in Bug 4: "I acquire locks on accounts in consistent order (lower ID first) to prevent deadlocks. If transfer T1 locks A then B, and transfer T2 locks B then A, they deadlock. Always establish a consistent lock ordering."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">What is MVCC? How does PostgreSQL implement it, and what operational costs does it introduce?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct"><strong>MVCC (Multi-Version Concurrency Control)</strong> provides non-blocking reads by maintaining multiple versions of each row — each transaction sees a consistent snapshot as of its start time. PostgreSQL implements this via hidden <code>xmin</code>/<code>xmax</code> columns on every tuple. The cost: dead tuples accumulate on disk, requiring VACUUM to reclaim space, and transaction ID wraparound must be managed at high TPS.</p>
+      <h6>How PostgreSQL MVCC Works</h6>
+      <ul>
+        <li>Every heap tuple has: <code>xmin</code> (TX ID that created this version) and <code>xmax</code> (TX ID that deleted/superseded this version, 0 = current).</li>
+        <li>Transaction Tx100 sees a tuple if: <code>xmin &lt;= 100 AND (xmax = 0 OR xmax &gt; 100)</code> AND <code>xmin</code>'s transaction is committed.</li>
+        <li>On UPDATE: old row gets <code>xmax = current_txid</code>; new row created with <code>xmin = current_txid</code>. Both exist on disk simultaneously during the transaction's lifetime.</li>
+        <li><strong>Key benefit:</strong> Readers and writers never block each other. A long-running report sees a snapshot from its start time while OLTP writes proceed at full speed — no shared locks, no reader-writer deadlocks.</li>
+      </ul>
+      <h6>Operational Costs</h6>
+      <ul>
+        <li><strong>Dead tuple bloat:</strong> Superseded row versions accumulate on disk until VACUUM removes them. A table updated 1000 times/second grows unboundedly without VACUUM. Monitor <code>n_dead_tup</code> in <code>pg_stat_user_tables</code>. Alert if dead tuples &gt; 20% of live tuples.</li>
+        <li><strong>Transaction ID wraparound:</strong> PostgreSQL uses 32-bit XIDs (4B values). At 10,000 TPS: 4B / 10K = ~115 hours = wraparound in 4.8 days without freezing! <code>autovacuum_freeze_max_age</code> (default: 200M txns) forces freezing of old tuples. High-TPS systems must aggressively tune autovacuum or run manual <code>VACUUM FREEZE</code>. Failure to do so causes database-wide downtime for emergency vacuuming.</li>
+        <li><strong>Table bloat on write-heavy tables:</strong> Run <code>VACUUM FULL</code> (rewrites table, holds lock) or <code>pg_repack</code> (online, no downtime) to reclaim space after large bulk updates/deletes.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: The XID wraparound point shows deep PostgreSQL knowledge. "At Cloudflare's scale, they ran into XID wraparound in a high-TPS Postgres cluster — it forced emergency vacuuming that took the DB offline for several hours. This is why monitoring <code>age(datfrozenxid)</code> from <code>pg_database</code> is a critical production alert: if it approaches 2B, you're in danger."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">Two doctors simultaneously book overlapping appointments. Snapshot Isolation doesn't prevent it — why not, and what's your fix?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">This is a <strong>write skew</strong> anomaly. Under Snapshot Isolation (SI), each transaction reads a consistent snapshot, decides the slot is free, and writes to different rows. SI cannot detect that two independent writes together violate a global constraint. The fix is: either use Serializable isolation, pre-materialize lock rows, or use PostgreSQL's exclusion constraints.</p>
+      <h6>Why Snapshot Isolation Fails</h6>
+      <ul>
+        <li>Transaction A: reads slots 2pm–3pm (free) → books 2pm–3pm row (inserts new row)</li>
+        <li>Transaction B: reads slots 2:30pm–3:30pm (free, A's booking not yet visible) → books 2:30pm–3:30pm row (inserts different row)</li>
+        <li>Both commit. Each read was consistent. Each write went to a different row. No conflict detected. Calendar now has two overlapping appointments.</li>
+      </ul>
+      <h6>Fix 1 — Materialization of Conflicts (No Serializable Needed)</h6>
+      <pre>-- Pre-create time slot rows for every 15-minute interval
+CREATE TABLE appointment_slots (
+  doctor_id INT, date DATE, slot_time TIME, is_booked BOOL,
+  PRIMARY KEY(doctor_id, date, slot_time));
+
+BEGIN;
+-- Lock ALL slot rows that overlap with requested range
+SELECT * FROM appointment_slots
+  WHERE doctor_id=:doc AND date=:date
+    AND slot_time BETWEEN '14:00' AND '15:00'
+  FOR UPDATE;  -- blocks concurrent booking of any overlapping slot
+UPDATE appointment_slots SET is_booked=true WHERE ...;
+INSERT INTO appointments(...);
+COMMIT;</pre>
+      <h6>Fix 2 — PostgreSQL Exclusion Constraint (Most Elegant)</h6>
+      <pre>ALTER TABLE appointments
+ADD CONSTRAINT no_overlap
+EXCLUDE USING GIST (
+  doctor_id WITH =,
+  tsrange(start_time, end_time) WITH &&
+);
+-- DB-enforced: any INSERT/UPDATE that creates an overlap for same doctor raises error
+-- Application just catches the constraint violation and shows "slot taken"</pre>
+      <h6>Fix 3 — Serializable Isolation (Full Correctness)</h6>
+      <ul>
+        <li><code>SET TRANSACTION ISOLATION LEVEL SERIALIZABLE</code>. PostgreSQL SSI detects the anti-dependency (A's read depends on data B didn't write, B's read depends on data A didn't write → cycle → conflict) and aborts one transaction. Application retries. ~15% latency overhead + occasional <code>ERROR: could not serialize access</code> to handle.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The exclusion constraint solution is particularly satisfying — it's declarative (you describe the invariant, not the implementation), enforced by the database at all times regardless of application code, and based on the GIST index which handles interval overlap efficiently. This is the solution I'd recommend for a booking system because it eliminates an entire class of bugs permanently."</div>
+    </div>
+  </details>
+</div>

@@ -1,25 +1,285 @@
-<title>DDIA Chapter 1 - Reliable, Scalable and Maintainable Applications</title>
-<meta name="description" content="Study notes on Designing Data-Intensive Applications Chapter 1 covering reliability, scalability, and maintainability as foundational principles of data system design.">
-<meta name="keywords" content="DDIA, Designing Data-Intensive Applications, reliability, scalability, maintainability, data systems, distributed systems, system design">
-<meta name="robots" content="index, follow">
+<title>DDIA Chapter 1 — Reliable, Scalable and Maintainable Applications</title>
+<meta name="description" content="Chapter 1 DDIA: Reliability, Scalability, Maintainability — Twitter case study, percentile latency, fault tolerance, with FAANG interview Q&A.">
 
-<h2>Reliable, Scalable and Maintainable Application</h2>
-<br>
-    <div class="content">
-        <img src="../../images/ddia-1-1.png" style="display: block; margin: auto; width: 90%;" class="img-fluid">
-        <br>
-        <img src="../../images/ddia-1-2.png" style="display: block; margin: auto; width: 90%;" class="img-fluid"> 
-        <br>
-        <img src="../../images/ddia-1-3.png" style="display: block; margin: auto; width: 90%;" class="img-fluid">  
-        <br>
-        <img src="../../images/ddia-1-4.png" style="display: block; margin: auto; width: 90%;" class="img-fluid"> 
-        <br>
-        <img src="../../images/ddia-1-5.png" style="display: block; margin: auto; width: 90%;" class="img-fluid">  
-        <br>
-        <img src="../../images/ddia-1-6.png" style="display: block; margin: auto; width: 90%;" class="img-fluid"> 
-        <br>
-        <img src="../../images/ddia-1-7.png" style="display: block; margin: auto; width: 90%;" class="img-fluid"> 
-        <br>
-        <img src="../../images/ddia-1-8.png" style="display: block; margin: auto; width: 90%;" class="img-fluid">      
+<h2>Chapter 1 — Reliable, Scalable &amp; Maintainable Applications</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> A data-intensive application is bottlenecked not by CPU but by <strong>volume, complexity, and speed of data</strong>. Modern apps combine databases, caches, search indexes, message queues, and batch processors. The developer's job is to compose them into a system that is <strong>reliable</strong> (correct despite faults), <strong>scalable</strong> (copes with growth), and <strong>maintainable</strong> (productive for future engineers).
+</div>
+
+<!-- ══════════════ SECTION 1 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">1</span> Reliability</h4>
+
+<p>The system continues to work correctly at the desired performance level even when things go wrong (hardware faults, software bugs, human errors).</p>
+
+<h5 class="subsection-heading">1.1 Fault vs. Failure</h5>
+<ul class="key-points">
+  <li><strong>Fault:</strong> one component deviates from spec (e.g., a disk corrupts a byte, a network packet dropped, a process crashes).</li>
+  <li><strong>Failure:</strong> the whole system stops providing required service to users.</li>
+  <li><strong>Goal:</strong> build <em>fault-tolerant</em> systems — prevent faults from cascading into failures. Accept faults; prevent failures.</li>
+  <li><strong>Netflix Chaos Monkey:</strong> deliberately kills random production instances to force teams to build resilient systems. "If it can fail, it will fail."</li>
+</ul>
+
+<h5 class="subsection-heading">1.2 Hardware Faults</h5>
+<ul class="key-points">
+  <li>HDD MTTF = 10–50 years. In a 10,000-disk cluster → one disk dies <em>every single day</em> on average.</li>
+  <li><strong>Traditional:</strong> RAID, dual PSU, ECC RAM — single machine reliability via redundant components.</li>
+  <li><strong>Cloud-native:</strong> commodity VMs with higher individual failure rate. Software handles failures automatically (Auto Scaling Group replaces unhealthy instances).</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Hardware HA vs Cloud-Native HA</div>
+  <pre>
+  Traditional HA (single powerful machine):       Cloud-native HA (commodity cluster):
+  ┌───────────────────────────────┐               ┌──────┐   ┌──────┐   ┌──────┐
+  │  Powerful Server              │               │ VM 1 │   │ VM 2 │   │ VM 3 │
+  │  ├─ RAID disks                │     vs.       │      │   │      │   │      │
+  │  ├─ ECC RAM                   │               └──────┘   └──────┘   └──────┘
+  │  ├─ Dual PSU                  │                   Any VM can die;
+  │  └─ Hot-swap components       │                   Software replaces it automatically.
+  └───────────────────────────────┘               No human action required.</pre>
+</div>
+
+<h5 class="subsection-heading">1.3 Software Faults (Systematic)</h5>
+<ul class="key-points">
+  <li>Hardware faults are random and independent. Software faults are <strong>correlated</strong> — one bug crashes every node simultaneously.</li>
+  <li>Examples: runaway process consuming all RAM/CPU; slow dependent service cascading timeouts; leap-second kernel bug (crashed thousands of Linux servers, June 2012).</li>
+  <li>Mitigations: careful testing at every layer, process isolation (containers), restart on crash, sanity-check invariants in production (messages_in ≈ messages_out).</li>
+</ul>
+
+<h5 class="subsection-heading">1.4 Human Errors — #1 Cause of Outages</h5>
+<div class="warn-box">Studies show operator configuration errors cause the majority of outages — more than hardware failures and software bugs combined.</div>
+<ul class="key-points">
+  <li><strong>Minimize error surface:</strong> well-designed APIs with sensible defaults, type safety, principle of least surprise.</li>
+  <li><strong>Sandbox environments:</strong> staging that mirrors production with realistic data; test every deployment there first.</li>
+  <li><strong>Fast rollback:</strong> feature flags + canary deploys → 1-click revert. Blue-green deployments.</li>
+  <li><strong>Telemetry:</strong> metrics, logs, traces. Detect and diagnose problems within seconds of occurring.</li>
+  <li><strong>Runbooks:</strong> documented on-call playbook for every known failure mode. No "call Dave."</li>
+</ul>
+
+<!-- ══════════════ SECTION 2 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">2</span> Scalability</h4>
+
+<p>As the system grows in data volume, traffic volume, or complexity, there should be <em>reasonable ways</em> to deal with that growth. Scalability is not a yes/no binary — it is: <em>"if we grow in this specific way, what options do we have?"</em></p>
+
+<h5 class="subsection-heading">2.1 Describing Load — Load Parameters</h5>
+<ul class="key-points">
+  <li>Precisely describe current load before discussing performance changes. Use load parameters relevant to <em>your</em> system.</li>
+  <li>Web server → <strong>requests/second (RPS)</strong>, peak concurrent connections.</li>
+  <li>Database → <strong>read/write ratio</strong>, working set size, cache hit rate.</li>
+  <li>Chat app → <strong>simultaneously online users</strong>, message fanout factor per user.</li>
+</ul>
+
+<h5 class="subsection-heading">2.2 Twitter Timeline — The Classic Case Study</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Twitter Home Timeline — 3 Architecture Approaches</div>
+  <pre>
+  Approach 1: Pull-on-read (simple JOIN)
+  ────────────────────────────────────────────────────────────
+  SELECT t.* FROM tweets t
+  JOIN follows f ON f.followee_id = t.user_id
+  WHERE f.follower_id = :current_user
+  ORDER BY t.created_at DESC LIMIT 100;
+  Problem: 300K reads/sec × complex multi-million-row JOIN = DB overwhelmed.
+
+  Approach 2: Fan-out on write (pre-computed caches)
+  ────────────────────────────────────────────────────────────
+  On new tweet: push tweet_id into each follower's timeline cache.
+  Read = simple cache GET, O(1).
+  Problem: user with 30M followers → 30M cache writes per tweet.
+           Barack Obama tweets = 30M writes in seconds. Unacceptable spike.
+
+  Approach 3: Hybrid (Twitter's actual production system)
+  ────────────────────────────────────────────────────────────
+  Normal users (< ~1M followers) → fan-out on write (pre-populated Redis lists)
+  Celebrities (> 1M followers)   → pull-on-read merged at query time
+  At timeline load: merge pre-computed cache + live celebrity tweets
+  Key insight: architecture depends on the DISTRIBUTION of follower counts,
+               not just the average. 99.9% of users can use fan-out safely.</pre>
+</div>
+
+<h5 class="subsection-heading">2.3 Describing Performance — Always Use Percentiles</h5>
+<ul class="key-points">
+  <li>Response time is a <strong>distribution</strong>, not a single number. Report percentiles: p50, p95, p99, p999.</li>
+  <li><strong>p50 (median):</strong> half of requests are faster than this. <strong>p99:</strong> 1 in 100 requests is slower. <strong>p999:</strong> 1 in 1,000.</li>
+  <li>Amazon found 100ms added latency costs ~1% in sales. Your most valuable customers tend to have the most data → they hit tail latency (p99+) most often.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Head-of-Line Blocking in Microservices</div>
+  <pre>
+  Frontend makes 5 parallel backend calls:
+    UserService:     12ms  ✓
+    ProductService:  10ms  ✓
+    PriceService:     8ms  ✓
+    InventoryService:11ms  ✓
+    ReviewService:  950ms  ← hit a p99 event (GC pause, slow DB query)
+
+  User sees: 950ms total response time.
+  Even though 4 out of 5 services responded in ~10ms.
+
+  Lesson: fan-out × (backend p99 latency) = your user's experience.
+  The more microservice calls you make, the more likely you hit a tail event.
+  → Measure end-to-end p99 and p999, not just individual service p50.</pre>
+</div>
+
+<h5 class="subsection-heading">2.4 Scale Up vs Scale Out</h5>
+<ul class="key-points">
+  <li><strong>Vertical scaling (scale up):</strong> bigger machine, more cores/RAM. Simpler operationally; no distribution headaches. Good starting point. Has a hard upper limit and cost curve.</li>
+  <li><strong>Horizontal scaling (scale out):</strong> add more machines. Elastic and theoretically unlimited. Required at internet scale.</li>
+  <li><strong>Stateless services</strong> (API/web servers): trivial to scale out — add instances, put behind load balancer. Auto Scaling Groups.</li>
+  <li><strong>Stateful systems</strong> (databases): much harder — data must be partitioned, replicas must stay consistent, re-sharding during scaling is disruptive.</li>
+</ul>
+<div class="tip-box">Don't over-engineer for 100× scale before you have evidence. The architecture that works at 1× often looks completely different at 100×. Revisit and evolve as you grow with actual data to guide decisions.</div>
+
+<!-- ══════════════ SECTION 3 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">3</span> Maintainability</h4>
+
+<p>Many different people will work on the system over time. They should all be able to work on it productively. <strong>Majority of software cost is ongoing maintenance</strong>, not initial development.</p>
+
+<h5 class="subsection-heading">3.1 Operability</h5>
+<ul class="key-points">
+  <li>Good observability: dashboards, distributed traces, structured logs — show internal system behavior without requiring SSH access.</li>
+  <li>Standard tooling: use well-understood platforms (Kubernetes, Prometheus) rather than bespoke automation scripts.</li>
+  <li>Predictable behavior: system behaves consistently under load; no mysterious "restart it and it works" problems.</li>
+  <li>Self-healing: auto-restart crashed processes, retry transient failures, auto-scale. Operator can override when needed.</li>
+</ul>
+
+<h5 class="subsection-heading">3.2 Simplicity — Kill Accidental Complexity</h5>
+<ul class="key-points">
+  <li><strong>Essential complexity:</strong> irreducible, inherent in the problem (concurrent users in a booking system is genuinely hard).</li>
+  <li><strong>Accidental complexity:</strong> added by bad implementation — poor abstractions, tight coupling, state explosion, inconsistent naming. Eliminate this!</li>
+  <li>Best tool: <strong>good abstraction</strong> hides complex implementation behind a clean interface. SQL hides B-Trees, WAL, buffer pools, lock managers. Every developer benefits without knowing internals.</li>
+</ul>
+
+<h5 class="subsection-heading">3.3 Evolvability — Embrace Change</h5>
+<ul class="key-points">
+  <li>Requirements are never static: new features, new regulations (GDPR), new scale, new platforms, new business models.</li>
+  <li><strong>Technical enablers:</strong> TDD, refactoring, feature flags, clean abstractions, modular architecture, CI/CD pipelines.</li>
+  <li>Warning sign of poor evolvability: "We can't change X because it'll break Y, Z, and W." = brittle architecture.</li>
+</ul>
+
+<!-- ══════════════ SECTION 4 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">4</span> Quick Reference</h4>
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Pillar</th><th>Core Idea</th><th>Key Techniques</th><th>Antipattern</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Reliability</strong></td><td>Works correctly despite faults</td><td>Redundancy, chaos engineering, WAL, circuit breakers, monitoring</td><td>Testing happy path only; no rollback plan</td></tr>
+    <tr><td><strong>Scalability</strong></td><td>Handles growth gracefully</td><td>p99 latency SLAs, horizontal scaling, caching, async processing</td><td>Using average latency; premature over-engineering</td></tr>
+    <tr><td><strong>Maintainability</strong></td><td>Teams productive over time</td><td>Good abstractions, observability stack, IaC, tests, docs-as-code</td><td>Treating maintenance as optional; no runbooks</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
     </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">What is the difference between fault tolerance and high availability? How are they achieved in production systems?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct"><strong>Fault tolerance</strong> means the system keeps serving requests <em>correctly with zero interruption</em> even when a component fails. <strong>High Availability (HA)</strong> means the system <em>recovers quickly</em> from failures — typically within seconds to a few minutes. Fault tolerance is strictly harder and more expensive than HA.</p>
+      <h6>Technical Mechanism</h6>
+      <ul>
+        <li><strong>HA implementation:</strong> active-passive failover — a standby replica takes over when the primary fails. AWS Multi-AZ RDS detects primary failure via heartbeat, promotes the standby, updates the DNS CNAME, and your app reconnects — total downtime ~30–60 s. Your RTO = 1 min, RPO = seconds (async lag).</li>
+        <li><strong>Fault tolerance implementation:</strong> active-active with synchronous replication. AWS Aurora writes to 6 copies across 3 AZs before acknowledging. You can lose a full AZ and keep writing with zero interruption. DynamoDB global tables replicate across regions in &lt;1 s; a region failure is transparent to the client.</li>
+        <li><strong>RTO vs RPO:</strong> HA targets RTO &lt; 1 min, RPO &lt; 1 min. Fault tolerance targets RTO = 0 s, RPO = 0. Every design decision on replication (sync vs async) is a trade-off between these two metrics and write latency.</li>
+        <li><strong>Cost of synchronous replication:</strong> requires acknowledgement from all replicas before commit → adds network round-trip to every write. AWS Aurora solves this by acknowledging after 4-of-6 replicas respond, keeping write latency under 5 ms while still tolerating 2 AZ failures.</li>
+      </ul>
+      <h6>Real-World Example</h6>
+      <p>Netflix runs active-active across 3 AWS regions. During a regional outage, traffic automatically routes to the two remaining regions with no customer-visible downtime. They achieve this using Eureka service registry, Zuul load balancer, and Cassandra's multi-region replication — all designed for fault tolerance, not just HA.</p>
+      <div class="ans-insight">Interview differentiator: Always define RTO and RPO explicitly. Most engineers know "fault tolerance vs HA" — the ones who stand out quantify the trade-off: "synchronous replication eliminates RPO but adds 5–10 ms write latency; most systems accept async replication with a 1–5 s RPO to stay under 1 ms write overhead."</div>
     </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Twitter has 300M active users. Designing the home timeline — which fan-out strategy would you use and why?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use a <strong>hybrid fan-out</strong>: fan-out on write for regular users (pre-computed Redis timelines), pull-on-read for celebrities (&gt;1M followers) merged at query time. This is exactly what Twitter's infrastructure evolved to after failing with pure push and pure pull.</p>
+      <h6>Technical Mechanism</h6>
+      <ul>
+        <li><strong>Fan-out on write (regular users):</strong> When Alice tweets, iterate her followers and write <code>ZADD timeline:{follower_id} {tweet_timestamp} {tweet_id}</code> to Redis sorted sets. Read = <code>ZRANGE timeline:{user_id} 0 49 REV</code> — O(log N) write-time work, O(1) read-time work. Works for 99.9% of users (avg ~200 followers → 200 Redis ops per tweet).</li>
+        <li><strong>Pull-on-read (celebrities):</strong> Katy Perry has 109M followers — fan-out would queue 109M Redis writes per tweet. Instead, skip fan-out; at read time, fetch the user's normal timeline + query the last 50 tweets from each followed celebrity and merge by timestamp. The merge is O(C log C) where C = number of followed celebrities (typically &lt;10).</li>
+        <li><strong>Threshold:</strong> experimentally determined. Twitter set ~1M followers as the cutoff. Above that, the fan-out cost (latency spike, Redis memory) outweighs the merge cost at read time.</li>
+        <li><strong>The key insight:</strong> the right load parameter is the <em>distribution</em> of follower counts, not the average. Designing for the 99th percentile user (heavy follower) is what makes the system work at scale.</li>
+      </ul>
+      <h6>Data Structure</h6>
+      <pre>ZADD timeline:{user_id} {unix_ms_timestamp} {tweet_id}  → write
+ZRANGE timeline:{user_id} 0 49 REV WITHSCORES             → read (latest 50)</pre>
+      <div class="ans-insight">Interview differentiator: The interviewer expects you to identify the celebrity/hotspot problem. Go further — mention that celebrities must be identified dynamically (follower count can change), so use a background job that monitors follower counts and toggles the fan-out flag. Twitter calls these accounts "heavy hitters."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Your service SLA requires p99 &lt; 200ms. A latency regression is reported. Walk through measurement, alerting, and debugging.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>Prometheus histograms</strong> (not summaries) to measure latency distribution per endpoint, alert at 150ms to get ahead of SLA breach, and debug via distributed traces when the alert fires. This three-layer observability stack — metrics → logs → traces — lets you go from "p99 is slow" to "this specific DB query on this specific host" in under 10 minutes.</p>
+      <h6>Measurement</h6>
+      <ul>
+        <li>Instrument every HTTP handler with a Micrometer/Prometheus histogram: buckets at [5, 10, 25, 50, 100, 200, 500, 1000, +Inf] ms. Histograms (unlike summaries) can be aggregated across instances — critical when you have 50 pods.</li>
+        <li>Recording rule: <code>histogram_quantile(0.99, sum(rate(http_duration_bucket[5m])) by (le, endpoint))</code></li>
+        <li>Alert at p99 &gt; 150ms for &gt;2 consecutive minutes — 50ms headroom gives you time to react before SLA breach.</li>
+      </ul>
+      <h6>Debugging Runbook</h6>
+      <ul>
+        <li><strong>Step 1:</strong> Which endpoint is slow? (Grafana heatmap per endpoint)</li>
+        <li><strong>Step 2:</strong> Correlate with error logs — is there a spike in DB timeouts, 503s from downstream, or GC pause logs?</li>
+        <li><strong>Step 3:</strong> Pull a distributed trace (Jaeger / AWS X-Ray) for a slow request — see the waterfall. The slow span reveals the bottleneck: DB query? External API call? Serialization?</li>
+        <li><strong>Common culprits:</strong> N+1 query (solve with JOIN or batch), missing DB index (EXPLAIN ANALYZE), lock contention (switch to MVCC or reduce txn scope), GC pause (tune heap or switch to G1GC), downstream service degradation (add circuit breaker + timeout).</li>
+        <li><strong>Head-of-line blocking:</strong> if your service calls 10 downstream services serially, p99 ≈ sum of all p99s. Switch to parallel fanout with <code>CompletableFuture.allOf()</code> or reactive streams.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Most engineers stop at "add a Prometheus alert." The strong signal is mentioning that <em>average latency is useless</em> — 1% of requests can be 10× slower and the average barely moves. Always use percentiles. Also mention that tail latency gets amplified in fanout: with 10 downstream calls, if each has 1% chance of being slow, you have a ~10% chance of a slow composite request.</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">You're on-call and your service is completely down. Walk through your incident response, step by step.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Follow <strong>Mitigate → Diagnose → Fix → Learn</strong>. The #1 mistake engineers make is spending 30 minutes debugging root cause while users are down — always try mitigation first (rollback, traffic shift, feature flag) before you start spelunking in logs.</p>
+      <h6>Step-by-Step Playbook</h6>
+      <ul>
+        <li><strong>0–2 min — Triage:</strong> Scope the blast radius. What percentage of requests are failing? Which regions? What's the error code (500? 503? timeout?)? Declare severity (P0 = total outage, P1 = major degradation) and notify stakeholders immediately — don't wait until you know the cause.</li>
+        <li><strong>2–5 min — Fast mitigations (try in order):</strong> (1) Did a deploy happen in the last hour? → rollback. (2) Did a config change go out? → revert. (3) Is it overload? → enable rate limiting / shed load. (4) Can traffic route to another region? → shift 100% there. Mitigation in 5 minutes beats root cause analysis in 30.</li>
+        <li><strong>5–20 min — Diagnose:</strong> Once mitigated (or if no fast mitigation works), collect signals: error logs, DB connection pool exhaustion, downstream service health, CPU/memory anomalies. Form one hypothesis and test it. Never change two things simultaneously.</li>
+        <li><strong>20 min+ — Fix and verify:</strong> Apply targeted fix, monitor error rate returning to baseline. Keep stakeholders updated every 15 minutes even if just "still investigating."</li>
+        <li><strong>Post-incident (within 48 h):</strong> Blameless post-mortem: 5-why analysis, timeline, action items with owners and dates. Share across teams — knowledge must transfer.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Explicitly say "mitigation before diagnosis" — this is the senior-engineer instinct. Also mention canary deployments and automated rollback triggers (e.g., if error rate &gt; 1% for 2 min, auto-rollback) as prevention. This shows you've dealt with real incidents, not just read about them.</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q5</span><span class="qa-q-text">What makes a system "maintainable"? How does good abstraction reduce long-term engineering cost?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Maintainability has three pillars: <strong>operability</strong> (system tells you what's wrong), <strong>simplicity</strong> (eliminate accidental complexity), and <strong>evolvability</strong> (changing one thing doesn't break five others). The ROI of investing in these compounds over time — a well-maintained codebase lets 10 engineers do the work of 100 in a poorly maintained one.</p>
+      <h6>Operability</h6>
+      <ul>
+        <li>System must expose its own health: structured logs (JSON, not printf), metrics (RED: Rate, Errors, Duration per service), distributed traces, and runbooks linked from alerts. Operators should never need to SSH into a box to understand what's happening.</li>
+      </ul>
+      <h6>Simplicity — Eliminating Accidental Complexity</h6>
+      <ul>
+        <li><strong>Essential complexity</strong> is irreducible (a booking system has genuinely complex concurrent-seat logic). <strong>Accidental complexity</strong> is self-inflicted: poor naming, shared mutable state, implicit dependencies, monolithic databases shared across teams. The goal is ruthlessly eliminating the second kind.</li>
+        <li><strong>Test for accidental complexity:</strong> if onboarding a new engineer takes &gt;2 weeks before they can make a safe production change, the system has too much accidental complexity.</li>
+      </ul>
+      <h6>Good Abstraction — Concrete Value</h6>
+      <ul>
+        <li>SQL hides B-Trees, WAL, buffer pools, MVCC, and lock managers behind a clean declarative interface. Every engineer who uses PostgreSQL benefits from 30 years of optimization without knowing a single detail of the storage engine. That's a force multiplier worth billions.</li>
+        <li><strong>Signs of a leaky abstraction:</strong> "You need to use the <code>NOLOCK</code> hint on Tuesdays when batch jobs run" or "don't call this API more than 10 times per second or it'll crash." These reveal that implementation details have escaped the abstraction boundary.</li>
+        <li><strong>Evolvability metrics:</strong> mean time to ship a feature end-to-end; number of teams that must approve a change; blast radius of a mistake. If these are high, the architecture is resisting change.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Frame abstraction as a business decision, not just a technical one. "A good abstraction lets 5 engineers build features that would otherwise require 50. The cost of maintaining bad abstractions is paid every sprint, in every standup, forever."</div>
+    </div>
+  </details>
+</div>

@@ -1,0 +1,270 @@
+<title>DDIA Chapter 10 — Batch Processing</title>
+<meta name="description" content="Chapter 10 DDIA: Unix philosophy, MapReduce internals, Apache Spark DAG, joins in batch processing, output patterns — FAANG Q&A.">
+
+<h2>Chapter 10 — Batch Processing</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> Batch processing runs periodically on large, bounded datasets (a day's worth of logs, a month of transactions). Unlike services, batch jobs have no real-time latency requirement — they trade latency for throughput. Unix pipes, MapReduce, and Spark share one core idea: <strong>immutable input → transform → output</strong>. Understanding batch is essential for designing ETL pipelines, ML training, and data warehouses.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> Unix Philosophy — Still Relevant</h4>
+
+<ul class="key-points">
+  <li>Write programs that <strong>do one thing well</strong>.</li>
+  <li>Write programs to <strong>work together</strong> via stdin/stdout.</li>
+  <li>Write programs to <strong>handle text streams</strong> — the universal interface.</li>
+  <li>Immutable inputs + composable transforms = reproducible, debuggable pipelines.</li>
+</ul>
+
+<div class="code-block">
+  <div class="code-label">Shell — Top 5 slowest API endpoints from Nginx logs (billions of lines)</div>
+  <pre>
+cat /var/log/nginx/access.log \
+  | awk '{print $7, $NF}' \        # extract: URL, response_time_ms
+  | awk '$2 > 1000' \              # filter: only responses > 1000ms
+  | sort -k2 -rn \                 # sort by response_time descending
+  | head -20 \                     # take top 20
+  | awk '{print $1}' \             # extract just the URL
+  | sort | uniq -c | sort -rn \    # count occurrences of each URL
+  | head -5                        # top 5 slowest endpoints
+
+# Principles at work:
+# 1. Each command does ONE thing.
+# 2. stdin/stdout = universal interface (pipe composition).
+# 3. No shared mutable state between stages.
+# 4. Easy to debug: remove last command to inspect intermediate output.
+# Hadoop/Spark are just this pattern distributed across 1000+ machines.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">2</span> MapReduce — Distributed Unix Pipes</h4>
+
+<ul class="key-points">
+  <li>Input: HDFS files. Output: HDFS files. Each pipeline stage = one MapReduce job. The "pipe" between stages = HDFS.</li>
+  <li><strong>Map phase:</strong> each mapper reads one HDFS input split (128MB-256MB) → emits (key, value) pairs. Runs in parallel across N nodes (no coordination).</li>
+  <li><strong>Shuffle phase (framework-managed):</strong> all (key, value) pairs with same key grouped → sent to same reducer. Network-intensive. Most expensive step.</li>
+  <li><strong>Reduce phase:</strong> receives all values for one key → aggregates → writes to HDFS.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">MapReduce — Count word frequencies in 1TB of documents</div>
+  <pre>
+  Input (HDFS, 1TB across 8000 splits):
+    File 1: "the quick brown fox"     File 2: "the lazy dog"
+
+  MAP phase (each mapper runs on a node in parallel):
+    Mapper 1: emits (the,1), (quick,1), (brown,1), (fox,1)
+    Mapper 2: emits (the,1), (lazy,1), (dog,1)
+    ... (8000 mappers running simultaneously)
+
+  SHUFFLE phase (framework sorts and partitions by key):
+    All ("the", 1) pairs → Reducer 1
+    All ("quick", 1) pairs → Reducer 2
+    (Network transfer: each mapper sends to correct reducer by hash)
+
+  REDUCE phase:
+    Reducer 1: input = [("the",[1,1,1,...1000x])] → emits ("the", 1000)
+    Reducer 2: input = [("quick",[1,1,1])] → emits ("quick", 3)
+
+  Output: HDFS file with word counts. Ready for next MapReduce job.
+
+  Fault tolerance: intermediate data written to HDFS after each Map phase.
+  If Mapper 17 fails → re-run only Mapper 17. Others unaffected.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">3</span> Apache Spark — Fixing MapReduce's Problems</h4>
+
+<ul class="key-points">
+  <li><strong>MapReduce problem:</strong> Multi-step jobs write to HDFS between every step. A 10-step pipeline = 20 HDFS reads + 20 HDFS writes. Disk I/O is the bottleneck. Slow for iterative algorithms (ML, graph processing).</li>
+  <li><strong>Spark solution:</strong> (1) Keep intermediate data in-memory (RDDs), (2) Build a DAG of operators (not just Map+Reduce), (3) Lazy evaluation — only compute when an action (collect/count/save) is triggered.</li>
+  <li><strong>Speed:</strong> 10-100× faster than MapReduce for iterative algorithms. For ML: load dataset once → iterate in-memory. MapReduce: re-read from HDFS on every iteration.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">MapReduce vs Spark — I/O Comparison for 10-Step Pipeline</div>
+  <pre>
+  MapReduce (10 jobs, 20 HDFS read/write cycles):
+  HDFS → Map → HDFS → Reduce → HDFS → Map → HDFS → ... (10×)
+         ^^^^         ^^^^^^         ^^^^
+         disk I/O at EVERY step. Bottleneck: disk bandwidth.
+
+  Spark (1 HDFS read, 1 HDFS write, everything else in RAM):
+  HDFS ──► filter ──► map ──► groupBy ──► agg ──► join ──► HDFS
+                ↑ all in-memory pipelines: no intermediate disk writes
+
+  Fault tolerance (without materializing to disk):
+  RDD lineage graph: tracks HOW each RDD was computed from its parents.
+  If a partition is lost: recompute it from its parent RDD using the lineage.
+  No need to checkpoint every step to HDFS (though optional for long lineages).</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">4</span> Joins in Batch Processing</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Join Strategy</th><th>How</th><th>Best for</th><th>Used by</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Sort-Merge Join</strong></td><td>Both datasets shuffled and sorted by join key. Same-key records co-located at one reducer.</td><td>Both datasets large (GB–PB)</td><td>Hive default, Spark (auto when both large)</td></tr>
+    <tr><td><strong>Broadcast Hash Join</strong></td><td>Small dataset loaded into memory on every worker as a hash map. Large dataset scanned without shuffle.</td><td>One dataset &lt; broadcast threshold (10MB default in Spark)</td><td>Spark (auto when one side small)</td></tr>
+    <tr><td><strong>Map-Side Join</strong></td><td>Both datasets pre-partitioned and pre-sorted by join key (from a previous stage). Join happens in Map phase, no Reduce needed.</td><td>Both datasets already partitioned identically</td><td>Hive bucketed joins, custom Hadoop</td></tr>
+  </tbody>
+</table>
+
+<div class="code-block">
+  <div class="code-label">Spark — Broadcast Hash Join (zero shuffle)</div>
+  <pre>
+// Small lookup table (country codes → names, ~1MB)
+val countriesDF = spark.read.parquet("s3://data/countries")
+// Mark for broadcast — Spark sends this to ALL worker nodes' memory
+val broadcastCountries = broadcast(countriesDF)
+
+// Large events dataset (10TB)
+val eventsDF = spark.read.parquet("s3://data/events")
+
+// Join with NO shuffle — each worker uses local broadcast copy
+val enriched = eventsDF.join(broadcastCountries,
+    eventsDF("country_code") === broadcastCountries("code"), "left")
+
+// Spark plan: BroadcastHashJoin (not SortMergeJoin)
+// Instead of shuffling 10TB of events, only 1MB is broadcast.
+// 10,000× reduction in network transfer.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">5</span> Batch Output Patterns</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Output Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Building ML models</strong></td><td>Process training data, train model, serialize artifact</td><td>Daily recommendation model trained on 30 days of click data</td></tr>
+    <tr><td><strong>Building search indexes</strong></td><td>Process documents, build inverted index, bulk-load into search engine</td><td>Rebuild Elasticsearch product catalog index nightly</td></tr>
+    <tr><td><strong>Building key-value stores</strong></td><td>Compute lookup tables, bulk-load into RocksDB, serve via API</td><td>Precomputed "top 10 recommendations for user X" → DynamoDB</td></tr>
+    <tr><td><strong>Data warehouse loading</strong></td><td>ETL from OLTP to analytical store with transformations</td><td>Daily load from MySQL → Redshift with dbt transformations</td></tr>
+  </tbody>
+</table>
+
+<div class="tip-box">Batch jobs should be pure functions — no external service calls, no random numbers, no system timestamps as partition criteria. This makes them deterministic, easy to retry on failure, easy to test, and safe to re-run for backfills.</div>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Compute "top 100 products by revenue" from 500 billion transactions over 1 year. Design the Spark pipeline end-to-end.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use a <strong>Spark batch pipeline</strong> on Parquet-partitioned S3 data. Key optimizations: partition pruning to avoid reading irrelevant dates, map-side pre-aggregation to minimize shuffle bytes, broadcast join for the small product catalog table, and AQE (Adaptive Query Execution) to auto-handle skew. Estimated runtime: 15–20 min on 100 executors for 25 TB of data.</p>
+      <h6>Complete Pipeline</h6>
+      <pre>// Input: S3 Parquet partitioned by year/month/day
+// Schema: (transaction_id, user_id, product_id, quantity, unit_price, ts)
+
+val df = spark.read.parquet("s3://transactions/")
+  .filter(col("year") === 2024)        // partition pruning: only read 2024 data
+
+val topProducts = df
+  .withColumn("revenue", col("quantity") * col("unit_price"))  // compute per-row
+  .groupBy("product_id")
+  .agg(
+    sum("revenue").as("total_revenue"),
+    sum("quantity").as("total_units_sold")
+  )
+  // Spark: partial aggregation on each executor BEFORE shuffle (reduces shuffle by 99.9%)
+  // 500B rows → ~1M unique product_ids after map-side pre-agg → manageable shuffle
+  .orderBy(desc("total_revenue"))
+  .limit(100)
+
+// Enrich with product names — broadcast join (catalog ~10MB, fits in RAM)
+val catalog = spark.read.parquet("s3://catalog/products/")
+val enriched = topProducts.join(broadcast(catalog), "product_id")
+
+// Output: S3 Parquet for downstream analytics, DynamoDB for serving API
+enriched.write.parquet("s3://results/top100/")
+enriched.write.format("dynamodb").option("tableName", "top_products").save()</pre>
+      <h6>Scale Numbers</h6>
+      <ul>
+        <li>500B rows × 50 bytes avg = 25 TB. 100 executors × 500 MB/s read = 50 GB/s aggregate throughput → ~8 min read. GroupBy shuffle of ~1M product IDs = negligible. Total: 15–20 min.</li>
+        <li>With Delta Lake + Photon vectorized reader: 2–3× faster (40–60 GB/s effective throughput).</li>
+        <li><strong>Orchestration:</strong> Airflow DAG triggers at 2am after previous day's data lands. SLA: complete by 6am. Data quality checks: row count validation, NULL checks on product_id, outlier detection on total_revenue (alert if top product revenue changes &gt;50% vs previous week).</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Proactively mention the map-side pre-aggregation insight: "The groupBy shuffle sends only ~1M product rows (one per unique product) rather than 500B transaction rows. This is the most important optimization — it reduces shuffle data by 99.9%. Without this, the shuffle would overwhelm the network. Spark's Catalyst optimizer does this automatically, but it helps to understand why the query is fast."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">A Spark job is taking 4 hours when it should take 20 minutes. Diagnose and fix it systematically.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Start with the <strong>Spark UI → slowest stage → task duration distribution</strong>. If one task takes 3h59m and others take 5min, it's data skew. If all tasks are slow, it's I/O or memory spillage. Each root cause has a specific, targeted fix — don't tune randomly.</p>
+      <h6>Diagnosis Playbook</h6>
+      <ul>
+        <li><strong>Step 1:</strong> Spark UI (port 4040 or History Server) → Stages tab → find the stage with longest duration.</li>
+        <li><strong>Step 2:</strong> Click the stage → Tasks tab → sort by Duration. If one task is 200× longer than others → <strong>data skew</strong>. If all tasks have similar duration but many fail/retry → memory issue.</li>
+      </ul>
+      <h6>Fix 1 — Data Skew (most common)</h6>
+      <pre>// Symptom: 199 tasks complete in 5min, 1 task runs for 4h
+// Cause: product_id "iphone15" appears in 40% of all rows
+
+// Fix A: AQE (Adaptive Query Execution) — try this first
+spark.conf.set("spark.sql.adaptive.enabled", "true")
+spark.conf.set("spark.sql.adaptive.skewJoin.enabled", "true")
+// Spark 3.0+ automatically splits skewed partitions during execution
+
+// Fix B: Salting (for joins with skew)
+val largeSalted = large.withColumn("salt", (rand() * 100).cast("int"))
+    .withColumn("product_id_salted", concat(col("product_id"), lit("_"), col("salt")))
+val smallReplicated = small.crossJoin(spark.range(100).withColumnRenamed("id","salt"))
+    .withColumn("product_id_salted", concat(col("product_id"), lit("_"), col("salt")))
+largeSalted.join(smallReplicated, "product_id_salted").drop("salt","product_id_salted")</pre>
+      <h6>Fix 2 — Memory Spill</h6>
+      <ul>
+        <li>Symptoms: executor disk I/O spikes, "spilling" in stage metrics. Shuffle data exceeds executor memory → goes to disk → 100× slower.</li>
+        <li>Fix: increase <code>spark.executor.memory</code> from 4GB to 16GB; increase parallelism: <code>spark.sql.shuffle.partitions=2000</code> (default 200 is too low for 25TB); add early filter/aggregation before the shuffle to reduce data volume.</li>
+      </ul>
+      <h6>Fix 3 — I/O Inefficiency</h6>
+      <ul>
+        <li>Reading CSV/JSON instead of Parquet: switch to Parquet (columnar, compressed — 10× smaller). Add partition column filters. Broadcast small lookup tables (&lt;100MB): <code>spark.sql.autoBroadcastJoinThreshold=100MB</code>. Cache DataFrames used multiple times: <code>df.cache()</code>.</li>
+      </ul>
+      <h6>Fix 4 — Small Files (S3)</h6>
+      <ul>
+        <li>1M small files → Spark spends more time in S3 LIST API calls than reading data. Fix: compact with periodic Spark job or use Delta Lake (maintains file metadata index, eliminates list overhead).</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "Data skew is the #1 cause of slow Spark jobs in production at FAANG. I always check the task duration distribution first — if there's a 100× outlier, it's skew. I start with AQE (free, no code change required), and fall back to salting only if AQE doesn't resolve it. Salting is effective but complicates the query and requires the team to understand why the salt columns are there."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Design an offline + online feature store for a user churn ML model. How do you prevent data leakage?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">A feature store has two layers: an <strong>offline store</strong> (S3/Delta Lake with Spark, for model training) and an <strong>online store</strong> (Redis, for real-time inference). The critical correctness requirement is <strong>no data leakage</strong>: training features must only include data available before the label date — otherwise the model trains on the future and fails in production.</p>
+      <h6>Offline Store (Training)</h6>
+      <pre>// Daily Spark pipeline computing per-user features
+val features = eventsDF
+  .groupBy("user_id", window("event_time", "30 days"))
+  .agg(
+    countDistinct("session_id").as("sessions_30d"),
+    sum(when(col("event_type") === "purchase", 1).otherwise(0)).as("purchases_30d"),
+    avg("order_value").as("avg_order_30d"),
+    datediff(current_date(), max("event_time")).as("days_since_last_activity")
+  )
+  .join(userProfileDF, "user_id")
+// Written to Delta Lake: s3://feature-store/user-features/year=*/month=*/day=*/</pre>
+      <h6>Preventing Data Leakage</h6>
+      <ul>
+        <li>Label definition: "did user churn in the 30 days after date D?" Features must only include events from before date D.</li>
+        <li>Use Delta Lake time-travel: <code>spark.read.format("delta").option("versionAsOf", D).load("s3://feature-store/")</code>. This reads the feature table as it existed on date D — exactly the data the model would have had in production on that day.</li>
+        <li>Without time-travel: a feature computed from events up to today used to train on labels from 3 months ago → model sees data from the future → trains perfectly, fails in production (a classic ML bug).</li>
+      </ul>
+      <h6>Online Store (Inference)</h6>
+      <ul>
+        <li>After daily Spark job: bulk-load user features into Redis: <code>HSET features:user_123 sessions_30d 15 avg_order 45.50 days_inactive 2</code>. Model serving API: Redis lookup (&lt;2ms) → merge with real-time features (last 5 min activity from Flink) → model inference → return churn probability.</li>
+        <li><strong>Feature freshness:</strong> Batch features refresh daily (sufficient for churn, which is a slow process). Real-time features (cart abandonment, current session) require Flink streaming pipeline to push fresh values to Redis on each event.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The dual-store architecture is standard in production ML systems: Tecton, Feast, and Vertex AI Feature Store all implement this pattern. The offline store provides historical point-in-time correct features for training; the online store provides the same features at low latency for serving. The guarantee is feature parity — training and serving use identically computed features, eliminating training-serving skew, which is one of the hardest bugs to debug in ML systems."</div>
+    </div>
+  </details>
+</div>

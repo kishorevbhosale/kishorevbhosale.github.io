@@ -1,0 +1,203 @@
+<title>DDIA Chapter 6 — Partitioning (Sharding)</title>
+<meta name="description" content="Chapter 6 DDIA: Range vs hash partitioning, hot spots, consistent hashing, virtual nodes, secondary indexes, rebalancing — FAANG Q&A.">
+
+<h2>Chapter 6 — Partitioning (Sharding)</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> A single machine can't store petabytes. Partitioning splits a large dataset across multiple nodes so data and query load scale horizontally. The goal: even distribution (no hot spots). The challenges: choosing the partition key, handling secondary indexes, and rebalancing without downtime as the cluster grows.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> Partitioning by Key Range</h4>
+
+<ul class="key-points">
+  <li>Like an encyclopedia: A-C on Node 1, D-G on Node 2, etc. Boundaries chosen to spread data evenly (may not be alphabetically equal).</li>
+  <li><strong>Advantage:</strong> efficient range queries — "all events from Jan 1-7" = only read the January partition.</li>
+  <li><strong>Hot spot danger:</strong> if keys are sequential (e.g., timestamp), all recent writes go to the same partition. January 7th partition becomes a hot spot while others are idle.</li>
+  <li><strong>Fix for timestamp keys:</strong> prefix with sensor/device ID: key = <code>(sensor_id, timestamp)</code>. Writes for sensor 5 go to sensor-5 partition; writes for sensor 6 to sensor-6 partition → even distribution across all sensors.</li>
+  <li><strong>Used by:</strong> HBase, Google BigTable, Google Spanner, RethinkDB, MongoDB (with range sharding).</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">2</span> Partitioning by Hash</h4>
+
+<ul class="key-points">
+  <li>Apply a deterministic hash function to the key → output uniformly distributed integers → assign to partitions by range.</li>
+  <li><strong>Good hash functions:</strong> MD5 (MongoDB), Murmur3 (Cassandra), FNV (Voldemort). They distribute skewed inputs uniformly.</li>
+  <li><strong>Advantage:</strong> no hot spots for write-heavy sequential keys. User IDs, UUIDs, product IDs all distribute evenly.</li>
+  <li><strong>Disadvantage:</strong> range queries impossible without scatter-gather. "Users with ID 100-200" = must query all partitions.</li>
+</ul>
+
+<div class="code-block">
+  <div class="code-label">Cassandra — Compound Primary Key: Best of Both Worlds</div>
+  <pre>
+CREATE TABLE user_events (
+  user_id    UUID,
+  event_time TIMESTAMP,
+  event_type TEXT,
+  PRIMARY KEY (user_id, event_time)
+);
+-- user_id = PARTITION KEY → hashed → determines which node
+-- event_time = CLUSTERING KEY → sorted within partition
+
+-- Query: "Alice's events in the last 7 days" → one partition, range scan
+SELECT * FROM user_events
+WHERE user_id = alice_uuid
+  AND event_time &gt; now() - 7d;
+-- → single partition lookup! O(log N + result_size)
+
+-- Query: "All users' events in last 7 days" → scatter/gather all partitions
+SELECT * FROM user_events WHERE event_time &gt; now() - 7d;
+-- → must hit ALL partitions (N queries, merge results) — unavoidable
+-- → Cassandra does not support this efficiently. Use Spark batch job instead.</pre>
+</div>
+
+<h5 class="subsection-heading">Hot Spot Mitigation — Key Salting</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Salting a Hot Key (Celebrity Tweet Problem)</div>
+  <pre>
+  Without salting: tweet_987654321 always hashes to Partition 7.
+  Celebrity posts tweet → 50M reads/sec hit Partition 7 → hot spot.
+
+  With salting (add random suffix 000-099):
+  ─────────────────────────────────────────────────────────────
+  WRITE:  pick suffix = random(0, 100)
+          write tweet to:  tweet_987654321_042  → Partition 42
+          (also write to:  tweet_987654321_015  → Partition 15, etc.)
+          (or write to single suffix on write, read all on read)
+
+  READ:   fetch tweet_987654321_000 through tweet_987654321_099 (100 reads)
+          merge results (deduplicate, take consistent version)
+  ─────────────────────────────────────────────────────────────
+  Trade-off: 100× more read I/O to eliminate write hot spot.
+  Only worth it for truly hot keys (celebrities, viral content, global events).
+  Application must know WHICH keys are hot (use a hot-key detection algorithm).</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">3</span> Secondary Indexes with Partitioning</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Type</th><th>How it works</th><th>Write cost</th><th>Read cost</th><th>Used by</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Local (document-partitioned)</strong></td><td>Each partition maintains its own local index of its data</td><td>Fast — one partition updated</td><td>Slow — scatter/gather all partitions</td><td>MongoDB, Elasticsearch, Cassandra (SASI), Riak</td></tr>
+    <tr><td><strong>Global (term-partitioned)</strong></td><td>Index itself is partitioned by indexed term value</td><td>Slow — data partition + index partition updated</td><td>Fast — single index partition lookup</td><td>DynamoDB GSI, Riak</td></tr>
+  </tbody>
+</table>
+
+<h4 class="section-heading"><span class="section-number">4</span> Consistent Hashing &amp; Rebalancing</h4>
+
+<h5 class="subsection-heading">Why NOT hash(key) mod N</h5>
+<ul class="key-points">
+  <li>Nodes = 10. hash(key) mod 10 → keys distributed. Add one node → mod 11 → ~90% of all keys now map to different partitions → massive data migration → cluster unusable for hours during rebalance.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Consistent Hashing Ring with Virtual Nodes (Cassandra)</div>
+  <pre>
+  Hash ring: 0 ─────────────────────────────── 2^64
+  Physical nodes assigned random positions (vnodes): 256 per node.
+
+         vnode A3   vnode B2   vnode C1   vnode A1   vnode D3
+  ────────●──────────●──────────●──────────●──────────●─────────
+
+  Key routing: hash(key) → walk clockwise → first vnode encountered = owner
+
+  Adding Node E (gets 256 random vnode positions):
+  - Only keys between E's new vnodes and their predecessors move to E
+  - Roughly 1/(N+1) = 1/6 of data moves (not 90% like mod N)
+  - All other keys: unchanged. Zero disruption to the majority.
+
+  Vnode advantages:
+  - Even load distribution without manual tuning
+  - If Node A has 2× capacity → give it 512 vnodes
+  - Failure: 256 vnodes redistributed to all remaining nodes → smooth</pre>
+</div>
+
+<h5 class="subsection-heading">Rebalancing Strategies</h5>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Strategy</th><th>How</th><th>Used by</th><th>Trade-off</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Fixed partitions</strong></td><td>Create many more partitions than nodes at startup (e.g., 1000 partitions for 10 nodes). Add node: steal partitions from existing nodes.</td><td>Riak, Elasticsearch, Couchbase, Voldemort</td><td>Partition count fixed at startup. Must estimate final cluster size upfront.</td></tr>
+    <tr><td><strong>Dynamic partitioning</strong></td><td>Start with 1 partition. Split when it reaches size threshold (e.g., 10GB). Merge when too small.</td><td>HBase, MongoDB (range sharding), RethinkDB</td><td>Starts with 1 partition = single node bottleneck until first split. Pre-split config needed.</td></tr>
+    <tr><td><strong>Consistent hashing / vnodes</strong></td><td>Continuous redistribution. Adding node: claim some vnodes from others automatically.</td><td>Cassandra, DynamoDB, Riak (alternative)</td><td>Most operationally smooth. Gossip protocol overhead. Vnode count tuning needed for heterogeneous hardware.</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Design the partitioning strategy for a WhatsApp-scale messaging app: 2B users, 100B messages/day.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Partition messages by <strong>(chat_id, year_month)</strong> as the compound partition key. This co-locates all messages in a conversation on the same shard (efficient range scan for history), uses the month bucket to prevent unbounded partition growth in high-traffic group chats, and enables time-based tiering of old data to cheap storage.</p>
+      <h6>Partitioning Design</h6>
+      <ul>
+        <li><strong>Messages table partition key:</strong> <code>(chat_id, year_month)</code> → hash(chat_id) determines node, year_month buckets within that node. Clustering key: <code>message_id</code> (time-ordered UUID or Snowflake ID) → messages sorted by time within partition.</li>
+        <li><strong>Why not just chat_id?</strong> A popular group chat accumulates unlimited messages → one partition grows forever → hot shard. Month bucketing caps partition size at ~1M messages/group/month ≈ manageable.</li>
+        <li><strong>User's inbox index:</strong> Separate table partitioned by <code>user_id</code>: <code>(user_id) → [(chat_id, last_message_ts, unread_count)]</code>. Needed to answer "show all conversations for user X." Updated asynchronously via CDC when new messages arrive.</li>
+        <li><strong>Read receipts / delivery status:</strong> Separate table partitioned by <code>message_id</code> (different write pattern, different retention policy — receipts can be deleted after 30 days; messages kept 1+ year).</li>
+      </ul>
+      <h6>Hot Spot: Large Group Chats</h6>
+      <ul>
+        <li>Group with 10,000 members at 1000 messages/min → all reads go to same partition. Mitigation: local read replicas for chats with &gt;1000 members; pre-computed materialized view of the last 50 messages in Redis cache for sub-millisecond reads.</li>
+      </ul>
+      <h6>Scale Numbers</h6>
+      <ul>
+        <li>100B messages/day = 1.15M writes/sec avg, ~5M/sec peak. At 1KB avg = 100TB/day ingested. Cassandra 100 nodes RF=3: ~3 PB/year. Tiered storage: messages &gt;90 days → S3 (100× cheaper). Active hot tier ≈ 100TB on 100 nodes = 1TB/node. Very manageable.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Proactively mention the compound partition key insight: "The year_month component prevents unbounded partition growth — a common production failure mode in messaging systems. Without it, a group chat that's been active for 5 years has a single multi-gigabyte partition that causes read timeouts and hot-node issues. This is WhatsApp's actual design pattern."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Elasticsearch has a hot shard receiving 80% of write traffic. Diagnose the cause and fix it without reindexing.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">A hot shard is almost always caused by a <strong>low-cardinality or monotonically-increasing routing key</strong>. Documents with timestamps or sequential IDs as routing keys all hash to the same shard because recent documents consistently map to the same hash bucket. Fix by adding a random suffix to the routing key, using <code>routing_partition_size</code>, or adopting an ILM rollover policy for time-series data.</p>
+      <h6>Root Cause Diagnosis</h6>
+      <ul>
+        <li><strong>Detect the hot shard:</strong><br><code>GET _cat/shards?v&amp;h=index,shard,prirep,docs,store&amp;s=store:desc</code><br>One shard with 10× the docs/indexing rate of others = confirmed hot shard.</li>
+        <li><strong>Most common cause — timestamp in _id:</strong> If document _id = <code>2026-02-27-{uuid}</code>, the lexicographic sort makes all February 2026 docs hash similarly → hot shard for current month. Sequential auto-increment IDs have the same problem.</li>
+        <li><strong>Second cause — explicit low-cardinality routing:</strong> <code>PUT /events/1?routing=sports</code> where "sports" is 80% of traffic → all sports events on one shard.</li>
+      </ul>
+      <h6>Fixes</h6>
+      <ul>
+        <li><strong>Fix 1 — routing_partition_size (best for custom routing):</strong> In index settings, set <code>routing_partition_size: 3</code>. Documents with the same routing key are now distributed across 3 shards instead of 1. Searches for a routing key must scatter to 3 shards but writes are balanced. No reindex required if set at index creation.</li>
+        <li><strong>Fix 2 — ILM rollover (for time-series):</strong> Create an ILM policy: rollover to a new index when current index reaches 50GB or 30 days old. New index gets fresh shards. Write alias always points to the active index. Historical indices are read-only. This is the standard pattern for log/event data.</li>
+        <li><strong>Fix 3 — Force merge on old shards:</strong> Once an index rolls over and becomes read-only, run <code>POST /old-index/_forcemerge?max_num_segments=1</code> to collapse many small Lucene segments into one → halves read latency for historical queries.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Explain that hot shards in Elasticsearch are a form of the same problem as hot partitions in Cassandra — both caused by a skewed key distribution. The universal fix is to introduce entropy (randomness or time-based rotation) into the partition key. "You're trading write locality for write balance. The cost is scatter-gather reads; the benefit is no single shard being a bottleneck."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Walk through adding a new node to a live Cassandra cluster and the risks to manage.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Cassandra's virtual node (vnode) design makes node addition essentially zero-downtime. The new node claims ownership of random vnode token ranges, triggers automatic data streaming from existing owners, and seamlessly joins the cluster while it's serving production traffic. The key risks to manage are: streaming I/O impact on existing nodes, and ensuring <code>nodetool repair</code> completes after bootstrap.</p>
+      <h6>Step-by-Step Process</h6>
+      <ul>
+        <li><strong>Step 1 — Configure and start:</strong> Set <code>cassandra.yaml</code> with seed node addresses. Start the Cassandra process. Node appears in <code>nodetool status</code> as <code>UJ</code> (Up/Joining).</li>
+        <li><strong>Step 2 — Automatic bootstrap:</strong> New node selects 256 random vnode positions on the consistent hash ring. For each claimed range, it sends <code>StreamRequest</code> to the current owner. Current owners stream their data to the new node while continuing to serve read/write traffic. Cluster is fully operational throughout.</li>
+        <li><strong>Step 3 — Node becomes <code>UN</code> (Up/Normal):</strong> Now fully participates: accepts writes for its vnodes, serves reads. Gossip state propagates to all nodes within seconds.</li>
+        <li><strong>Step 4 — Run nodetool repair:</strong> Catches any writes that arrived during bootstrap for the new node's ranges that might have been written via hinted handoff. <strong>Critical for eventual consistency correctness.</strong></li>
+      </ul>
+      <h6>Risks and Mitigations</h6>
+      <ul>
+        <li><strong>Streaming I/O spike:</strong> Bootstrapping saturates the network and disk I/O of source nodes. Limit with: <code>nodetool setstreamthroughput 200</code> (200 Mbps cap). Always add nodes during off-peak hours and monitor source node disk I/O and CPU during bootstrap.</li>
+        <li><strong>Read availability during bootstrap:</strong> The replication factor (RF=3) ensures other replicas cover reads for the new node's ranges. Read availability is maintained. Never add more than 1 node at a time to a cluster with RF=3 — reduces the safety margin.</li>
+        <li><strong>Decommission (opposite operation):</strong> <code>nodetool decommission</code> — node streams its data to remaining nodes first, then cleanly leaves. <em>Never just kill a Cassandra node</em> — it won't stream data out and will leave "dead" vnodes that other nodes won't automatically claim.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Compare to MongoDB/Redis resharding: "In MongoDB with manual sharding, adding a shard requires rebalancing the chunk distribution map and manually migrating chunks — much more operator-involved. Cassandra's vnode-based consistent hashing makes this automatic and proportional. The interviewer will appreciate that you know <em>why</em> Cassandra's design makes rebalancing elegant, not just <em>that</em> it works."</div>
+    </div>
+  </details>
+</div>

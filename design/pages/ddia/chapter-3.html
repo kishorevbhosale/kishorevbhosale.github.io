@@ -1,0 +1,258 @@
+<title>DDIA Chapter 3 — Storage and Retrieval</title>
+<meta name="description" content="Chapter 3 DDIA: LSM-Trees, B-Trees, SSTables, Bloom filters, OLTP vs OLAP, column-store — with diagrams and FAANG interview Q&A.">
+
+<h2>Chapter 3 — Storage and Retrieval</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> Two fundamental storage engine families: <strong>Log-Structured (LSM-Trees)</strong> — optimized for high write throughput via sequential I/O, and <strong>Page-Oriented (B-Trees)</strong> — optimized for read performance via in-place updates. Separately, <strong>OLTP</strong> (row-store) and <strong>OLAP</strong> (column-store) serve completely different access patterns.
+</div>
+
+<!-- ══════════════ SECTION 1 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">1</span> The World's Simplest Database</h4>
+
+<div class="code-block">
+  <div class="code-label">Bash — Append-Only Log (teaches the core storage trade-off)</div>
+  <pre>
+db_set() { echo "$1,$2" >> database; }
+db_get() { grep "^$1," database | tail -n 1 | cut -d',' -f2; }
+
+$ db_set 123 '{"name":"London","pop":8M}'
+$ db_set 123 '{"name":"London","pop":9M}'   # Update = new append; O(1) write
+$ db_get 123  →  {"name":"London","pop":9M} # tail -n 1 gets latest version
+
+Performance:
+  db_set: O(1)   — sequential append to end of file. Fastest possible disk write.
+  db_get: O(n)   — scan entire file. For 1M entries: 1M comparisons per GET.
+  Solution: add an INDEX — separate data structure for fast reads at cost of write overhead.
+  Rule: every index slows down writes (must update index on every insert/update).</pre>
+</div>
+
+<!-- ══════════════ SECTION 2 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">2</span> Hash Index</h4>
+
+<ul class="key-points">
+  <li>In-memory hash map: key → byte offset in data file. Used by <strong>Bitcask</strong> (default Riak storage engine).</li>
+  <li><strong>Read:</strong> hash lookup → single random disk seek to offset → read value. O(1) for any key.</li>
+  <li><strong>Write:</strong> append to log (O(1)) + update in-memory hash map (O(1)).</li>
+  <li><strong>Compaction:</strong> log grows forever → periodically write a new segment keeping only the latest value per key → replace old segments. Runs in background thread.</li>
+  <li><strong>Limitations:</strong> entire hash map must fit in RAM; range queries impossible (WHERE key BETWEEN 100 AND 200 = must scan all keys).</li>
+</ul>
+
+<!-- ══════════════ SECTION 3 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">3</span> SSTables &amp; LSM-Trees</h4>
+
+<ul class="key-points">
+  <li><strong>SSTable (Sorted String Table):</strong> log segment where keys are sorted. Enables: efficient merge-sort compaction, sparse in-memory index (one entry per block), efficient range scans.</li>
+  <li><strong>LSM-Tree (Log-Structured Merge-Tree):</strong> maintains a hierarchy of SSTables. Writes go to RAM first, flush to disk as sorted SSTables, background compaction merges levels.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">LSM-Tree Write Path &amp; Read Path</div>
+  <pre>
+  WRITE PATH (RocksDB/Cassandra/LevelDB):
+  ────────────────────────────────────────────────────────────────────────
+  Step 1: Append to WAL (Write-Ahead Log) on disk.             [durability]
+  Step 2: Insert into MemTable (Red-Black Tree in RAM).         [O(log n)]
+  Step 3: When MemTable reaches ~64MB → flush to disk as L0 SSTable (sorted).
+  Step 4: Background compaction: L0 → L1 → L2 → L3...
+          (merge-sort adjacent SSTables, discard deleted/overwritten keys)
+
+  READ PATH:
+  ────────────────────────────────────────────────────────────────────────
+  Step 1: Check MemTable (RAM)                           → found? return value
+  Step 2: Check L0 SSTables (newest first)
+           → Bloom filter: "might key exist in this file?"
+           → If Bloom filter says NO → SKIP file (zero disk I/O)
+           → If YES → binary search in sparse index → read block from disk
+  Step 3: Check L1, L2, L3... (each level has fewer, larger SSTables)
+  Return first match found (newest = most recent version).</pre>
+</div>
+
+<div class="tip-box">Bloom filters have ZERO false negatives. If Bloom filter says "NO" → key is definitely absent → skip the entire SSTable file. False positives (says "maybe" but key is absent) are acceptable — just means one unnecessary disk read. This optimization eliminates ~90% of disk reads in a cold cache.</div>
+
+<!-- ══════════════ SECTION 4 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">4</span> B-Trees</h4>
+
+<ul class="key-points">
+  <li>Used by <strong>PostgreSQL, MySQL InnoDB, Oracle, SQL Server, SQLite</strong> — the dominant choice for OLTP.</li>
+  <li>Data organized in fixed-size <strong>pages</strong> (4KB–16KB). Each page = B-Tree node. Updates are <strong>in-place</strong> (overwrite existing page).</li>
+  <li><strong>Branching factor ~500:</strong> A 4-level tree handles 500^4 = 62.5 billion leaf entries with only 4 page reads (3 internal node lookups + 1 leaf read).</li>
+  <li><strong>WAL (Write-Ahead Log):</strong> every page modification written to WAL first. On crash → replay WAL → B-Tree restored to consistent state.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">B-Tree Structure and Page Split</div>
+  <pre>
+  B-Tree (branching factor 4, simplified example):
+                          Root: [20 | 50 | 80]
+                         /          |          \
+           [5|10|15]    [25|30|40]    [55|60|70]    [85|90|95] ← leaf pages
+
+  Insert key=45 (page [25|30|40] is full at 4 keys max):
+    1. Page [25|30|40] → split into [25|30] and [40|45]
+    2. Promote middle key (40) to parent
+    3. Parent becomes: [20 | 40 | 50 | 80]
+    4. If parent also full → split propagates upward (tree grows in height)
+
+  Read key=55: 3 page reads (root → leaf)
+  Update key=55: find page, overwrite in-place, write to WAL first.</pre>
+</div>
+
+<!-- ══════════════ SECTION 5 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">5</span> LSM-Tree vs B-Tree — The Definitive Comparison</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Criterion</th><th>LSM-Tree</th><th>B-Tree</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Write throughput</strong></td><td>Very high — sequential appends, RAM-buffered</td><td>Lower — random page writes + WAL</td></tr>
+    <tr><td><strong>Read throughput</strong></td><td>Lower — check multiple levels + Bloom filters</td><td>Higher — predictable O(log N) tree traversal</td></tr>
+    <tr><td><strong>Write amplification</strong></td><td>High — data rewritten multiple times during compaction</td><td>Lower — each key at exactly one location</td></tr>
+    <tr><td><strong>Space amplification</strong></td><td>Low after compaction — dead entries removed</td><td>High — pages ~50% full on average (fragmentation)</td></tr>
+    <tr><td><strong>Compaction interference</strong></td><td>Yes — can consume I/O bandwidth, spike p99 latency</td><td>None</td></tr>
+    <tr><td><strong>SSD wear</strong></td><td>More writes due to write amplification</td><td>Less — fewer total write operations</td></tr>
+    <tr><td><strong>Best for</strong></td><td>Write-heavy: time-series, logging, IoT, event streams</td><td>Read-heavy or mixed: OLTP, CRUD APIs</td></tr>
+    <tr><td><strong>Used by</strong></td><td>Cassandra, RocksDB, LevelDB, HBase, InfluxDB</td><td>PostgreSQL, MySQL InnoDB, Oracle, SQLite</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════ SECTION 6 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">6</span> OLTP vs OLAP</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Aspect</th><th>OLTP (Online Transaction Processing)</th><th>OLAP (Online Analytical Processing)</th></tr></thead>
+  <tbody>
+    <tr><td><strong>User</strong></td><td>App server, end user</td><td>Data analyst, data scientist</td></tr>
+    <tr><td><strong>Access pattern</strong></td><td>Random reads/writes, small rows</td><td>Sequential scans of millions of rows</td></tr>
+    <tr><td><strong>Query example</strong></td><td><code>SELECT * FROM orders WHERE id = 42</code></td><td><code>SELECT region, SUM(revenue) FROM orders GROUP BY region</code></td></tr>
+    <tr><td><strong>Dataset size</strong></td><td>GB to TB</td><td>TB to PB</td></tr>
+    <tr><td><strong>Storage</strong></td><td>Row-oriented (B-Tree or LSM-Tree)</td><td>Column-oriented + compression</td></tr>
+    <tr><td><strong>Systems</strong></td><td>PostgreSQL, MySQL, DynamoDB</td><td>Redshift, BigQuery, Snowflake, ClickHouse</td></tr>
+  </tbody>
+</table>
+
+<div class="note-box">Running analytical queries (full table scans) on your OLTP database competes with production app queries for I/O and CPU. Always use a separate data warehouse for analytics. ETL or CDC from OLTP → data warehouse.</div>
+
+<!-- ══════════════ SECTION 7 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">7</span> Column-Oriented Storage</h4>
+
+<ul class="key-points">
+  <li>OLAP queries read only a few columns from millions of rows. Row store reads entire rows — ~95% wasted I/O.</li>
+  <li><strong>Column store:</strong> each column stored separately. Query reads only needed columns from disk.</li>
+  <li><strong>Compression:</strong> columns have low cardinality (country: 200 values, status: 5 values) → compress extremely well with bitmap or RLE encoding → 10-100× compression ratio.</li>
+  <li><strong>Vectorized execution:</strong> compressed column data fits in CPU L2/L3 cache → SIMD instructions process 16+ values per CPU cycle → dramatically faster than uncompressed row processing.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Row Store vs Column Store — I/O Comparison</div>
+  <pre>
+  Query: SELECT SUM(quantity) FROM sales WHERE product_id = 69;
+
+  ROW STORE (must read every column for every matching row):
+  [p=32, qty=4, date=2024, price=9.99] [p=69, qty=1, date=2024, price=29.99] ...
+  → Read all 4 columns for all 1M rows → 1M × 32 bytes = 32MB read from disk
+
+  COLUMN STORE (reads only needed columns):
+  product_id file: [32, 69, 32, 69, 69, 32, 69, ...]   ← 4 bytes × 1M = 4MB
+  quantity file:   [ 4,  1,  2,  3,  1,  4,  2, ...]   ← 4 bytes × 1M = 4MB
+
+  Step 1: Read product_id column → positions where value=69: {1, 3, 4, 6}
+  Step 2: Read quantity column → extract positions {1,3,4,6}: [1, 3, 1, 2]
+  Step 3: SUM = 7
+  Total I/O: 8MB (vs 32MB row store). With RLE compression: maybe 1-2MB.
+  BigQuery processes this in milliseconds across millions of rows.</pre>
+</div>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Cassandra sustains 500K writes/sec per node while PostgreSQL caps at ~20K. Explain exactly why, and what trade-offs you accept.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Cassandra's write path is <strong>append-only sequential I/O</strong> (MemTable write in RAM + WAL append). PostgreSQL's write path involves <strong>random B-Tree page I/O on disk</strong>. Sequential NVMe I/O is 5–10× faster than random — that's the entire reason. It's physics, not magic.</p>
+      <h6>Mechanical Breakdown</h6>
+      <ul>
+        <li><strong>Cassandra write path:</strong> Write → MemTable (in-memory Red-Black Tree, ~100ns) + append to WAL (sequential disk, ~0.05ms). Acknowledged. Zero random disk access. MemTable flushed to immutable SSTable file when full (~64MB).</li>
+        <li><strong>PostgreSQL write path:</strong> Write → find B-Tree leaf page (random disk read, ~0.1ms) → modify page in buffer pool → append to WAL → eventually flush dirty page (random write, ~0.1ms). Two random I/Os per write vs zero for Cassandra.</li>
+        <li><strong>Numbers:</strong> NVMe sequential write ~3 GB/s; random ~700K IOPS. Cassandra: 500K–1M writes/node/sec. PostgreSQL: 10K–50K depending on index count and transaction overhead.</li>
+      </ul>
+      <h6>Trade-offs You Accept with Cassandra</h6>
+      <ul>
+        <li><strong>Reads are slower:</strong> Check MemTable → L0 SSTables → L1 → L2 → Bloom filters on each. p99 read can be 5–50ms vs PostgreSQL's 1–2ms for PK lookups.</li>
+        <li><strong>No JOINs:</strong> Must denormalize — create separate query-shaped tables for each access pattern. Adds data duplication and consistency overhead.</li>
+        <li><strong>No cross-partition transactions:</strong> Only single-partition atomicity. Multi-partition ACID requires Lightweight Transactions (Paxos) at ~10× write latency cost.</li>
+        <li><strong>Compaction spikes:</strong> Background compaction consumes disk I/O and causes p99 read latency spikes. Tune STCS (Size-Tiered) for write-heavy, LCS (Leveled) for read-heavy workloads.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "I choose Cassandra specifically for write-dominant workloads with simple key/time-range lookups: IoT telemetry, activity logs, audit trails, time-series. For anything requiring JOINs, multi-entity transactions, or complex queries — PostgreSQL. The 25× write throughput advantage is real, but so are the consistency and query-model trade-offs."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">What is write amplification, why does it matter for NVMe SSDs, and how do FAANG companies manage it?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct"><strong>Write amplification (WA)</strong> = bytes physically written to storage ÷ bytes logically written by the application. WA=30 means every 1 KB the app writes causes 30 KB of actual disk writes — the extra 29 KB comes from LSM compaction rewriting data through multiple levels. It matters because it burns through finite SSD write endurance and inflates hardware costs.</p>
+      <h6>LSM-Tree vs B-Tree WA</h6>
+      <ul>
+        <li><strong>LSM-Tree (RocksDB/Cassandra) WA:</strong> 10–50×. Data is rewritten at every compaction level: L0→L1→L2→L3. RocksDB level compaction: each byte of user data is physically written ~30 times by the time it reaches the deepest level.</li>
+        <li><strong>B-Tree (PostgreSQL/InnoDB) WA:</strong> 3–10×. Each key exists at exactly one location. An UPDATE writes 1 WAL entry + 1 modified page. No multi-level rewriting.</li>
+        <li><strong>SSD endurance impact:</strong> 2 TB NVMe at 1 GB/s application writes: with WA=30 → physically writing 30 GB/s → TBW (Total Bytes Written) budget exhausted in ~8 months. With WA=5 → 4+ years. At $400/drive this is a real OpEx cost at thousands of nodes.</li>
+      </ul>
+      <h6>FAANG Mitigation Strategies</h6>
+      <ul>
+        <li><strong>Compression (ZSTD):</strong> Meta switched RocksDB (in MySQL/MyRocks) from Snappy to ZSTD — 2.8× better compression ratio → fewer bytes to write → WA reduced from ~30× to ~8×. Saved ~40% on SSD costs fleet-wide.</li>
+        <li><strong>Compaction tuning:</strong> Universal compaction reduces WA at the cost of higher space amplification. Choose based on workload.</li>
+        <li><strong>Space amplification:</strong> LSM during compaction holds 2 copies simultaneously → can spike to 2× disk usage. Always provision at least 2× the data size in disk capacity.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Mention that WA, read amplification, and space amplification form an <strong>unavoidable triangle trade-off</strong> — you can optimize one or two but not all three simultaneously. "B-Trees minimize read and space amplification; LSM-Trees minimize write latency but pay in write amplification. The right choice depends on the dominant operation."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">BigQuery scans petabytes in seconds. Walk through every architectural reason that makes this possible.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">BigQuery achieves petabyte-scale speed through six compounding optimizations: <strong>columnar storage → column pruning → compression → vectorized SIMD execution → massively parallel distributed scan → storage-compute separation</strong>. Each multiplies the effect of the others. Row-oriented PostgreSQL doing the same query would take hundreds of hours.</p>
+      <h6>The Six Pillars</h6>
+      <ul>
+        <li><strong>1. Columnar storage (Capacitor/Dremel format):</strong> A SELECT on 5 of 200 columns physically reads only 2.5% of the data. Row-store reads 100% of every row even when you need 2 fields. For 1 PB: BigQuery reads ~25 TB; row-store reads 1 PB.</li>
+        <li><strong>2. Compression (RLE + dictionary encoding):</strong> Column data has low cardinality (country codes, status fields) → 10–100× compression ratio. Fewer bytes on disk, on network, and in CPU cache.</li>
+        <li><strong>3. Vectorized SIMD execution:</strong> 512-bit SIMD processes 16 int32 values per instruction. Compressed columnar data fits in L1/L2 CPU cache → operates at memory bandwidth (~100 GB/s), not disk bandwidth (~3 GB/s).</li>
+        <li><strong>4. Massively parallel scan (Dremel tree):</strong> Query fan-out: root → shuffle nodes → 10,000+ leaf servers, each scanning 100 GB of a 1 PB table in parallel. Total time ≈ time for one leaf to scan 100 GB.</li>
+        <li><strong>5. Storage-compute separation (Colossus):</strong> Data on distributed filesystem; compute allocated on demand. One query gets 10,000 CPUs for 30 s then releases them. No wasted idle capacity between queries.</li>
+        <li><strong>6. Predicate pushdown + zone maps:</strong> WHERE filters evaluated at storage layer. Min/max metadata per column chunk allows skipping entire chunks without reading them.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Quantify it. "PostgreSQL at 1 node scanning 1 PB at 1 GB/s = 277 hours. BigQuery: 10,000 nodes × 1 GB/s each × read 100 GB per node = 100 seconds I/O. Column pruning reads only 5% → ~5 seconds. This isn't configuration — it's a fundamentally different architecture for a different workload (OLAP vs OLTP)."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">How does a Bloom filter work, what is the optimal false positive rate, and how does RocksDB use it to speed up reads?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">A Bloom filter is a <strong>probabilistic membership structure</strong> that answers "is key X <em>definitely NOT</em> in this SSTable file?" with 100% certainty — zero false negatives. If it says "maybe present," you do a disk read to confirm. RocksDB uses one per SSTable file to eliminate ~99% of unnecessary disk reads for point lookups of absent keys.</p>
+      <h6>Mechanics</h6>
+      <ul>
+        <li><strong>Insertion:</strong> Compute k hash functions on key K → set those k bit positions to 1 in an m-bit array.</li>
+        <li><strong>Query:</strong> Compute same k hashes. If <em>any</em> bit is 0 → key is <strong>definitely absent</strong> (zero false negatives). If all bits are 1 → key <em>might</em> be present (false positive possible).</li>
+        <li><strong>FPR formula:</strong> ≈ (1 - e<sup>-kn/m</sup>)<sup>k</sup>. RocksDB default: 10 bits/key, k=7 → FPR ≈ 1%. Increasing to 20 bits/key → FPR ≈ 0.01% (but uses 2× memory).</li>
+      </ul>
+      <h6>Impact on RocksDB</h6>
+      <ul>
+        <li>Each SSTable file has its own Bloom filter in its metadata block, loaded into block cache (RAM).</li>
+        <li>Point lookup for key K: check K against each level's SSTable Bloom filters. At 1% FPR with 100 files: on average, 1 false positive → 1 disk read. Without Bloom filters: 100 disk reads. <strong>99× reduction in unnecessary I/O.</strong></li>
+        <li><strong>Memory cost:</strong> 1B keys × 10 bits = 1.25 GB RAM. Eliminates billions of disk reads per day. Clear win.</li>
+        <li><strong>Range queries can't use Bloom filters:</strong> "Find all keys between 1000–2000" cannot be answered probabilistically. This is why range scans in LSM-Trees remain expensive even with Bloom filters — B-Trees handle ranges natively via sorted pages.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "Bloom filters illustrate a fundamental engineering pattern: <em>trade memory for disk I/O avoidance</em>. The false positive rate is a tunable knob. At FAANG scale with 200B+ keys across thousands of SSTable files, even 1% FPR matters — it's the difference between 1 unnecessary disk read per lookup and 2000. That's the difference between 1ms p99 and 200ms p99."</div>
+    </div>
+  </details>
+</div>

@@ -1,0 +1,315 @@
+<title>DDIA Chapter 2 — Data Models and Query Languages</title>
+<meta name="description" content="Chapter 2 DDIA: Relational vs Document vs Graph data models, SQL vs NoSQL, impedance mismatch, Cypher — with FAANG interview Q&A.">
+
+<h2>Chapter 2 — Data Models &amp; Query Languages</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> Data models are the single most consequential decision in system design — they determine how you think about the problem. Applications layer models: objects in code → rows in DB → bytes on disk → electrical signals. Each layer hides complexity below it. This chapter compares the three dominant models: <strong>Relational</strong>, <strong>Document (NoSQL)</strong>, and <strong>Graph</strong>.
+</div>
+
+<!-- ══════════════ SECTION 1 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">1</span> Relational Model</h4>
+
+<ul class="key-points">
+  <li>Proposed by <strong>Edgar Codd, 1970</strong>. Data organized as relations (tables) with tuples (rows). Query language (SQL) is <em>declarative</em> — say <em>what</em>, not <em>how</em>.</li>
+  <li>Before relational DBs, developers navigated IMS/CODASYL pointer-based hierarchical structures manually — the storage representation was the programming interface.</li>
+  <li>Key win: SQL separates the query from the execution plan. The optimizer chooses the best index and join strategy — developers declare intent.</li>
+  <li><strong>Best for:</strong> banking, e-commerce, ERP, anything with complex many-to-many relationships, ACID transactions, ad-hoc queries.</li>
+</ul>
+
+<h5 class="subsection-heading">Normalization &amp; Impedance Mismatch</h5>
+<ul class="key-points">
+  <li><strong>Normalization:</strong> store each fact exactly once; reference via foreign keys. "Google" → "Alphabet" rename = 1 UPDATE. In a denormalized system: find and update every occurrence.</li>
+  <li><strong>Impedance mismatch:</strong> application code uses objects with nested lists (User → List&lt;Job&gt;); relational DB stores flat tables. ORMs bridge this gap but introduce N+1 query problems and awkward JOIN-heavy queries.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">LinkedIn Resume — Relational (Normalized) Layout</div>
+  <pre>
+  Table: users          id=1, name='Alice', headline='Eng Lead'
+                          │
+         ┌────────────────┼────────────────────────────────┐
+         ▼                ▼                                ▼
+  Table: positions     Table: education             Table: skills
+  {user_id=1,          {user_id=1,                  {user_id=1, skill='Java'}
+   title='Eng Lead',    school='MIT',                {user_id=1, skill='Kafka'}
+   company='Google'}    degree='B.S. CS'}
+  {user_id=1,
+   title='Sr Eng',
+   company='Stripe'}
+
+  Full profile = JOIN across 4 tables. Changing 'Google' to 'Alphabet'?
+  One UPDATE on positions table — all of Alice's jobs update automatically.</pre>
+</div>
+
+<!-- ══════════════ SECTION 2 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">2</span> Document Model (NoSQL)</h4>
+
+<ul class="key-points">
+  <li>Stores self-contained JSON/BSON documents. One document = all related data. No JOINs needed for typical reads.</li>
+  <li><strong>Schema-on-read:</strong> structure is implicit; interpreted at read time. Add new fields without migrations — just start writing them.</li>
+  <li><strong>Locality advantage:</strong> all data for one entity stored contiguously → single disk seek to read the entire profile.</li>
+  <li><strong>Best for:</strong> document-like data with one-to-many nesting, flexible/evolving schema, high write throughput, tree-structured data.</li>
+</ul>
+
+<div class="code-block">
+  <div class="code-label">JSON — Same Resume as a Document (MongoDB/DynamoDB)</div>
+  <pre>
+{
+  "user_id": 251,
+  "name": "Alice",
+  "headline": "Engineering Lead at Google",
+  "positions": [
+    { "title": "Engineering Lead", "company": "Google",  "start": "2020-03" },
+    { "title": "Senior Engineer",  "company": "Stripe",  "start": "2018-01" }
+  ],
+  "education": [
+    { "school": "MIT", "degree": "B.S. Computer Science", "year": 2016 }
+  ],
+  "skills": ["Java", "Kafka", "Kubernetes", "Go"]
+}
+
+// One GET retrieves the entire profile. No JOINs.
+// Adding "certifications" field? Just start writing it — zero schema migration.
+// Reading on old clients? They see the field is missing → handle as empty array.</pre>
+</div>
+
+<h5 class="subsection-heading">Schema-on-Write vs Schema-on-Read</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Schema Evolution — Relational vs Document</div>
+  <pre>
+  Relational (schema-on-write):
+    ALTER TABLE users ADD COLUMN phone VARCHAR(20) DEFAULT NULL;
+    -- DB enforces schema at write. Migration runs on live table.
+    -- Large tables: hours of locking + careful zero-downtime migration.
+
+  Document (schema-on-read):
+    // Just start writing new documents with the "phone" field
+    { "user_id": 1, "name": "Alice", "phone": "+1-555-0100" }
+    // Old documents: no "phone" field — app code handles:
+    phone = doc.get("phone", "N/A")
+
+  Analogy: schema-on-write = statically typed language (compiler enforces at compile time)
+           schema-on-read  = dynamically typed language (error found at runtime)</pre>
+</div>
+
+<!-- ══════════════ SECTION 3 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">3</span> Relational vs Document — Decision Framework</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Criterion</th><th>Relational (SQL)</th><th>Document (NoSQL)</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Data fit</strong></td><td>Tabular, many-to-many, normalized</td><td>Tree-like, one-to-many, self-contained</td></tr>
+    <tr><td><strong>JOINs</strong></td><td>Native, optimizer-managed</td><td>Must denormalize or join in app code</td></tr>
+    <tr><td><strong>Schema</strong></td><td>Schema-on-write (migrations required)</td><td>Schema-on-read (flexible, evolving)</td></tr>
+    <tr><td><strong>Transactions</strong></td><td>Multi-row ACID across tables</td><td>Usually single-document ACID only</td></tr>
+    <tr><td><strong>Horizontal scale</strong></td><td>Harder (cross-shard JOINs)</td><td>Designed for sharding</td></tr>
+    <tr><td><strong>Consistency</strong></td><td>Strong (FK constraints, CHECK)</td><td>Eventual (no FK enforcement)</td></tr>
+    <tr><td><strong>Examples</strong></td><td>PostgreSQL, MySQL, Oracle, CockroachDB</td><td>MongoDB, DynamoDB, Firestore, Couchbase</td></tr>
+  </tbody>
+</table>
+
+<div class="warn-box">If your data has many-to-many relationships (users → follows → posts → comments → likes), the document model forces you to either duplicate data (denormalize) or implement JOINs in application code — which is always worse than having the DB do it.</div>
+
+<!-- ══════════════ SECTION 4 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">4</span> Declarative vs Imperative Query Languages</h4>
+
+<div class="code-block">
+  <div class="code-label">JavaScript vs SQL — Filtering Sharks</div>
+  <pre>
+// Imperative (tell HOW — you control the execution):
+var sharks = [];
+for (var i = 0; i &lt; animals.length; i++) {
+  if (animals[i].family === "Sharks") {
+    sharks.push(animals[i]);
+  }
+}
+// You define loop, check, accumulation. Optimizer cannot change this.
+
+// Declarative (tell WHAT — optimizer decides HOW):
+SELECT * FROM animals WHERE family = 'Sharks';
+-- DB can: use an index, parallelize the scan, reorder predicates,
+-- use bitmap scan, push down to storage layer. All transparent to you.
+-- Same query runs better after adding an index — no code change needed.</pre>
+</div>
+
+<ul class="key-points">
+  <li><strong>Declarative benefits:</strong> optimizer freedom; automatic parallelization; abstraction from storage engine changes; concise code.</li>
+  <li>CSS is declarative: <code>li.selected &gt; p { color: blue; }</code> — you don't write a DOM traversal loop. Browser optimizes rendering.</li>
+  <li>Cypher, SPARQL, SQL, XPath — all declarative. The engine decides execution strategy.</li>
+</ul>
+
+<!-- ══════════════ SECTION 5 ══════════════ -->
+<h4 class="section-heading"><span class="section-number">5</span> Graph-Like Data Models</h4>
+
+<ul class="key-points">
+  <li>When <strong>relationships are the central concern</strong>, use a graph database. Vertices (nodes) + edges (relationships). Both can have properties.</li>
+  <li>Any vertex can relate to any other — no schema restriction. Highly flexible for evolving relationship types.</li>
+  <li>Used for: social networks, fraud detection, recommendation engines, knowledge graphs, route optimization.</li>
+</ul>
+
+<div class="code-block">
+  <div class="code-label">Cypher (Neo4j) — Find people who emigrated from US to Europe</div>
+  <pre>
+MATCH
+  (person) -[:BORN_IN]->  ()-[:WITHIN*0..]-> (us:Location {name:'United States'}),
+  (person) -[:LIVES_IN]-> ()-[:WITHIN*0..]-> (eu:Location {name:'Europe'})
+RETURN person.name
+
+-- [:WITHIN*0..] = traverse WITHIN edges recursively (0 or more hops)
+-- This is a variable-length path traversal.
+-- Equivalent SQL requires WITH RECURSIVE CTEs — verbose and often slower.
+-- Graph DB stores physical adjacency → traversal is O(relationships visited),
+-- not O(table size). SQL JOIN is O(matched rows across both tables).</pre>
+</div>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Instagram has photos, users, follows, comments, likes. Which databases would you use and why? (Polyglot persistence)</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>polyglot persistence</strong> — purpose-select each store for its access pattern. No single database optimally handles objects, blobs, graphs, counters, full-text, and timelines simultaneously. The cost is operational complexity; the payoff is each system runs at peak efficiency.</p>
+      <h6>Store Selection</h6>
+      <ul>
+        <li><strong>User profiles + post metadata → PostgreSQL:</strong> Requires ACID transactions (follow/unfollow must be atomic, billing must not double-charge), complex JOIN queries (user analytics, moderation dashboards), and foreign-key integrity. Shard by user_id at scale (&gt;100M rows).</li>
+        <li><strong>Photos / videos → S3 + CloudFront CDN:</strong> Binary objects belong in object storage, not row-based DBs. PostgreSQL stores only the S3 key. CloudFront serves the bytes from the edge node nearest the user, cutting latency from 200ms to &lt;20ms globally.</li>
+        <li><strong>Home feed / timeline → Redis sorted sets:</strong> <code>ZADD feed:{user_id} {unix_ms} {post_id}</code>. Fan-out on write (pre-computed per user). Read = <code>ZRANGE</code> O(log N). Hot data stays in RAM; cold pages to disk. Typical feed read is &lt;1ms.</li>
+        <li><strong>Likes / view counts → Redis INCR or Cassandra counters:</strong> Millions of increments per second; eventual consistency is fine (off-by-one on a like count matters nothing). Cassandra counter columns handle write-heavy workloads across nodes without hot-row contention.</li>
+        <li><strong>Hashtag / caption search → Elasticsearch:</strong> Inverted index for full-text, geo-search for nearby posts, faceted search by date/popularity. CDC (Debezium) streams changes from PostgreSQL into Elasticsearch to keep them in sync.</li>
+        <li><strong>"People you may know" / explore → offline batch + lookup table:</strong> Real-time graph traversal doesn't scale to 1B users. Run a daily Spark job over the social graph, persist top-50 recommendations per user in DynamoDB, serve in O(1).</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Make the trade-off explicit — "The cost of polyglot persistence is that I now have 5 systems to monitor, back up, and keep consistent. I justify that cost when the alternative is a single overloaded database that can't meet the read/write SLAs for any of the use cases."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">When would you choose MongoDB over PostgreSQL? What specific risks must you mitigate?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Choose MongoDB when your data is <strong>genuinely document-shaped</strong> (self-contained, variable-structure, read as a unit) and horizontal write scale is a day-one requirement. Avoid it when you need strong referential integrity, complex multi-entity joins, or multi-document ACID transactions — those scenarios strongly favour PostgreSQL.</p>
+      <h6>When MongoDB Wins</h6>
+      <ul>
+        <li><strong>Product catalog with heterogeneous attributes:</strong> A TV has <code>{screen_size, resolution, HDR_support}</code>; a shirt has <code>{size, color, fabric}</code>. Forcing this into relational columns requires the EAV (Entity-Attribute-Value) anti-pattern — worse than MongoDB.</li>
+        <li><strong>CMS / blog content:</strong> An article with embedded sections, embedded authors, embedded tags — loaded and rendered as a unit. No cross-document joins needed.</li>
+        <li><strong>Rapid iteration phases:</strong> When the schema changes weekly, schema-on-read avoids the ALTER TABLE overhead. Once the schema stabilises, consider migrating to PostgreSQL.</li>
+      </ul>
+      <h6>Risks and Mitigations</h6>
+      <ul>
+        <li><strong>No FK constraints → orphaned documents:</strong> Enforce referential integrity at the application layer. Add integration tests that verify no orphans exist. Use schema validation (MongoDB 3.6+ JSON Schema) to enforce required fields.</li>
+        <li><strong>Schema drift:</strong> <code>email</code> in old docs, <code>emailAddress</code> in new docs. Enforce consistent field names via application-level schema classes (e.g., Mongoose schemas, Java POJOs). Run a nightly audit query that checks for field name inconsistencies.</li>
+        <li><strong>Weak multi-document transactions:</strong> MongoDB multi-document transactions (v4.0+) exist but have higher overhead than Postgres transactions. If your operations frequently span multiple documents atomically, restructure to embed or move to PostgreSQL.</li>
+        <li><strong>The anti-pattern trap:</strong> Teams choose Mongo for "flexibility," then rebuild a relational model in app code. If after 6 months you're doing in-app JOINs, you've recreated SQL — but without indexes, query planner, or FK enforcement.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "I treat MongoDB as a deliberate choice for document workloads, not a default. My decision tree: Does this data have many-to-many relationships? → PostgreSQL. Is the schema self-contained and variable? → MongoDB. Do I need sub-millisecond key lookups at massive scale? → DynamoDB."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Add a "phone_number" column to a 500M-row production table in PostgreSQL without taking downtime.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use the <strong>expand-migrate-contract</strong> three-phase pattern: first add the column as nullable (instant DDL), then backfill in small batches (background, no locks), then enforce the constraint once all rows have data. Never run a locking DDL on a large table in production without an OSC tool.</p>
+      <h6>Phase 1 — Add Column (instantaneous)</h6>
+      <pre>-- In PostgreSQL ≥ 11: adding a nullable column updates only the catalog
+ALTER TABLE users ADD COLUMN phone_number VARCHAR(20) DEFAULT NULL;
+-- Completes in milliseconds, zero table lock</pre>
+      <h6>Phase 2 — Backfill in Batches (background)</h6>
+      <pre>-- Process 5000 rows at a time with a sleep between batches
+-- to avoid lock queuing and replication lag
+DO $$
+DECLARE batch_start BIGINT := 1;
+BEGIN
+  LOOP
+    UPDATE users SET phone_number = lookup_phone(id)
+    WHERE id BETWEEN batch_start AND batch_start + 4999
+    AND phone_number IS NULL;
+    batch_start := batch_start + 5000;
+    EXIT WHEN batch_start > 500000000;
+    PERFORM pg_sleep(0.05);  -- 50ms pause
+  END LOOP;
+END $$;</pre>
+      <h6>Phase 3 — Enforce NOT NULL (once backfill completes)</h6>
+      <pre>-- PostgreSQL 12+: validate constraint without full table scan
+ALTER TABLE users ADD CONSTRAINT phone_not_null
+  CHECK (phone_number IS NOT NULL) NOT VALID;
+ALTER TABLE users VALIDATE CONSTRAINT phone_not_null;
+-- Then promote to NOT NULL:
+ALTER TABLE users ALTER COLUMN phone_number SET NOT NULL;</pre>
+      <ul>
+        <li><strong>Also use <code>CREATE INDEX CONCURRENTLY</code></strong> to add indexes without blocking reads/writes. Regular <code>CREATE INDEX</code> holds a lock for the entire build.</li>
+        <li><strong>Tooling:</strong> gh-ost (GitHub's Online Schema Change tool), pt-online-schema-change (Percona), or pg_repack for PostgreSQL. These shadow the table, replicate changes, then atomically swap — zero downtime for any DDL.</li>
+        <li><strong>Decouple deploy from migration:</strong> Feature flags let you deploy new code that writes <code>phone_number</code> before the column exists, or reads it gracefully when null. Migrate the schema independently from deploying code.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: The interviewer is testing whether you know about table locks. Lead with: "The naive ALTER TABLE would acquire an ACCESS EXCLUSIVE lock on a 500M-row table and block all reads and writes for hours. Here's how I avoid that…" This immediately signals production experience.</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">Design LinkedIn's "People You May Know." What data model, algorithm, and serving architecture?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Model the social graph as vertices (users) + edges (connections). Compute recommendations <strong>offline in batch</strong> using a graph algorithm (Jaccard similarity of neighbor sets), store results in a fast serving store, and serve in O(1). Real-time graph traversal at LinkedIn's scale (900M users, avg 300 connections) would hit millions of nodes per query — offline batch is the correct architecture.</p>
+      <h6>Graph Data Model</h6>
+      <ul>
+        <li><strong>Vertices:</strong> users with properties <code>{user_id, name, skills[], company, school}</code></li>
+        <li><strong>Edges:</strong> undirected <code>CONNECTED(user_a, user_b, connected_at)</code></li>
+        <li><strong>Problem to solve:</strong> For user A, find users B where <code>|neighbors(A) ∩ neighbors(B)|</code> is high but no direct edge A–B exists.</li>
+      </ul>
+      <h6>Offline Batch Architecture</h6>
+      <ul>
+        <li><strong>Daily Spark GraphX job:</strong> Load the full adjacency list (compressed: ~50 GB for 900M users × 300 avg connections). For each user, compute Jaccard(A, B) = |A∩B| / |A∪B| for all 2-hop neighbors. Rank top 50 by score.</li>
+        <li><strong>Serving:</strong> Write results to DynamoDB: <code>PK=user_id, SK=rank → {recommended_id, score, reason}</code>. API reads top-20 in O(1) at &lt;5ms. Cache in Redis for hot users.</li>
+        <li><strong>Weighting signals:</strong> Mutual connections (strongest), same company (+1.5×), same school (+1.2×), same skills (+1.1×), profile view history (+0.8×). Exclude already-connected, blocked, or deactivated users.</li>
+        <li><strong>Near-real-time updates:</strong> New connection event triggers incremental computation (only affected user's neighborhood). Kafka event → Flink streaming job → update DynamoDB recommendation row. Full batch recalculates everything nightly.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Explicitly justify why you're NOT using a real-time graph database: "Neo4j is excellent for real-time 2-hop traversal up to millions of nodes. At LinkedIn's scale — 900M users, 30B+ edges — a single 3-hop traversal could touch billions of nodes. The offline batch + serving table pattern is the industry-standard solution for large-scale recommendations."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q5</span><span class="qa-q-text">Explain the N+1 query problem and all the ways to solve it in a production REST API.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">The N+1 problem occurs when code fetches a list of N records then executes one additional DB query <em>per record</em> to fetch related data — turning 2 DB calls into N+1. At 1000 req/s with N=100, that's 100,000 extra DB queries per second. This single bug has taken down production databases at multiple companies.</p>
+      <h6>The Problem — Concrete Example</h6>
+      <pre>// WRONG — N+1 queries
+List&lt;Post&gt; posts = postRepo.findAll(limit=100);  // Query 1
+for (Post p : posts) {
+    User author = userRepo.findById(p.getAuthorId()); // Query 2..N+1
+    p.setAuthorName(author.getName());
+}</pre>
+      <h6>Solution 1 — JOIN (single query)</h6>
+      <pre>-- One query fetches everything
+SELECT p.id, p.title, u.name AS author_name
+FROM posts p
+JOIN users u ON p.author_id = u.id
+LIMIT 100;
+-- JPA: @Query("SELECT p FROM Post p JOIN FETCH p.author LIMIT 100")</pre>
+      <h6>Solution 2 — Batch loading (DataLoader pattern)</h6>
+      <pre>// Collect all author IDs, fetch in ONE query
+Set&lt;Long&gt; authorIds = posts.stream()
+    .map(Post::getAuthorId).collect(toSet());
+Map&lt;Long, User&gt; authorsById = userRepo.findAllById(authorIds)
+    .stream().collect(toMap(User::getId, identity()));
+// SELECT * FROM users WHERE id IN (1,2,3,...,100)  ← single query
+posts.forEach(p -&gt; p.setAuthor(authorsById.get(p.getAuthorId())));</pre>
+      <ul>
+        <li><strong>DataLoader (GraphQL):</strong> Facebook's DataLoader batches and caches all field-level fetches within a single request. Instead of N resolver calls each firing a DB query, DataLoader coalesces them into one <code>WHERE id IN (...)</code> call.</li>
+        <li><strong>Detection:</strong> Hibernate statistics logging, Rails Bullet gem, Django Debug Toolbar. Alert if any single request fires &gt;10 queries — almost always a sign of N+1.</li>
+        <li><strong>Caching layer:</strong> For hot reference data (author profiles change rarely), add a read-through cache: check Redis first; on miss, fetch from DB and cache for 5 min. Reduces N+1 queries to N cache hits — much cheaper than N DB queries.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Quantify the impact: "At 500 req/s, N+1 with N=50 generates 25,000 extra DB queries/sec. A typical PostgreSQL instance handles ~10,000 queries/sec comfortably. This single bug would saturate the database and take the service down." Numbers like these immediately demonstrate production-level thinking.</div>
+    </div>
+  </details>
+</div>

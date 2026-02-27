@@ -1,0 +1,254 @@
+<title>DDIA Chapter 4 — Encoding and Evolution</title>
+<meta name="description" content="Chapter 4 DDIA: JSON vs Protobuf vs Avro, schema evolution rules, backward/forward compatibility, RPC, message brokers — FAANG Q&A.">
+
+<h2>Chapter 4 — Encoding and Evolution</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> Applications must evolve — fields are added, renamed, removed. During rolling upgrades, old and new code run simultaneously, reading each other's data. The encoding format determines whether this works safely. Getting it wrong causes silent data corruption or parse failures in production.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> The Rolling Upgrade Problem</h4>
+
+<div class="diagram-box">
+  <div class="diagram-label">Rolling Upgrade — Two Compatibility Directions</div>
+  <pre>
+  100-node cluster upgrading V1 → V2. V2 adds "email" field.
+
+  Hour 0:  Nodes  1-10  running V2  → write {name, email}
+  Hour 5:  Nodes 11-90  running V2  → write {name, email}
+  Hour 9:  All nodes    running V2
+
+  During the upgrade window — TWO live compatibility requirements:
+  ┌─────────────────────────────────────────────────────────────┐
+  │ BACKWARD COMPATIBLE: new V2 code reads old V1 data          │
+  │   V2 reads DB record written by V1: {name: "Alice"}         │
+  │   V2 must handle missing "email" → use default "" or null   │
+  │                                                             │
+  │ FORWARD COMPATIBLE: old V1 code reads new V2 data           │
+  │   V1 reads record written by V2: {name: "Alice", email: "x"}│
+  │   V1 must gracefully ignore the unknown "email" field       │
+  └─────────────────────────────────────────────────────────────┘
+  Both directions must work simultaneously for ~9 hours during upgrade!</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">2</span> JSON &amp; XML — Flexible but Costly</h4>
+
+<ul class="key-points">
+  <li><strong>Number precision:</strong> JSON uses IEEE 754 float64. Max safe integer = 2^53 = 9,007,199,254,740,991. Twitter snowflake IDs are 64-bit and exceed this → JavaScript truncates them silently. Fix: Twitter sends both <code>"id": 1234567890</code> (float64 truncated) and <code>"id_str": "1234567890"</code> (exact string).</li>
+  <li><strong>No binary support:</strong> binary data must be base64-encoded → 33% size overhead. Not suitable for images, audio, arbitrary bytes.</li>
+  <li><strong>No schema enforcement:</strong> <code>{"age": "25"}</code> vs <code>{"age": 25}</code> — both valid JSON, different types. Silent type errors.</li>
+  <li><strong>Verbosity:</strong> field names repeated in every record. <code>"user_id"</code> repeated in 10M records = ~70MB just for the field name. Schemas eliminate this.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">3</span> Binary Encoding Formats Compared</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Format</th><th>Schema?</th><th>Field identification</th><th>Encoded size</th><th>Language support</th><th>Best for</th></tr></thead>
+  <tbody>
+    <tr><td>JSON</td><td>Optional (JSON Schema)</td><td>String field names</td><td>81 bytes</td><td>Universal</td><td>Public APIs, config files, browser</td></tr>
+    <tr><td>MessagePack</td><td>No</td><td>String names (compact)</td><td>66 bytes</td><td>Broad</td><td>Binary JSON, latency-sensitive APIs</td></tr>
+    <tr><td>Thrift (Binary)</td><td>Yes (IDL)</td><td>Tag numbers + type</td><td>59 bytes</td><td>Facebook internal</td><td>Internal RPC, legacy Facebook systems</td></tr>
+    <tr><td>Protobuf</td><td>Yes (.proto)</td><td>Tag numbers (varint)</td><td>33 bytes</td><td>Excellent (20+ langs)</td><td>gRPC, Google, any high-perf system</td></tr>
+    <tr><td>Avro</td><td>Yes (IDL/JSON)</td><td>None — use schema</td><td>32 bytes</td><td>JVM-centric</td><td>Kafka, Hadoop, schema registry</td></tr>
+  </tbody>
+</table>
+
+<h5 class="subsection-heading">Protobuf Wire Format &amp; Evolution Rules</h5>
+
+<div class="code-block">
+  <div class="code-label">Protobuf — .proto definition + wire format + evolution rules</div>
+  <pre>
+// ── Schema (.proto file) ─────────────────────────────────────────────
+message Person {
+  required string user_name       = 1;   // field tag 1
+  optional int64  favorite_number = 2;   // field tag 2
+  repeated string interests       = 3;   // field tag 3
+}
+
+// ── Wire format for {user_name: "Martin", favorite_number: 1337} ─────
+// Binary bytes (hex): 0a 06 4d 61 72 74 69 6e 10 b9 0a
+//  [tag=1, type=2(LEN)] [len=6] [M][a][r][t][i][n]
+//  [tag=2, type=0(VARINT)] [1337 as varint]
+// "interests" absent → field 3 missing → reader uses default (empty list)
+
+// ── Safe schema evolution operations ────────────────────────────────
+✅ Add optional field with NEW tag number
+   → Old code: sees unknown tag → ignores it (forward compatible)
+   → New code: reads old data → field absent → uses default (backward compatible)
+
+✅ Rename field → tag number unchanged in binary → safe
+
+✅ Remove optional field → stop sending it
+   → CRITICAL: never reuse the tag number! Mark as: reserved 4;
+
+❌ Change optional → required → breaks backward compat (old data lacks it)
+❌ Change field type (int32 → int64) → may truncate data
+❌ Reuse a deleted field's tag → old messages have wrong type → parse error</pre>
+</div>
+
+<h5 class="subsection-heading">Avro + Schema Registry (Kafka pattern)</h5>
+
+<ul class="key-points">
+  <li>Avro binary has NO field IDs or types — most compact encoding. Requires both reader schema and writer schema to decode.</li>
+  <li>In Kafka: each message prefixed with 4-byte schema ID. Consumer fetches schema from <strong>Confluent Schema Registry</strong>.</li>
+  <li>Schema Registry enforces compatibility mode: BACKWARD (new schema can read old data), FORWARD (old schema can read new data), FULL (both).</li>
+  <li>New fields <em>must</em> have a default value for both compatibility directions to work.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Avro + Kafka Schema Registry Flow</div>
+  <pre>
+  PRODUCER (V2 schema with new "email" field):
+  1. Register schema → Schema Registry → returns schema_id = 7
+  2. Serialize: [magic byte: 0x00][schema_id: 7 (4 bytes)][avro bytes]
+  3. Publish to Kafka topic
+
+  CONSUMER (still running V1 schema, without "email"):
+  1. Read message, extract schema_id = 7 from header
+  2. GET /schemas/7 from Schema Registry
+  3. Reader has V1 schema; writer had V2 schema
+  4. Avro resolves: "email" in writer but not reader → discard field gracefully
+  5. Decodes successfully with V1 fields only
+
+  Schema Registry enforces BACKWARD compat on registration:
+  → Reject new schemas that would break existing consumers</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">4</span> Modes of Dataflow</h4>
+
+<h5 class="subsection-heading">REST vs gRPC</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">REST vs gRPC — Characteristics Compared</div>
+  <pre>
+  REST + JSON:                        gRPC (HTTP/2 + Protobuf):
+  ──────────────────────────────────  ──────────────────────────────────────────
+  GET /users/42                       stub.getUser(GetUserRequest{id: 42})
+  200 OK {"id":42,"name":"Alice"}     → UserResponse{id:42, name:"Alice"}
+
+  Encoding:  JSON ~81 bytes           Encoding:  Protobuf ~15 bytes (5× smaller)
+  Transport: HTTP/1.1 (1 req/conn)    Transport: HTTP/2 (multiplexing, streaming)
+  Typing:    Weak (JSON)              Typing:    Strong (generated stubs)
+  Browser:   Native                   Browser:   Needs grpc-web proxy
+  Caching:   HTTP caching (GET)       Caching:   Not built-in
+  Debugging: Easy (curl, Postman)     Debugging: Needs grpcurl or Postman gRPC
+
+  Use REST for:                       Use gRPC for:
+  - Public APIs for external clients  - Internal microservice-to-service calls
+  - Browser clients                   - High-throughput internal APIs
+  - Simple CRUD                       - Bidirectional streaming
+  - External partner integrations     - Service mesh (Envoy, Linkerd, Istio)</pre>
+</div>
+
+<div class="warn-box">RPC is NOT a local function call. Networks add: arbitrary latency, timeout-with-unknown-state (did the server receive it?), retry-causing-double-execution, and inability to pass large objects. Always make RPCs idempotent and always set timeouts.</div>
+
+<h5 class="subsection-heading">Message Brokers — Async Decoupling</h5>
+
+<ul class="key-points">
+  <li><strong>Buffer:</strong> consumer can be slow, down for deployment, or autoscaling — messages queue without blocking producer.</li>
+  <li><strong>Redeliver on failure:</strong> if consumer crashes mid-processing, broker redelivers the message. No data loss.</li>
+  <li><strong>Fan-out free:</strong> Kafka delivers the same event to all consumer groups independently. Analytics pipeline, notification service, audit log — all read the same order event.</li>
+  <li><strong>Replay:</strong> Kafka retains events for configurable duration. New consumer groups can read from offset=0 to rebuild state from history.</li>
+  <li><strong>Trade-off:</strong> no synchronous response; eventual consistency; harder to trace end-to-end flow (need distributed tracing).</li>
+</ul>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Rolling upgrade: V1 reads {user_id, name}; V2 writes {user_id, name, email}. What breaks without schema evolution design, and how does Protobuf prevent it?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Without schema evolution design, a rolling upgrade creates two silent failure modes: <strong>exceptions during deserialization</strong> (old code crashes reading new fields it doesn't know) and <strong>silent data loss</strong> (old code reads, drops unknown fields, writes back — the new field is gone with no error). Protobuf prevents both by using numeric field tags (not names) and preserving unknown fields.</p>
+      <h6>The Two Failure Modes</h6>
+      <ul>
+        <li><strong>Scenario A — V1 reads V2 record (exception):</strong> V2 writes <code>{"user_id":1,"name":"Alice","email":"alice@x.com"}</code>. V1 deserializes it with strict Jackson (<code>@JsonProperty(required=true)</code>). Unknown field "email" → <code>UnrecognizedPropertyException</code> → 500 error during upgrade window. Impact: partial outage while both versions are running.</li>
+        <li><strong>Scenario B — V1 reads then writes back (data loss):</strong> V1 reads V2 record, ignores "email" field (tolerant deserialization), processes and writes back <code>{"user_id":1,"name":"Alice"}</code>. The email is <strong>permanently deleted, silently, with no error</strong>. Discovered hours later via data quality checks. This is a critical production bug.</li>
+      </ul>
+      <h6>How Protobuf Prevents Both</h6>
+      <ul>
+        <li><strong>Binary encoding by field number:</strong> Fields are identified by integer tags (tag=1: user_id, tag=2: name, tag=3: email), not names. Old V1 code sees tag=3 as "unknown field" and <strong>preserves it in a buffer</strong> (proto3.5+ behaviour). If V1 writes the record back, the unknown tag=3 bytes are re-serialized unchanged. Email is NOT lost.</li>
+        <li><strong>Missing new fields default to zero-values:</strong> V2 code reading old V1 data that lacks "email" gets email="" (empty string). No exception, no null pointer. Correct graceful degradation.</li>
+        <li><strong>Schema evolution rules (never violate):</strong> (1) Never reuse a field number even if you remove a field. (2) Never change a field's data type. (3) Only add new optional fields with new tag numbers. (4) For removal: mark deprecated, never delete the tag number from the .proto file.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "JSON's schema-on-read flexibility is also its greatest danger — it lets you deploy V2 before you've thought about backward compatibility. Protobuf enforces discipline: the .proto file IS the schema contract, generated code IS the compatibility check, and field numbers make backward compat provably safe." Mention that Avro (Kafka Schema Registry) uses a different approach: explicit reader + writer schemas with field matching by name, requiring the registry to hold all historical schemas.</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Why choose Kafka over RabbitMQ for a payment events system at Stripe scale? When is RabbitMQ the better choice?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Kafka is a <strong>durable, replayable, append-only log</strong>. RabbitMQ is a <strong>transient message router</strong>. For payment events at Stripe scale, Kafka wins because: (1) messages must be replayable for new consumers, (2) one event fans out to many independent services, and (3) ordering within a customer's event stream must be guaranteed. RabbitMQ excels at complex routing and task queuing with native acknowledgement semantics.</p>
+      <h6>Kafka Advantages for Payments</h6>
+      <ul>
+        <li><strong>Replay:</strong> A new fraud ML model needs to be trained on 90 days of payment events. Kafka consumer group starts at offset=0, replays all historical events. RabbitMQ: messages are gone after ACK — you'd need a separate data warehouse for this.</li>
+        <li><strong>Fan-out at zero extra cost:</strong> payment_created event simultaneously consumed by: fraud service, ledger service, notification service, analytics pipeline, compliance audit log — each as an independent consumer group at their own offset. In RabbitMQ, this requires creating 5 separate queues and routing/copying each message to all five.</li>
+        <li><strong>Guaranteed ordering within a partition:</strong> All events for customer_id=12345 (payment_initiated, payment_processing, payment_completed, refund_requested) are keyed to the same partition and processed in order. Kafka partitions provide strict ordering; RabbitMQ has no ordering guarantees across competing consumers.</li>
+        <li><strong>Throughput:</strong> Kafka sustains millions of messages/sec via sequential append + zero-copy sendfile(). RabbitMQ's AMQP routing layer adds per-message overhead that limits throughput to ~100K–200K msg/sec.</li>
+      </ul>
+      <h6>When RabbitMQ Wins</h6>
+      <ul>
+        <li>Complex routing: topic exchanges, header-based routing, dead-letter queues for automatic retry with backoff — RabbitMQ is significantly more feature-rich for routing logic.</li>
+        <li>Task queues where work must be claimed by exactly one worker and the broker manages task state (pending, processing, done).</li>
+        <li>Priority queues: messages with priority scores — route high-priority tasks to dedicated workers first. Kafka has no native priority queue concept.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The decision isn't 'Kafka is always better.' Kafka is a log; RabbitMQ is a router. If I need event sourcing, audit trails, multi-consumer fan-out, and replay — Kafka. If I need complex routing, task acknowledgement semantics, or priority queues — RabbitMQ. Many production systems use both: Kafka for high-volume event streams, RabbitMQ for internal job dispatch."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Design the serialization and RPC strategy for a microservice making 50K internal calls/sec at Google scale.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>gRPC + Protobuf over HTTP/2</strong>. At 50K RPC/sec, serialization CPU and connection setup overhead are real costs. Protobuf is 5–10× smaller than JSON and 5–10× faster to serialize. HTTP/2 multiplexing eliminates per-call TCP connection setup. gRPC also brings deadline propagation and native service mesh integration — both critical for production reliability.</p>
+      <h6>Why gRPC + Protobuf</h6>
+      <ul>
+        <li><strong>Payload size:</strong> 1 KB JSON vs ~200 B Protobuf for same data (5× compression). At 50K calls/sec: JSON = 50 MB/s serialized payload; Protobuf = 10 MB/s. Reduces network bandwidth and CPU cost for encoding/decoding.</li>
+        <li><strong>Serialization speed:</strong> Protobuf binary encoding: 5–10× faster than Jackson JSON. At 50K calls/sec, JSON deserialisation could consume 2+ CPU cores; Protobuf uses ~0.3 cores — meaningful at scale.</li>
+        <li><strong>HTTP/2 multiplexing:</strong> Multiple concurrent RPCs share one TCP connection. Eliminates 3-way handshake (~1ms) per call. At 50K calls/sec this saves substantial connection setup overhead vs HTTP/1.1.</li>
+        <li><strong>Deadline propagation:</strong> gRPC propagates request deadlines through the entire call chain. If client sets 100ms timeout, all downstream calls in the chain auto-cancel at deadline. Prevents cascading timeouts where one slow downstream blocks thousands of upstream requests.</li>
+      </ul>
+      <h6>Schema Governance at Google Scale</h6>
+      <ul>
+        <li>Central Protobuf repository; all services import .proto definitions. Breaking changes rejected at build time by automated compatibility checkers (buf CLI). Generated stubs in Go, Java, Python, etc. from the same source of truth.</li>
+        <li>Package versioning: <code>package com.company.users.v1</code>. Breaking changes create a new <code>v2</code> package. Old and new run in parallel until all callers migrate — zero-downtime schema evolution.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "gRPC's deadline propagation is underappreciated. In a microservice chain A→B→C→D, if A's 200ms timeout isn't propagated to C and D, a slow D can block B and C for seconds after A has already timed out and told the user it failed. Those B and C threads are doing work no one will use. Deadline propagation eliminates this waste — Google found it significantly improved resource utilisation across their service fleet."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">Explain the outbox pattern. Why is it necessary, and what exactly does it guarantee?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">The outbox pattern solves the <strong>dual-write problem</strong>: a service must atomically update its database AND publish an event to Kafka, but no XA distributed transaction exists between them. Without outbox, a crash between the two operations leaves the system permanently inconsistent. The outbox pattern uses the database's own ACID transaction as the coordination point, then delivers events asynchronously from there.</p>
+      <h6>The Dual-Write Problem</h6>
+      <ul>
+        <li><strong>Failure mode A — DB succeeds, Kafka fails:</strong> Order created in DB. Kafka publish throws timeout. Order is visible in the DB but fraud, ledger, and notification services never receive the event. Order is "lost" from the event-driven pipeline. Discovered hours later.</li>
+        <li><strong>Failure mode B — Kafka succeeds, DB fails:</strong> Kafka message published. Then DB crashes before commit. Rollback occurs. Kafka message is NOT rolled back — downstream services process a phantom order that doesn't exist in the DB. Financial inconsistency.</li>
+      </ul>
+      <h6>The Outbox Solution</h6>
+      <pre>-- Single ACID transaction: business update + outbox insert
+BEGIN;
+  UPDATE orders SET status = 'CONFIRMED' WHERE id = 123;
+  INSERT INTO outbox (event_type, payload, status)
+    VALUES ('ORDER_CONFIRMED', '{"order_id":123,...}', 'PENDING');
+COMMIT;  -- Both committed atomically or both rolled back</pre>
+      <ul>
+        <li><strong>Publisher (separate process):</strong> Debezium CDC monitors the outbox table via PostgreSQL WAL. On new PENDING row, publishes to Kafka, then marks row as PUBLISHED. If Kafka publish fails → row stays PENDING → retried on next poll. Process crash → restart, re-read PENDING rows.</li>
+        <li><strong>Guarantee: at-least-once delivery.</strong> The outbox might publish the same event twice if the publisher crashes after Kafka ACK but before marking the row PUBLISHED. Consumers must be <strong>idempotent</strong>: use the event's UUID as an idempotency key to detect and discard duplicates.</li>
+        <li><strong>Used at scale:</strong> Uber's DOSA platform, Amazon's Order Management, Netflix's event publishing infrastructure all use variants of the outbox pattern.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The outbox pattern is at-least-once, not exactly-once. Exactly-once end-to-end requires idempotent consumers on the other end. I always say: 'the outbox guarantees no events are lost; idempotency keys guarantee duplicates are harmless.' Those two together give you the semantic equivalent of exactly-once without distributed transactions."</div>
+    </div>
+  </details>
+</div>

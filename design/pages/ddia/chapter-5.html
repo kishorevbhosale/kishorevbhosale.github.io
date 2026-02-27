@@ -1,0 +1,262 @@
+<title>DDIA Chapter 5 — Replication</title>
+<meta name="description" content="Chapter 5 DDIA: Single-leader, multi-leader, leaderless replication, quorums, failover pitfalls, version vectors — with FAANG interview Q&A.">
+
+<h2>Chapter 5 — Replication</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> Replication = keeping copies of data on multiple machines. Goals: reduce read latency (serve from nearby region), increase availability (survive node failures), increase read throughput. The hard part: keeping replicas in sync while continuously accepting writes.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> Single-Leader Replication</h4>
+
+<ul class="key-points">
+  <li>One node designated as <strong>leader</strong> (master/primary). All writes go to leader only. Reads can go to any follower (or leader for strong consistency).</li>
+  <li>Leader sends replication log to followers. Followers apply changes in the same order → eventually identical data.</li>
+  <li><strong>Used by:</strong> PostgreSQL (streaming replication), MySQL (binlog replication), MongoDB (oplog), Kafka (ISR-based), Redis (AOF streaming).</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Single-Leader Architecture</div>
+  <pre>
+  ┌─────────────┐
+  │   Client    │ ──── WRITE ────►  ┌──────────────┐
+  └─────────────┘                   │    LEADER    │ ──── replication log ──► Follower 1
+                                    │  (Primary)   │ ──── replication log ──► Follower 2
+  ┌─────────────┐                   │              │ ──── replication log ──► Follower 3
+  │   Client    │ ──── READ  ◄────  └──────────────┘                              │
+  └─────────────┘   (or any follower)                   Client READ ◄─────────────┘</pre>
+</div>
+
+<h5 class="subsection-heading">Sync vs Async Replication</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Synchronous vs Asynchronous Replication</div>
+  <pre>
+  SYNCHRONOUS (leader waits for follower ACK):
+  Client → Leader writes → sends to Follower 1 → waits → Follower 1 ACKs → ACK client
+  ✅ No data loss on leader failover (Follower 1 has all data)
+  ❌ One slow/unreachable follower BLOCKS all writes. Impractical for all-sync.
+
+  SEMI-SYNCHRONOUS (MySQL default — one sync follower, rest async):
+  Client → Leader writes → sends to Follower 1 (sync) → ACK to client
+                        → also sends to Follower 2,3 (async, best-effort)
+  ✅ Guarantees at least one follower is current. Survives leader crash.
+  ❌ Small chance of data loss if both leader AND sync follower die simultaneously.
+
+  FULLY ASYNCHRONOUS (default in PostgreSQL streaming replication):
+  Client → Leader writes → ACK client immediately → replicates in background
+  ✅ Lowest write latency, highest throughput, leader never blocked.
+  ❌ Leader crash before sync → acknowledged writes LOST. RPO > 0.</pre>
+</div>
+
+<h5 class="subsection-heading">Failover — The 3 Dangerous Problems</h5>
+
+<div class="warn-box">These are real production incidents. Every organization with automatic failover has been burned by at least one of these.</div>
+
+<ul class="key-points">
+  <li><strong>Write loss (GitHub 2012):</strong> MySQL async replication. Old leader had 1 minute of unsynced writes. New leader promoted, had old state. Old leader's PKs (auto-increment) were reused. MySQL and Redis (using those PKs as cache keys) served wrong data to users for hours. Fix: use sync replication for critical data OR accept RPO &gt; 0 with monitoring.</li>
+  <li><strong>Split brain:</strong> network partition → both old and new leader accept writes simultaneously → conflicting data. Fix: STONITH (Shoot The Other Node In The Head) — physically power off old leader before promoting new one. Fencing tokens (next chapter).</li>
+  <li><strong>Timeout tuning dilemma:</strong> Too short → normal GC pause triggers failover → cascading load on new leader → second failover → cluster thrashing. Too long → users wait N seconds for dead leader. Solution: adaptive timeout (Phi Accrual Failure Detector).</li>
+</ul>
+
+<h5 class="subsection-heading">Replication Log Formats</h5>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Format</th><th>Logged</th><th>Pros</th><th>Cons</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Statement-based</strong></td><td>SQL: <code>INSERT INTO orders VALUES...</code></td><td>Compact, human-readable</td><td>Non-deterministic functions (NOW(), RAND()), auto-increment conflicts across replicas</td></tr>
+    <tr><td><strong>WAL shipping</strong></td><td>Raw WAL bytes (page-level changes)</td><td>Exact byte-for-byte replica</td><td>Tightly coupled to storage engine version; can't do cross-version rolling upgrades</td></tr>
+    <tr><td><strong>Logical (row-based)</strong></td><td>Which rows changed + new column values</td><td>Storage-engine independent; enables CDC (Debezium); cross-version upgrades</td><td>Larger log for bulk writes (INSERT SELECT with 10M rows = 10M row-change events)</td></tr>
+  </tbody>
+</table>
+
+<h4 class="section-heading"><span class="section-number">2</span> Replication Lag — 3 Problems You Must Handle</h4>
+
+<h5 class="subsection-heading">Problem 1: Read-Your-Own-Writes</h5>
+
+<div class="diagram-box">
+  <div class="diagram-label">Read-Your-Own-Writes Violation</div>
+  <pre>
+  t=0: User Alice posts comment "Hello!" → write goes to Leader
+  t=1: Alice refreshes page → LB routes to Follower A (lagging 3 seconds)
+       Follower A: "Comment not found" → Alice posts duplicate!
+  t=4: Follower A catches up → comment visible twice
+
+  Fix 1: Read Alice's OWN data from leader always.
+         (Other users reading Alice's comments = OK to use followers)
+  Fix 2: Track "last_write_timestamp" in Alice's session cookie/JWT.
+         LB: only route reads to replicas with data_age ≤ session timestamp.
+         If no such replica available → route to leader.
+  Fix 3: Sticky sessions for 30-60s after a write (simple but wastes follower capacity).</pre>
+</div>
+
+<h5 class="subsection-heading">Problem 2: Monotonic Reads</h5>
+<ul class="key-points">
+  <li>Alice refreshes twice: Request 1 → Follower A (up-to-date, shows 5 comments). Request 2 → Follower B (lagging, shows 3 comments). Data appears to go <em>backwards in time</em>.</li>
+  <li><strong>Fix:</strong> sticky replica routing per user. Hash(user_id) → deterministic replica. Client always sees non-decreasing version of data. If assigned replica fails → reroute (user sees one potential jump backwards, acceptable).</li>
+</ul>
+
+<h5 class="subsection-heading">Problem 3: Consistent Prefix Reads</h5>
+<ul class="key-points">
+  <li>Alice writes "Q: How are you?" to Shard 1. Bob writes "A: Fine!" to Shard 2. Observer reads Shard 2 (faster replica) then Shard 1 (slower replica) → sees answer before question. Conversation appears backwards.</li>
+  <li><strong>Fix:</strong> Route causally related writes to the same partition. Alternatively: use causal dependency metadata (happens-before tracking) in read/write path.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">3</span> Multi-Leader Replication</h4>
+
+<ul class="key-points">
+  <li>Each datacenter has its own leader. Writes accepted locally (low latency). Leaders asynchronously replicate to each other.</li>
+  <li><strong>Benefit:</strong> inter-DC link failure → both DCs continue independently. Local writes = low latency (no cross-Atlantic round trip).</li>
+  <li><strong>Problem:</strong> two leaders accept conflicting writes for the same record → write conflicts.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Multi-Leader — Write Conflict Resolution Strategies</div>
+  <pre>
+  User updates title: US DC sets "Alice" at t=10:05:01; EU DC sets "Alicia" at t=10:05:00
+  Both committed locally. During sync: conflict detected.
+
+  Strategy 1: Last Write Wins (LWW) — highest timestamp wins.
+    "Alice" (t=10:05:01) beats "Alicia" (t=10:05:00) → title = "Alice"
+    ⚠️ Dangerous: clock skew (100ms NTP drift) can silently discard newer writes.
+
+  Strategy 2: Merge — keep both as siblings.
+    title = {"Alice", "Alicia"}
+    On next read: app code or user resolves.
+    Good for: shopping cart (union of items), collaborative docs (CRDT).
+
+  Strategy 3: Custom conflict handler.
+    Application registers an on-conflict function.
+    Called synchronously on write (Riak) or asynchronously on read (CouchDB).
+
+  Strategy 4: Avoid conflicts (best).
+    Route all writes for one entity to one designated DC.
+    Falls apart only if that DC fails or user moves region.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">4</span> Leaderless Replication (Dynamo-Style)</h4>
+
+<ul class="key-points">
+  <li>No designated leader. Client (or coordinator) writes to multiple replicas directly.</li>
+  <li><strong>Quorum condition:</strong> w + r &gt; n ensures overlap → at least one node in read set has the latest write.</li>
+  <li><strong>Read repair:</strong> during a read, if a stale replica is detected, the reader writes the newer value back to it.</li>
+  <li><strong>Anti-entropy:</strong> background process compares replicas and syncs differences.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">Quorum Reads and Writes (n=5, w=3, r=3)</div>
+  <pre>
+  WRITE (w=3 required):
+    Client → Replicas 1,2,3: write v=5  ✓ (3 ACKs received)
+    Replicas 4,5: write failed/slow     (still at v=4 — temporarily stale)
+
+  READ (r=3 required):
+    Client → Replicas 1, 3, 4:
+      Replica 1 → v=5 ✓    Replica 3 → v=5 ✓    Replica 4 → v=4 (stale!)
+    Quorum says: take v=5 (highest version wins)
+    Read repair: send v=5 to Replica 4 in background
+
+  Why w+r > n guarantees freshness:
+    w=3 + r=3 = 6 > n=5 → write set and read set MUST overlap by at least 1 node
+    That overlap node has the latest written value → client always gets current data.</pre>
+</div>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">A customer placed an order but can't see it in "My Orders" immediately after. Root cause and fix?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">This is a classic <strong>Read-After-Write (RAW) consistency violation</strong>. The write went to the primary; the read was routed to an asynchronous replica that hadn't yet received the replication update. Replication lag = milliseconds to seconds. The fix is to route "my own recent writes" reads to the primary, or use a session token to route to a replica that has caught up.</p>
+      <h6>Root Cause Detail</h6>
+      <ul>
+        <li>MySQL async replication: primary commits write to binlog, replica pulls and replays asynchronously. Under normal load: lag = 10–200ms. Under heavy write load: lag can spike to seconds or minutes.</li>
+        <li>When "My Orders" endpoint routes to a replica via round-robin load balancing, there's a race: "Will the replica have applied the latest binlog entry before this read arrives?" Answer: sometimes no.</li>
+      </ul>
+      <h6>Fix Options</h6>
+      <ul>
+        <li><strong>Option 1 — Route "own writes" to primary:</strong> Any endpoint that must reflect the user's own recent writes uses the primary connection pool. Annotate endpoints: <code>@PrimaryDataSource</code>. Simple and reliable; downside: increases primary load.</li>
+        <li><strong>Option 2 — Session-based replication position tracking:</strong> After write, store the binlog position in the user's session (or a cookie). Next read request: middleware (Vitess, ProxySQL) checks which replica has replayed past that position. Route to qualifying replica; fall back to primary only if none qualify. This keeps read load on replicas while guaranteeing read-after-write.</li>
+        <li><strong>Option 3 — Client-side monotonic reads:</strong> After a successful write, include a <code>read_after_write_ts</code> header in the response. Client sends it on the subsequent GET. Server rejects requests to stale replicas (lag > read_after_write_ts) and re-routes.</li>
+      </ul>
+      <h6>Monitoring</h6>
+      <ul>
+        <li>Track <code>Seconds_Behind_Master</code> (MySQL) or <code>pg_stat_replication.write_lag</code> (PostgreSQL) as a metric. Alert at &gt;5s lag. Lag spikes are a leading indicator of primary overload before it causes customer-visible issues.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Name all four replication consistency models explicitly: <strong>read-after-write</strong> (users see their own writes), <strong>monotonic reads</strong> (users don't see time go backward — same user always reads from same replica), <strong>consistent prefix reads</strong> (causal ordering), and <strong>monotonic writes</strong> (writes from same client applied in order). "This specific bug is a read-after-write violation — one of four common replication anomalies."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Design a globally distributed user profile system (10 datacenters worldwide). How do you handle multi-region replication and write conflicts?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Use <strong>multi-leader (active-active) replication</strong> — one leader per region accepts local writes (sub-10ms latency for local users). Async cross-region replication (avoid 150–300ms cross-Atlantic/Pacific round trip on every write). Handle conflicts per field type: LWW with Hybrid Logical Clocks for display preferences; home-region routing for critical fields (email, password).</p>
+      <h6>Architecture</h6>
+      <ul>
+        <li><strong>One leader per region:</strong> US-EAST, US-WEST, EU-WEST, AP-SOUTHEAST. GeoDNS routes each user to nearest region. Local writes are acknowledged in &lt;5ms. Async replication to other regions: ~150ms cross-Atlantic, ~200ms cross-Pacific.</li>
+        <li><strong>Conflict resolution by field type:</strong></li>
+        <li><em>Display preferences (theme, language, notification settings):</em> Last-Write-Wins using Hybrid Logical Clocks (HLC). HLC = max(wall_clock, last_seen_HLC) + 1 — monotonically increasing even across machines with clock skew. "Wrong theme for 150ms before sync" is acceptable. LWW is safe here.</li>
+        <li><em>Critical fields (email, phone, password_hash):</em> Designate a "home region" per user (region where account was created). All writes to critical fields are routed to the home region regardless of current location. This eliminates the conflict problem entirely for sensitive data.</li>
+        <li><em>Set-valued fields (blocked users, saved items):</em> Use CRDTs (Add-Wins Set or Remove-Wins Set). Mathematically defined merge semantics — no "which one wins" judgment needed.</li>
+      </ul>
+      <h6>Google Spanner Alternative</h6>
+      <ul>
+        <li>TrueTime GPS/atomic clock + Paxos per shard → linearizable global transactions. Every write waits for TrueTime uncertainty window (~7ms) before committing to ensure global ordering. Google accepts 5–7ms added write latency for strong consistency. Almost no one outside Google can afford to build this.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Explicitly name the multi-leader trade-off: "Every multi-leader system trades write latency for consistency. Strong consistency requires cross-region coordination on every write (Spanner-style). Eventual consistency with per-field conflict rules is what 99% of companies actually build. I'd design for LWW + CRDT + home-region routing and avoid building distributed consensus unless the business requirement truly demands linearizability."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Cassandra cluster with n=3, w=ALL, r=ONE. Explain what this guarantees, why you'd use it, and what the failure risk is.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct"><strong>w=ALL, r=ONE</strong> means: writes are only acknowledged after all 3 replicas confirm (slowest write possible, zero tolerance for write-time node failure), but reads are satisfied by the first replica that responds (fastest read possible). This satisfies w+r=4 &gt; n=3, which theoretically guarantees strong consistency — every read will find the latest write. But it sacrifices write availability: any single node failure blocks ALL writes.</p>
+      <h6>When You'd Choose This</h6>
+      <ul>
+        <li>Write-rarely, read-millions pattern: product catalog, exchange rates, configuration data. These are written once a day but read millions of times per second. r=ONE gives sub-millisecond reads served by the nearest replica with zero coordination overhead.</li>
+        <li>Acceptable trade-off: writing 3 rows/day and the write takes 50ms instead of 15ms — negligible. But the reads being 0.5ms instead of 2ms (QUORUM) is significant at millions of reads/day.</li>
+      </ul>
+      <h6>The Failure Risk</h6>
+      <ul>
+        <li><strong>w=ALL means a single node failure blocks all writes.</strong> In a 3-node cluster, nodes go down for: rolling upgrades, hardware failure, network partition, GC pauses. Probability of at least one node being unavailable in any given week in a 3-node cluster ≈ high. All writes fail during that window.</li>
+        <li><strong>Stale read edge case:</strong> If node N2 was DOWN during a write (which failed and was retried), N2 comes back with stale data. r=ONE might hit N2 → stale read. Hinted handoffs help but don't guarantee N2 gets all writes it missed.</li>
+        <li><strong>Production default:</strong> QUORUM/QUORUM (w=2, r=2 for n=3). Tolerates 1 node failure for both reads AND writes. Provides strong consistency (w+r=4 &gt; n=3). p99 read adds ~1ms for coordinator acknowledgement from 2 replicas.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: Lead with the quorum formula: "Strong consistency requires w + r &gt; n. For n=3: QUORUM+QUORUM (2+2=4&gt;3), ALL+ONE (3+1=4&gt;3), ONE+ALL (1+3=4&gt;3) all satisfy it. The choice is where you want to pay the consistency tax: at write time or at read time. For read-heavy workloads, pay at write time (w=ALL); for write-heavy workloads, pay at read time (r=ALL). Most systems use QUORUM on both sides for balanced availability."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q4</span><span class="qa-q-text">Explain version vectors and why Last-Write-Wins (LWW) is dangerous in distributed systems.</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct"><strong>Version vectors</strong> track causal history to detect concurrent writes — two writes that happened independently without either knowing about the other. <strong>LWW</strong> uses wall-clock timestamps to resolve conflicts by discarding the "older" write, but clock skew between machines (50ms–1s typical, can spike to minutes during NTP corrections) means the "older" timestamp might actually be the causally later write — resulting in silent data loss with no error message.</p>
+      <h6>Version Vector Mechanics</h6>
+      <ul>
+        <li><strong>Format:</strong> <code>[node1_counter, node2_counter, node3_counter]</code>. Each write on node_i increments counter_i. Full vector attached to every value.</li>
+        <li><strong>Happens-before:</strong> V1 happened-before V2 if every component of V1 ≤ corresponding component of V2 (and at least one is strictly less). Safe to discard V1.</li>
+        <li><strong>Concurrent writes:</strong> <code>[2,1,0]</code> vs <code>[1,2,0]</code> — neither dominates. These are concurrent: happened independently. Must merge or present conflict to application.</li>
+        <li>Riak uses version vectors. On conflict: returns both versions as "siblings." Application resolves (keep newer, merge both, ask user).</li>
+      </ul>
+      <h6>Why LWW Is Dangerous</h6>
+      <ul>
+        <li><strong>Clock skew is real and common:</strong> NTP adjustments: ±50ms normally, ±500ms during sync, up to minutes during VM live migration or leap second handling.</li>
+        <li><strong>The failure scenario:</strong> Client A writes x=1 at T=100ms. Client B writes x=2 at T=90ms (B's clock is 10ms behind — later in real time but lower timestamp). LWW picks x=1 (higher timestamp). B's write x=2 is silently discarded — no exception, no error log, no alert. You discover it when a user asks "why was my cart reset?"</li>
+        <li><strong>LinkedIn incident:</strong> NTP resync caused node clocks to jump backward by 500ms. ~30 minutes of writes with recent timestamps were silently overwritten by writes with earlier (but now-dominant) timestamps. Data loss discovered hours later via data quality monitoring.</li>
+        <li><strong>Safe uses of LWW:</strong> Fields where "last update wins" is genuinely correct business semantics (user's display name, theme preference, last-seen timestamp). Never for financial data, append-based counters, or set-valued fields.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "LWW is dangerous because it's silent — there's no error, no warning, just missing data. The safe alternative is either (a) version vectors + application-level merge, (b) CRDTs with mathematically defined merge semantics, or (c) Paxos/Raft-based single-leader with no conflict possible. I use LWW only when I can prove the business semantics are genuinely last-write-wins and when clock accuracy is verified via tight NTP + monitoring."</div>
+    </div>
+  </details>
+</div>

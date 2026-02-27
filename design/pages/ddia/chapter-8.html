@@ -1,0 +1,262 @@
+<title>DDIA Chapter 8 — The Trouble with Distributed Systems</title>
+<meta name="description" content="Chapter 8 DDIA: Network unreliability, clock skew, GC pauses, fencing tokens, Byzantine faults, system models — FAANG Q&A.">
+
+<h2>Chapter 8 — The Trouble with Distributed Systems</h2>
+<hr>
+
+<div class="alert alert-info">
+  <strong>Big Picture:</strong> On a single machine: fail-stop (it either works or it doesn't). In distributed systems: <strong>partial failures</strong> — components fail independently and in unpredictable ways. A node may be able to send but not receive. A node may pause for 60 seconds (GC) and resume without knowing time passed. This chapter catalogs the physical realities every distributed system must confront — and why distributed computing is fundamentally harder than single-machine computing.
+</div>
+
+<h4 class="section-heading"><span class="section-number">1</span> Unreliable Networks</h4>
+
+<ul class="key-points">
+  <li>The internet and datacenters use <strong>asynchronous packet networks</strong>: best-effort delivery, no guaranteed latency, no guaranteed ordering, no guaranteed delivery.</li>
+  <li>You send a request and receive no response. <em>Without additional information, you cannot determine why.</em></li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-label">8 Reasons a Distributed Request Gets No Response</div>
+  <pre>
+  Client ──── request ────► Server ───── response ────► Client (never arrives)
+
+  Request never left:
+    1. Your NIC/OS dropped the packet (queue overflow)
+    2. Your request was sitting in the send buffer (TCP backpressure)
+
+  Request in transit:
+    3. Lost at an overloaded router (buffer full → drop)
+    4. Delayed in a network queue (jitter) — arrives 30s later
+
+  Server received but:
+    5. Server crashed before processing
+    6. Server processed but crashed before sending response
+    7. Server is paused (GC, I/O wait, VM migration) — will respond eventually
+
+  Response in transit:
+    8. Response lost/delayed on return path
+
+  In ALL cases: from the client's perspective → TIMEOUT.
+  The only detection mechanism is WAITING + timeout.
+  You CANNOT distinguish "server crashed" from "server is slow."</pre>
+</div>
+
+<h5 class="subsection-heading">Timeout Tuning Dilemma</h5>
+<ul class="key-points">
+  <li><strong>Too short:</strong> GC pause or transient overload → timeout fires → failover triggered → more load on already-stressed cluster → cascade failure → full outage. (Real: many cloud provider incidents start this way.)</li>
+  <li><strong>Too long:</strong> 30-second timeout = users wait 30 seconds before getting an error. Unacceptable for interactive applications.</li>
+  <li><strong>Adaptive (Phi Accrual — Cassandra/Akka):</strong> Track rolling history of response times (mean + variance). Compute probability that node is dead given current silence duration. Threshold φ &gt; 8 → declare dead. Adapts to changing load patterns automatically.</li>
+</ul>
+
+<h5 class="subsection-heading">Sources of Latency Variability</h5>
+<ul class="key-points">
+  <li><strong>Network switch queuing:</strong> Bursty traffic → queue builds up → variable delay. Full buffer → packet drop → TCP retransmit (100ms–1s penalty).</li>
+  <li><strong>OS scheduling:</strong> Request arrives → buffered at NIC → CPU busy with another thread → scheduled delay 1–10ms. On VMs: scheduling delay can be 10s+.</li>
+  <li><strong>TCP flow control:</strong> Receiver overwhelmed → advertises zero window → sender stops sending → your request queued at sender.</li>
+  <li><strong>GC pause:</strong> JVM stop-the-world pause → 10ms to 60+ seconds for large heaps. No network responses during pause. Other nodes may declare it dead → premature failover.</li>
+</ul>
+
+<h4 class="section-heading"><span class="section-number">2</span> Unreliable Clocks</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Clock Type</th><th>API (Java)</th><th>Property</th><th>Use for</th><th>Do NOT use for</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Time-of-Day</strong></td><td><code>System.currentTimeMillis()</code></td><td>NTP-synced wall clock. May jump forwards or <strong>backwards</strong> during NTP sync.</td><td>Logging timestamps, event times in messages, user-facing "created at"</td><td>Measuring elapsed time (can go backwards!), ordering events across machines</td></tr>
+    <tr><td><strong>Monotonic</strong></td><td><code>System.nanoTime()</code></td><td>Always increases. Arbitrary epoch. Guaranteed no backwards jumps.</td><td>Measuring time elapsed within a single process, timeouts, benchmarks</td><td>Comparing across machines (meaningless), wall clock time</td></tr>
+  </tbody>
+</table>
+
+<div class="warn-box">Never use wall clock timestamps to determine write ordering in a distributed system. Clock skew of 100ms+ is normal in production. NTP corrections can cause clocks to jump backwards by seconds. A node with a fast clock can silently discard a later write from a node with a slow clock (LWW problem).</div>
+
+<h5 class="subsection-heading">The Leap Second Bug</h5>
+<ul class="key-points">
+  <li>June 30, 2012: Earth's rotation added a leap second. Linux kernel NTP handling had a bug — when the leap second was applied, the kernel timer interrupt fired twice in rapid succession.</li>
+  <li>Java apps' <code>Thread.sleep(0)</code> spun at 100% CPU (Linux kernel bug with hrtimer). Crashed thousands of websites simultaneously (Reddit, Gawker, LinkedIn, Mozilla — all Java-based services).</li>
+  <li>Lesson: clock behavior at edge cases (leap seconds, DST, NTP corrections, VM migrations) is unpredictable. Always use monotonic clock for elapsed time measurements.</li>
+</ul>
+
+<h5 class="subsection-heading">Google Spanner's TrueTime</h5>
+<div class="diagram-box">
+  <div class="diagram-label">TrueTime API — Bounded Clock Uncertainty</div>
+  <pre>
+  Each Google datacenter: GPS receivers + atomic clocks → hardware clock source.
+  Corbin (Google's time master servers) synchronizes across all DCs.
+
+  TrueTime.now() returns:  { earliest: t - ε,  latest: t + ε }
+  ε (epsilon) ≈ 1-7ms (typical), max 7ms with current infrastructure.
+  This is a CONFIDENCE INTERVAL — real time is somewhere in [earliest, latest].
+
+  Commit wait protocol:
+  1. Assign commit timestamp = TrueTime.now().latest (the upper bound)
+  2. Wait until TrueTime.now().earliest > commit_timestamp
+     (i.e., wait until guaranteed that real time has passed the commit timestamp)
+  3. Commit the transaction
+
+  Result: If Tx1 commits before Tx2 starts (in real time), then
+          commit_timestamp(Tx1) < commit_timestamp(Tx2) GUARANTEED.
+  → Globally consistent external consistency without any cross-DC coordination!
+  Cost: 7ms added write latency (the commit wait period). Worth it for Spanner's use case.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">3</span> Process Pauses &amp; Fencing Tokens</h4>
+
+<div class="diagram-box">
+  <div class="diagram-label">GC Pause Violating a Distributed Lock</div>
+  <pre>
+  1. Node A acquires distributed lease on resource R. Lease expires at T+30s.
+  2. Node A starts processing...
+
+     ╔══════════════════════════════════════════════════════════╗
+     ║   JVM STOP-THE-WORLD GC PAUSE: 45 seconds               ║
+     ║   Everything frozen. No network I/O.                    ║
+     ║   Real time passes: T+30s → lease expires               ║
+     ║   Node B acquires lease at T+31s (new holder)           ║
+     ║   Node B writes to resource R at T+35s                  ║
+     ╚══════════════════════════════════════════════════════════╝
+
+  3. GC finishes. Node A resumes. Checks local time: 45s elapsed.
+     But Node A's lease CHECK was before the pause — it doesn't re-check!
+  4. Node A continues writing to R (it BELIEVES it still has the lease)
+  5. BOTH Node A and Node B write to R → data corruption.
+
+  Lesson: A node cannot trust its own belief about elapsed time after a pause.
+          A lease check BEFORE a pause gives no information about state AFTER.</pre>
+</div>
+
+<h5 class="subsection-heading">The Only Safe Solution: Fencing Tokens</h5>
+<div class="diagram-box">
+  <div class="diagram-label">Fencing Tokens — Storage Rejects Stale Writes</div>
+  <pre>
+  Lock service grants lease + MONOTONICALLY INCREASING fencing token:
+    Node A: lease acquired → token = 33
+    (Node A pauses 45 seconds; lease expires; Node B acquires lease)
+    Node B: lease acquired → token = 34
+
+  Every write to storage service must include the fencing token:
+    Node B writes with token=34 → Storage: "34 ≥ max_seen(34). ACCEPT." ✓
+    Node A resumes, writes with token=33 → Storage: "33 < max_seen(34). REJECT." ✗
+    Storage service rejects Node A's stale write with an error.
+    Node A must handle the error and not assume its write succeeded.
+
+  Key principle: The STORAGE SERVICE checks the token, not the client.
+                 A paused/compromised node cannot be trusted to self-police.
+  Implementations: ZooKeeper (zxid), etcd (revision), Redis Redlock alternative.</pre>
+</div>
+
+<h4 class="section-heading"><span class="section-number">4</span> System Models</h4>
+
+<table class="table table-bordered table-sm summary-table">
+  <thead><tr><th>Model</th><th>Timing assumption</th><th>Failure model</th><th>Reality match</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Synchronous</strong></td><td>Bounded message delays, bounded processing time</td><td>Crash-stop (halt on failure)</td><td>Poor — too optimistic for real networks</td></tr>
+    <tr><td><strong>Partially synchronous</strong></td><td>Usually bounded, occasionally unbounded</td><td>Crash-recovery (node can come back)</td><td>Best match for cloud/datacenter/internet</td></tr>
+    <tr><td><strong>Asynchronous</strong></td><td>No timing bounds at all</td><td>Crash-recovery</td><td>Too pessimistic — leads to overly conservative algorithms</td></tr>
+    <tr><td><strong>Byzantine</strong></td><td>Partially synchronous</td><td>Arbitrary (nodes can lie/send wrong data)</td><td>Blockchain, safety-critical systems, adversarial environments</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════ Q&A ══════════════ -->
+<div class="qa-section">
+  <div class="qa-section-header">
+    <h4 class="qa-section-title">🧠 FAANG Interview Questions</h4>
+    <div class="qa-controls">
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=true)">Expand All</button>
+      <button onclick="document.querySelectorAll('#content .qa-item').forEach(d=>d.open=false)">Collapse All</button>
+    </div>
+  </div>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q1</span><span class="qa-q-text">Your service calls a payment gateway. Client times out after 5s and retries. The payment was already processed — now it's duplicated. How do you prevent this?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">This is the <strong>timeout ambiguity problem</strong>: when a call times out, you don't know if the request was (a) never received, (b) received but not processed, or (c) processed but the response was lost. Case (c) causes duplicate charges on retry. The solution is an <strong>idempotency key</strong> sent with every request — the gateway deduplicates based on it, returning the same result regardless of how many times the request arrives.</p>
+      <h6>Fix 1 — Idempotency Keys (The Correct Solution)</h6>
+      <pre>// Before calling gateway: generate a UUID and store it
+String idempotencyKey = UUID.randomUUID().toString();
+paymentAttemptRepo.save(new Attempt(idempotencyKey, amount, "PENDING"));
+
+// Include key in EVERY attempt (including retries)
+POST /charge {
+  "amount": 100,
+  "currency": "USD",
+  "idempotency_key": "a7f3-9b12-..." // same key on retry
+}
+
+// Gateway behavior:
+// - First call: process payment, cache result keyed by idempotency_key
+// - Duplicate call with same key: return cached result (no double charge)
+// - Different key: new charge</pre>
+      <ul>
+        <li>Stripe, PayPal, Braintree, Square — all require idempotency keys for payment APIs. It's the industry standard. On the server side, store idempotency key + result in a table (same DB transaction as the payment) — queries for the same key return the cached result.</li>
+      </ul>
+      <h6>Fix 2 — Retry with Exponential Backoff + Jitter</h6>
+      <ul>
+        <li>Retry 1: wait 1s + rand(0,1s). Retry 2: 2s + rand. Retry 3: 4s + rand. Cap at 5 retries. The jitter prevents thundering herd: 1000 clients timing out simultaneously and all retrying at exactly T+1s = 1000 concurrent retries hitting an already-struggling gateway.</li>
+      </ul>
+      <h6>Fix 3 — Circuit Breaker</h6>
+      <ul>
+        <li>After 5 consecutive timeouts, open the circuit: immediately return error instead of calling the gateway. After 30s, try one probe request. If it succeeds, close the circuit. Prevents thread pool exhaustion from 1000 threads all blocked on a dead gateway. Implemented by Resilience4j (Java), tenacity (Python), AWS SDK retry layer.</li>
+      </ul>
+      <h6>Fix 4 — Async Fire-and-Forget with Polling</h6>
+      <ul>
+        <li><code>POST /charge</code> returns <code>payment_id</code> immediately. Client polls <code>GET /payments/{id}/status</code>. Decouples the timeout problem entirely — the initial request is idempotent and the result is queryable at any time. This is Stripe's Payment Intents model.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "The correct defense in depth is: idempotency keys (prevent duplicate processing) + exponential backoff with jitter (prevent thundering herd) + circuit breaker (prevent resource exhaustion). Each layer defends against a different failure mode. No single mechanism is sufficient alone."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q2</span><span class="qa-q-text">Redis distributed lock with SETNX + TTL: a GC pause causes the lock to expire while the job is still running. How do you prevent data corruption?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">A GC pause can outlast the lock TTL. Worker B then acquires the lock. Worker A resumes believing it still holds the lock — both are now concurrently operating on the shared resource. The solution is <strong>fencing tokens</strong> at the resource layer: the lock grants a monotonically increasing token, and the resource rejects writes from a worker whose token is no longer the highest-seen.</p>
+      <h6>The Problem — Lock Expiry During GC Pause</h6>
+      <ul>
+        <li>Worker A: acquires lock with TTL=30s, token=33. JVM GC pause lasts 45s → lock expires. Worker B: acquires lock, token=34. Worker A: GC pause ends, resumes with in-memory belief it holds the lock. Both A and B now operate on the shared resource simultaneously.</li>
+        <li><strong>Why Redlock doesn't fully solve this:</strong> Redlock acquires on majority of Redis nodes but still uses TTL. A paused worker can resume with a stale lock held in memory. The problem is in the worker's assumption, not the lock server.</li>
+      </ul>
+      <h6>Fix — Fencing Tokens at the Resource</h6>
+      <pre>// Lock service grants monotonically increasing token
+long token = redis.incr("lock:counter");
+redis.set("lock:key", token, "NX", "EX", 30);
+
+// Worker includes token in every write
+void writeToResource(data, token) {
+    // ATOMIC: check-and-write at resource layer
+    long seenToken = resource.getLastToken(resourceId);
+    if (token <= seenToken) {
+        throw new StaleLockException("Another worker took over");
+    }
+    resource.write(resourceId, data);
+    resource.updateToken(resourceId, token);
+}
+// Worker A's token=33 is rejected because Worker B's token=34 was already used</pre>
+      <h6>Fix 2 — Lock Renewal (Heartbeat)</h6>
+      <ul>
+        <li>Worker A renews the lock every 10s: <code>SET lock:key token XX EX 30</code> (only extends if value still matches worker's token). If renewal fails → another worker took the lock during the pause → worker A aborts its operation immediately. Prevents the GC-pause-and-continue scenario.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: This answer demonstrates understanding of a subtle distributed systems truth that Martin Kleppmann articulates in DDIA: "A distributed lock cannot prevent two processes from simultaneously believing they hold the lock." The fencing token moves correctness enforcement to the resource, which is the only place where it can be truly safe. Mentioning this shows you've thought deeply about the problem beyond "just use Redlock."</div>
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary><span class="qa-q-num">Q3</span><span class="qa-q-text">Why can't you use System.currentTimeMillis() to order events across microservices? What alternatives exist, and when do you use each?</span><span class="qa-toggle"></span></summary>
+    <div class="qa-answer">
+      <span class="ans-label">Answer</span>
+      <p class="ans-direct">Wall clocks across distributed machines are <strong>never perfectly synchronized</strong>. NTP gives ±50–100ms accuracy under normal conditions, with spikes to seconds during corrections, VM migrations, or leap second handling. Using wall clock timestamps for ordering creates silent data loss: the causally later write can have a smaller timestamp and be silently discarded with no error.</p>
+      <h6>Why Wall Clocks Fail</h6>
+      <ul>
+        <li><strong>Clock skew example:</strong> Service A (clock +100ms) writes x=1 at T=100.1s. Service B (clock −50ms) writes x=2 at T=99.95s. LWW rule: A's timestamp wins → x=1. But B's write was the causally later one. B's write is silently discarded.</li>
+        <li><strong>Clock going backward:</strong> NTP sync can set the clock to an earlier value. <code>System.currentTimeMillis()</code> can return smaller than a previous call. Any sequence number or ordering based on it breaks monotonicity.</li>
+      </ul>
+      <h6>Alternatives</h6>
+      <ul>
+        <li><strong>Lamport timestamps (logical clocks):</strong> Each node maintains a counter. Increment on every send/receive. <code>lamport(A) &lt; lamport(B)</code> proves A happened-before B. No wall clock needed. Limitation: doesn't tell you concurrent events are concurrent — only establishes happens-before. Used for: causal ordering, log synchronization.</li>
+        <li><strong>Hybrid Logical Clocks (HLC):</strong> Combines wall time + logical counter: <code>(physical_ms, logical)</code>. Monotonically increasing. Stays close to wall time while tolerating clock skew. Used by CockroachDB, YugabyteDB, TiDB for transaction timestamps. Best of both worlds.</li>
+        <li><strong>Centralized Snowflake IDs:</strong> 64-bit ID = 41-bit ms timestamp + 10-bit machine ID + 12-bit sequence. Monotonically increasing, globally unique, embeds real time. Used by Twitter (tweets), Instagram (media IDs), Discord (messages). Limitation: centralized generator, but one generator per datacenter mitigates it.</li>
+        <li><strong>Vector clocks:</strong> Full causal tracking. Detects concurrent writes (neither is "before" the other). Used by Amazon Dynamo for version vectors, Riak for conflict detection. Overhead grows with number of nodes.</li>
+      </ul>
+      <div class="ans-insight">Interview differentiator: "For most microservices I use Snowflake IDs — they're simple, monotonically increasing, and contain real time for human readability. For systems needing causal ordering across nodes (like distributed chat, multi-region replication), I use HLC. For conflict detection in leaderless systems, vector clocks. The choice depends on whether I need causal ordering, real-time proximity, or conflict detection."</div>
+    </div>
+  </details>
+</div>
