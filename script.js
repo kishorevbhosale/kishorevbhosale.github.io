@@ -508,6 +508,37 @@
             PrintManager.init();
             TableOfContents.generate();
             QAToggle.init();
+            PageLoader.loadIncludes();
+        },
+
+        loadIncludes: function () {
+            var includeEls = Array.from(document.querySelectorAll('#content [data-include]'));
+            if (!includeEls.length) return;
+
+            var promises = includeEls.map(function (el) {
+                var src = el.getAttribute('data-include');
+                el.innerHTML = '<div class="text-center p-3"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading...</div>';
+                return fetch(src)
+                    .then(function (r) {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.text();
+                    })
+                    .then(function (html) {
+                        var tmp = document.createElement('div');
+                        tmp.innerHTML = html;
+                        tmp.querySelectorAll('script').forEach(function (s) { s.remove(); });
+                        el.innerHTML = tmp.innerHTML;
+                    })
+                    .catch(function () {
+                        el.innerHTML = '<p class="text-danger p-2">Failed to load section content.</p>';
+                    });
+            });
+
+            Promise.all(promises).then(function () {
+                QAToggle.init();
+                if (typeof Prism !== 'undefined') Prism.highlightAll();
+                TableOfContents.generate();
+            });
         },
 
         ensureActionBar: function () {
@@ -965,6 +996,8 @@
             if (!toggleBtns.length) return;
 
             toggleBtns.forEach(function (btn) {
+                if (btn.dataset.qaInit) return;
+                btn.dataset.qaInit = '1';
                 btn.addEventListener('click', function () {
                     var item = btn.closest('.qa-item');
                     if (!item) return;
@@ -989,6 +1022,8 @@
             });
 
             content.querySelectorAll('.qa-expand-all').forEach(function (btn) {
+                if (btn.dataset.qaInit) return;
+                btn.dataset.qaInit = '1';
                 btn.addEventListener('click', function () {
                     var section = btn.closest('.qa-section') || btn.parentElement.parentElement;
                     if (!section) return;

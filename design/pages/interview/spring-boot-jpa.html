@@ -1,0 +1,595 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">81</span>
+        <div class="qa-text">What is <b>Spring Data JPA</b> and how is it different from <b>Hibernate</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Hibernate</b> is a full-featured ORM (Object-Relational Mapping) framework and the most popular JPA (Java Persistence API) implementation. It handles CRUD operations, caching, lazy loading, and schema generation.</li>
+          <li><b>Spring Data JPA</b> is an abstraction layer built on top of JPA (typically Hibernate). It provides repository interfaces (<code>JpaRepository</code>, <code>CrudRepository</code>) that auto-generate boilerplate CRUD and query method implementations at runtime.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Hibernate</th><th>Spring Data JPA</th></tr></thead>
+          <tbody>
+            <tr><td>Level</td><td>JPA Provider (persistence engine)</td><td>Repository abstraction on top of JPA</td></tr>
+            <tr><td>CRUD code</td><td>Manual <code>EntityManager</code> calls</td><td>Auto-generated via repository interface</td></tr>
+            <tr><td>Query derivation</td><td>Manual HQL/JPQL</td><td>Derived from method names (<code>findByEmailAndActive</code>)</td></tr>
+            <tr><td>Pagination</td><td>Manual offset/limit</td><td>Built-in <code>Pageable</code> support</td></tr>
+            <tr><td>Replaceability</td><td>Can switch to EclipseLink</td><td>Abstracts the provider — code doesn't change</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Data JPA uses Hibernate as the default JPA provider but abstracts it behind the JPA specification. You can swap Hibernate for EclipseLink without changing application code — a key benefit of the abstraction.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">82</span>
+        <div class="qa-text">What are the <b>advantages of using Spring Data JPA</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Eliminates boilerplate:</b> No more manual <code>EntityManager</code> code for standard CRUD. Extending <code>JpaRepository&lt;T, ID&gt;</code> gives you 17+ built-in methods instantly.</li>
+          <li><b>Query derivation from method names:</b> <code>findByLastNameAndAgeGreaterThan(String lastName, int age)</code> — Spring Data parses the method name and generates the JPQL query automatically.</li>
+          <li><b>Pagination and sorting:</b> Built-in <code>Page&lt;T&gt; findAll(Pageable pageable)</code> — no manual offset/limit calculation.</li>
+          <li><b>Custom queries:</b> <code>@Query</code> annotation for complex JPQL/native SQL queries when derivation is insufficient.</li>
+          <li><b>Auditing:</b> <code>@EnableJpaAuditing</code>, <code>@CreatedDate</code>, <code>@LastModifiedDate</code> for automatic timestamp management.</li>
+          <li><b>Projections and DTOs:</b> Interface-based and DTO projections to fetch only required columns.</li>
+          <li><b>Specifications:</b> Dynamic query composition using the Criteria API via <code>JpaSpecificationExecutor</code>.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Know when NOT to use Spring Data JPA — for complex reporting queries with many JOINs and aggregations, native SQL or JOOQ often produces cleaner, better-performing code. Spring Data JPA excels at standard entity CRUD operations.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">83</span>
+        <div class="qa-text">What is the role of <b>JpaRepository</b> interface?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>JpaRepository&lt;T, ID&gt;</code> is the top-level Spring Data JPA repository interface combining all repository capabilities:</li>
+          <li><b>Inherited capabilities:</b>
+            <ul>
+              <li>From <code>CrudRepository</code>: <code>save()</code>, <code>findById()</code>, <code>findAll()</code>, <code>deleteById()</code>, <code>count()</code>, <code>existsById()</code></li>
+              <li>From <code>PagingAndSortingRepository</code>: <code>findAll(Pageable)</code>, <code>findAll(Sort)</code></li>
+              <li>JPA-specific: <code>saveAll()</code>, <code>flush()</code>, <code>saveAndFlush()</code>, <code>deleteInBatch()</code>, <code>getOne()</code> (deprecated, use <code>getReferenceById()</code>)</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    // Derived query — Spring generates: SELECT u FROM User u WHERE u.email = ?1
+    Optional&lt;User&gt; findByEmail(String email);
+
+    // Derived query with multiple conditions
+    List&lt;User&gt; findByActiveAndRoleOrderByCreatedAtDesc(boolean active, String role);
+
+    // Custom JPQL
+    @Query("SELECT u FROM User u WHERE u.department.id = :deptId AND u.active = true")
+    List&lt;User&gt; findActiveMembersByDepartment(@Param("deptId") Long deptId);
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> For most applications, <code>JpaRepository</code> is the right choice. If you need to limit the surface area of the repository (e.g., only reads, no deletes), use <code>CrudRepository</code> or a custom repository interface — following the Interface Segregation Principle.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">84</span>
+        <div class="qa-text">Difference between <b>CrudRepository</b>, <b>PagingAndSortingRepository</b>, and <b>JpaRepository</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Interface</th><th>Key Methods</th><th>Use when</th></tr></thead>
+          <tbody>
+            <tr><td><code>CrudRepository</code></td><td><code>save</code>, <code>findById</code>, <code>findAll</code>, <code>delete</code>, <code>count</code>, <code>existsById</code></td><td>Basic CRUD without pagination</td></tr>
+            <tr><td><code>PagingAndSortingRepository</code></td><td>Everything in <code>CrudRepository</code> + <code>findAll(Pageable)</code>, <code>findAll(Sort)</code></td><td>When pagination and sorting are needed</td></tr>
+            <tr><td><code>JpaRepository</code></td><td>Everything above + <code>flush()</code>, <code>saveAndFlush()</code>, <code>deleteInBatch()</code>, <code>getReferenceById()</code></td><td>JPA-specific operations and batch processing</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Hierarchy:</b> <code>CrudRepository</code> → <code>PagingAndSortingRepository</code> → <code>JpaRepository</code></li>
+          <li><b>Recommendation:</b> Most teams default to <code>JpaRepository</code> for JPA applications. However, for clean architecture, consider using only the repository methods you actually need (ISP).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Data also provides <code>ListCrudRepository</code> and <code>ListPagingAndSortingRepository</code> (Spring Data 3.x) that return <code>List</code> instead of <code>Iterable</code> — more convenient and idiomatic.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">85</span>
+        <div class="qa-text">How do you define <b>custom query methods</b> in Spring Data JPA?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Method name derivation:</b> Spring Data parses the method name to generate the query. Uses keywords: <code>findBy</code>, <code>countBy</code>, <code>existsBy</code>, <code>deleteBy</code>, <code>And</code>, <code>Or</code>, <code>Between</code>, <code>GreaterThan</code>, <code>Like</code>, <code>OrderBy</code>, etc.</li>
+          <li><b><code>@Query</code> annotation:</b> For complex queries that can't be derived from method names.</li>
+          <li><b>Named queries:</b> <code>@NamedQuery</code> on entities or in <code>orm.xml</code>.</li>
+          <li><b>Native queries:</b> <code>@Query(value = "...", nativeQuery = true)</code> for database-specific SQL.</li>
+        </ul>
+<pre><code class="language-java">public interface OrderRepository extends JpaRepository&lt;Order, Long&gt; {
+
+    // Derived — Spring generates JPQL
+    List&lt;Order&gt; findByStatusAndCustomerEmailOrderByCreatedAtDesc(
+            OrderStatus status, String email);
+
+    // JPQL @Query
+    @Query("SELECT o FROM Order o WHERE o.total &gt; :minAmount AND o.status = :status")
+    Page&lt;Order&gt; findHighValueOrders(
+            @Param("minAmount") BigDecimal minAmount,
+            @Param("status") OrderStatus status,
+            Pageable pageable);
+
+    // Native query
+    @Query(value = "SELECT * FROM orders WHERE MONTH(created_at) = :month",
+           nativeQuery = true)
+    List&lt;Order&gt; findByMonth(@Param("month") int month);
+
+    // Modifying query
+    @Modifying
+    @Transactional
+    @Query("UPDATE Order o SET o.status = :status WHERE o.id IN :ids")
+    int bulkUpdateStatus(@Param("ids") List&lt;Long&gt; ids, @Param("status") OrderStatus status);
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Method name derivation is convenient for simple queries but becomes unreadable for complex ones. Use <code>@Query</code> for anything with 3+ conditions. Always use <code>@Modifying</code> + <code>@Transactional</code> for UPDATE/DELETE queries.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">86</span>
+        <div class="qa-text">What is the difference between <b>JPQL</b> and <b>native SQL queries</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>JPQL</th><th>Native SQL</th></tr></thead>
+          <tbody>
+            <tr><td>Works with</td><td>Entity class and field names</td><td>Table and column names</td></tr>
+            <tr><td>Database portability</td><td>Yes — JPA provider translates to target DB dialect</td><td>No — SQL may be DB-specific (PostgreSQL, MySQL)</td></tr>
+            <tr><td>Type safety</td><td>References entity types — compile-time checking possible</td><td>Pure strings — no compile-time safety</td></tr>
+            <tr><td>Complex features</td><td>Limited window functions, CTEs, full-text</td><td>Full database capability</td></tr>
+            <tr><td>Annotation</td><td><code>@Query("SELECT u FROM User u...")</code></td><td><code>@Query(value="SELECT * FROM users...", nativeQuery=true)</code></td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Use JPQL when:</b> Standard queries that should be portable across databases.</li>
+          <li><b>Use native SQL when:</b> Database-specific features (window functions, CTEs, LATERAL joins, full-text search), performance-critical bulk operations, or when entity mapping is unnecessary.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> JPQL cannot use window functions, <code>WITH</code> clauses, or <code>LATERAL</code> joins. For reporting and analytics queries, native SQL or a dedicated reporting library (JOOQ, QueryDSL) is more appropriate.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">87</span>
+        <div class="qa-text">How do you use <b>@Query annotation</b> in Spring Data JPA?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+
+    // JPQL with named parameters
+    @Query("SELECT p FROM Product p WHERE p.category.name = :category AND p.price &lt;= :maxPrice")
+    List&lt;Product&gt; findByCategoryAndMaxPrice(
+            @Param("category") String category,
+            @Param("maxPrice") BigDecimal maxPrice);
+
+    // Pagination with @Query
+    @Query("SELECT p FROM Product p WHERE p.stock &gt; 0 ORDER BY p.rating DESC")
+    Page&lt;Product&gt; findInStockByRating(Pageable pageable);
+
+    // DTO projection (constructor expression)
+    @Query("SELECT new com.app.dto.ProductSummary(p.id, p.name, p.price) FROM Product p WHERE p.active = true")
+    List&lt;ProductSummary&gt; findActiveSummaries();
+
+    // Modifying query (UPDATE/DELETE must use @Modifying)
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.stock = p.stock - :qty WHERE p.id = :id AND p.stock &gt;= :qty")
+    int decrementStock(@Param("id") Long id, @Param("qty") int qty);
+}</code></pre>
+        <ul>
+          <li><b>Position parameters:</b> <code>@Query("... WHERE p.name = ?1")</code> — ordinal, less readable.</li>
+          <li><b>Named parameters (recommended):</b> <code>@Param("name")</code> — explicit and refactoring-safe.</li>
+          <li><b><code>@Modifying</code>:</b> Required for UPDATE/DELETE queries. Without it, Spring Data throws an exception. Optionally use <code>clearAutomatically = true</code> to clear the persistence context after modification.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@Modifying</code> queries require a transaction. Either annotate the repository method with <code>@Transactional</code> or ensure the calling service method is transactional. Without a transaction, an <code>InvalidDataAccessApiUsageException</code> is thrown.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">88</span>
+        <div class="qa-text">What is the difference between <b>getOne()</b> and <b>findById()</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>getOne() / getReferenceById()</th><th>findById()</th></tr></thead>
+          <tbody>
+            <tr><td>Returns</td><td>A Hibernate proxy (lazy reference)</td><td><code>Optional&lt;T&gt;</code> — fully loaded entity or empty</td></tr>
+            <tr><td>DB query</td><td>No immediate query — deferred until fields accessed</td><td>Immediate SELECT query</td></tr>
+            <tr><td>Not found</td><td>Throws <code>EntityNotFoundException</code> on access</td><td>Returns <code>Optional.empty()</code></td></tr>
+            <tr><td>Use case</td><td>Setting FK reference without loading the entity</td><td>Loading and using entity data</td></tr>
+            <tr><td>Status</td><td><code>getOne()</code> deprecated in Spring Data 3.x; use <code>getReferenceById()</code></td><td>Recommended for most cases</td></tr>
+          </tbody>
+        </table>
+<pre><code class="language-java">// getReferenceById — useful for FK assignment without hitting DB
+Order order = new Order();
+order.setCustomer(customerRepository.getReferenceById(customerId)); // no SELECT executed
+orderRepository.save(order); // FK set without loading Customer entity
+
+// findById — load and use entity
+Optional&lt;User&gt; user = userRepository.findById(id);
+user.ifPresent(u -> System.out.println(u.getName())); // data loaded immediately</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>getReferenceById()</code> is valuable for performance optimization when setting foreign keys — you save a SELECT query. However, if you need to access any field of the referenced entity, <code>findById()</code> is safer and more predictable.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">89</span>
+        <div class="qa-text">Difference between <b>save()</b> and <b>saveAndFlush()</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>save()</code></b> — persists or merges the entity in the JPA persistence context (first-level cache). The actual SQL INSERT/UPDATE may be deferred until the transaction commits or the persistence context is flushed. Hibernate batches SQL operations for efficiency.</li>
+          <li><b><code>saveAndFlush()</code></b> — persists/merges the entity AND <b>immediately flushes</b> the persistence context to the database. The SQL is executed right away, within the current transaction.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>save()</th><th>saveAndFlush()</th></tr></thead>
+          <tbody>
+            <tr><td>SQL timing</td><td>Deferred (on flush/commit)</td><td>Immediate</td></tr>
+            <tr><td>Performance</td><td>Better (batch friendly)</td><td>Less optimal (forces flush)</td></tr>
+            <tr><td>Use case</td><td>Standard persistence</td><td>When immediately visible DB state needed (e.g., before a native query in same transaction)</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> <code>saveAndFlush()</code> is needed when you execute a native query in the same transaction that must see the saved entity's data. Flush sends pending SQL but does NOT commit — the transaction boundary remains unchanged.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">90</span>
+        <div class="qa-text">What are <b>derived query methods</b> in Spring Data JPA?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Derived query methods allow Spring Data JPA to automatically generate a query by <b>parsing the repository method name</b>. No <code>@Query</code> annotation is needed.</li>
+          <li><b>Naming convention:</b> <code>{Subject}By{Predicate}</code>
+            <ul>
+              <li>Subject: <code>find</code>, <code>get</code>, <code>read</code>, <code>query</code>, <code>count</code>, <code>exists</code>, <code>delete</code></li>
+              <li>Predicate: field names connected by <code>And</code>, <code>Or</code>, with optional keywords</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; {
+    // WHERE email = ?
+    Optional&lt;Employee&gt; findByEmail(String email);
+
+    // WHERE department = ? AND active = ?
+    List&lt;Employee&gt; findByDepartmentAndActive(String dept, boolean active);
+
+    // WHERE salary BETWEEN ? AND ?
+    List&lt;Employee&gt; findBySalaryBetween(BigDecimal min, BigDecimal max);
+
+    // WHERE name LIKE '%?%'
+    List&lt;Employee&gt; findByNameContainingIgnoreCase(String keyword);
+
+    // WHERE join_date &gt; ?
+    List&lt;Employee&gt; findByJoinDateAfterOrderBySalaryDesc(LocalDate date);
+
+    // COUNT WHERE department = ?
+    long countByDepartment(String department);
+
+    // EXISTS WHERE email = ?
+    boolean existsByEmail(String email);
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Data validates derived query method names at application startup — a typo like <code>findByEmaail</code> will fail immediately with a <code>PropertyReferenceException</code>, which is far better than a runtime failure.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">91</span>
+        <div class="qa-text">What is <b>optimistic locking</b> vs <b>pessimistic locking</b> in JPA?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Optimistic Locking:</b> Assumes conflicts are rare. Multiple transactions read the same data. Before updating, the version is checked — if it changed since the read, an <code>OptimisticLockException</code> is thrown (the transaction retries or the user is notified). No database locks held during the transaction.</li>
+          <li><b>Pessimistic Locking:</b> Assumes conflicts are frequent. Acquires a database-level lock (shared or exclusive) when data is read. Other transactions are blocked until the lock is released. Higher contention but guaranteed consistency.</li>
+        </ul>
+<pre><code class="language-java">// Optimistic Locking — version field
+@Entity
+public class Account {
+    @Id Long id;
+    BigDecimal balance;
+
+    @Version  // Incremented on each update; checked on save
+    Long version;
+}
+
+// Pessimistic Locking — lock at read time
+public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)  // SELECT ... FOR UPDATE
+    @Query("SELECT a FROM Account a WHERE a.id = :id")
+    Optional&lt;Account&gt; findByIdWithLock(@Param("id") Long id);
+}</code></pre>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Optimistic</th><th>Pessimistic</th></tr></thead>
+          <tbody>
+            <tr><td>DB locks</td><td>No</td><td>Yes</td></tr>
+            <tr><td>Concurrency</td><td>High</td><td>Lower</td></tr>
+            <tr><td>Deadlock risk</td><td>None</td><td>Possible</td></tr>
+            <tr><td>Best for</td><td>Read-heavy, low-conflict data</td><td>Write-heavy, high-conflict critical data</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Optimistic locking with <code>@Version</code> is the recommended approach for most web applications. Pessimistic locking is appropriate for financial transactions (debit/credit) where you cannot afford any lost updates.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">92</span>
+        <div class="qa-text">What is the role of <b>@Transactional</b> annotation in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Transactional</code> declares a method (or class) as transactional. Spring wraps the method in a transaction proxy that:
+            <ul>
+              <li>Starts a transaction before the method executes</li>
+              <li>Commits the transaction on successful return</li>
+              <li>Rolls back the transaction on an unchecked exception (or checked exceptions specified in <code>rollbackFor</code>)</li>
+            </ul>
+          </li>
+          <li><b>Class-level:</b> Applies to all public methods in the class.</li>
+          <li><b>Method-level:</b> Overrides class-level settings for that specific method.</li>
+          <li><b>Key attributes:</b> <code>propagation</code>, <code>isolation</code>, <code>readOnly</code>, <code>timeout</code>, <code>rollbackFor</code>, <code>noRollbackFor</code>.</li>
+        </ul>
+<pre><code class="language-java">@Service
+@Transactional(readOnly = true)  // Class-level: all methods read-only by default
+public class OrderService {
+
+    @Transactional  // Override: this method needs a write transaction
+    public Order createOrder(OrderDto dto) {
+        Order order = orderMapper.toEntity(dto);
+        return orderRepository.save(order);
+    }
+
+    public Order getOrder(Long id) {
+        return orderRepository.findById(id)
+            .orElseThrow(() -> new OrderNotFoundException(id));
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Always use <code>@Transactional(readOnly = true)</code> for read-only methods — Hibernate skips dirty checking (comparing entity snapshots), which can significantly improve performance in read-heavy applications.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">93</span>
+        <div class="qa-text">Difference between <b>declarative</b> and <b>programmatic transaction management</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Declarative transaction management</b> — uses <code>@Transactional</code> annotation (or XML <code>&lt;tx:advice&gt;</code>). Spring's AOP proxy handles transaction demarcation transparently. The business method contains only business logic.</li>
+          <li><b>Programmatic transaction management</b> — manually uses <code>TransactionTemplate</code> or <code>PlatformTransactionManager</code> to control transaction boundaries in code. Gives fine-grained control at the cost of mixing transaction logic with business logic.</li>
+        </ul>
+<pre><code class="language-java">// Declarative (preferred)
+@Service
+public class PaymentService {
+    @Transactional
+    public void processPayment(Long orderId, BigDecimal amount) {
+        // Spring handles begin/commit/rollback
+        orderRepo.debit(orderId, amount);
+        paymentRepo.record(orderId, amount);
+    }
+}
+
+// Programmatic (use when dynamic control needed)
+@Service
+public class BatchService {
+    @Autowired TransactionTemplate transactionTemplate;
+
+    public void processBatch(List&lt;Item&gt; items) {
+        items.forEach(item -&gt; transactionTemplate.execute(status -&gt; {
+            try {
+                itemRepo.save(item);
+                return null;
+            } catch (Exception e) {
+                status.setRollbackOnly(); // fine-grained control
+                return null;
+            }
+        }));
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Declarative is preferred for 95% of cases — it's cleaner and follows SRP. Use programmatic when transaction boundaries need to change dynamically at runtime, or when you need partial rollback within a loop.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">94</span>
+        <div class="qa-text">How do you configure <b>transaction propagation</b> in Spring?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Propagation defines how a transaction behaves when a transactional method calls another transactional method.</li>
+        </ul>
+<pre><code class="language-java">@Transactional(propagation = Propagation.REQUIRES_NEW)
+public void auditLog(String action) {
+    auditRepo.save(new AuditEntry(action));
+}
+
+@Transactional(propagation = Propagation.REQUIRED) // default
+public void createOrder(OrderDto dto) {
+    // Runs in current transaction, or creates one if none exists
+    Order order = orderRepo.save(dto.toEntity());
+    auditLog("ORDER_CREATED"); // If auditLog is REQUIRED, it joins this transaction
+                               // If REQUIRES_NEW, it runs in separate transaction
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The most important propagation levels to know: <code>REQUIRED</code> (default — join or create), <code>REQUIRES_NEW</code> (always create new — used for audit logging that should persist even if main transaction rolls back), and <code>NESTED</code> (savepoint within current transaction).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">95</span>
+        <div class="qa-text">What is the difference between <b>REQUIRED</b>, <b>REQUIRES_NEW</b>, and <b>MANDATORY</b> propagation levels?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Propagation</th><th>Behavior</th><th>Use case</th></tr></thead>
+          <tbody>
+            <tr><td><code>REQUIRED</code> (default)</td><td>Joins existing transaction if one exists; creates a new one if not</td><td>Standard transactional services</td></tr>
+            <tr><td><code>REQUIRES_NEW</code></td><td>Always suspends the current transaction and creates a fresh one; independent commit/rollback</td><td>Audit logging that must persist even if calling transaction rolls back</td></tr>
+            <tr><td><code>MANDATORY</code></td><td>Must run within an existing transaction; throws <code>IllegalTransactionStateException</code> if none</td><td>Methods that must always be called from a transactional context</td></tr>
+            <tr><td><code>NOT_SUPPORTED</code></td><td>Suspends current transaction; executes non-transactionally</td><td>Operations that must not run in a transaction</td></tr>
+            <tr><td><code>NEVER</code></td><td>Throws exception if called within a transaction</td><td>Validate that code is never accidentally transactional</td></tr>
+            <tr><td><code>SUPPORTS</code></td><td>Runs in transaction if one exists; runs non-transactionally if not</td><td>Optional transaction support</td></tr>
+            <tr><td><code>NESTED</code></td><td>Creates a savepoint in the current transaction; partial rollback possible</td><td>Partial rollback scenarios (batch processing)</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> <code>REQUIRES_NEW</code> is the most commonly asked propagation. Key scenario: "Audit log should persist even if the main business operation fails" — use <code>REQUIRES_NEW</code> for the audit method.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">96</span>
+        <div class="qa-text">What is the role of <b>isolation levels</b> in transactions?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Isolation levels define how concurrent transactions interact — specifically, which <b>anomalies</b> are permitted to occur in exchange for higher concurrency (lower isolation = more concurrency + more anomalies).</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th></tr></thead>
+          <tbody>
+            <tr><td><code>READ_UNCOMMITTED</code></td><td>Possible</td><td>Possible</td><td>Possible</td></tr>
+            <tr><td><code>READ_COMMITTED</code> (default in most DBs)</td><td>Prevented</td><td>Possible</td><td>Possible</td></tr>
+            <tr><td><code>REPEATABLE_READ</code></td><td>Prevented</td><td>Prevented</td><td>Possible</td></tr>
+            <tr><td><code>SERIALIZABLE</code></td><td>Prevented</td><td>Prevented</td><td>Prevented</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Setting in Spring:</b> <code>@Transactional(isolation = Isolation.SERIALIZABLE)</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> PostgreSQL uses <code>READ_COMMITTED</code> by default and implements MVCC (Multi-Version Concurrency Control) which naturally prevents dirty reads. <code>SERIALIZABLE</code> provides the highest consistency but severely limits throughput — use it only for critical financial operations.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">97</span>
+        <div class="qa-text">Explain <b>READ_COMMITTED</b>, <b>REPEATABLE_READ</b>, and <b>SERIALIZABLE</b> isolation levels.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>READ_COMMITTED:</b> A transaction only reads data that has been committed. Prevents dirty reads (reading another transaction's uncommitted changes). However, if you read the same row twice in the same transaction, you may get different values if another transaction committed a change between reads (non-repeatable read).</li>
+          <li><b>REPEATABLE_READ:</b> All reads within a transaction return the same data for rows already read — prevents non-repeatable reads. However, new rows inserted by other transactions can appear in subsequent range queries within the same transaction (phantom reads). This is the default in MySQL InnoDB.</li>
+          <li><b>SERIALIZABLE:</b> Full isolation — transactions are completely isolated from each other, as if executed serially. Prevents all anomalies. Implemented via range locks or MVCC snapshot isolation. Highest correctness, lowest concurrency.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Most enterprise applications use <code>READ_COMMITTED</code> because it provides a good balance of correctness and performance. Upgrade to <code>REPEATABLE_READ</code> or <code>SERIALIZABLE</code> only for specific critical sections that require stronger guarantees.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">98</span>
+        <div class="qa-text">What is <b>dirty read</b>, <b>non-repeatable read</b>, and <b>phantom read</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Dirty Read:</b> Transaction A reads data written by Transaction B, which hasn't committed yet. If B rolls back, A has read invalid data.
+            <br><i>Example:</i> T1 updates salary to 10000 (not yet committed); T2 reads salary = 10000; T1 rolls back; T2 used wrong value.
+          </li>
+          <li><b>Non-Repeatable Read:</b> Transaction A reads the same row twice and gets different values because Transaction B committed an update between A's two reads.
+            <br><i>Example:</i> T1 reads balance = 500; T2 updates balance to 300 and commits; T1 reads balance again = 300. Two reads within T1 returned different values.
+          </li>
+          <li><b>Phantom Read:</b> Transaction A executes the same query twice and gets different <em>sets of rows</em> because Transaction B inserted or deleted rows that match A's query between A's two reads.
+            <br><i>Example:</i> T1 counts orders where status='PENDING' = 5; T2 inserts 2 new pending orders; T1 counts again = 7. The "phantom" rows appeared.
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> These three anomalies form a hierarchy: dirty read ⊃ non-repeatable read ⊃ phantom read. Each isolation level prevents them from the most severe (dirty) up to the most subtle (phantom). Know a concrete real-world scenario for each.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">99</span>
+        <div class="qa-text">How do you <b>roll back transactions</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Default rollback behavior:</b> Spring automatically rolls back a transaction when an <b>unchecked exception</b> (<code>RuntimeException</code> or <code>Error</code>) propagates out of a <code>@Transactional</code> method. Checked exceptions do NOT trigger rollback by default.</li>
+          <li><b>Rollback for checked exceptions:</b> Use <code>@Transactional(rollbackFor = Exception.class)</code> or <code>rollbackFor = {IOException.class, SQLException.class}</code>.</li>
+          <li><b>Programmatic rollback:</b> In programmatic transactions, call <code>TransactionStatus.setRollbackOnly()</code>.</li>
+          <li><b>Manual rollback via <code>TransactionSynchronizationManager</code>:</b> Less common.</li>
+        </ul>
+<pre><code class="language-java">@Transactional(rollbackFor = Exception.class)
+public void transferFunds(Long fromId, Long toId, BigDecimal amount) throws InsufficientFundsException {
+    Account from = accountRepo.findById(fromId).orElseThrow();
+    if (from.getBalance().compareTo(amount) &lt; 0) {
+        throw new InsufficientFundsException("Insufficient balance"); // checked — triggers rollback
+    }
+    from.debit(amount);
+    accountRepo.findById(toId).orElseThrow().credit(amount);
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> A very common bug: catching an exception inside a <code>@Transactional</code> method and swallowing it — the transaction commits despite the error because the exception never propagated out. Always either rethrow the exception or explicitly mark for rollback via <code>TransactionAspectSupport.currentTransactionStatus().setRollbackOnly()</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">100</span>
+        <div class="qa-text">What is the difference between <b>rollbackFor</b> and <b>noRollbackFor</b> in <code>@Transactional</code>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>rollbackFor</code></b> — specifies exception types (including checked exceptions) that should trigger a rollback. Without this, Spring only rolls back for <code>RuntimeException</code> and <code>Error</code>.
+            <br><code>@Transactional(rollbackFor = {IOException.class, BusinessException.class})</code>
+          </li>
+          <li><b><code>noRollbackFor</code></b> — specifies exception types that should <em>not</em> trigger a rollback, even though they are <code>RuntimeException</code>s. Useful when you want to handle certain exceptions gracefully without undoing the transaction.
+            <br><code>@Transactional(noRollbackFor = OptimisticLockingFailureException.class)</code>
+          </li>
+          <li><b>Combined example:</b></li>
+        </ul>
+<pre><code class="language-java">@Transactional(
+    rollbackFor = {IOException.class, ServiceException.class},
+    noRollbackFor = OptimisticLockingFailureException.class
+)
+public void processOrder(OrderDto dto) throws IOException {
+    // IOException triggers rollback (checked exception)
+    // OptimisticLockingFailureException doesn't rollback — caller handles retry
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The default Spring rule is: rollback on <code>RuntimeException</code> and <code>Error</code>; commit on checked exceptions. <code>rollbackFor = Exception.class</code> is a common pattern for financial operations where <em>any</em> failure must undo all changes.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

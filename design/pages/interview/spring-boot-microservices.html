@@ -1,0 +1,620 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">141</span>
+        <div class="qa-text">What are <b>microservices</b> and how are they different from <b>monoliths</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Microservices architecture</b> decomposes an application into small, independently deployable services — each owning its own data store, business logic, and deployment lifecycle. Services communicate over network APIs (REST, gRPC, events).</li>
+          <li><b>Monolith:</b> A single deployable unit containing all functionality — presentation, business logic, and data access tightly coupled in one codebase and process.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Monolith</th><th>Microservices</th></tr></thead>
+          <tbody>
+            <tr><td>Deployment</td><td>One artifact (WAR/JAR)</td><td>Independent per-service deployment</td></tr>
+            <tr><td>Scaling</td><td>Entire app scales together</td><td>Scale individual bottleneck services</td></tr>
+            <tr><td>Technology</td><td>Single tech stack</td><td>Polyglot — best tool per service</td></tr>
+            <tr><td>Failure isolation</td><td>One bug can bring down everything</td><td>Failures contained to one service</td></tr>
+            <tr><td>Development speed</td><td>Fast initially, slows at scale</td><td>Complex from day one, faster for large teams</td></tr>
+            <tr><td>Operational complexity</td><td>Simple</td><td>High — needs CI/CD, service mesh, tracing</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Microservices trade deployment simplicity for independent scalability and team autonomy. Don't recommend microservices as the default — start with a well-structured monolith and extract services when team size and scaling requirements justify it.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">142</span>
+        <div class="qa-text">What are the main <b>advantages of microservices architecture</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Independent deployability:</b> Teams deploy features without coordinating across the entire codebase — enabling continuous delivery pipelines per service.</li>
+          <li><b>Targeted scalability:</b> Scale only the services under load (e.g., scale the order service during peak shopping) — more cost-efficient than scaling the entire monolith.</li>
+          <li><b>Technology freedom:</b> Each service chooses the best language, framework, and database for its requirements — Python for ML, Go for performance-critical paths, Kafka for event streaming.</li>
+          <li><b>Fault isolation:</b> A failure in the payment service doesn't crash the catalog service. Combined with circuit breakers, overall system resilience increases.</li>
+          <li><b>Team autonomy:</b> Small teams own services end-to-end (develop, deploy, operate) — aligned with Conway's Law: system design mirrors team communication structure.</li>
+          <li><b>Evolutionary architecture:</b> Services can be rewritten in isolation — you can replace a legacy service without touching others.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The business case for microservices is organizational scalability — it enables multiple teams to work independently. If you have a 5-person team, microservices add overhead without benefit. The right size is typically 50+ developers before microservices provide net positive value.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">143</span>
+        <div class="qa-text">How do you implement <b>service discovery</b> using Eureka?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Eureka Server setup
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApp { public static void main(String[] args) { SpringApplication.run(EurekaServerApp.class, args); } }
+</code></pre>
+<pre><code class="language-yaml"># Eureka Server application.yml
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false  # server doesn't register itself
+    fetch-registry: false</code></pre>
+<pre><code class="language-java">// Eureka Client (microservice)
+@SpringBootApplication
+@EnableDiscoveryClient  // or @EnableEurekaClient
+public class OrderServiceApp { ... }</code></pre>
+<pre><code class="language-yaml"># Client application.yml
+spring:
+  application:
+    name: order-service  # service name for discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/</code></pre>
+        <ul>
+          <li><b>Service lookup with LoadBalancer:</b> Use <code>@LoadBalanced RestTemplate</code> or Feign Client — they resolve <code>http://order-service/api/orders</code> using Eureka registry automatically.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> In Kubernetes environments, Eureka is often replaced by Kubernetes Service discovery (DNS-based). AWS ECS uses AWS Cloud Map. Understand that Eureka is the Spring Cloud/Spring Boot native solution, but cloud-native environments often provide their own service mesh alternatives.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">144</span>
+        <div class="qa-text">What is the role of <b>Netflix Eureka</b> in Spring Cloud?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Eureka is a <b>service registry and discovery server</b> — a central directory where all microservice instances register themselves and discover other services.</li>
+          <li><b>How it works:</b>
+            <ul>
+              <li>Each service instance registers at startup with its name, IP, port, and health check URL</li>
+              <li>Services send heartbeats every 30 seconds to confirm they're alive</li>
+              <li>If a service stops sending heartbeats, Eureka removes it from the registry after a timeout</li>
+              <li>Clients fetch the registry and cache it locally — they can route to instances without contacting Eureka for every call</li>
+            </ul>
+          </li>
+          <li><b>Self-preservation mode:</b> If Eureka loses too many heartbeats (network partition), it enters self-preservation mode and doesn't evict instances — preventing mass deregistration due to network issues.</li>
+          <li><b>High availability:</b> Run multiple Eureka instances that peer-replicate their registries.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Eureka's client-side caching makes it resilient — even if the Eureka server is temporarily down, clients continue routing to the last-known addresses. This is a key architectural advantage over DNS-only service discovery.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">145</span>
+        <div class="qa-text">How do you configure a Spring Boot application as a <b>Eureka client</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-xml">&lt;!-- pom.xml --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-yaml"># application.yml
+spring:
+  application:
+    name: payment-service  # Must match discovery name used by callers
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true  # Register with IP instead of hostname
+    instance-id: ${spring.application.name}:${server.port}  # Unique instance ID
+    health-check-url-path: /actuator/health</code></pre>
+        <ul>
+          <li><code>@EnableDiscoveryClient</code> is optional with Spring Cloud auto-configuration — including the dependency is sufficient in modern Spring Cloud versions.</li>
+          <li><b>Multiple Eureka servers:</b> Separate URLs with commas for high availability: <code>defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always set <code>spring.application.name</code> — it's the logical service name used for discovery. Use consistent naming conventions: lowercase, hyphenated (e.g., <code>order-service</code>, not <code>OrderService</code> or <code>order_service</code>).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">146</span>
+        <div class="qa-text">What is <b>Spring Cloud Config Server</b>? How is it used?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Cloud Config Server provides <b>centralized, externalized configuration management</b> for distributed systems. All microservices fetch their configuration from the Config Server at startup instead of managing their own property files.</li>
+          <li><b>Typical setup:</b> Config Server reads properties from a Git repository. When services start, they call the Config Server to fetch their configuration.</li>
+        </ul>
+<pre><code class="language-java">// Config Server
+@SpringBootApplication
+@EnableConfigServer
+public class ConfigServerApp { ... }</code></pre>
+<pre><code class="language-yaml"># Config Server application.yml
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/myorg/config-repo
+          default-label: main
+          search-paths: '{application}'  # subfolder per app</code></pre>
+<pre><code class="language-yaml"># Client (microservice) bootstrap.yml or application.yml
+spring:
+  config:
+    import: configserver:http://config-server:8888
+  application:
+    name: order-service
+  profiles:
+    active: prod
+# Fetches: order-service-prod.yml from Git</code></pre>
+        <ul>
+          <li><b>Config refresh:</b> Use <code>@RefreshScope</code> on beans and call <code>/actuator/refresh</code> to apply config changes without restart. For automatic refresh, integrate Spring Cloud Bus (Kafka/RabbitMQ) to broadcast refresh events.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Config Server enables the 12-Factor App "Config" principle — configuration stored in the environment, not the code. A key question: "How do you handle sensitive config?" — Use Spring Cloud Config with Vault backend or AWS Secrets Manager, not plain Git.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">147</span>
+        <div class="qa-text">How do you <b>secure communication</b> between Config Server and microservices?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Basic Auth on Config Server:</b> Add <code>spring-boot-starter-security</code> to Config Server and configure credentials. Clients provide them in the <code>spring.config.import</code> URL: <code>configserver:http://user:pass@config-server:8888</code>.</li>
+          <li><b>TLS/HTTPS:</b> Configure SSL on the Config Server to encrypt communication in transit.</li>
+          <li><b>Property encryption:</b> Spring Cloud Config supports symmetric and asymmetric encryption. Encrypt sensitive values with <code>/encrypt</code> endpoint — stored as <code>{cipher}ABC123</code> in Git, decrypted on the fly when served to clients.</li>
+          <li><b>Spring Security on Config Server:</b></li>
+        </ul>
+<pre><code class="language-yaml"># Config Server application.yml
+spring:
+  security:
+    user:
+      name: configuser
+      password: ${CONFIG_PASSWORD}  # from env variable
+# Encrypt endpoint: POST /encrypt → returns cipher text
+# Decrypt endpoint: POST /decrypt
+encrypt:
+  key: ${ENCRYPT_KEY}  # symmetric key from env</code></pre>
+        <ul>
+          <li><b>Vault backend (recommended for production):</b> Use HashiCorp Vault or AWS Secrets Manager as the config backend instead of plain Git — secrets never in version control.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The gold standard for secrets management is HashiCorp Vault or AWS Secrets Manager as the Spring Cloud Config backend. Plain Git with encrypted properties is acceptable for less sensitive config but never for secrets like database passwords or API keys.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">148</span>
+        <div class="qa-text">What is <b>API Gateway</b>? Difference between <b>Zuul</b> and <b>Spring Cloud Gateway</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>An <b>API Gateway</b> is a single entry point for all client requests to a microservice ecosystem. It handles cross-cutting concerns: routing, authentication, rate limiting, load balancing, SSL termination, and request/response transformation.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Netflix Zuul</th><th>Spring Cloud Gateway</th></tr></thead>
+          <tbody>
+            <tr><td>I/O model</td><td>Blocking (Servlet-based)</td><td>Non-blocking reactive (Netty + WebFlux)</td></tr>
+            <tr><td>Status</td><td>Zuul 1 in maintenance; Zuul 2 has limited Spring support</td><td>Actively maintained, Spring team recommended</td></tr>
+            <tr><td>Performance</td><td>Lower under high concurrency</td><td>Higher — event loop model</td></tr>
+            <tr><td>Predicates</td><td>Limited built-in routing</td><td>Rich set: Path, Method, Header, Host, Weight predicates</td></tr>
+            <tr><td>Filters</td><td>Pre/Post/Route/Error filters</td><td>Global filters + Route-specific filters with ordering</td></tr>
+            <tr><td>Circuit breaker</td><td>Hystrix (deprecated)</td><td>Resilience4j integration</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Cloud Gateway is the current standard. Zuul is legacy. When asked about API Gateway in Spring Boot microservices, always recommend Spring Cloud Gateway with Resilience4j for circuit breaking and Spring Security for JWT validation at the gateway level.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">149</span>
+        <div class="qa-text">How do you implement <b>request routing</b> with Spring Cloud Gateway?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml"># application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://order-service  # lb:// = load-balanced Eureka lookup
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - StripPrefix=1  # removes /api prefix before forwarding
+            - AddRequestHeader=X-Gateway-Source, spring-cloud-gateway
+            - CircuitBreaker=name=orderCircuitBreaker,fallbackUri=/fallback/orders
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+            - Method=GET,POST
+          filters:
+            - RewritePath=/api/users/(?&lt;segment&gt;.*), /users/${segment}
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+</code></pre>
+<pre><code class="language-java">// Programmatic route definition
+@Configuration
+public class GatewayConfig {
+    @Bean
+    public RouteLocator customRoutes(RouteLocatorBuilder builder) {
+        return builder.routes()
+            .route("auth-route", r -> r
+                .path("/api/auth/**")
+                .filters(f -> f.addRequestHeader("X-Auth-Source", "gateway"))
+                .uri("lb://auth-service"))
+            .build();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The API Gateway is the right place for cross-cutting concerns: JWT validation (via Spring Security), rate limiting (via RequestRateLimiter filter + Redis), and centralized logging of all external traffic. Services behind the gateway trust the gateway for auth.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">150</span>
+        <div class="qa-text">What is <b>Feign Client</b> and why is it used in microservices?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Feign Client</b> (OpenFeign in Spring Cloud) is a <b>declarative HTTP client</b> that generates implementations from annotated interfaces — eliminating boilerplate HTTP code for inter-service communication.</li>
+          <li>Instead of manually creating <code>RestTemplate</code> or <code>WebClient</code> calls, you define an interface that looks like a Spring MVC controller, and Feign generates the implementation at runtime.</li>
+        </ul>
+<pre><code class="language-java">// Enable Feign
+@SpringBootApplication
+@EnableFeignClients
+public class OrderServiceApp { ... }
+
+// Define Feign client interface
+@FeignClient(name = "inventory-service",  // matches Eureka service name
+             fallback = InventoryClientFallback.class)
+public interface InventoryClient {
+
+    @GetMapping("/api/inventory/{productId}")
+    InventoryDto checkStock(@PathVariable Long productId);
+
+    @PutMapping("/api/inventory/{productId}/reserve")
+    void reserveStock(@PathVariable Long productId, @RequestParam int quantity);
+}
+
+// Fallback implementation (for circuit breaker)
+@Component
+public class InventoryClientFallback implements InventoryClient {
+    @Override
+    public InventoryDto checkStock(Long productId) {
+        return InventoryDto.builder().available(false).message("Inventory service unavailable").build();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Feign integrates seamlessly with Eureka (service discovery), Resilience4j (circuit breaker), Spring Security (OAuth2 token propagation), and Micrometer (metrics). It's the idiomatic inter-service communication tool in Spring Cloud ecosystems.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">151</span>
+        <div class="qa-text">Difference between <b>Feign Client</b> and <b>RestTemplate</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>RestTemplate</th><th>Feign Client</th></tr></thead>
+          <tbody>
+            <tr><td>Programming model</td><td>Imperative — explicit HTTP calls</td><td>Declarative — interface-based</td></tr>
+            <tr><td>Boilerplate</td><td>High — URL building, headers, error handling</td><td>Low — just an annotated interface</td></tr>
+            <tr><td>Service discovery</td><td>Manual with <code>@LoadBalanced</code></td><td>Automatic via Eureka/Consul</td></tr>
+            <tr><td>Error handling</td><td>Manual try/catch on HTTP errors</td><td>Custom <code>ErrorDecoder</code> + fallback</td></tr>
+            <tr><td>Status</td><td>Deprecated in Spring 5.0 (use WebClient)</td><td>Actively maintained in Spring Cloud</td></tr>
+            <tr><td>Reactive support</td><td>No</td><td>Limited (use WebClient for reactive)</td></tr>
+            <tr><td>Testing</td><td>Easy with Mockito/WireMock</td><td>Easy — mock the interface</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> For new Spring Boot projects: use Feign for synchronous inter-service calls and WebClient for reactive/async calls. <code>RestTemplate</code> is in maintenance mode — don't start new development with it.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">152</span>
+        <div class="qa-text">What is <b>load balancing</b> in microservices? How does <b>Ribbon</b> work?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Load balancing</b> distributes incoming requests across multiple instances of a service to maximize availability and throughput while preventing any single instance from being overwhelmed.</li>
+          <li><b>Client-side vs server-side:</b>
+            <ul>
+              <li><b>Server-side (traditional):</b> Load balancer (Nginx, AWS ALB) distributes requests — the client sends to a single endpoint.</li>
+              <li><b>Client-side (Spring Cloud):</b> The client fetches the list of instances from the service registry and chooses which instance to call — distributed load balancing, no single point of failure.</li>
+            </ul>
+          </li>
+          <li><b>Netflix Ribbon:</b> Was the client-side load balancer in Spring Cloud Netflix. Fetched instances from Eureka and used Round Robin (default) or custom algorithms. <b>Now deprecated and in maintenance mode.</b></li>
+          <li><b>Spring Cloud LoadBalancer:</b> The modern replacement for Ribbon. Built into Spring Cloud, uses <code>@LoadBalanced</code> <code>RestTemplate</code>/<code>WebClient</code> and Feign. Default algorithm: Round Robin.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Cloud LoadBalancer replaced Ribbon as the default client-side load balancer in Spring Cloud 2020. It integrates with Micrometer for metrics and supports custom load balancing algorithms via <code>ServiceInstanceListSupplier</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">153</span>
+        <div class="qa-text">What is <b>Resilience4j</b> and how does it improve fault tolerance?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Resilience4j</b> is a lightweight fault tolerance library for Java, designed specifically for functional programming with Java 8+. It is the recommended replacement for Netflix Hystrix in Spring Cloud.</li>
+          <li><b>Core modules:</b>
+            <ul>
+              <li><b>Circuit Breaker:</b> Stops cascading failures by opening the circuit when error rate exceeds a threshold</li>
+              <li><b>Retry:</b> Automatically retries failed operations with configurable delay and backoff</li>
+              <li><b>Rate Limiter:</b> Limits the number of calls per time period</li>
+              <li><b>Bulkhead:</b> Limits concurrent calls to a resource (thread pool or semaphore isolation)</li>
+              <li><b>Time Limiter:</b> Cancels calls that exceed a time limit</li>
+              <li><b>Cache:</b> Caches successful responses</li>
+            </ul>
+          </li>
+          <li><b>Integration:</b> <code>spring-cloud-starter-circuitbreaker-resilience4j</code> + <code>spring-boot-starter-aop</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Resilience4j is built on vavr (functional Java) and has zero external dependencies beyond SLF4J. It integrates with Spring Boot Actuator to expose circuit breaker state via <code>/actuator/circuitbreakers</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">154</span>
+        <div class="qa-text">Difference between <b>Circuit Breaker</b>, <b>Bulkhead</b>, <b>Retry</b>, and <b>Rate Limiter</b> patterns.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Pattern</th><th>Problem solved</th><th>How it works</th></tr></thead>
+          <tbody>
+            <tr><td><b>Circuit Breaker</b></td><td>Cascading failures — prevent calling a failing service</td><td>Monitors error rate; opens circuit (rejects calls) when threshold exceeded; half-opens to test recovery</td></tr>
+            <tr><td><b>Bulkhead</b></td><td>Resource exhaustion — one slow service consuming all threads</td><td>Limits concurrent calls to a service; excess calls rejected or queued. Isolates thread pool per dependency.</td></tr>
+            <tr><td><b>Retry</b></td><td>Transient failures — temporary network blips, brief service unavailability</td><td>Retries failed calls with configurable count, delay, and exponential backoff; ignores non-retryable exceptions</td></tr>
+            <tr><td><b>Rate Limiter</b></td><td>Overloading a dependency — calling too fast</td><td>Allows at most N calls per time window; excess calls wait or are rejected</td></tr>
+            <tr><td><b>Time Limiter</b></td><td>Slow calls blocking threads indefinitely</td><td>Cancels calls that take longer than the configured timeout</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> In production, combine multiple patterns: Circuit Breaker + Retry + Time Limiter is a common combo. Apply them in the correct order: Retry (innermost) → Circuit Breaker → Rate Limiter → Time Limiter (outermost) to get the right behavior.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">155</span>
+        <div class="qa-text">How do you implement a <b>circuit breaker</b> in Spring Boot with Resilience4j?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml"># application.yml
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventoryService:
+        failure-rate-threshold: 50        # Open after 50% failure rate
+        wait-duration-in-open-state: 30s  # Stay open for 30s
+        sliding-window-size: 10           # Monitor last 10 calls
+        permitted-number-of-calls-in-half-open-state: 3
+        slow-call-rate-threshold: 50      # Consider slow calls as failures too
+        slow-call-duration-threshold: 2s</code></pre>
+<pre><code class="language-java">@Service
+public class OrderService {
+
+    private final InventoryClient inventoryClient;
+
+    @CircuitBreaker(name = "inventoryService", fallbackMethod = "inventoryFallback")
+    @Retry(name = "inventoryService")
+    @TimeLimiter(name = "inventoryService")
+    public CompletableFuture&lt;InventoryDto&gt; checkInventory(Long productId) {
+        return CompletableFuture.supplyAsync(() -> inventoryClient.checkStock(productId));
+    }
+
+    // Fallback method — same return type, extra Throwable parameter
+    public CompletableFuture&lt;InventoryDto&gt; inventoryFallback(Long productId, Throwable ex) {
+        log.warn("Inventory service unavailable for product {}: {}", productId, ex.getMessage());
+        return CompletableFuture.completedFuture(
+            InventoryDto.builder().available(false).message("Service unavailable").build()
+        );
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The circuit breaker fallback should return a degraded-but-useful response, not just an error. For example, show "availability unknown" instead of crashing — the user can still browse, even if real-time stock is unavailable.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">156</span>
+        <div class="qa-text">What is <b>Hystrix</b>? Why is <b>Resilience4j preferred</b> over Hystrix?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Hystrix</b> was Netflix's original circuit breaker library, integrated into Spring Cloud as the default fault tolerance solution. It used thread pool isolation by default and provided dashboard monitoring.</li>
+          <li><b>Why Resilience4j is preferred:</b></li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Hystrix</th><th>Resilience4j</th></tr></thead>
+          <tbody>
+            <tr><td>Status</td><td>In maintenance — no new features</td><td>Actively developed, Spring-maintained</td></tr>
+            <tr><td>Thread model</td><td>Thread pool per dependency (high overhead)</td><td>Semaphore-based by default (lighter weight)</td></tr>
+            <tr><td>Java compatibility</td><td>Java 6/7 era design</td><td>Java 8+ functional design with lambdas</td></tr>
+            <tr><td>Dependencies</td><td>Heavy — Netflix dependencies</td><td>Zero non-optional dependencies</td></tr>
+            <tr><td>Patterns</td><td>Circuit Breaker, Bulkhead, Timeout</td><td>Circuit Breaker, Bulkhead, Retry, Rate Limiter, Time Limiter, Cache</td></tr>
+            <tr><td>Reactive support</td><td>Limited</td><td>Full Project Reactor support</td></tr>
+            <tr><td>Actuator integration</td><td>Hystrix dashboard (deprecated)</td><td>Micrometer metrics, Actuator endpoints</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Hystrix entered maintenance mode in 2018 and was removed from Spring Cloud Netflix Hoxton. All new projects should use Resilience4j. If you encounter legacy Hystrix in interviews, acknowledge it's legacy and explain the migration path to Resilience4j.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">157</span>
+        <div class="qa-text">What is <b>distributed tracing</b>? How do you implement it in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Distributed tracing</b> tracks a single request as it flows through multiple microservices, providing end-to-end visibility: which services handled the request, how long each step took, and where failures occurred.</li>
+          <li><b>Key concepts:</b>
+            <ul>
+              <li><b>Trace:</b> Represents an end-to-end request (root span + all child spans)</li>
+              <li><b>Span:</b> Represents a single operation within a trace (one service call)</li>
+              <li><b>Trace ID:</b> Unique ID propagated through all services in the request chain</li>
+              <li><b>Span ID:</b> Unique ID for each individual operation</li>
+            </ul>
+          </li>
+          <li><b>Spring Boot 3.x implementation (Micrometer Tracing):</b></li>
+        </ul>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-tracing-bridge-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.zipkin.reporter2&lt;/groupId&gt;
+    &lt;artifactId&gt;zipkin-reporter-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-yaml">management:
+  tracing:
+    sampling:
+      probability: 1.0  # 100% in dev; use 0.1 (10%) in production</code></pre>
+        <ul>
+          <li>Trace IDs are automatically propagated via HTTP headers (<code>X-B3-TraceId</code>, <code>traceparent</code> for W3C) by Spring Boot's instrumentation — including RestTemplate, WebClient, and Feign calls.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Boot 3.x uses Micrometer Tracing (replacing Spring Cloud Sleuth). It supports both Brave (Zipkin) and OpenTelemetry (OTLP). The trace ID appears in logs automatically — combine with ELK stack to search all logs for a single trace across all services.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">158</span>
+        <div class="qa-text">What are <b>Sleuth</b> and <b>Zipkin</b>? How do they work with Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring Cloud Sleuth</b> (now deprecated, replaced by Micrometer Tracing in Spring Boot 3): Automatically instrumented Spring Boot components (RestTemplate, Feign, Kafka, etc.) to propagate trace and span IDs. Added trace context to logs automatically.</li>
+          <li><b>Zipkin:</b> A distributed tracing system (open source, originally from Twitter/OpenZipkin). Services send trace data to Zipkin; Zipkin provides a UI to visualize request flows, service dependencies, and latency breakdowns.</li>
+          <li><b>Modern Spring Boot 3.x flow:</b>
+            <ol>
+              <li>Micrometer Tracing instruments outbound calls (auto-added trace/span headers)</li>
+              <li>Services report spans to Zipkin via HTTP or Kafka</li>
+              <li>Zipkin correlates spans by trace ID and shows the full request waterfall</li>
+            </ol>
+          </li>
+        </ul>
+<pre><code class="language-yaml"># Spring Boot 3.x Zipkin configuration
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 0.1  # Sample 10% of requests in production</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> In production, 100% sampling is too expensive. 1-10% is typical. Use <code>AlwaysSampler</code> for errors or specific user IDs to get full traces for debugging without the overhead of sampling everything.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">159</span>
+        <div class="qa-text">How do you handle <b>centralized logging</b> in microservices?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Problem:</b> Logs are distributed across dozens of service instances and containers — impossible to debug without centralization.</li>
+          <li><b>ELK Stack (most common):</b>
+            <ul>
+              <li><b>Elasticsearch:</b> Stores and indexes log data</li>
+              <li><b>Logstash / Fluentd / Filebeat:</b> Collects and ships logs from services</li>
+              <li><b>Kibana:</b> Visualizes and searches logs</li>
+            </ul>
+          </li>
+          <li><b>Spring Boot configuration for ELK:</b>
+            <ul>
+              <li>Use structured JSON logging (Logback with <code>logstash-logback-encoder</code>)</li>
+              <li>Include trace ID, span ID, service name, and environment in every log entry</li>
+              <li>Ship logs via Filebeat (sidecar) or direct Logstash TCP appender</li>
+            </ul>
+          </li>
+          <li><b>Modern alternatives:</b> Grafana Loki (lighter than ELK), AWS CloudWatch Logs, Datadog</li>
+        </ul>
+<pre><code class="language-xml">&lt;!-- logback-spring.xml --&gt;
+&lt;appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender"&gt;
+    &lt;encoder class="net.logstash.logback.encoder.LogstashEncoder"&gt;
+        &lt;customFields&gt;{"service":"order-service","env":"prod"}&lt;/customFields&gt;
+    &lt;/encoder&gt;
+&lt;/appender&gt;</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Always include the trace ID in logs — it's the key that ties all logs for a single user request across all services. With distributed tracing + centralized logging, debugging a cross-service issue becomes: find trace ID → search ELK → see all spans.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">160</span>
+        <div class="qa-text">What are the <b>best practices for designing Spring Boot microservices</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Single Responsibility:</b> Each service owns one bounded context (Domain-Driven Design). Decompose by business capability, not technical layers.</li>
+          <li><b>Database per service:</b> No shared databases. Services communicate via APIs or events, never direct DB queries to another service's schema.</li>
+          <li><b>API-first design:</b> Define contracts (OpenAPI/Swagger) before implementation. Use consumer-driven contract testing (Pact).</li>
+          <li><b>Twelve-Factor App principles:</b> Config in environment, stateless processes, disposability, etc.</li>
+          <li><b>Asynchronous communication:</b> Use events (Kafka, SQS) for non-critical cross-service operations — reduces coupling and improves resilience.</li>
+          <li><b>Resilience patterns:</b> Circuit breakers, retries, bulkheads, and timeouts on all external calls.</li>
+          <li><b>Health checks:</b> Implement <code>/actuator/health</code> with liveness and readiness probes for Kubernetes.</li>
+          <li><b>Observability:</b> Centralized logging + distributed tracing + metrics (Prometheus/Grafana) from day one.</li>
+          <li><b>Versioned APIs:</b> Version all APIs from the start — changing APIs in microservices is painful.</li>
+          <li><b>Security:</b> Authenticate at the gateway, authorize at each service. Zero-trust network model.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> When asked about microservice best practices, structure your answer around the three pillars: <b>Design</b> (bounded context, single DB), <b>Reliability</b> (resilience patterns, health checks), and <b>Observability</b> (logging, tracing, metrics). This shows architectural maturity.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

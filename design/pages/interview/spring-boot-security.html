@@ -1,0 +1,670 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">121</span>
+        <div class="qa-text">What is <b>Spring Security</b> and why is it used?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Security is the <b>de facto security framework</b> for Spring Boot applications. It provides comprehensive authentication, authorization, and protection against common security vulnerabilities.</li>
+          <li><b>Core capabilities:</b>
+            <ul>
+              <li><b>Authentication:</b> Who are you? — Form login, HTTP Basic, JWT, OAuth2/OIDC, LDAP, SAML</li>
+              <li><b>Authorization:</b> What can you do? — Role-based access control, method-level security, expression-based security</li>
+              <li><b>Security protections:</b> CSRF, clickjacking, session fixation, XSS headers, HSTS, content sniffing prevention</li>
+            </ul>
+          </li>
+          <li><b>How it works:</b> Spring Security integrates with Spring MVC via a chain of servlet filters (<code>SecurityFilterChain</code>). Every incoming HTTP request passes through this chain before reaching the controller.</li>
+          <li><b>Auto-configuration:</b> Adding <code>spring-boot-starter-security</code> automatically secures all endpoints and provides a default login form.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Security is not just for web apps — it also provides method-level security (<code>@PreAuthorize</code>) for service-layer operations, making it suitable for both REST APIs and traditional web apps.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">122</span>
+        <div class="qa-text">Difference between <b>authentication</b> and <b>authorization</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Authentication</b> — verifies <em>who you are</em>. The process of confirming identity through credentials (username/password, token, certificate). Establishes the security principal (the authenticated user/system).</li>
+          <li><b>Authorization</b> — determines <em>what you can do</em>. Checks whether the authenticated principal has permission to perform the requested action on the requested resource.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Authentication</th><th>Authorization</th></tr></thead>
+          <tbody>
+            <tr><td>Question</td><td>"Who are you?"</td><td>"Are you allowed to do this?"</td></tr>
+            <tr><td>Happens</td><td>First (before authorization)</td><td>After successful authentication</td></tr>
+            <tr><td>Failure response</td><td>401 Unauthorized</td><td>403 Forbidden</td></tr>
+            <tr><td>Spring concept</td><td><code>AuthenticationManager</code>, <code>AuthenticationProvider</code></td><td><code>AccessDecisionManager</code>, <code>SecurityExpressionRoot</code></td></tr>
+            <tr><td>Example</td><td>JWT token validation, password check</td><td>Role-based endpoint access, <code>@PreAuthorize</code></td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> A common interview mistake is confusing the HTTP status codes: 401 Unauthorized actually means "unauthenticated" (you haven't proven who you are), while 403 Forbidden means "authenticated but unauthorized" (you're known, but not allowed).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">123</span>
+        <div class="qa-text">How do you configure <b>basic authentication</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .httpBasic(Customizer.withDefaults())  // Enable HTTP Basic Auth
+            .build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.builder()
+            .username("admin")
+            .password(passwordEncoder().encode("secret"))
+            .roles("ADMIN")
+            .build();
+        return new InMemoryUserDetailsManager(user);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}</code></pre>
+        <ul>
+          <li><b>In production:</b> Use a database-backed <code>UserDetailsService</code> — never store users in-memory. Always encode passwords with <code>BCryptPasswordEncoder</code>.</li>
+          <li><b>Properties-based default user:</b> Set <code>spring.security.user.name</code> and <code>spring.security.user.password</code> for simple configuration.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> HTTP Basic Auth sends credentials (Base64-encoded) with every request — it's only secure over HTTPS. Never use it over plain HTTP in production. For REST APIs, JWT or OAuth2 tokens are strongly preferred.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">124</span>
+        <div class="qa-text">What is the role of <b>UserDetailsService</b> in Spring Security?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>UserDetailsService</code> is a core Spring Security interface with a single method: <code>UserDetails loadUserByUsername(String username)</code>. It is the <b>bridge between Spring Security and your user store</b> (database, LDAP, external service).</li>
+          <li>Spring Security calls <code>loadUserByUsername()</code> during authentication to retrieve the user's credentials, roles, and account status.</li>
+          <li><code>UserDetails</code> provides: <code>getUsername()</code>, <code>getPassword()</code> (encoded), <code>getAuthorities()</code> (roles/permissions), and account status flags (<code>isEnabled</code>, <code>isAccountNonExpired</code>, etc.).</li>
+        </ul>
+<pre><code class="language-java">@Service
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        return org.springframework.security.core.userdetails.User.builder()
+            .username(user.getEmail())
+            .password(user.getPasswordHash())
+            .roles(user.getRole().name())
+            .accountExpired(!user.isActive())
+            .build();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The method is called <code>loadUserByUsername</code> but you can look up by email, phone, or any identifier — username is just the parameter name. Implement it to query whatever unique field your system uses for authentication.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">125</span>
+        <div class="qa-text">What is the difference between <b>GrantedAuthority</b> and <b>Role</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>GrantedAuthority</code></b> is the Spring Security interface representing a permission or authority granted to a principal. It's a string-based representation of what the user can do.</li>
+          <li><b>Role</b> is a special type of <code>GrantedAuthority</code> with the prefix <code>ROLE_</code>. Spring Security automatically adds this prefix when you use the <code>roles()</code> method, and checks for it in <code>hasRole()</code> expressions.</li>
+          <li><b>Difference:</b>
+            <ul>
+              <li><code>hasAuthority("READ_PRODUCT")</code> — checks for the exact string "READ_PRODUCT"</li>
+              <li><code>hasRole("ADMIN")</code> — checks for the authority "ROLE_ADMIN" (prefix added automatically)</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Using roles (Spring adds ROLE_ prefix automatically)
+User.builder()
+    .username("admin")
+    .roles("ADMIN", "USER")  // stored as ROLE_ADMIN, ROLE_USER
+    .build();
+
+// Using authorities (no prefix added)
+User.builder()
+    .username("editor")
+    .authorities("READ_PRODUCT", "WRITE_PRODUCT", "ROLE_EDITOR")
+    .build();
+
+// In security rules
+.requestMatchers("/admin/**").hasRole("ADMIN")           // checks ROLE_ADMIN
+.requestMatchers("/products/write").hasAuthority("WRITE_PRODUCT") // checks exact string</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> For fine-grained authorization, use <code>GrantedAuthority</code> with specific permission strings (READ_ORDER, WRITE_ORDER, DELETE_ORDER) rather than coarse-grained roles. This gives you precise control over what each user can do.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">126</span>
+        <div class="qa-text">How do you secure REST APIs with <b>role-based access</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// URL-based authorization in SecurityFilterChain
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("USER", "ADMIN")
+            .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            .requestMatchers("/actuator/health").permitAll()
+            .anyRequest().authenticated()
+        )
+        .build();
+}
+
+// Method-level authorization (more granular)
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public List&lt;OrderDto&gt; getOrders() { ... }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @orderService.isOwner(#id, authentication.name)")
+    public void deleteOrder(@PathVariable Long id) { ... }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Prefer URL-based authorization for coarse-grained access control and method-level (<code>@PreAuthorize</code>) for fine-grained business rules. The SpEL expressions in <code>@PreAuthorize</code> are very powerful — you can check ownership, domain-specific permissions, and more.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">127</span>
+        <div class="qa-text">What is <b>CSRF protection</b>? How does Spring Security handle it?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>CSRF (Cross-Site Request Forgery)</b> is an attack where a malicious site tricks an authenticated user's browser into making unwanted requests to a trusted site. Because the browser automatically includes session cookies, the server accepts the forged request.</li>
+          <li><b>Spring Security's CSRF protection:</b> Generates a unique, unpredictable token (CSRF token) per session. State-changing requests (POST, PUT, DELETE) must include this token. The browser-based form or AJAX client includes it; a forged request from another site cannot obtain it.</li>
+          <li><b>For REST APIs (JWT/stateless):</b> CSRF is not needed — REST APIs use token-based authentication, not browser session cookies. Always disable CSRF for stateless REST APIs:
+            <code>http.csrf(AbstractHttpConfigurer::disable)</code>
+          </li>
+          <li><b>For form-based apps:</b> Keep CSRF enabled. Use Thymeleaf's <code>th:action</code> or include the <code>_csrf</code> hidden field.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The question "why do you disable CSRF for REST APIs?" is a classic. The correct answer: REST APIs use Bearer tokens (JWT) in the Authorization header — not cookies — so CSRF attacks don't apply. Cookies are the attack vector, not Authorization headers.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">128</span>
+        <div class="qa-text">What is <b>JWT (JSON Web Token)</b>? How is it used in Spring Security?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>JWT</b> is a compact, self-contained token that encodes identity and claims as a signed JSON payload. Structure: <code>header.payload.signature</code></li>
+          <li><b>Header:</b> Algorithm and token type (e.g., HS256, RS256)</li>
+          <li><b>Payload:</b> Claims — <code>sub</code> (subject/userId), <code>iat</code> (issued at), <code>exp</code> (expiry), custom claims (roles, email)</li>
+          <li><b>Signature:</b> Ensures the token hasn't been tampered with. Created by signing header + payload with a secret key (HMAC) or private key (RSA).</li>
+          <li><b>Flow in Spring Security:</b>
+            <ol>
+              <li>Client sends credentials to <code>/auth/login</code></li>
+              <li>Server validates credentials, generates JWT signed with secret key</li>
+              <li>Client stores JWT (memory or localStorage) and sends <code>Authorization: Bearer {token}</code> on every request</li>
+              <li>Spring Security's JWT filter validates the token, extracts claims, and sets the <code>SecurityContext</code></li>
+            </ol>
+          </li>
+        </ul>
+<pre><code class="language-java">@Component
+public class JwtTokenProvider {
+    @Value("${jwt.secret}") private String secret;
+    @Value("${jwt.expiration}") private long expiration; // milliseconds
+
+    public String generateToken(UserDetails user) {
+        return Jwts.builder()
+            .setSubject(user.getUsername())
+            .claim("roles", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
+            .compact();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> JWT is <b>self-contained and stateless</b> — the server doesn't need to look up a session in a database on every request. This makes JWTs ideal for microservices where shared session state is difficult. The trade-off: you cannot immediately revoke a JWT before it expires.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">129</span>
+        <div class="qa-text">What are the <b>advantages of JWT over session-based authentication</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Session-Based</th><th>JWT</th></tr></thead>
+          <tbody>
+            <tr><td>State</td><td>Stateful — session stored on server</td><td>Stateless — no server state</td></tr>
+            <tr><td>Scalability</td><td>Sticky sessions or shared session store needed</td><td>Any server can validate the token</td></tr>
+            <tr><td>Cross-domain</td><td>Session cookies are domain-bound</td><td>Token works across domains/services</td></tr>
+            <tr><td>Microservices</td><td>Requires shared session store (Redis)</td><td>Each service validates token independently</td></tr>
+            <tr><td>Revocation</td><td>Immediate — delete server session</td><td>Hard — must wait for expiry or use a blocklist</td></tr>
+            <tr><td>Mobile apps</td><td>Cookie handling is complex</td><td>Natural — Authorization header works everywhere</td></tr>
+            <tr><td>CSRF</td><td>Vulnerable (cookies auto-sent)</td><td>Not vulnerable (header-based)</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> JWT's main weakness is revocation. Common solutions: short expiry time (15-30 minutes) + refresh tokens, JWT blocklist in Redis, or using opaque tokens with introspection for critical security contexts.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">130</span>
+        <div class="qa-text">How do you implement <b>JWT authentication</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Step 1: JWT filter
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    @Autowired private JwtTokenProvider jwtProvider;
+    @Autowired private UserDetailsService userDetailsService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
+            FilterChain chain) throws ServletException, IOException {
+
+        String authHeader = req.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
+        String token = authHeader.substring(7);
+        if (jwtProvider.isValid(token)) {
+            String username = jwtProvider.getUsername(token);
+            UserDetails user = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+        chain.doFilter(req, res);
+    }
+}
+
+// Step 2: Register filter in security config
+http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Always use <code>OncePerRequestFilter</code> for JWT filters — it guarantees the filter executes exactly once per request regardless of any filter chain forwarding. Also ensure the filter sets the <code>SecurityContext</code> <em>before</em> calling <code>chain.doFilter()</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">131</span>
+        <div class="qa-text">What is the role of <b>filters</b> in Spring Security?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Security processes every HTTP request through a <b>filter chain</b> (<code>SecurityFilterChain</code>) — a sequence of servlet filters applied before the request reaches the controller.</li>
+          <li><b>Key built-in filters (in order):</b>
+            <ul>
+              <li><code>DisableEncodeUrlFilter</code> — prevents session IDs in URLs</li>
+              <li><code>SecurityContextPersistenceFilter</code> — restores SecurityContext from session (stateful apps)</li>
+              <li><code>HeaderWriterFilter</code> — adds security headers (HSTS, X-Frame-Options)</li>
+              <li><code>CsrfFilter</code> — validates CSRF tokens</li>
+              <li><code>LogoutFilter</code> — handles logout requests</li>
+              <li><code>UsernamePasswordAuthenticationFilter</code> — processes form-based login</li>
+              <li><code>BasicAuthenticationFilter</code> — processes HTTP Basic Auth</li>
+              <li><code>ExceptionTranslationFilter</code> — converts security exceptions to HTTP responses</li>
+              <li><code>AuthorizationFilter</code> — enforces access control rules</li>
+            </ul>
+          </li>
+          <li>Custom filters (like JWT filter) are inserted at specific positions using <code>addFilterBefore()</code>, <code>addFilterAfter()</code>, or <code>addFilterAt()</code>.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The filter chain is the foundation of Spring Security. Understanding the order matters — your JWT filter must execute before <code>UsernamePasswordAuthenticationFilter</code> to set the authentication before Spring Security's default authentication checks run.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">132</span>
+        <div class="qa-text">Difference between <b>OncePerRequestFilter</b> and <b>GenericFilterBean</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>OncePerRequestFilter</th><th>GenericFilterBean</th></tr></thead>
+          <tbody>
+            <tr><td>Execution guarantee</td><td>Executes <b>exactly once</b> per request (even with forwards/includes)</td><td>May execute multiple times if request is forwarded</td></tr>
+            <tr><td>Method to override</td><td><code>doFilterInternal(request, response, chain)</code></td><td><code>doFilter(request, response, chain)</code></td></tr>
+            <tr><td>Async dispatch</td><td>Can exclude async dispatches via <code>shouldNotFilterAsyncDispatch()</code></td><td>No built-in async control</td></pre></td></tr>
+            <tr><td>Use case</td><td>JWT validation, request logging, tracing headers</td><td>Lower-level filter control</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Recommendation:</b> Always extend <code>OncePerRequestFilter</code> for custom filters in Spring Security. The "once per request" guarantee prevents duplicate JWT validation or logging on the same request.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>OncePerRequestFilter</code> is the correct base class for all custom Spring Security filters. It's the Spring team's recommendation and prevents subtle bugs that can occur with request forwarding and include dispatches.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">133</span>
+        <div class="qa-text">What is <b>OAuth2</b> and how does it work with Spring Security?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>OAuth2</b> is an open authorization framework that enables applications to obtain limited access to user accounts on a third-party service (Google, GitHub, Keycloak) without exposing the user's credentials.</li>
+          <li><b>Roles in OAuth2:</b>
+            <ul>
+              <li><b>Resource Owner:</b> The user who owns the data</li>
+              <li><b>Client:</b> Your Spring Boot application requesting access</li>
+              <li><b>Authorization Server:</b> Issues tokens (Keycloak, Auth0, AWS Cognito, Google)</li>
+              <li><b>Resource Server:</b> API protected by OAuth2 tokens (your Spring Boot API)</li>
+            </ul>
+          </li>
+          <li><b>Spring Security OAuth2 roles:</b>
+            <ul>
+              <li><code>spring-boot-starter-oauth2-client</code> — for apps that log users in via OAuth2 (client role)</li>
+              <li><code>spring-boot-starter-oauth2-resource-server</code> — for APIs that accept and validate JWT/opaque tokens</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-yaml"># Resource server configuration (Spring Boot 3.x)
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://auth.mycompany.com/realms/myapp
+          # Spring Security auto-discovers JWKS endpoint from issuer URI</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> In microservice architectures, each service is an OAuth2 Resource Server. Services don't manage authentication themselves — they simply validate the JWT access token from the Authorization Server. This centralizes identity management.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">134</span>
+        <div class="qa-text">Difference between <b>OAuth2 authorization code flow</b>, <b>implicit flow</b>, and <b>client credentials flow</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Flow</th><th>Use case</th><th>How it works</th><th>Security</th></tr></thead>
+          <tbody>
+            <tr><td><b>Authorization Code</b></td><td>Web apps, SPAs with backend (recommended)</td><td>User authenticates at Auth Server → auth code → exchanged for access token via backend</td><td>High — token never exposed to browser</td></tr>
+            <tr><td><b>Authorization Code + PKCE</b></td><td>SPAs, mobile apps (current standard)</td><td>Like Authorization Code but with Proof Key for Code Exchange — no client secret needed</td><td>Very high — protects against code interception</td></tr>
+            <tr><td><b>Client Credentials</b></td><td>Machine-to-machine (M2M), microservice-to-microservice</td><td>Service sends client_id + client_secret → gets access token directly. No user involved.</td><td>High for service accounts</td></tr>
+            <tr><td><b>Implicit</b></td><td><em>Deprecated</em> — was for SPAs</td><td>Token returned directly in browser URL fragment</td><td>Low — token exposed in browser history</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Implicit flow is deprecated in OAuth 2.1. Modern SPAs should use Authorization Code + PKCE. For microservice-to-microservice authentication, Client Credentials flow is the correct choice — no user is involved in machine-to-machine calls.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">135</span>
+        <div class="qa-text">How do you implement <b>OAuth2 login</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml"># application.yml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: openid, profile, email
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}</code></pre>
+<pre><code class="language-java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/login").permitAll()
+            .anyRequest().authenticated()
+        )
+        .oauth2Login(oauth2 -> oauth2
+            .loginPage("/login")
+            .defaultSuccessUrl("/dashboard")
+            .userInfoEndpoint(ui -> ui
+                .userService(customOAuth2UserService) // optional: map OAuth2User to your domain user
+            )
+        )
+        .build();
+}
+
+@Service
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest req) throws OAuth2AuthenticationException {
+        OAuth2User user = super.loadUser(req);
+        // Create or update user in your database
+        return user;
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> OAuth2 login with <code>spring-boot-starter-oauth2-client</code> handles the entire authorization code flow automatically — including the redirect to the provider, callback handling, and token storage. You only implement the user mapping.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">136</span>
+        <div class="qa-text">What is the difference between <b>@EnableWebSecurity</b> and <b>WebSecurityConfigurerAdapter</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@EnableWebSecurity</code> enables Spring Security's web security support. In Spring Boot, it's automatically triggered by auto-configuration when Spring Security is on the classpath — you still add it on your custom <code>@Configuration</code> class to signal customization intent.</li>
+          <li><code>WebSecurityConfigurerAdapter</code> was the traditional approach (Spring Security 5.x and earlier) for security configuration. You extended it and overrode <code>configure(HttpSecurity)</code>, <code>configure(AuthenticationManagerBuilder)</code>, etc.</li>
+          <li><b>Deprecated in Spring Security 5.7, removed in 6.x:</b> <code>WebSecurityConfigurerAdapter</code> is no longer available in Spring Security 6 / Spring Boot 3. The new approach uses a <code>SecurityFilterChain</code> bean returned from a <code>@Configuration</code> class.</li>
+        </ul>
+<pre><code class="language-java">// Old approach (Spring Boot 2.x, deprecated)
+@Configuration
+public class OldSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception { ... }
+}
+
+// New approach (Spring Boot 3.x / Spring Security 6)
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { ... }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> If someone asks about <code>WebSecurityConfigurerAdapter</code> in 2025, explain it's deprecated and removed. The modern bean-based approach is cleaner — multiple <code>SecurityFilterChain</code> beans can coexist with different <code>@Order</code> values (e.g., API security vs admin security).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">137</span>
+        <div class="qa-text">How do you customize Spring Security configuration in <b>Spring Boot 3.x</b> (no WebSecurityConfigurerAdapter)?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity  // Enable @PreAuthorize, @PostAuthorize, @Secured
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtFilter;
+    private final UserDetailsService userDetailsService;
+
+    @Bean
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+        return http
+            .securityMatcher("/api/**")  // Apply only to /api/** routes
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(e -> e
+                .authenticationEntryPoint((req, res, ex) ->
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                .accessDeniedHandler((req, res, ex) ->
+                    res.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden"))
+            )
+            .build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The lambda-based DSL in Spring Boot 3.x is more readable and type-safe than the old method-chaining style. Multiple <code>SecurityFilterChain</code> beans with different <code>securityMatcher</code> values allow fine-grained, modular security configuration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">138</span>
+        <div class="qa-text">What is <b>stateless authentication</b> and why is it important for REST APIs?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Stateless authentication</b> means the server does not store any session state between requests. Each request must carry all the authentication information needed for the server to validate it independently.</li>
+          <li><b>Why it matters for REST APIs:</b>
+            <ul>
+              <li><b>Scalability:</b> Any server instance can handle any request — no "sticky sessions" or shared session store needed. Perfect for horizontally scaled microservices.</li>
+              <li><b>Simplicity:</b> No session management infrastructure (Redis session store, replication) required.</li>
+              <li><b>Cloud-native:</b> Containers and serverless functions can be scaled up/down freely — no session affinity needed.</li>
+              <li><b>REST principle compliance:</b> REST requires statelessness — each request must be self-contained.</li>
+            </ul>
+          </li>
+          <li><b>Implementation:</b> <code>SessionCreationPolicy.STATELESS</code> in Spring Security prevents session creation/use. JWT tokens carry all auth info in each request.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Setting <code>SessionCreationPolicy.STATELESS</code> alone doesn't make your app stateless — you must also ensure your controllers don't use <code>HttpSession</code>. In stateless JWT-based apps, state lives in the token and the database, not in server memory.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">139</span>
+        <div class="qa-text">How do you secure endpoints with <b>method-level security</b> (<code>@PreAuthorize</code>, <code>@Secured</code>)?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Enable with @EnableMethodSecurity (Spring Boot 3.x)
+// or @EnableGlobalMethodSecurity (Spring Boot 2.x)
+
+@Service
+public class OrderService {
+
+    // SpEL expression — fine-grained control
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
+    public List&lt;Order&gt; getOrdersByUser(Long userId) { ... }
+
+    // Check permission AFTER method execution
+    @PostAuthorize("returnObject.customerId == authentication.principal.id or hasRole('ADMIN')")
+    public Order getOrder(Long orderId) { ... }
+
+    // Filter collection — only return items user can access
+    @PostFilter("filterObject.customerId == authentication.principal.id")
+    public List&lt;Order&gt; getAllOrders() { ... }
+
+    // Simple role-based (less flexible)
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
+    public void deleteOrder(Long orderId) { ... }
+}</code></pre>
+        <ul>
+          <li><b><code>@PreAuthorize</code></b> — evaluated before method execution; blocks if false.</li>
+          <li><b><code>@PostAuthorize</code></b> — evaluated after; useful when access depends on return value.</li>
+          <li><b><code>@PreFilter</code> / <code>@PostFilter</code></b> — filters collection inputs/outputs.</li>
+          <li><b><code>@Secured</code></b> — simpler, only checks roles, no SpEL.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Method-level security is the most powerful pattern for complex authorization logic. The SpEL expressions can access Spring beans (<code>@myBean.canAccess(...)</code>), parameters (<code>#paramName</code>), and authentication details. This enables domain-driven authorization policies.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">140</span>
+        <div class="qa-text">What is the difference between <b>symmetric</b> and <b>asymmetric encryption</b> in JWT?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Symmetric (HMAC)</th><th>Asymmetric (RSA/EC)</th></tr></thead>
+          <tbody>
+            <tr><td>Algorithm</td><td>HS256, HS384, HS512</td><td>RS256, RS384, RS512, ES256, ES512</td></tr>
+            <tr><td>Keys</td><td>Single shared secret key</td><td>Private key (signs) + Public key (verifies)</td></tr>
+            <tr><td>Who can verify</td><td>Anyone with the secret key</td><td>Anyone with the public key (safe to share)</td></tr>
+            <tr><td>Security for distributed</td><td>Risk: all services must have secret key</td><td>Services only need public key — private key stays with Auth Server</td></tr>
+            <tr><td>Performance</td><td>Faster</td><td>Slower (RSA math)</td></tr>
+            <tr><td>Best for</td><td>Single service, monolith</td><td>Microservices, distributed systems</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Microservice recommendation:</b> Use RSA (RS256) — the Authorization Server signs tokens with its private key; all resource servers verify with the public key published at the JWKS endpoint. No need to share secrets across services.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> In a microservice architecture, asymmetric JWT signing is strongly preferred. Sharing HMAC secrets across 50+ services is a security risk — if one service is compromised, the secret must be rotated everywhere. RSA eliminates this problem: only the Auth Server has the private key.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,730 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">101</span>
+        <div class="qa-text">How do you <b>create a REST API</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// 1. Add spring-boot-starter-web dependency
+// 2. Create a @RestController
+@RestController
+@RequestMapping("/api/v1/products")
+public class ProductController {
+
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity&lt;Page&lt;ProductDto&gt;&gt; getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(productService.findAll(PageRequest.of(page, size)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;ProductDto&gt; getProduct(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;ProductDto&gt; createProduct(@Valid @RequestBody CreateProductRequest request) {
+        ProductDto created = productService.create(request);
+        URI location = URI.create("/api/v1/products/" + created.getId());
+        return ResponseEntity.created(location).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity&lt;ProductDto&gt; updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateProductRequest request) {
+        return ResponseEntity.ok(productService.update(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity&lt;Void&gt; deleteProduct(@PathVariable Long id) {
+        productService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Follow REST conventions: use nouns for resources (not verbs), return correct HTTP status codes (201 Created, 204 No Content, 404 Not Found), use <code>ResponseEntity</code> for precise response control, and version your API from day one.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">102</span>
+        <div class="qa-text">Difference between <b>@Controller</b> and <b>@RestController</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Controller</code> is a Spring MVC annotation that marks the class as a web controller. Handler methods return a <b>view name</b> (String), which is resolved to an HTML template by a <code>ViewResolver</code> (Thymeleaf, JSP).</li>
+          <li><code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code>. Every handler method's return value is <b>directly serialized</b> (via Jackson) to the HTTP response body as JSON/XML — no view resolution occurs.</li>
+          <li>Adding <code>@ResponseBody</code> to individual methods in a <code>@Controller</code> is equivalent to using <code>@RestController</code> for those methods.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@Controller</th><th>@RestController</th></tr></thead>
+          <tbody>
+            <tr><td>Return type</td><td>View name (String) → HTML</td><td>Object → JSON/XML</td></tr>
+            <tr><td>@ResponseBody</td><td>Must add per method or class</td><td>Implicit on all methods</td></tr>
+            <tr><td>Use case</td><td>Server-side rendered web apps</td><td>REST APIs, microservices</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> In microservice architectures, <code>@RestController</code> is the standard. <code>@Controller</code> is still relevant for Spring MVC apps with Thymeleaf or other template engines.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">103</span>
+        <div class="qa-text">What is the role of <b>@RequestMapping</b> annotation?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@RequestMapping</code> maps HTTP requests to handler methods (or controller classes). It's the foundational URL mapping annotation in Spring MVC.</li>
+          <li><b>Attributes:</b>
+            <ul>
+              <li><code>value</code>/<code>path</code> — URL pattern(s)</li>
+              <li><code>method</code> — HTTP method (GET, POST, PUT, DELETE, PATCH)</li>
+              <li><code>consumes</code> — accepted request content types (<code>application/json</code>)</li>
+              <li><code>produces</code> — response content types (<code>application/json</code>)</li>
+              <li><code>params</code> — required/excluded request parameters</li>
+              <li><code>headers</code> — required request headers</li>
+            </ul>
+          </li>
+          <li><b>Modern usage:</b> <code>@GetMapping</code>, <code>@PostMapping</code>, etc. are composed annotations that include <code>@RequestMapping(method = RequestMethod.GET)</code>. They're more concise and expressive.</li>
+        </ul>
+<pre><code class="language-java">// Class-level: base path for all methods
+@RestController
+@RequestMapping(path = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
+public class UserController {
+
+    // Method-level: combined with class-level = /api/v1/users/{id}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserDto getUser(@PathVariable Long id) { ... }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Always define the base path at the class level with <code>@RequestMapping</code> and use <code>@GetMapping</code>, <code>@PostMapping</code>, etc. for specific methods. This keeps paths DRY and makes the controller's URL structure clear at a glance.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">104</span>
+        <div class="qa-text">Difference between <b>@GetMapping</b>, <b>@PostMapping</b>, <b>@PutMapping</b>, <b>@DeleteMapping</b>, and <b>@PatchMapping</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Annotation</th><th>HTTP Method</th><th>Semantics</th><th>Idempotent?</th></tr></thead>
+          <tbody>
+            <tr><td><code>@GetMapping</code></td><td>GET</td><td>Retrieve resource — safe, no side effects</td><td>Yes</td></tr>
+            <tr><td><code>@PostMapping</code></td><td>POST</td><td>Create new resource; response includes location</td><td>No</td></tr>
+            <tr><td><code>@PutMapping</code></td><td>PUT</td><td>Replace entire resource (full update)</td><td>Yes</td></tr>
+            <tr><td><code>@PatchMapping</code></td><td>PATCH</td><td>Partial update — only provided fields change</td><td>Conditionally</td></tr>
+            <tr><td><code>@DeleteMapping</code></td><td>DELETE</td><td>Delete resource</td><td>Yes</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>All are shorthand for <code>@RequestMapping(method = RequestMethod.XXX)</code>.</li>
+          <li><b>PUT vs PATCH:</b> PUT requires the full resource in the body; missing fields are set to null/default. PATCH allows partial updates — only provided fields are changed. Use PATCH when clients send only the changed fields.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> HTTP method semantics matter for API design and caching. GET responses can be cached by browsers/CDNs. POST creates a new resource and returns 201 Created with a Location header. PATCH is becoming preferred over PUT for partial updates in modern APIs.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">105</span>
+        <div class="qa-text">How do you pass <b>path variables</b> in Spring Boot REST APIs?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Basic path variable
+@GetMapping("/users/{id}")
+public ResponseEntity&lt;UserDto&gt; getUser(@PathVariable Long id) { ... }
+
+// Named path variable (when parameter name differs)
+@GetMapping("/users/{userId}/orders/{orderId}")
+public ResponseEntity&lt;OrderDto&gt; getUserOrder(
+        @PathVariable("userId") Long userId,
+        @PathVariable("orderId") Long orderId) { ... }
+
+// Optional path variable (Spring 4.3.3+)
+@GetMapping({"/users/{id}", "/users"})
+public ResponseEntity&lt;?&gt; getUsers(
+        @PathVariable(value = "id", required = false) Long id) {
+    if (id != null) {
+        return ResponseEntity.ok(userService.findById(id));
+    }
+    return ResponseEntity.ok(userService.findAll());
+}
+
+// Pattern constraints in path variable
+@GetMapping("/orders/{id:\\d+}")  // id must be digits only
+public ResponseEntity&lt;OrderDto&gt; getOrder(@PathVariable Long id) { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Boot automatically converts path variable strings to the declared parameter type (Long, UUID, Enum, etc.) using <code>ConversionService</code>. If conversion fails (e.g., passing "abc" for a Long), Spring returns a 400 Bad Request automatically.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">106</span>
+        <div class="qa-text">What is the difference between <b>@RequestParam</b> and <b>@PathVariable</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@PathVariable</th><th>@RequestParam</th></tr></thead>
+          <tbody>
+            <tr><td>Location</td><td>Part of the URL path: <code>/users/{id}</code></td><td>Query string: <code>/users?page=1&amp;size=20</code></td></tr>
+            <tr><td>Required?</td><td>Yes (unless optional)</td><td>Configurable (<code>required = false</code>)</td></tr>
+            <tr><td>Default value</td><td>N/A</td><td><code>defaultValue = "0"</code></td></tr>
+            <tr><td>Use case</td><td>Resource identification (noun)</td><td>Filtering, sorting, pagination, search</td></tr>
+            <tr><td>REST convention</td><td>Identifies a specific resource</td><td>Qualifies/filters a collection</td></tr>
+          </tbody>
+        </table>
+<pre><code class="language-java">// @PathVariable — identifies the resource
+@GetMapping("/users/{id}")
+public UserDto getUser(@PathVariable Long id) { ... }
+
+// @RequestParam — filters/qualifies the collection
+@GetMapping("/users")
+public Page&lt;UserDto&gt; searchUsers(
+        @RequestParam(required = false) String name,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size,
+        @RequestParam(defaultValue = "createdAt,desc") String sort) { ... }
+</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> REST convention: use <code>@PathVariable</code> for resource identity (GET /orders/123), use <code>@RequestParam</code> for filtering, searching, and pagination (GET /orders?status=PENDING&amp;page=0&amp;size=10). Never put filters in path segments.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">107</span>
+        <div class="qa-text">How do you <b>send and receive JSON</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot's <code>spring-boot-starter-web</code> includes <b>Jackson</b> — the default JSON serializer/deserializer. Jackson is auto-configured as a <code>MappingJackson2HttpMessageConverter</code>.</li>
+          <li><b>Receiving JSON:</b> Use <code>@RequestBody</code> on the method parameter — Jackson deserializes the request body JSON into a Java object.</li>
+          <li><b>Sending JSON:</b> Return a Java object from a <code>@RestController</code> method — Jackson serializes it to JSON in the response body.</li>
+          <li><b>Content negotiation:</b> Client sends <code>Content-Type: application/json</code> for requests with body; Spring returns JSON when <code>Accept: application/json</code> is set.</li>
+        </ul>
+<pre><code class="language-java">// Receive JSON
+@PostMapping("/orders")
+public ResponseEntity&lt;OrderDto&gt; createOrder(@RequestBody CreateOrderRequest request) {
+    // request is automatically deserialized from JSON
+    return ResponseEntity.ok(orderService.create(request));
+}
+
+// Jackson customization
+@Bean
+public ObjectMapper objectMapper() {
+    return new ObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .registerModule(new JavaTimeModule())
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Register <code>JavaTimeModule</code> to properly serialize/deserialize Java 8 date/time types (<code>LocalDate</code>, <code>ZonedDateTime</code>). Without it, Jackson serializes dates as arrays by default — a common issue in new Spring Boot projects.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">108</span>
+        <div class="qa-text">What is the role of <b>@RequestBody</b> annotation?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@RequestBody</code> maps the <b>HTTP request body</b> to a Java object. Spring uses the appropriate <code>HttpMessageConverter</code> (Jackson for JSON, JAXB for XML) to deserialize the body.</li>
+          <li>It reads the raw bytes from the request stream, applies content type negotiation via <code>Content-Type</code> header, and converts to the target type.</li>
+          <li><b>With validation:</b> Combine with <code>@Valid</code> to trigger Bean Validation on the deserialized object.</li>
+          <li><b>Immutable DTOs:</b> Jackson works with records and Lombok <code>@Value</code>/<code>@Builder</code> classes — use <code>@JsonCreator</code> for constructor-based deserialization.</li>
+        </ul>
+<pre><code class="language-java">public record CreateUserRequest(
+    @NotBlank String name,
+    @Email String email,
+    @NotNull @Min(18) Integer age
+) {}
+
+@PostMapping("/users")
+public ResponseEntity&lt;UserDto&gt; createUser(@Valid @RequestBody CreateUserRequest request) {
+    // If validation fails, Spring returns 400 Bad Request with error details
+    return ResponseEntity.status(201).body(userService.create(request));
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@RequestBody</code> reads the request body exactly once from the input stream. If you need to read it multiple times (e.g., for logging), use a <code>ContentCachingRequestWrapper</code> in a filter to buffer the body.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">109</span>
+        <div class="qa-text">What is the role of <b>@ResponseEntity</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>ResponseEntity&lt;T&gt;</code> represents the <b>entire HTTP response</b> — status code, headers, and body — giving you full control over what Spring sends back to the client.</li>
+          <li><b>Without ResponseEntity:</b> Returning an object from a method uses default status 200 OK with no custom headers.</li>
+          <li><b>With ResponseEntity:</b> You control the status code, add headers (Location, custom headers), and optionally include or exclude the body.</li>
+        </ul>
+<pre><code class="language-java">// 201 Created with Location header
+@PostMapping
+public ResponseEntity&lt;ProductDto&gt; create(@Valid @RequestBody CreateProductRequest req) {
+    ProductDto product = productService.create(req);
+    return ResponseEntity
+        .created(URI.create("/api/products/" + product.getId()))
+        .body(product);
+}
+
+// 204 No Content
+@DeleteMapping("/{id}")
+public ResponseEntity&lt;Void&gt; delete(@PathVariable Long id) {
+    productService.delete(id);
+    return ResponseEntity.noContent().build();
+}
+
+// 200 with custom headers
+@GetMapping("/{id}")
+public ResponseEntity&lt;ProductDto&gt; get(@PathVariable Long id) {
+    return ResponseEntity.ok()
+        .header("X-Product-Source", "database")
+        .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS))
+        .body(productService.findById(id));
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Use <code>ResponseEntity</code> consistently in REST controllers to communicate intent clearly. Returning a bare object with a 200 is fine for GET, but 201 for POST, 204 for DELETE, and 202 Accepted for async operations are important REST semantic signals.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">110</span>
+        <div class="qa-text">How do you implement <b>global exception handling</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@RestControllerAdvice  // = @ControllerAdvice + @ResponseBody
+public class GlobalExceptionHandler {
+
+    // Handle custom business exception
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFound(ResourceNotFoundException ex) {
+        return new ErrorResponse("NOT_FOUND", ex.getMessage(), LocalDateTime.now());
+    }
+
+    // Handle validation failures
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorResponse handleValidation(MethodArgumentNotValidException ex) {
+        Map&lt;String, String&gt; fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+            .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        return new ValidationErrorResponse("VALIDATION_FAILED", fieldErrors);
+    }
+
+    // Handle unexpected errors
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleGeneric(Exception ex, HttpServletRequest request) {
+        log.error("Unhandled exception for request {}", request.getRequestURI(), ex);
+        return new ErrorResponse("INTERNAL_ERROR", "An unexpected error occurred", LocalDateTime.now());
+    }
+}
+
+public record ErrorResponse(String code, String message, LocalDateTime timestamp) {}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Never expose stack traces or internal implementation details (class names, SQL errors) in API error responses — this is a security vulnerability. Log internally with full details; return structured, sanitized error codes and messages to clients.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">111</span>
+        <div class="qa-text">What is the use of <b>@ControllerAdvice</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@ControllerAdvice</code> is a specialization of <code>@Component</code> that provides <b>cross-cutting concerns</b> for all controllers in the application — or a subset specified by package, annotation, or type.</li>
+          <li><b>Capabilities:</b>
+            <ul>
+              <li><code>@ExceptionHandler</code> methods — global exception handling across all controllers</li>
+              <li><code>@ModelAttribute</code> methods — add model attributes to all controllers (for view-based apps)</li>
+              <li><code>@InitBinder</code> methods — configure data binding and validation globally</li>
+            </ul>
+          </li>
+          <li><b>Scoping:</b> Can be limited to specific controllers via <code>@ControllerAdvice(basePackages = "com.app.api")</code> or <code>@ControllerAdvice(assignableTypes = OrderController.class)</code>.</li>
+          <li><b>For REST APIs:</b> Use <code>@RestControllerAdvice</code> (= <code>@ControllerAdvice</code> + <code>@ResponseBody</code>) so exception handler methods return JSON automatically.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> A well-designed global exception handler with <code>@RestControllerAdvice</code> is a requirement in any production REST API. It ensures consistent error response format, centralized logging, and prevents leaking implementation details.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">112</span>
+        <div class="qa-text">What is the difference between <b>@ExceptionHandler</b> and <b>@ControllerAdvice</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>@ExceptionHandler</code></b> — annotates a method that handles a specific exception. When placed inside a controller, it handles exceptions thrown only by that controller.</li>
+          <li><b><code>@ControllerAdvice</code></b> — a class-level annotation that makes exception handlers <em>globally applicable</em> across all controllers. Methods inside it annotated with <code>@ExceptionHandler</code> intercept matching exceptions from any controller.</li>
+          <li><b>Resolution order:</b>
+            <ul>
+              <li>Controller-local <code>@ExceptionHandler</code> takes priority over global <code>@ControllerAdvice</code></li>
+              <li>More specific exception types match before their parent classes</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Local handler — only for UserController
+@RestController
+public class UserController {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity&lt;?&gt; handleUserNotFound(UserNotFoundException ex) {
+        return ResponseEntity.status(404).body(ex.getMessage());
+    }
+}
+
+// Global handler — applies to ALL controllers
+@RestControllerAdvice
+public class GlobalHandler {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;?&gt; handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity.status(404).body(new ErrorResponse(...));
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Best practice is to use a single <code>@RestControllerAdvice</code> for global exception handling. Controller-local <code>@ExceptionHandler</code> is only appropriate when a controller-specific exception needs unique handling not applicable elsewhere.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">113</span>
+        <div class="qa-text">How do you perform <b>input validation</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// 1. Add spring-boot-starter-validation dependency
+// 2. Annotate DTO fields with constraints
+public class CreateUserRequest {
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 100)
+    private String name;
+
+    @Email(message = "Invalid email format")
+    @NotNull
+    private String email;
+
+    @NotNull @Min(value = 18, message = "Must be 18 or older")
+    private Integer age;
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone must be 10 digits")
+    private String phone;
+}
+
+// 3. Trigger validation with @Valid in controller
+@PostMapping("/users")
+public ResponseEntity&lt;UserDto&gt; createUser(@Valid @RequestBody CreateUserRequest request) {
+    return ResponseEntity.ok(userService.create(request));
+}
+
+// 4. Handle MethodArgumentNotValidException in @ControllerAdvice
+@ExceptionHandler(MethodArgumentNotValidException.class)
+public ResponseEntity&lt;Map&lt;String, String&gt;&gt; handleValidation(MethodArgumentNotValidException ex) {
+    Map&lt;String, String&gt; errors = ex.getBindingResult().getFieldErrors().stream()
+        .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+    return ResponseEntity.badRequest().body(errors);
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Validation should happen at the REST layer (controller) — not inside service methods. Service methods should trust that inputs are valid. This separation keeps services clean and testable without HTTP context.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">114</span>
+        <div class="qa-text">What is the role of <b>@Valid</b> and <b>@Validated</b> annotations?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@Valid</th><th>@Validated</th></tr></thead>
+          <tbody>
+            <tr><td>Source</td><td>JSR-303/349 Bean Validation standard</td><td>Spring's own annotation</td></tr>
+            <tr><td>Validation groups</td><td>No support</td><td>Yes — <code>@Validated({CreateGroup.class})</code></td></tr>
+            <tr><td>Cascade validation</td><td>Yes — validates nested objects</td><td>Yes</td></tr>
+            <tr><td>Method-level validation</td><td>Limited</td><td>Full support via <code>MethodValidationPostProcessor</code></td></tr>
+            <tr><td>Typical use</td><td><code>@RequestBody</code>, form binding</td><td>Service-layer validation, validation groups</td></tr>
+          </tbody>
+        </table>
+<pre><code class="language-java">// Validation groups example
+public interface CreateGroup {}
+public interface UpdateGroup {}
+
+public class UserRequest {
+    @NotNull(groups = UpdateGroup.class)  // only required for updates
+    private Long id;
+
+    @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
+    private String name;
+}
+
+@PostMapping("/users")
+public ResponseEntity&lt;?&gt; create(@Validated(CreateGroup.class) @RequestBody UserRequest req) { ... }
+
+@PutMapping("/users/{id}")
+public ResponseEntity&lt;?&gt; update(@Validated(UpdateGroup.class) @RequestBody UserRequest req) { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Use <code>@Valid</code> for simple validation. Use <code>@Validated</code> when you need validation groups (e.g., different required fields for create vs update) or method-level validation in service classes.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">115</span>
+        <div class="qa-text">How do you define <b>custom validation constraints</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Step 1: Define the annotation
+@Documented
+@Constraint(validatedBy = ValidPasswordValidator.class)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ValidPassword {
+    String message() default "Password must be at least 8 chars with uppercase, lowercase, and digit";
+    Class&lt;?&gt;[] groups() default {};
+    Class&lt;? extends Payload&gt;[] payload() default {};
+}
+
+// Step 2: Implement the validator
+public class ValidPasswordValidator implements ConstraintValidator&lt;ValidPassword, String&gt; {
+
+    private static final Pattern PASSWORD_PATTERN =
+        Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$");
+
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) return false;
+        return PASSWORD_PATTERN.matcher(value).matches();
+    }
+}
+
+// Step 3: Use it
+public class RegistrationRequest {
+    @ValidPassword
+    private String password;
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Custom validators can inject Spring beans (e.g., <code>UserRepository</code>) to check uniqueness in the database. Spring automatically detects this and makes the validator Spring-managed when it's annotated with <code>@Component</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">116</span>
+        <div class="qa-text">What is the difference between <b>checked and unchecked exceptions</b> in REST APIs?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Checked exceptions</b> (<code>Exception</code> subclasses, not <code>RuntimeException</code>) — compiler requires them to be caught or declared in method signature. In REST APIs, they represent <em>recoverable</em> errors that callers should handle.</li>
+          <li><b>Unchecked exceptions</b> (<code>RuntimeException</code> subclasses) — no compiler enforcement. Represent programming errors or unexpected conditions. Spring rolls back transactions on these by default.</li>
+          <li><b>REST API exception strategy:</b>
+            <ul>
+              <li>Create custom unchecked business exceptions (extend <code>RuntimeException</code>): <code>ResourceNotFoundException</code>, <code>ConflictException</code>, <code>ValidationException</code>.</li>
+              <li>Handle all exceptions in <code>@RestControllerAdvice</code> and map to appropriate HTTP status codes.</li>
+              <li>Never propagate infrastructure exceptions (JPA, SQL, IO) to the API layer — wrap them in business exceptions.</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Custom unchecked business exceptions
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String resource, Long id) {
+        super(resource + " with id " + id + " not found");
+    }
+}
+// Maps to 404 in GlobalExceptionHandler</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> In modern Spring Boot REST APIs, the best practice is to use unchecked exceptions for business errors and handle them centrally. This avoids polluting service method signatures with checked exception declarations and keeps the API clean.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">117</span>
+        <div class="qa-text">How do you implement <b>versioning in REST APIs</b> (URI, Query Params, Headers)?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>URI versioning</b> (most common): <code>/api/v1/users</code>, <code>/api/v2/users</code></li>
+          <li><b>Query parameter versioning:</b> <code>/api/users?version=1</code></li>
+          <li><b>Header versioning:</b> <code>Accept: application/vnd.company.v1+json</code> or custom <code>X-API-Version: 1</code> header</li>
+          <li><b>Media type (content negotiation):</b> <code>Accept: application/vnd.company.users.v2+json</code></li>
+        </ul>
+<pre><code class="language-java">// URI versioning — most readable, cacheable
+@RestController
+@RequestMapping("/api/v1/users")
+public class UserV1Controller { ... }
+
+@RestController
+@RequestMapping("/api/v2/users")
+public class UserV2Controller { ... }
+
+// Header versioning
+@GetMapping(value = "/users", headers = "X-API-Version=1")
+public UserV1Dto getUsersV1() { ... }
+
+@GetMapping(value = "/users", headers = "X-API-Version=2")
+public UserV2Dto getUsersV2() { ... }</code></pre>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Strategy</th><th>Pros</th><th>Cons</th></tr></thead>
+          <tbody>
+            <tr><td>URI</td><td>Visible, cacheable, easy to test in browser</td><td>Pollutes URL space</td></tr>
+            <tr><td>Query param</td><td>Simple</td><td>Not RESTful, can conflict with filters</td></tr>
+            <tr><td>Header</td><td>Clean URLs, RESTful</td><td>Harder to test, not cacheable by standard CDNs</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> URI versioning is the pragmatic choice for most teams — it's explicit, easy to document, and works well with CDN caching. Header versioning is more "pure" REST but adds friction in client development and testing.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">118</span>
+        <div class="qa-text">How do you implement <b>HATEOAS</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>HATEOAS</b> (Hypermedia as the Engine of Application State) enriches REST responses with links that describe available actions and related resources — making APIs self-discoverable.</li>
+          <li>Spring Boot provides <code>spring-boot-starter-hateoas</code> for HATEOAS support.</li>
+        </ul>
+<pre><code class="language-java">// Add spring-boot-starter-hateoas dependency
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    @GetMapping("/{id}")
+    public EntityModel&lt;OrderDto&gt; getOrder(@PathVariable Long id) {
+        OrderDto order = orderService.findById(id);
+
+        return EntityModel.of(order,
+            linkTo(methodOn(OrderController.class).getOrder(id)).withSelfRel(),
+            linkTo(methodOn(OrderController.class).cancelOrder(id)).withRel("cancel"),
+            linkTo(methodOn(CustomerController.class).getCustomer(order.getCustomerId())).withRel("customer")
+        );
+    }
+}
+
+// Response JSON:
+// {
+//   "id": 123, "status": "PENDING", "total": 99.99,
+//   "_links": {
+//     "self": { "href": "/api/orders/123" },
+//     "cancel": { "href": "/api/orders/123/cancel" },
+//     "customer": { "href": "/api/customers/456" }
+//   }
+// }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> HATEOAS is the Level 3 of Richardson Maturity Model. While it's rarely required, knowing it demonstrates thorough REST knowledge. Most practical APIs implement Level 2 (Resources + HTTP Verbs) and that's sufficient for most enterprise applications.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">119</span>
+        <div class="qa-text">How do you implement <b>pagination and sorting</b> in REST APIs?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Repository
+public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+    Page&lt;Product&gt; findByCategory(String category, Pageable pageable);
+}
+
+// Controller
+@GetMapping
+public ResponseEntity&lt;Page&lt;ProductDto&gt;&gt; getProducts(
+        @RequestParam(required = false) String category,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size,
+        @RequestParam(defaultValue = "createdAt") String sortBy,
+        @RequestParam(defaultValue = "desc") String sortDir) {
+
+    Sort sort = sortDir.equalsIgnoreCase("asc")
+        ? Sort.by(sortBy).ascending()
+        : Sort.by(sortBy).descending();
+
+    Pageable pageable = PageRequest.of(page, size, sort);
+    Page&lt;Product&gt; products = category != null
+        ? productRepo.findByCategory(category, pageable)
+        : productRepo.findAll(pageable);
+
+    return ResponseEntity.ok(products.map(productMapper::toDto));
+}
+
+// Response includes pagination metadata:
+// { "content": [...], "totalElements": 150, "totalPages": 8,
+//   "number": 0, "size": 20, "last": false }</code></pre>
+        <ul>
+          <li>Alternatively, use <code>@PageableDefault(size = 20, sort = "createdAt", direction = DESC) Pageable pageable</code> in the controller parameter — Spring MVC handles deserialization from query params automatically.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always set a maximum page size to prevent clients requesting <code>size=10000</code> and crashing your database. Use a custom <code>HandlerMethodArgumentResolver</code> or validation to cap the size parameter.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">120</span>
+        <div class="qa-text">How do you <b>secure REST APIs</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Authentication approaches:</b>
+            <ul>
+              <li><b>JWT (JSON Web Tokens):</b> Stateless tokens; client sends <code>Authorization: Bearer {token}</code> header. Server validates signature — no session lookup needed. Ideal for microservices.</li>
+              <li><b>OAuth2 / OpenID Connect:</b> Delegate authentication to an identity provider (Keycloak, AWS Cognito, Auth0). Client gets access tokens from the provider.</li>
+              <li><b>API Keys:</b> Simple, suitable for server-to-server communication.</li>
+            </ul>
+          </li>
+          <li><b>Spring Security configuration (Spring Boot 3.x):</b></li>
+        </ul>
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+            .csrf(AbstractHttpConfigurer::disable)  // stateless API — no CSRF needed
+            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**", "/actuator/health").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+    }
+}</code></pre>
+        <ul>
+          <li><b>Additional security measures:</b> HTTPS only, rate limiting, input sanitization, CORS configuration, security headers (Spring Security adds them automatically).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> A complete REST API security strategy includes: JWT/OAuth2 for authentication, RBAC for authorization, HTTPS in transit, input validation to prevent injection, rate limiting to prevent abuse, and Actuator endpoints secured separately.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,609 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">21</span>
+        <div class="qa-text">What does the <b>@SpringBootApplication</b> annotation do internally?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@SpringBootApplication</code> is a <b>meta-annotation</b> that combines three core annotations into one:
+            <ul>
+              <li><code>@SpringBootConfiguration</code> — marks the class as a Spring configuration class (specialized <code>@Configuration</code>), making it eligible for bean definitions.</li>
+              <li><code>@EnableAutoConfiguration</code> — triggers Spring Boot's auto-configuration mechanism, scanning <code>spring.factories</code> / <code>AutoConfiguration.imports</code> and conditionally applying auto-configurations.</li>
+              <li><code>@ComponentScan</code> — scans the package of the annotated class and all sub-packages for Spring-managed components (<code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code>, etc.).</li>
+            </ul>
+          </li>
+          <li>The class annotated with <code>@SpringBootApplication</code> is the <b>entry point</b>, and its <code>main()</code> method calls <code>SpringApplication.run()</code> to bootstrap the entire application context.</li>
+          <li><b>Customization:</b> You can override defaults — e.g., <code>@SpringBootApplication(scanBasePackages = "com.myapp", exclude = {DataSourceAutoConfiguration.class})</code>.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Place the main class in the <b>root package</b> of your application. This ensures <code>@ComponentScan</code> covers all sub-packages without explicit configuration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">22</span>
+        <div class="qa-text">Difference between <b>@Component</b>, <b>@Service</b>, <b>@Repository</b>, and <b>@Controller</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>All four are <b>stereotype annotations</b> — specializations of <code>@Component</code>. They all register the class as a Spring bean, but carry semantic meaning and enable layer-specific behavior.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Annotation</th><th>Layer</th><th>Extra behavior</th></tr></thead>
+          <tbody>
+            <tr><td><code>@Component</code></td><td>Generic component</td><td>Base annotation; no extra behavior</td></tr>
+            <tr><td><code>@Service</code></td><td>Service/Business layer</td><td>Semantic marker; no technical difference from <code>@Component</code></td></tr>
+            <tr><td><code>@Repository</code></td><td>Data Access layer</td><td>Enables Spring's <b>persistence exception translation</b> — converts DB-specific exceptions to Spring's <code>DataAccessException</code> hierarchy</td></tr>
+            <tr><td><code>@Controller</code></td><td>Presentation layer</td><td>Marks the class for Spring MVC's <code>DispatcherServlet</code>; used with <code>@RequestMapping</code> to handle HTTP requests</td></tr>
+            <tr><td><code>@RestController</code></td><td>REST API layer</td><td>= <code>@Controller</code> + <code>@ResponseBody</code>; every method's return value is serialized directly to HTTP response body</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Using the correct stereotype communicates architectural intent and enables future framework features targeting specific layers. Always prefer the most specific annotation over generic <code>@Component</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">23</span>
+        <div class="qa-text">Explain the use of <b>@Configuration</b> and <b>@Bean</b> annotations.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Configuration</code> marks a class as a <b>source of bean definitions</b>. Spring processes it with CGLIB proxying to ensure that <code>@Bean</code> methods always return the same singleton bean instance (even when called multiple times).</li>
+          <li><code>@Bean</code> annotates a method inside a <code>@Configuration</code> class. The return value is registered as a Spring bean with the method name as the default bean name.</li>
+          <li><b>Use case:</b> Defining third-party library classes as beans (since you can't annotate them with <code>@Component</code>), or complex bean construction requiring programmatic logic.</li>
+        </ul>
+<pre><code class="language-java">@Configuration
+public class AppConfig {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@Configuration</code> classes are CGLIB-proxied — <code>@Bean</code> methods called programmatically return the cached singleton. <code>@Component</code>-based bean configs (using <code>@Bean</code> inside <code>@Component</code>) do NOT use CGLIB proxying — each call creates a new instance. This is a common interview trap.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">24</span>
+        <div class="qa-text">What is the difference between <b>@ComponentScan</b> and <b>@EnableAutoConfiguration</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>@ComponentScan</code></b> — scans <em>your application's packages</em> for classes annotated with <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code>, <code>@Configuration</code>, etc. and registers them as beans. You control what is scanned.</li>
+          <li><b><code>@EnableAutoConfiguration</code></b> — enables Spring Boot's <em>third-party / framework-level</em> auto-configuration. It reads predefined auto-configuration classes from <code>spring.factories</code> / <code>AutoConfiguration.imports</code> and conditionally applies them. This is how Tomcat, JPA, Security, etc. get configured without you writing any config.</li>
+          <li><b>Key difference:</b> <code>@ComponentScan</code> is for <em>your code</em>; <code>@EnableAutoConfiguration</code> is for <em>Spring Boot and library code</em>.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Both are included in <code>@SpringBootApplication</code>. Understanding their distinct roles explains why you can override auto-configured beans — your beans (found by <code>@ComponentScan</code>) take priority over auto-configured ones (from <code>@EnableAutoConfiguration</code>).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">25</span>
+        <div class="qa-text">How does <b>@ConditionalOnProperty</b> work in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@ConditionalOnProperty</code> conditionally registers a bean or applies a configuration class only when a <b>specified property exists and matches a given value</b>.</li>
+          <li><b>Parameters:</b>
+            <ul>
+              <li><code>name</code> / <code>value</code> — the property key(s) to check</li>
+              <li><code>havingValue</code> — the value the property must have (default: any non-false value)</li>
+              <li><code>matchIfMissing</code> — if <code>true</code>, the condition matches even if the property is absent (default: <code>false</code>)</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">@Configuration
+@ConditionalOnProperty(name = "feature.payment.enabled", havingValue = "true", matchIfMissing = false)
+public class PaymentConfig {
+    @Bean
+    public PaymentService paymentService() {
+        return new StripePaymentService();
+    }
+}
+</code></pre>
+        <ul>
+          <li><b>Use cases:</b> Feature flags, enabling/disabling integrations (email, SMS, external API), switching between implementations based on environment.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@ConditionalOnProperty</code> is the backbone of feature toggles in Spring Boot. Combined with Spring profiles, it enables powerful environment-specific behavior without code changes.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">26</span>
+        <div class="qa-text">Explain the purpose of <b>@EnableConfigurationProperties</b> and <b>@ConfigurationProperties</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@ConfigurationProperties</code> binds a group of related properties from <code>application.properties/yml</code> to a <b>POJO</b>, enabling type-safe, structured configuration.</li>
+          <li><code>@EnableConfigurationProperties(MyProperties.class)</code> registers the <code>@ConfigurationProperties</code>-annotated class as a bean (alternatively, annotate it with <code>@Component</code>).</li>
+        </ul>
+<pre><code class="language-java">// application.yml
+// app:
+//   mail:
+//     host: smtp.gmail.com
+//     port: 587
+//     username: user@example.com
+
+@ConfigurationProperties(prefix = "app.mail")
+public class MailProperties {
+    private String host;
+    private int port;
+    private String username;
+    // getters + setters
+}
+
+@Configuration
+@EnableConfigurationProperties(MailProperties.class)
+public class MailConfig {
+    @Autowired
+    private MailProperties mailProperties;
+}</code></pre>
+        <ul>
+          <li><b>Benefits:</b> IDE autocompletion, type validation, grouping related properties, support for relaxed binding (<code>mail-host</code>, <code>MAIL_HOST</code>, <code>mailHost</code> all map to <code>mailHost</code> field).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@ConfigurationProperties</code> is strongly preferred over multiple <code>@Value</code> annotations for complex configuration — it's type-safe, testable, and self-documenting.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">27</span>
+        <div class="qa-text">What is the difference between <b>@Value</b> and <b>@ConfigurationProperties</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@Value</th><th>@ConfigurationProperties</th></tr></thead>
+          <tbody>
+            <tr><td>Scope</td><td>Single property per field</td><td>Group of related properties bound to a POJO</td></tr>
+            <tr><td>Type safety</td><td>Limited — string-to-type coercion only</td><td>Full type safety with JSR-303 validation</td></tr>
+            <tr><td>Relaxed binding</td><td>No — key must match exactly</td><td>Yes — <code>my-key</code>, <code>MY_KEY</code>, <code>myKey</code> all work</td></tr>
+            <tr><td>SpEL support</td><td>Yes — <code>#{expression}</code></td><td>No</td></tr>
+            <tr><td>Testability</td><td>Harder — requires Spring context or manual injection</td><td>Easy — POJO can be instantiated and tested directly</td></tr>
+            <tr><td>IDE autocomplete</td><td>No</td><td>Yes (with <code>spring-boot-configuration-processor</code>)</td></tr>
+            <tr><td>Best for</td><td>Single, simple values; dynamic SpEL expressions</td><td>Complex, structured configuration</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> For production applications, prefer <code>@ConfigurationProperties</code>. Use <code>@Value</code> only for one-off values or when you need SpEL expressions.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">28</span>
+        <div class="qa-text">How does <b>Spring Boot handle externalized configuration</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot supports <b>externalized configuration</b> — values defined outside the packaged JAR, enabling the same code to run across environments without recompilation.</li>
+          <li><b>Priority order (highest to lowest):</b>
+            <ol>
+              <li>Command-line arguments</li>
+              <li>JNDI attributes</li>
+              <li>Java System properties (<code>-D</code>)</li>
+              <li>OS environment variables</li>
+              <li><code>application-{profile}.properties</code> outside JAR</li>
+              <li><code>application.properties</code> outside JAR</li>
+              <li><code>application-{profile}.properties</code> inside JAR</li>
+              <li><code>application.properties</code> inside JAR</li>
+              <li><code>@PropertySource</code> declarations</li>
+              <li>Default values in <code>@SpringBootApplication</code></li>
+            </ol>
+          </li>
+          <li><b>Spring Cloud Config Server:</b> For microservices, a centralized Config Server externalizes configuration — all services fetch their config at startup from a Git-backed config repository.</li>
+          <li><b>Secrets:</b> AWS Secrets Manager, HashiCorp Vault, or Kubernetes Secrets inject sensitive values as environment variables at runtime.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> "12-Factor App methodology" is the guiding principle — config should be stored in the environment, not in the code. This is exactly what Spring Boot's externalized configuration implements.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">29</span>
+        <div class="qa-text">Explain <b>@Import</b> and when to use it.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Import</code> allows you to <b>explicitly import one or more <code>@Configuration</code> classes</b> into another configuration, registering their beans into the current application context — without relying on component scanning.</li>
+          <li><b>Three forms:</b>
+            <ul>
+              <li><b>Import a <code>@Configuration</code> class:</b> <code>@Import(SecurityConfig.class)</code></li>
+              <li><b>Import an <code>ImportSelector</code>:</b> Programmatically decide which classes to import based on condition logic — used heavily in auto-configuration.</li>
+              <li><b>Import an <code>ImportBeanDefinitionRegistrar</code>:</b> Dynamically register bean definitions at startup (e.g., JPA repositories, MyBatis mappers).</li>
+            </ul>
+          </li>
+          <li><b>When to use:</b> When you want to modularize configuration without enabling component scan for entire packages, or when building libraries/auto-configurations that conditionally import feature config classes.</li>
+        </ul>
+<pre><code class="language-java">@Configuration
+@Import({DatabaseConfig.class, CacheConfig.class})
+public class AppConfig { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@Enable*</code> annotations (like <code>@EnableAsync</code>, <code>@EnableScheduling</code>) internally use <code>@Import</code> to pull in the infrastructure configuration — understanding this demystifies how these annotations work.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">30</span>
+        <div class="qa-text">What does <b>@EnableScheduling</b> do? Provide an example.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@EnableScheduling</code> activates Spring's <b>task scheduling infrastructure</b>. Without it, <code>@Scheduled</code> annotations on methods are ignored.</li>
+          <li>It imports <code>SchedulingConfiguration</code> which creates a <code>TaskScheduler</code> bean (backed by a thread pool).</li>
+        </ul>
+<pre><code class="language-java">@SpringBootApplication
+@EnableScheduling
+public class MyApp { ... }
+
+@Component
+public class ReportJob {
+
+    @Scheduled(cron = "0 0 8 * * MON-FRI")  // 8 AM weekdays
+    public void generateDailyReport() {
+        // business logic
+    }
+
+    @Scheduled(fixedDelay = 30000)  // 30s after last completion
+    public void syncData() {
+        // sync logic
+    }
+
+    @Scheduled(fixedRate = 60000)   // every 60s regardless of execution time
+    public void healthCheck() {
+        // check logic
+    }
+}</code></pre>
+        <ul>
+          <li><b>Configuring thread pool:</b> By default, a single thread is used. For concurrent scheduling, define a <code>TaskScheduler</code> bean with multiple threads.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> In a multi-instance deployment (horizontal scaling), scheduled tasks run on every instance — use a distributed lock (Shedlock, Redis lock) to ensure only one instance executes a job at a time.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">31</span>
+        <div class="qa-text">Difference between <b>@RestController</b> and <b>@Controller</b> in Spring Boot.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Controller</code> is used for <b>MVC web applications</b> that return views (Thymeleaf, JSP). Handler methods return view names (strings), and <code>ViewResolver</code> resolves them to actual HTML templates.</li>
+          <li><code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code>. Every method's return value is automatically serialized to JSON/XML and written directly to the HTTP response body. No view resolution occurs.</li>
+          <li><b>Use <code>@Controller</code> when:</b> Building server-side-rendered web apps returning HTML views.</li>
+          <li><b>Use <code>@RestController</code> when:</b> Building REST APIs that return JSON/XML payloads.</li>
+        </ul>
+<pre><code class="language-java">// REST API - returns JSON
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    @GetMapping("/{id}")
+    public UserDto getUser(@PathVariable Long id) {
+        return userService.findById(id); // serialized to JSON
+    }
+}
+
+// MVC - returns a view name
+@Controller
+public class HomeController {
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("message", "Hello!");
+        return "home"; // resolves to home.html
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> In modern microservice architectures, <code>@RestController</code> is the standard. <code>@Controller</code> is only needed in traditional web apps or when mixing API + view rendering in the same application.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">32</span>
+        <div class="qa-text">What is the use of <b>@EnableAsync</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@EnableAsync</code> activates Spring's <b>asynchronous method execution</b> capability. Without it, <code>@Async</code> annotations are ignored and methods execute synchronously.</li>
+          <li>It configures an <code>Executor</code> (thread pool) for running async methods. Default is a <code>SimpleAsyncTaskExecutor</code> (not recommended for production — creates a new thread per invocation).</li>
+          <li><b>Production configuration:</b> Define a custom <code>ThreadPoolTaskExecutor</code> bean named <code>taskExecutor</code>.</li>
+        </ul>
+<pre><code class="language-java">@SpringBootApplication
+@EnableAsync
+public class MyApp { ... }
+
+@Configuration
+public class AsyncConfig {
+    @Bean(name = "taskExecutor")
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("Async-");
+        executor.initialize();
+        return executor;
+    }
+}
+
+@Service
+public class EmailService {
+    @Async("taskExecutor")
+    public CompletableFuture&lt;Void&gt; sendWelcomeEmail(String email) {
+        // runs in the thread pool
+        return CompletableFuture.completedFuture(null);
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@Async</code> only works when called from <em>outside</em> the bean (Spring proxy must intercept the call). Self-invocation within the same class bypasses the proxy and executes synchronously — a very common interview question.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">33</span>
+        <div class="qa-text">Explain the <b>@Lazy</b> annotation in Spring.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>By default, Spring initializes all singleton beans <b>eagerly</b> at application startup. <code>@Lazy</code> changes this to <b>lazy initialization</b> — the bean is only created the first time it is requested.</li>
+          <li><b>Applied to:</b>
+            <ul>
+              <li><code>@Bean</code> method — that specific bean is lazy</li>
+              <li><code>@Component</code> class — that component bean is lazy</li>
+              <li><code>@Autowired</code> injection point — even if the target bean is eager, the proxy injected is lazy</li>
+              <li><code>spring.main.lazy-initialization=true</code> — makes ALL beans lazy globally</li>
+            </ul>
+          </li>
+          <li><b>Benefits:</b> Faster startup time (useful for tests and serverless), reduced memory usage for rarely-used beans.</li>
+          <li><b>Drawbacks:</b> Errors in lazy beans surface at first use, not at startup — harder to detect early. Not suitable for critical infrastructure beans.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>spring.main.lazy-initialization=true</code> can dramatically speed up test startup time. However, in production, pre-warming all beans at startup is preferred to detect misconfiguration early and avoid first-request latency spikes.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">34</span>
+        <div class="qa-text">Difference between <b>@Primary</b> and <b>@Qualifier</b> annotations.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Both resolve <b>ambiguity</b> when multiple beans of the same type exist in the context.</li>
+          <li><code>@Primary</code> — marks one bean as the <b>default</b> candidate. When Spring autowires a type with multiple candidates, the <code>@Primary</code> bean is chosen unless explicitly qualified.</li>
+          <li><code>@Qualifier("beanName")</code> — at the injection point, explicitly specifies <b>which bean</b> to inject by name. Overrides <code>@Primary</code>.</li>
+        </ul>
+<pre><code class="language-java">@Bean @Primary
+public DataSource primaryDataSource() { return new HikariDataSource(primaryConfig); }
+
+@Bean
+public DataSource replicaDataSource() { return new HikariDataSource(replicaConfig); }
+
+@Service
+public class ReportService {
+    // Gets primaryDataSource (via @Primary)
+    @Autowired
+    private DataSource dataSource;
+
+    // Gets replicaDataSource explicitly
+    @Autowired @Qualifier("replicaDataSource")
+    private DataSource replicaDataSource;
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@Primary</code> is for <em>declaring</em> which bean wins by default. <code>@Qualifier</code> is for <em>consuming</em> a specific bean at the injection point. Use <code>@Primary</code> sparingly — explicit <code>@Qualifier</code> is usually clearer in multi-datasource or multi-service scenarios.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">35</span>
+        <div class="qa-text">What is the use of <b>@Profile</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Profile</code> restricts bean registration to specific Spring profiles. The annotated bean (or entire configuration class) is only instantiated when the specified profile is active.</li>
+          <li><b>Use cases:</b>
+            <ul>
+              <li>Use H2 in-memory DB for <code>dev/test</code>, PostgreSQL for <code>prod</code></li>
+              <li>Enable mock email service in <code>dev</code>, real SMTP in <code>prod</code></li>
+              <li>Load different security configurations per environment</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">@Configuration
+@Profile("dev")
+public class DevDataSourceConfig {
+    @Bean
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder().setType(H2).build();
+    }
+}
+
+@Configuration
+@Profile("prod")
+public class ProdDataSourceConfig {
+    @Bean
+    public DataSource dataSource() {
+        return new HikariDataSource(prodProperties());
+    }
+}
+
+// Negative profile — active when "cloud" is NOT active
+@Component
+@Profile("!cloud")
+public class LocalFileStorage implements FileStorage { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@Profile</code> supports logical operators: <code>@Profile({"dev", "test"})</code> (OR), <code>@Profile("!prod")</code> (NOT). Spring Boot 2.4+ also supports profile groups for grouping related profiles.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">36</span>
+        <div class="qa-text">How does <b>@Scope</b> annotation work in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@Scope</code> defines the <b>lifecycle and visibility</b> of a Spring bean.</li>
+          <li><b>Available scopes:</b>
+            <ul>
+              <li><code>singleton</code> (default) — one instance per Spring container</li>
+              <li><code>prototype</code> — new instance each time the bean is requested</li>
+              <li><code>request</code> — one instance per HTTP request (web apps only)</li>
+              <li><code>session</code> — one instance per HTTP session (web apps only)</li>
+              <li><code>application</code> — one instance per <code>ServletContext</code></li>
+              <li>Custom scopes (e.g., thread scope, tenant scope)</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">@Component
+@Scope("prototype")
+public class ReportGenerator { ... }
+
+// For web scopes with proxy to inject into singleton beans:
+@Component
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class RequestContext { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Injecting a prototype-scoped bean into a singleton bean is a classic gotcha — the prototype bean won't refresh because the singleton holds a reference after first injection. Solutions: <code>@Lookup</code>, <code>ObjectFactory</code>, or <code>ApplicationContext.getBean()</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">37</span>
+        <div class="qa-text">What is <b>@EnableTransactionManagement</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@EnableTransactionManagement</code> activates Spring's annotation-driven <b>transaction management</b> infrastructure, enabling the use of <code>@Transactional</code> annotations on methods and classes.</li>
+          <li>It imports <code>TransactionManagementConfigurationSelector</code> which registers either a JDK proxy or AspectJ-based transaction advisor.</li>
+          <li><b>Spring Boot does this automatically</b> — when <code>spring-boot-starter-data-jpa</code> or <code>spring-boot-starter-jdbc</code> is on the classpath, <code>@EnableTransactionManagement</code> is applied automatically via auto-configuration. You don't need to add it explicitly in Spring Boot apps.</li>
+          <li><b>Modes:</b>
+            <ul>
+              <li><code>AdviceMode.PROXY</code> (default) — JDK/CGLIB proxies intercept <code>@Transactional</code> methods</li>
+              <li><code>AdviceMode.ASPECTJ</code> — compile/load-time weaving, bypasses proxy limitations (supports self-invocation)</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The proxy mode means <code>@Transactional</code> on private methods or self-invocation doesn't work — the call bypasses the proxy. This is a very common Spring interview question.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">38</span>
+        <div class="qa-text">What is the role of <b>@PropertySource</b> annotation?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@PropertySource</code> adds a <b>custom properties file</b> to Spring's <code>Environment</code>, making its values available via <code>@Value</code> and the <code>Environment</code> API.</li>
+          <li>Useful for loading application-specific configuration from files that are not the standard <code>application.properties</code>.</li>
+        </ul>
+<pre><code class="language-java">@Configuration
+@PropertySource("classpath:database.properties")
+@PropertySource("classpath:mail.properties")  // multiple allowed
+public class AppConfig {
+
+    @Value("${db.url}")
+    private String dbUrl;
+}
+
+// database.properties
+// db.url=jdbc:postgresql://localhost:5432/mydb
+// db.username=admin</code></pre>
+        <ul>
+          <li><b>Limitation:</b> <code>@PropertySource</code> does not support YAML files out of the box — use a custom <code>PropertySourceFactory</code> or simply rely on Spring Boot's built-in <code>application.yml</code> support.</li>
+          <li><code>@PropertySources</code> allows multiple <code>@PropertySource</code> declarations (or use Java 8+ repeatable annotation support).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> For most Spring Boot apps, <code>@PropertySource</code> is rarely needed since <code>application.properties</code> and profile-specific files cover most needs. It's useful when integrating legacy property files or modular configuration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">39</span>
+        <div class="qa-text">What is the difference between <b>@ImportResource</b> and <b>@Import</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@Import</th><th>@ImportResource</th></tr></thead>
+          <tbody>
+            <tr><td>Source</td><td>Java-based configuration classes</td><td>XML bean definition files</td></tr>
+            <tr><td>Purpose</td><td>Import <code>@Configuration</code> classes, <code>ImportSelector</code>, or <code>ImportBeanDefinitionRegistrar</code></td><td>Load Spring XML config files (<code>applicationContext.xml</code>)</td></tr>
+            <tr><td>Use case</td><td>Modular Java configuration</td><td>Migrating legacy XML-based Spring apps</td></tr>
+          </tbody>
+        </table>
+<pre><code class="language-java">// @Import — Java config
+@Configuration
+@Import({SecurityConfig.class, CacheConfig.class})
+public class AppConfig { ... }
+
+// @ImportResource — XML config
+@Configuration
+@ImportResource("classpath:legacy-beans.xml")
+public class LegacyConfig { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@ImportResource</code> is a <b>migration bridge</b> for legacy Spring XML applications. In greenfield Spring Boot projects, you should never need XML configuration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">40</span>
+        <div class="qa-text">Explain <b>@EnableJpaRepositories</b> and its usage.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@EnableJpaRepositories</code> activates Spring Data JPA's <b>repository scanning</b> — it detects interfaces extending <code>JpaRepository</code>, <code>CrudRepository</code>, etc., and creates proxy implementations at runtime.</li>
+          <li>In Spring Boot, this is <b>automatically applied</b> when <code>spring-boot-starter-data-jpa</code> is on the classpath. Explicit declaration is only needed for advanced configurations.</li>
+          <li><b>Advanced usage scenarios:</b>
+            <ul>
+              <li><b>Multiple datasources:</b> Specify different <code>basePackages</code>, <code>entityManagerFactoryRef</code>, and <code>transactionManagerRef</code> for each datasource.</li>
+              <li><b>Custom base package:</b> <code>@EnableJpaRepositories(basePackages = "com.myapp.data")</code></li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Multiple datasource configuration
+@Configuration
+@EnableJpaRepositories(
+    basePackages = "com.myapp.order.repository",
+    entityManagerFactoryRef = "orderEntityManagerFactory",
+    transactionManagerRef = "orderTransactionManager"
+)
+public class OrderDataSourceConfig { ... }</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Multiple datasource configuration is a classic senior-level Spring Boot interview topic. Know how to configure it: separate <code>DataSource</code>, <code>EntityManagerFactory</code>, <code>TransactionManager</code>, and <code>@EnableJpaRepositories</code> for each datasource.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

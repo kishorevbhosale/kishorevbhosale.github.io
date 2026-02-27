@@ -1,0 +1,681 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">161</span>
+        <div class="qa-text">How do you <b>deploy a Spring Boot application to AWS</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Option 1 — AWS Elastic Beanstalk:</b> PaaS — upload the Spring Boot JAR/WAR, EB manages EC2, load balancer, auto-scaling, and deployment. Simplest path for managed deployments.</li>
+          <li><b>Option 2 — Amazon ECS (Elastic Container Service):</b> Containerize the app (Docker), push image to ECR, deploy via ECS tasks on EC2 or Fargate (serverless containers). Ideal for microservices.</li>
+          <li><b>Option 3 — Amazon EKS (Elastic Kubernetes Service):</b> Deploy Spring Boot containers on a managed Kubernetes cluster. Best for complex microservice deployments with advanced orchestration needs.</li>
+          <li><b>Option 4 — AWS Lambda:</b> Serverless deployment — Spring Boot as a Lambda function (using Spring Cloud Function or AWS Lambda Adapter). Best for event-driven, low-traffic use cases. Cold start is the main challenge.</li>
+          <li><b>Option 5 — EC2 directly:</b> Run JAR on EC2 with a systemd service. Manual but full control.</li>
+          <li><b>Typical CI/CD pipeline:</b> GitHub Actions/CodePipeline → Build JAR → Docker build + push to ECR → ECS/EKS deployment via rolling update.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Know the trade-offs: Elastic Beanstalk is fastest to get started but less control; ECS/Fargate is the sweet spot for most microservices (containerized, managed infra, pay-per-use); EKS is for organizations already invested in Kubernetes.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">162</span>
+        <div class="qa-text">What is the difference between <b>AWS Elastic Beanstalk</b> and <b>ECS</b> for Spring Boot apps?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Elastic Beanstalk</th><th>ECS (Fargate)</th></tr></thead>
+          <tbody>
+            <tr><td>Abstraction</td><td>Full PaaS — manages EC2, LB, ASG</td><td>Container orchestration — you manage task definitions</td></tr>
+            <tr><td>Deployment unit</td><td>JAR/WAR file or Docker image</td><td>Docker container (image from ECR)</td></tr>
+            <tr><td>Control</td><td>Limited — opinionated infrastructure</td><td>High — fine-grained task/service configuration</td></tr>
+            <tr><td>Auto-scaling</td><td>Built-in with minimal config</td><td>Full control with Application Auto Scaling</td></tr>
+            <tr><td>Multi-container</td><td>Limited via Docker Compose support</td><td>Native — tasks can have multiple containers (sidecar pattern)</td></tr>
+            <tr><td>Cost</td><td>EC2 instances running always</td><td>Fargate: pay per vCPU/memory per second</td></tr>
+            <tr><td>Best for</td><td>Simple apps, rapid deployment, small teams</td><td>Microservices, complex deployments, production workloads</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Elastic Beanstalk is the "I just want to deploy my app" option. ECS/Fargate is the "I need production-grade container orchestration with sidecar containers (service mesh, logging agents)" option. Most enterprises choose ECS/EKS for microservices.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">163</span>
+        <div class="qa-text">How do you connect a Spring Boot application to <b>AWS RDS</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-xml">&lt;!-- pom.xml --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-yaml"># application.yml — using environment variables for secrets
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect</code></pre>
+        <ul>
+          <li><b>Connection via IAM Authentication (recommended):</b> Spring Boot requests a temporary authentication token from AWS IAM instead of using static passwords — eliminates long-lived credentials.</li>
+          <li><b>VPC placement:</b> Always place RDS in a private subnet. Only the application subnet (EC2/ECS) can reach RDS — never expose RDS publicly.</li>
+          <li><b>SSL:</b> Enable SSL/TLS for RDS connections in production: <code>spring.datasource.url=...&amp;ssl=true&amp;sslrootcert=rds-ca-2019-root.pem</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Production best practices: RDS in private subnet, IAM authentication or Secrets Manager for credentials, VPC security groups restricting port 5432 to app servers only, automated backups and Multi-AZ for high availability.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">164</span>
+        <div class="qa-text">What are the best practices for <b>securing AWS RDS credentials</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Never hardcode credentials</b> in <code>application.properties</code> or commit them to version control — this is a critical security violation.</li>
+          <li><b>Best practices (in order of preference):</b>
+            <ol>
+              <li><b>AWS Secrets Manager:</b> Store credentials as JSON. Spring Cloud AWS auto-integrates: <code>spring.config.import=aws-secretsmanager:/myapp/db-credentials</code></li>
+              <li><b>AWS Systems Manager Parameter Store:</b> Store individual parameters (<code>/myapp/prod/DB_PASSWORD</code>) and reference via <code>spring.config.import=aws-parameterstore:/myapp/prod/</code></li>
+              <li><b>IAM Database Authentication:</b> Use temporary tokens — no passwords at all. Requires the RDS instance to have IAM authentication enabled and the application's IAM role granted access.</li>
+              <li><b>Environment variables:</b> Inject at runtime by ECS task definition or Kubernetes Secrets — never bake into the Docker image.</li>
+            </ol>
+          </li>
+          <li><b>Rotation:</b> Enable automatic credential rotation in Secrets Manager (30-day rotation) — Spring Cloud AWS can handle rotation transparently.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The gold standard is IAM Database Authentication for RDS — zero static credentials, short-lived tokens, and full CloudTrail audit of every connection. If IAM auth is not feasible, AWS Secrets Manager with automatic rotation is the next best option.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">165</span>
+        <div class="qa-text">How do you use <b>AWS Parameter Store or Secrets Manager</b> with Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-xml">&lt;!-- Spring Cloud AWS --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.awspring.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-aws-starter-secrets-manager&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.awspring.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-aws-starter-parameter-store&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-yaml"># application.yml
+spring:
+  config:
+    import:
+      - aws-parameterstore:/config/myapp/
+      - aws-secretsmanager:/myapp/prod-secrets
+
+# AWS Parameter Store keys like /config/myapp/spring.datasource.url
+# become available as spring.datasource.url in the Spring Environment
+
+# Secrets Manager secret named /myapp/prod-secrets with JSON:
+# { "spring.datasource.password": "s3cr3t", "jwt.secret": "..." }
+</code></pre>
+        <ul>
+          <li>The IAM role attached to the EC2/ECS task must have <code>secretsmanager:GetSecretValue</code> and <code>ssm:GetParametersByPath</code> permissions.</li>
+          <li>No AWS access keys needed in the application when running on EC2/ECS — IAM Instance Profile/Task Role provides credentials automatically.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Cloud AWS's integration with Parameter Store and Secrets Manager follows the 12-Factor App config principle — configuration is injected at runtime from the environment. This is the production-grade pattern used by mature AWS teams.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">166</span>
+        <div class="qa-text">How do you integrate <b>Spring Boot with AWS S3</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Spring Cloud AWS S3 integration
+@Service
+public class S3FileService {
+
+    private final S3Client s3Client;
+    private final String bucketName;
+
+    public S3FileService(S3Client s3Client, @Value("${aws.s3.bucket}") String bucketName) {
+        this.s3Client = s3Client;
+        this.bucketName = bucketName;
+    }
+
+    public String uploadFile(String key, InputStream content, long contentLength, String contentType) {
+        s3Client.putObject(PutObjectRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .contentType(contentType)
+            .contentLength(contentLength)
+            .serverSideEncryption(ServerSideEncryption.AES256)
+            .build(),
+            RequestBody.fromInputStream(content, contentLength));
+
+        return "https://" + bucketName + ".s3.amazonaws.com/" + key;
+    }
+
+    public InputStream downloadFile(String key) {
+        return s3Client.getObject(GetObjectRequest.builder()
+            .bucket(bucketName).key(key).build());
+    }
+
+    // Pre-signed URL for direct browser download (avoids proxying through backend)
+    public String generatePresignedUrl(String key, Duration expiry) {
+        S3Presigner presigner = S3Presigner.create();
+        return presigner.presignGetObject(r -> r
+            .getObjectRequest(g -> g.bucket(bucketName).key(key))
+            .signatureDuration(expiry)).url().toString();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> For user file downloads, generate pre-signed S3 URLs instead of streaming through the backend — it reduces application load, avoids bandwidth costs, and leverages S3's CDN capabilities. Pre-signed URLs expire after a set duration, preventing unauthorized access.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">167</span>
+        <div class="qa-text">How do you <b>upload and download files to S3</b> using Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@RestController
+@RequestMapping("/api/files")
+public class FileController {
+
+    private final S3FileService s3Service;
+
+    // Upload via multipart form
+    @PostMapping("/upload")
+    public ResponseEntity&lt;UploadResponse&gt; upload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("category") String category) throws IOException {
+
+        String key = category + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+        String url = s3Service.uploadFile(key, file.getInputStream(),
+                                          file.getSize(), file.getContentType());
+        return ResponseEntity.ok(new UploadResponse(key, url));
+    }
+
+    // Download file directly (small files)
+    @GetMapping("/download/{key}")
+    public ResponseEntity&lt;InputStreamResource&gt; download(@PathVariable String key) {
+        InputStream stream = s3Service.downloadFile(key);
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + key)
+            .body(new InputStreamResource(stream));
+    }
+
+    // Generate pre-signed download URL (for large files)
+    @GetMapping("/presigned/{key}")
+    public ResponseEntity&lt;String&gt; presignedUrl(@PathVariable String key) {
+        String url = s3Service.generatePresignedUrl(key, Duration.ofMinutes(15));
+        return ResponseEntity.ok(url);
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> For large file uploads (>100MB), use S3 Multipart Upload API — the AWS SDK handles chunking automatically. For very large files, consider using pre-signed POST/PUT URLs for direct client-to-S3 upload, completely bypassing your backend server.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">168</span>
+        <div class="qa-text">What is the difference between <b>S3 and EFS</b>? When to use each?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Amazon S3</th><th>Amazon EFS</th></tr></thead>
+          <tbody>
+            <tr><td>Type</td><td>Object storage</td><td>Network file system (NFS)</td></tr>
+            <tr><td>Access</td><td>HTTP API (REST)</td><td>POSIX file system — mounted as drive</td></tr>
+            <tr><td>Use from app</td><td>AWS SDK calls</td><td>Standard file I/O (new File(), FileInputStream)</td></tr>
+            <tr><td>Latency</td><td>Moderate (network call)</td><td>Lower for file operations</td></tr>
+            <tr><td>Concurrent access</td><td>All services via API — no locking issues</td><td>Multiple EC2/ECS instances can mount simultaneously</td></tr>
+            <tr><td>Scale</td><td>Unlimited, 5TB per object</td><td>Scales automatically, no per-file size limit</td></tr>
+            <tr><td>Cost</td><td>Low (pay per GB stored + requests)</td><td>Higher than S3 (pay per GB provisioned)</td></tr>
+            <tr><td>Best for</td><td>Static assets, backups, data lake, media storage</td><td>Shared file system for legacy apps, CMS, ML training data</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Spring Boot recommendation:</b> S3 for cloud-native applications. EFS only when migrating legacy applications that require file system semantics.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> S3 is stateless and scales infinitely — perfect for cloud-native applications. EFS maintains POSIX file system semantics — use it only when you need shared file access across multiple instances that can't be refactored to use S3 APIs.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">169</span>
+        <div class="qa-text">How do you integrate <b>Spring Boot with AWS SQS</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@Service
+public class OrderEventPublisher {
+
+    private final SqsTemplate sqsTemplate;
+    private final ObjectMapper objectMapper;
+
+    @Value("${aws.sqs.order-queue-url}")
+    private String orderQueueUrl;
+
+    public void publishOrderCreated(OrderDto order) {
+        sqsTemplate.send(orderQueueUrl,
+            SqsSendOptions.builder()
+                .messageGroupId("orders")  // For FIFO queues
+                .build(),
+            order);
+    }
+}
+
+// Consumer using Spring Cloud AWS SQS listener
+@Component
+public class OrderEventConsumer {
+
+    @SqsListener(value = "${aws.sqs.order-queue-url}", acknowledgementMode = SqsListenerAcknowledgementMode.ON_SUCCESS)
+    public void processOrder(OrderDto order, Message&lt;OrderDto&gt; message) {
+        try {
+            orderService.process(order);
+            // Acknowledgment happens automatically on success
+        } catch (Exception e) {
+            // Don't catch — let it propagate; Spring will not delete the message
+            // Message returns to queue and eventually to DLQ after max receives
+            throw e;
+        }
+    }
+}</code></pre>
+        <ul>
+          <li><b>Dead Letter Queue (DLQ):</b> Always configure a DLQ for SQS — messages that fail processing N times are moved to DLQ for inspection and replay.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> SQS provides at-least-once delivery — your consumer must be idempotent. Use a unique message ID or deduplication check to handle the same message being delivered twice without side effects.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">170</span>
+        <div class="qa-text">Difference between <b>SQS standard</b> and <b>FIFO queues</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>SQS Standard Queue</th><th>SQS FIFO Queue</th></tr></thead>
+          <tbody>
+            <tr><td>Message ordering</td><td>Best effort — not guaranteed</td><td>Strict FIFO within a message group</td></tr>
+            <tr><td>Delivery</td><td>At-least-once (possible duplicates)</td><td>Exactly-once processing (deduplication ID)</td></tr>
+            <tr><td>Throughput</td><td>Nearly unlimited</td><td>Up to 300 msg/s (3000 with batching)</td></tr>
+            <tr><td>Use cases</td><td>High-throughput, order-insensitive tasks (email, image processing)</td><td>Financial transactions, order processing, sequenced operations</td></tr>
+            <tr><td>Message groups</td><td>N/A</td><td>Message Group ID enables parallel ordered processing</td></tr>
+            <tr><td>Deduplication</td><td>Manual idempotency required</td><td>Built-in 5-minute deduplication window</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> FIFO queues have lower throughput limits. For high-throughput ordered processing, use multiple FIFO message groups — each group processes in order, and groups execute in parallel. For example, group by order ID — all events for an order maintain order, and different orders process concurrently.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">171</span>
+        <div class="qa-text">How do you integrate <b>Spring Boot with AWS SNS</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@Service
+public class NotificationService {
+
+    private final SnsClient snsClient;
+
+    @Value("${aws.sns.user-events-topic-arn}")
+    private String userEventsTopicArn;
+
+    // Publish message to SNS topic
+    public void publishUserRegistered(UserDto user) {
+        String message = objectMapper.writeValueAsString(
+            Map.of("eventType", "USER_REGISTERED", "userId", user.getId(), "email", user.getEmail()));
+
+        PublishRequest request = PublishRequest.builder()
+            .topicArn(userEventsTopicArn)
+            .message(message)
+            .messageAttributes(Map.of(
+                "eventType", MessageAttributeValue.builder()
+                    .dataType("String").stringValue("USER_REGISTERED").build()))
+            .build();
+
+        snsClient.publish(request);
+    }
+}
+// SNS fan-out pattern:
+// SNS Topic "user-events"
+//   → SQS queue (email-service subscription)
+//   → SQS queue (analytics-service subscription)
+//   → HTTP endpoint (webhook subscription)
+//   → Email/SMS (direct SNS delivery)</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> SNS + SQS fan-out is the most powerful messaging pattern in AWS — publish once to SNS, N services receive via their own SQS queues independently. Each service processes at its own pace, can replay from SQS, and failures in one service don't affect others.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">172</span>
+        <div class="qa-text">What is the difference between <b>SQS and SNS</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>SQS (Simple Queue Service)</th><th>SNS (Simple Notification Service)</th></tr></thead>
+          <tbody>
+            <tr><td>Model</td><td>Queue — point-to-point</td><td>Topic — publish-subscribe (fan-out)</td></tr>
+            <tr><td>Consumers</td><td>One consumer group polls and deletes messages</td><td>Multiple subscribers receive the same message</td></tr>
+            <tr><td>Persistence</td><td>Messages persist until consumed (up to 14 days)</td><td>Messages pushed immediately; no persistence</td></tr>
+            <tr><td>Polling</td><td>Consumer polls the queue</td><td>SNS pushes to subscribers</td></tr>
+            <tr><td>Subscribers</td><td>N/A</td><td>SQS, Lambda, HTTP, email, SMS</td></tr>
+            <tr><td>Use case</td><td>Work queues, task distribution</td><td>Event broadcasting, notifications</td></tr>
+            <tr><td>Together (Fan-out)</td><td>One SNS topic → multiple SQS queues</td><td>Each service gets its own queue</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> "Can SQS and SNS work together?" — Yes, this is the SNS fan-out pattern and it's extremely common. Producer publishes to SNS topic; SNS delivers to multiple SQS queues; each consumer service has its own queue with independent scaling, retry, and DLQ.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">173</span>
+        <div class="qa-text">How do you integrate <b>Spring Boot with AWS Lambda</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Option 1: Spring Cloud Function + AWS Lambda Adapter
+@SpringBootApplication
+public class LambdaApp {
+    @Bean
+    public Function&lt;OrderRequest, OrderResponse&gt; processOrder(OrderService service) {
+        return request -> service.process(request);
+    }
+}
+
+// pom.xml dependencies:
+// spring-cloud-function-context
+// spring-cloud-function-adapter-aws</code></pre>
+<pre><code class="language-java">// Option 2: AWS Lambda RequestHandler directly
+@Component
+public class S3EventHandler implements RequestHandler&lt;S3Event, Void&gt; {
+    @Autowired
+    private ImageProcessingService imageService;
+
+    @Override
+    public Void handleRequest(S3Event event, Context context) {
+        event.getRecords().forEach(record -> {
+            String bucket = record.getS3().getBucket().getName();
+            String key = record.getS3().getObject().getKey();
+            imageService.processUploadedImage(bucket, key);
+        });
+        return null;
+    }
+}</code></pre>
+        <ul>
+          <li><b>Cold start challenge:</b> Spring Boot's startup time (2-5s) causes Lambda cold starts. Solutions: Spring Native (GraalVM AOT), Provisioned Concurrency, Lambda SnapStart (for Java 11+).</li>
+          <li><b>AWS Lambda Power Tuning:</b> Profile memory allocation (128MB-10GB) to find the cost/performance sweet spot.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Boot on Lambda works best for event-driven, infrequently-invoked functions. For latency-sensitive, high-frequency endpoints, ECS/Fargate is better because cold starts don't occur. Lambda SnapStart (AWS Graviton2) significantly reduces cold start times.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">174</span>
+        <div class="qa-text">What are the best practices for building <b>serverless applications with Spring Boot on AWS</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Minimize package size:</b> Use Spring Native (GraalVM) for native image compilation — reduces JAR from 50MB to 10MB and startup from 3s to 100ms.</li>
+          <li><b>Use Spring Cloud Function:</b> Write business logic as <code>Function&lt;Input, Output&gt;</code> — portable across Lambda, Azure Functions, and local execution.</li>
+          <li><b>Handle cold starts:</b> Use Lambda SnapStart, Provisioned Concurrency for latency-sensitive functions, or warming strategies (scheduled ping every 5 minutes).</li>
+          <li><b>Stateless design:</b> Each Lambda invocation is independent. Don't maintain in-memory state — use DynamoDB, ElastiCache, or S3 for state.</li>
+          <li><b>Connection pooling caution:</b> Lambda functions share database connections poorly — use RDS Proxy to pool connections and prevent DB connection exhaustion from concurrent Lambda invocations.</li>
+          <li><b>Observability:</b> Use AWS X-Ray for distributed tracing, CloudWatch for logs and metrics, with structured logging for searchability.</li>
+          <li><b>Timeout and memory tuning:</b> Profile and set appropriate timeout (default: 3s, max: 15min). More memory = more CPU allocation in Lambda.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> RDS Proxy is critical for Lambda + RDS setups. Without it, each Lambda invocation opens a DB connection, and with 1000 concurrent invocations, you'll exhaust PostgreSQL's connection limit (default: 100). RDS Proxy multiplexes connections between thousands of Lambda functions.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">175</span>
+        <div class="qa-text">How do you implement <b>distributed caching with AWS ElastiCache</b> (Redis/Memcached)?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml"># application.yml — Redis (ElastiCache)
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST}  # ElastiCache cluster endpoint
+      port: 6379
+      ssl:
+        enabled: true  # ElastiCache in-transit encryption
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000  # 1 hour TTL
+      key-prefix: "myapp:"
+      use-key-prefix: true</code></pre>
+<pre><code class="language-java">@Service
+public class ProductService {
+
+    @Cacheable(value = "products", key = "#id")
+    public ProductDto getProduct(Long id) {
+        return productRepo.findById(id).map(mapper::toDto)
+            .orElseThrow(() -> new ResourceNotFoundException("Product", id));
+    }
+
+    @CacheEvict(value = "products", key = "#product.id")
+    public ProductDto updateProduct(ProductDto product) {
+        return mapper.toDto(productRepo.save(mapper.toEntity(product)));
+    }
+
+    @CacheEvict(value = "products", allEntries = true)
+    public void clearCache() {}
+}</code></pre>
+        <ul>
+          <li><b>Cluster mode:</b> Use ElastiCache Redis Cluster for horizontal scaling and high availability.</li>
+          <li><b>Cache-aside vs write-through:</b> Spring Cache uses cache-aside (read from cache or DB, write to DB then evict cache). Write-through writes to both cache and DB simultaneously.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Redis beats Memcached for Spring Boot integrations because it supports complex data structures, persistence, pub/sub, and distributed locks (Redisson). Use Memcached only if you need the simplest possible in-memory key-value store with no other requirements.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">176</span>
+        <div class="qa-text">How do you configure <b>Spring Boot for AWS DynamoDB</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Using Spring Data DynamoDB (Enhanced Client)
+@Configuration
+public class DynamoDbConfig {
+
+    @Bean
+    public DynamoDbClient dynamoDbClient() {
+        return DynamoDbClient.builder()
+            .region(Region.US_EAST_1)
+            // Uses IAM role credentials automatically on EC2/ECS
+            .build();
+    }
+
+    @Bean
+    public DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbClient client) {
+        return DynamoDbEnhancedClient.builder().dynamoDbClient(client).build();
+    }
+}
+
+@DynamoDbBean
+public class UserSession {
+    private String sessionId;      // Partition key
+    private String userId;         // Sort key
+    private String data;
+    private long ttl;              // TTL attribute for automatic expiry
+
+    @DynamoDbPartitionKey
+    public String getSessionId() { return sessionId; }
+
+    @DynamoDbSortKey
+    public String getUserId() { return userId; }
+
+    @DynamoDbAttribute("ttl")
+    public long getTtl() { return ttl; }
+}
+
+@Service
+public class SessionService {
+    private final DynamoDbTable&lt;UserSession&gt; sessionTable;
+
+    public UserSession getSession(String sessionId, String userId) {
+        return sessionTable.getItem(Key.builder()
+            .partitionValue(sessionId).sortValue(userId).build());
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> DynamoDB access pattern design is crucial — define your partition key based on your primary query pattern. DynamoDB is not relational; avoid designing it like RDS. Use Single-Table Design for related entities to minimize hot partition issues.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">177</span>
+        <div class="qa-text">Difference between <b>RDS and DynamoDB</b> for Spring Boot apps.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Amazon RDS (PostgreSQL/MySQL)</th><th>Amazon DynamoDB</th></tr></thead>
+          <tbody>
+            <tr><td>Type</td><td>Relational (ACID, SQL)</td><td>NoSQL key-value/document</td></tr>
+            <tr><td>Schema</td><td>Fixed schema, migrations required</td><td>Schemaless — flexible attributes</td></tr>
+            <tr><td>Scaling</td><td>Vertical (larger instance) + read replicas</td><td>Horizontal auto-scaling, virtually unlimited</td></tr>
+            <tr><td>Latency</td><td>Milliseconds (depends on query complexity)</td><td>Single-digit milliseconds at any scale</td></tr>
+            <tr><td>Transactions</td><td>Full ACID transactions across rows/tables</td><td>Limited transactions (within one partition)</td></tr>
+            <tr><td>Queries</td><td>Complex JOINs, aggregations, full SQL</td><td>Key-based lookups; limited query patterns</td></tr>
+            <tr><td>Use case</td><td>Complex domain models, reporting, financial data</td><td>Session storage, user profiles, IoT data, game leaderboards</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Choose RDS when your data is relational, has complex query requirements, or requires ACID across multiple entities. Choose DynamoDB when you need infinite scale at single-digit millisecond latency with known, simple access patterns.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">178</span>
+        <div class="qa-text">How do you secure Spring Boot applications running on AWS (IAM roles, VPCs, security groups)?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>IAM Roles (no static credentials):</b> Assign IAM roles to EC2 instances, ECS tasks, or Lambda functions. The AWS SDK automatically uses the instance/task role — no access keys in code or config.</li>
+          <li><b>Principle of least privilege:</b> Each service role has only the permissions it needs. Order Service role: SQS SendMessage + S3 PutObject only. Not <code>*</code>.</li>
+          <li><b>VPC isolation:</b>
+            <ul>
+              <li>Application servers in <b>private subnets</b> — not directly internet-accessible</li>
+              <li>RDS, ElastiCache in <b>private subnets</b> — only reachable from application subnet</li>
+              <li>Public-facing load balancer in <b>public subnet</b></li>
+              <li>NAT Gateway for outbound internet from private subnets</li>
+            </ul>
+          </li>
+          <li><b>Security Groups (stateful firewall):</b>
+            <ul>
+              <li>App SG: Allow inbound 8080 from ALB SG only</li>
+              <li>RDS SG: Allow inbound 5432 from App SG only</li>
+              <li>ALB SG: Allow inbound 443 from 0.0.0.0/0</li>
+            </ul>
+          </li>
+          <li><b>Encryption at rest and in transit:</b> Enable RDS encryption, S3 server-side encryption (SSE-S3 or SSE-KMS), ElastiCache encryption, TLS for all service-to-service communication.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The defense-in-depth model: VPC isolates the network perimeter, Security Groups restrict inbound/outbound at the instance level, IAM controls API access, and Secrets Manager/KMS protects credentials and data. No single layer is sufficient alone.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">179</span>
+        <div class="qa-text">What is <b>AWS API Gateway</b> and how do you integrate it with Spring Boot microservices?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>AWS API Gateway</b> is a fully managed API proxy service that sits between clients and backend services. It handles request routing, authentication, rate limiting, caching, and CORS — without running a separate load balancer.</li>
+          <li><b>Integration options:</b>
+            <ul>
+              <li><b>HTTP Integration:</b> Routes to HTTP endpoints (Spring Boot on ECS/EC2)</li>
+              <li><b>Lambda Integration:</b> Routes to Lambda functions (Spring Cloud Function apps)</li>
+              <li><b>VPC Link:</b> Routes to private VPC resources via NLB</li>
+            </ul>
+          </li>
+          <li><b>Features used with Spring Boot microservices:</b>
+            <ul>
+              <li>JWT Authorizer — validates tokens before forwarding to Spring Boot</li>
+              <li>Request/response transformation</li>
+              <li>Rate limiting per API key or per user</li>
+              <li>Stage variables for environment-specific routing</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> AWS API Gateway + Lambda is optimal for serverless microservices. For containerized microservices on ECS, consider ALB (Application Load Balancer) + Spring Cloud Gateway — it's more cost-effective at high traffic volumes (API Gateway charges per million requests).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">180</span>
+        <div class="qa-text">How do you <b>monitor and scale</b> Spring Boot microservices on AWS?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Monitoring stack:</b>
+            <ul>
+              <li><b>CloudWatch Metrics:</b> EC2/ECS CPU, memory, network, custom application metrics via CloudWatch SDK</li>
+              <li><b>Spring Boot Actuator + Micrometer:</b> Expose JVM, HTTP request, and custom business metrics; push to CloudWatch Metrics namespace</li>
+              <li><b>CloudWatch Logs:</b> Centralize logs from all ECS tasks/EC2 instances; use Log Insights for querying</li>
+              <li><b>AWS X-Ray:</b> Distributed tracing — integrated with Spring Boot via Micrometer Tracing</li>
+              <li><b>CloudWatch Dashboards + Alarms:</b> Visualize key metrics, alert on threshold breaches (SLO violations)</li>
+            </ul>
+          </li>
+          <li><b>Scaling:</b>
+            <ul>
+              <li><b>ECS Service Auto Scaling:</b> Scale based on CPU, memory, or SQS queue depth (custom metric)</li>
+              <li><b>Target Tracking Scaling:</b> Keep average CPU at 60% — scale in/out automatically</li>
+              <li><b>Application Load Balancer health checks:</b> Use <code>/actuator/health</code> — unhealthy tasks are replaced automatically</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Use Spring Boot Actuator's <code>/actuator/health</code> and <code>/actuator/metrics</code> as the foundation for AWS monitoring. Configure ECS health checks against <code>/actuator/health/liveness</code> and <code>/actuator/health/readiness</code> (separate probes in Spring Boot 2.3+).</div>
+      </div>
+    </div>
+
+  </div>
+</div>

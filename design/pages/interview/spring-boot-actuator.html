@@ -1,0 +1,732 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">201</span>
+        <div class="qa-text">What is <b>Spring Boot Actuator</b> and why is it used?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot Actuator is a production-ready sub-project that adds <b>operational monitoring and management capabilities</b> to Spring Boot applications. It exposes endpoints that provide insights into the application's health, metrics, configuration, and runtime state.</li>
+          <li><b>Why it's used:</b>
+            <ul>
+              <li><b>Health checks:</b> Kubernetes liveness/readiness probes, load balancer health checks, monitoring alerts</li>
+              <li><b>Metrics:</b> JVM memory, thread pools, HTTP request latency, custom business metrics — feeds into Prometheus/Grafana</li>
+              <li><b>Configuration visibility:</b> Which properties are active, which beans are registered, which auto-configurations applied</li>
+              <li><b>Diagnostics:</b> Thread dumps, heap dumps, HTTP trace logs for production debugging</li>
+              <li><b>Application management:</b> Graceful shutdown, loggers level adjustment at runtime</li>
+            </ul>
+          </li>
+          <li><b>Dependency:</b> <code>spring-boot-starter-actuator</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Actuator is a must-have in production Spring Boot applications. Any deployment without health checks is operationally blind — orchestrators (Kubernetes, ECS) cannot replace failing instances without health probe endpoints.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">202</span>
+        <div class="qa-text">What are the <b>default Actuator endpoints</b> available in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Endpoint</th><th>Path</th><th>Description</th><th>Default exposed</th></tr></thead>
+          <tbody>
+            <tr><td>health</td><td><code>/actuator/health</code></td><td>Application health status + component health indicators</td><td>Yes</td></tr>
+            <tr><td>info</td><td><code>/actuator/info</code></td><td>Application info (version, git commit, custom)</td><td>Yes</td></tr>
+            <tr><td>metrics</td><td><code>/actuator/metrics</code></td><td>Application metrics (JVM, HTTP, custom)</td><td>No (security)</td></tr>
+            <tr><td>env</td><td><code>/actuator/env</code></td><td>Environment properties — all property sources</td><td>No (sensitive)</td></tr>
+            <tr><td>beans</td><td><code>/actuator/beans</code></td><td>All Spring beans in context</td><td>No</td></tr>
+            <tr><td>conditions</td><td><code>/actuator/conditions</code></td><td>Auto-configuration conditions report</td><td>No</td></tr>
+            <tr><td>loggers</td><td><code>/actuator/loggers</code></td><td>View and change log levels at runtime</td><td>No</td></tr>
+            <tr><td>threaddump</td><td><code>/actuator/threaddump</code></td><td>JVM thread dump</td><td>No</td></tr>
+            <tr><td>heapdump</td><td><code>/actuator/heapdump</code></td><td>JVM heap dump (binary)</td><td>No</td></tr>
+            <tr><td>shutdown</td><td><code>/actuator/shutdown</code></td><td>Graceful shutdown (POST)</td><td>No — must enable explicitly</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> By default, only <code>health</code> and <code>info</code> are exposed over HTTP for security. In production, carefully expose only what monitoring systems need. Never expose <code>env</code>, <code>beans</code>, or <code>heapdump</code> publicly — they contain sensitive configuration data.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">203</span>
+        <div class="qa-text">How do you <b>enable and secure Actuator endpoints</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml"># Expose specific endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,prometheus,loggers"
+        # Never expose: env, beans, heapdump, threaddump publicly
+  endpoint:
+    health:
+      show-details: when-authorized  # or never/always
+      show-components: when-authorized
+    info:
+      enabled: true
+  server:
+    port: 8081  # Separate management port (secure internally)</code></pre>
+<pre><code class="language-java">// Secure actuator endpoints with Spring Security
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+        .securityMatcher("/actuator/**")
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+            .requestMatchers("/actuator/**").hasRole("ACTUATOR_ADMIN")
+        )
+        .httpBasic(Customizer.withDefaults())
+        .build();
+}</code></pre>
+        <ul>
+          <li><b>Production pattern:</b> Run actuator on a separate internal port (<code>management.server.port=8081</code>) accessible only within the VPC/service mesh — not exposed to external clients.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The safest production setup: separate management port (8081) accessible only internally, expose only <code>health</code>, <code>info</code>, <code>metrics</code> (for Prometheus scraping), and <code>loggers</code> (for runtime log level adjustment). Secure with network policy and Basic Auth.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">204</span>
+        <div class="qa-text">How do you create <b>custom Actuator endpoints</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@Component
+@Endpoint(id = "application-status")  // Accessible at /actuator/application-status
+public class ApplicationStatusEndpoint {
+
+    private final List&lt;ExternalService&gt; externalServices;
+
+    @ReadOperation  // HTTP GET
+    public ApplicationStatusDto getStatus() {
+        Map&lt;String, String&gt; serviceStatuses = externalServices.stream()
+            .collect(Collectors.toMap(
+                ExternalService::getName,
+                s -> s.isAvailable() ? "UP" : "DOWN"
+            ));
+
+        return new ApplicationStatusDto(
+            "order-service",
+            "1.2.3",
+            serviceStatuses,
+            Runtime.getRuntime().freeMemory()
+        );
+    }
+
+    @WriteOperation  // HTTP POST
+    public void triggerMaintenanceMode(@Selector String action) {
+        if ("enable".equals(action)) {
+            maintenanceModeService.enable();
+        }
+    }
+
+    @DeleteOperation  // HTTP DELETE
+    public void clearApplicationCache() {
+        cacheManager.clearAll();
+    }
+}</code></pre>
+        <ul>
+          <li><code>@ReadOperation</code> → GET, <code>@WriteOperation</code> → POST, <code>@DeleteOperation</code> → DELETE</li>
+          <li>Use <code>@Selector</code> for path segments: <code>/actuator/application-status/enable</code></li>
+          <li>Can also be exposed as JMX beans via <code>@JmxEndpoint</code> or <code>@WebEndpoint</code> for HTTP-only.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Custom Actuator endpoints are ideal for exposing business-level health indicators — "are all payment gateways reachable?", "is the feature flag cache populated?", "how many orders are in PENDING state?" — operational insights beyond technical JVM metrics.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">205</span>
+        <div class="qa-text">What is <b>Micrometer</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Micrometer</b> is a vendor-neutral <b>application metrics instrumentation library</b> — the SLF4J of metrics. It provides a common API for recording metrics that can be exported to any monitoring backend (Prometheus, Datadog, CloudWatch, InfluxDB, Graphite, etc.).</li>
+          <li><b>Core metric types:</b>
+            <ul>
+              <li><code>Counter</code> — monotonically increasing count (HTTP requests, errors, events)</li>
+              <li><code>Gauge</code> — current value (active connections, queue size, cache entries)</li>
+              <li><code>Timer</code> — measures latency and throughput (method execution time, HTTP response time)</li>
+              <li><code>DistributionSummary</code> — records distribution of values (response sizes, order amounts)</li>
+              <li><code>LongTaskTimer</code> — tracks long-running operations</li>
+            </ul>
+          </li>
+          <li>Spring Boot auto-configures Micrometer with instrumentation for JVM, Tomcat, Spring MVC, Spring Data, Spring Cloud, and more.</li>
+        </ul>
+<pre><code class="language-java">@Service
+public class OrderService {
+
+    private final Counter ordersCreated;
+    private final Timer orderProcessingTime;
+
+    public OrderService(MeterRegistry registry) {
+        ordersCreated = Counter.builder("orders.created")
+            .tag("env", "prod")
+            .description("Total orders created")
+            .register(registry);
+
+        orderProcessingTime = Timer.builder("order.processing.duration")
+            .percentiles(0.5, 0.95, 0.99)
+            .register(registry);
+    }
+
+    public OrderDto createOrder(CreateOrderRequest request) {
+        return orderProcessingTime.record(() -> {
+            OrderDto order = processOrder(request);
+            ordersCreated.increment();
+            return order;
+        });
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Micrometer's tag-based dimensionality is powerful — add tags for environment, service, region, and user tier. This enables Prometheus/Grafana queries like "p95 latency for premium users in us-east-1 in the last 5 minutes."</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">206</span>
+        <div class="qa-text">How do you integrate <b>Spring Boot with Prometheus</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-xml">&lt;!-- Dependencies --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-registry-prometheus&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-yaml"># application.yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus,health,info"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      env: ${ENVIRONMENT:local}
+    export:
+      prometheus:
+        enabled: true</code></pre>
+        <ul>
+          <li>Prometheus scrapes <code>GET /actuator/prometheus</code> — Spring Boot exposes all Micrometer metrics in Prometheus text format.</li>
+          <li><b>prometheus.yml scrape config:</b></li>
+        </ul>
+<pre><code class="language-yaml"># prometheus.yml
+scrape_configs:
+  - job_name: 'spring-boot-app'
+    scrape_interval: 15s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['order-service:8080', 'user-service:8080']
+    # Or use service discovery
+    kubernetes_sd_configs: [...]</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Adding <code>management.metrics.tags.application=${spring.application.name}</code> tags all metrics with the service name — essential when scraping multiple services into the same Prometheus instance to distinguish metrics by service.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">207</span>
+        <div class="qa-text">How do you integrate <b>Spring Boot with Grafana dashboards</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Architecture:</b> Spring Boot → Micrometer → Prometheus (scrapes metrics) → Grafana (queries Prometheus, visualizes dashboards)</li>
+          <li><b>Steps:</b>
+            <ol>
+              <li>Add Actuator + Micrometer Prometheus dependencies (as above)</li>
+              <li>Run Prometheus configured to scrape <code>/actuator/prometheus</code></li>
+              <li>Add Prometheus as a data source in Grafana</li>
+              <li>Import or create dashboards in Grafana</li>
+            </ol>
+          </li>
+          <li><b>Pre-built dashboards (Grafana.com):</b>
+            <ul>
+              <li><b>Dashboard 4701:</b> JVM (Micrometer) — memory, GC, threads, class loading</li>
+              <li><b>Dashboard 12900:</b> Spring Boot Statistics — HTTP requests, response times, exceptions</li>
+              <li><b>Dashboard 6756:</b> Kubernetes pod metrics</li>
+            </ul>
+          </li>
+          <li><b>Key panels to build:</b> Request rate (req/s), error rate (4xx/5xx %), P50/P95/P99 latency, JVM heap usage, active threads, database connection pool usage, cache hit ratio</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The four golden signals of monitoring (Google SRE): <b>Latency, Traffic, Errors, Saturation</b>. Design your Grafana dashboard to show these four signals prominently. Alerting thresholds should be based on SLOs (Service Level Objectives) for each service.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">208</span>
+        <div class="qa-text">How do you configure <b>distributed tracing with Spring Cloud Sleuth</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Note:</b> Spring Cloud Sleuth is deprecated and unavailable in Spring Boot 3.x. Its functionality is now in <b>Micrometer Tracing</b> (for Spring Boot 3.x).</li>
+          <li><b>Spring Boot 2.x (Sleuth):</b></li>
+        </ul>
+<pre><code class="language-xml">&lt;!-- Spring Boot 2.x --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-sleuth&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-sleuth-zipkin&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-xml">&lt;!-- Spring Boot 3.x — Micrometer Tracing --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-tracing-bridge-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.zipkin.reporter2&lt;/groupId&gt;
+    &lt;artifactId&gt;zipkin-reporter-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+        <ul>
+          <li><b>What it provides automatically:</b> Every HTTP request gets a unique Trace ID. The ID is propagated through RestTemplate/WebClient/Feign calls via HTTP headers. Log entries include <code>[appName, traceId, spanId]</code> prefix.</li>
+        </ul>
+<pre><code class="language-yaml">management:
+  tracing:
+    sampling:
+      probability: 1.0  # 100% for dev; 0.1 for production
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Distributed tracing becomes invaluable when debugging cross-service issues. The typical debugging workflow: user reports slow order creation → find trace ID in logs → search Zipkin → see OrderService called InventoryService (200ms) then PaymentService (2000ms) → bottleneck identified.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">209</span>
+        <div class="qa-text">What is <b>Zipkin</b> and how does it integrate with Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Zipkin</b> is an open-source distributed tracing system. It collects timing data from microservices, correlates spans by Trace ID, and provides a UI to visualize:
+            <ul>
+              <li>End-to-end request flow across services (Gantt chart view)</li>
+              <li>Latency breakdown per service and operation</li>
+              <li>Service dependency diagram</li>
+              <li>Error annotations and exception messages</li>
+            </ul>
+          </li>
+          <li><b>Integration flow:</b>
+            <ol>
+              <li>Spring Boot sends span data to Zipkin via HTTP POST to <code>/api/v2/spans</code></li>
+              <li>Zipkin stores spans in-memory (dev) or Elasticsearch/Cassandra (production)</li>
+              <li>Zipkin UI correlates spans by Trace ID and renders the waterfall view</li>
+            </ol>
+          </li>
+          <li><b>Running Zipkin locally:</b> <code>docker run -p 9411:9411 openzipkin/zipkin</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> For production, use Elasticsearch as Zipkin's storage backend — in-memory is for development only. In AWS, consider AWS X-Ray instead of self-hosted Zipkin — it integrates with the AWS ecosystem and doesn't require managing another service.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">210</span>
+        <div class="qa-text">How do you send Spring Boot logs to <b>ELK stack</b> (Elasticsearch, Logstash, Kibana)?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-xml">&lt;!-- logstash-logback-encoder for JSON logs --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;net.logstash.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logstash-logback-encoder&lt;/artifactId&gt;
+    &lt;version&gt;7.4&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-xml">&lt;!-- logback-spring.xml --&gt;
+&lt;appender name="JSON" class="ch.qos.logback.core.ConsoleAppender"&gt;
+    &lt;encoder class="net.logstash.logback.encoder.LogstashEncoder"&gt;
+        &lt;customFields&gt;{"service":"order-service","env":"${ENVIRONMENT}"}&lt;/customFields&gt;
+        &lt;fieldNames&gt;
+            &lt;timestamp&gt;@timestamp&lt;/timestamp&gt;
+            &lt;message&gt;message&lt;/message&gt;
+            &lt;logger&gt;logger&lt;/logger&gt;
+        &lt;/fieldNames&gt;
+    &lt;/encoder&gt;
+&lt;/appender&gt;
+&lt;root level="INFO"&gt;
+    &lt;appender-ref ref="JSON" /&gt;
+&lt;/root&gt;</code></pre>
+        <ul>
+          <li><b>Log pipeline (containerized):</b> Spring Boot → JSON console logs → Filebeat (sidecar container) → Logstash (parse/transform) → Elasticsearch (index) → Kibana (visualize)</li>
+          <li><b>Alternative (simpler):</b> Filebeat directly to Elasticsearch (without Logstash for simple JSON logs)</li>
+          <li><b>Key fields in each log entry:</b> <code>@timestamp</code>, <code>level</code>, <code>message</code>, <code>service</code>, <code>traceId</code>, <code>spanId</code>, <code>userId</code>, <code>requestId</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always include the <code>traceId</code> in structured logs — it links the ELK log search with the Zipkin trace view. A complete observability stack: Grafana (metrics) + Zipkin (traces) + Kibana (logs) provides full request lifecycle visibility.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">211</span>
+        <div class="qa-text">What are the best practices for <b>monitoring microservices in production</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Three pillars of observability:</b>
+            <ul>
+              <li><b>Metrics:</b> Micrometer + Prometheus + Grafana — what is happening (request rate, latency, error rate, resource utilization)</li>
+              <li><b>Logs:</b> Structured JSON logs → ELK/Loki — what happened (detailed event records)</li>
+              <li><b>Traces:</b> Micrometer Tracing/Zipkin/Jaeger/X-Ray — why it happened (request flow across services)</li>
+            </ul>
+          </li>
+          <li><b>Alert on SLOs:</b> Error rate > 1%, P99 latency > 2s, DB connection pool exhaustion > 80%</li>
+          <li><b>Health checks:</b> Liveness probe (is the JVM alive?), Readiness probe (is the service ready to handle traffic?)</li>
+          <li><b>Capacity metrics:</b> CPU, memory, connection pool usage, queue depth — detect saturation before it impacts users</li>
+          <li><b>Business metrics:</b> Orders per second, payment success rate, user registrations — detect business anomalies alongside technical ones</li>
+          <li><b>Runbook automation:</b> Correlate alerts to runbooks so on-call engineers know exactly what to do</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Monitoring is not just about technical metrics. Business metrics (orders created, payments processed, cart abandonment rate) are equally important — a technical health check passing while business metrics drop signals a logic bug, not an infrastructure issue.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">212</span>
+        <div class="qa-text">What is the <b>health check endpoint</b> and why is it important in cloud deployments?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>/actuator/health</code></b> reports the application's operational status. Spring Boot auto-creates health indicators for all configured components: database, Redis, Kafka, RabbitMQ, disk space, etc.</li>
+          <li><b>Response:</b> <code>{"status": "UP"}</code> or <code>{"status": "DOWN", "components": {"db": {"status": "DOWN"}}}</code></li>
+          <li><b>Kubernetes probes (Spring Boot 2.3+):</b>
+            <ul>
+              <li><code>/actuator/health/liveness</code> — is the JVM alive and not deadlocked? Restart if DOWN.</li>
+              <li><code>/actuator/health/readiness</code> — is the service ready to receive traffic? Remove from load balancer if DOWN.</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-yaml"># Kubernetes deployment probe configuration
+livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /actuator/health/readiness
+    port: 8080
+  initialDelaySeconds: 15
+  periodSeconds: 5
+  failureThreshold: 3</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The distinction between liveness and readiness is critical: <b>liveness</b> restarts pods when the JVM is in a bad state (deadlock, OOM). <b>Readiness</b> keeps pods in the load balancer rotation only when all dependencies (DB, cache) are reachable. Failing readiness doesn't restart the pod; failing liveness does.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">213</span>
+        <div class="qa-text">How do you configure <b>metrics for JVM memory, threads, and garbage collection</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot auto-configures all JVM metrics via Micrometer when <code>spring-boot-starter-actuator</code> is present. No additional configuration needed for basic JVM metrics.</li>
+          <li><b>Available JVM metrics:</b>
+            <ul>
+              <li><code>jvm.memory.used</code>, <code>jvm.memory.committed</code>, <code>jvm.memory.max</code> — heap and non-heap memory</li>
+              <li><code>jvm.gc.pause</code> — GC pause duration (timer)</li>
+              <li><code>jvm.gc.memory.promoted</code>, <code>jvm.gc.memory.allocated</code> — GC memory metrics</li>
+              <li><code>jvm.threads.live</code>, <code>jvm.threads.daemon</code>, <code>jvm.threads.peak</code> — thread counts</li>
+              <li><code>jvm.classes.loaded</code>, <code>jvm.classes.unloaded</code> — class loading</li>
+              <li><code>process.cpu.usage</code>, <code>system.cpu.usage</code> — CPU utilization</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-yaml"># Expose specific metrics
+management:
+  metrics:
+    enable:
+      jvm: true
+      process: true
+      tomcat: true
+      hikaricp: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true  # Histogram for HTTP latency
+      percentiles:
+        http.server.requests: [0.5, 0.95, 0.99]</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Key JVM metrics to alert on: heap usage > 80% (memory pressure → GC overhead), GC pause time > 500ms (application pauses), thread count growing unboundedly (thread leak). These are leading indicators of production incidents.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">214</span>
+        <div class="qa-text">How do you enable <b>request/response tracing</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Option 1: Spring Boot Actuator httptrace (Spring Boot 2.x)
+// Stores last 100 HTTP requests/responses in memory
+@Bean
+public HttpTraceRepository httpTraceRepository() {
+    return new InMemoryHttpTraceRepository();
+}
+// Access via: GET /actuator/httptrace</code></pre>
+<pre><code class="language-java">// Option 2: Custom logging filter (recommended for production)
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class RequestResponseLoggingFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+            FilterChain chain) throws ServletException, IOException {
+
+        long startTime = System.currentTimeMillis();
+        String requestId = UUID.randomUUID().toString().substring(0, 8);
+
+        MDC.put("requestId", requestId);
+        MDC.put("httpMethod", request.getMethod());
+        MDC.put("requestUri", request.getRequestURI());
+
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("Request completed: method={}, uri={}, status={}, duration={}ms",
+                request.getMethod(), request.getRequestURI(), response.getStatus(), duration);
+            MDC.clear();
+        }
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Use MDC (Mapped Diagnostic Context) to add contextual information (request ID, user ID, trace ID) to all log statements within the request thread. MDC is thread-local — it propagates through the entire request handling chain automatically.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">215</span>
+        <div class="qa-text">How do you integrate Spring Boot with <b>centralized logging frameworks</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Structured JSON logging</b> is the foundation — enables log platforms to parse, index, and query log data.</li>
+          <li><b>Integration options:</b>
+            <ul>
+              <li><b>ELK Stack:</b> Logstash encoder → Filebeat → Elasticsearch → Kibana</li>
+              <li><b>Grafana Loki:</b> Promtail → Loki → Grafana (lighter than ELK, label-based)</li>
+              <li><b>AWS CloudWatch:</b> CloudWatch Logs agent or direct SDK logging → CloudWatch Log Insights</li>
+              <li><b>Datadog:</b> Datadog Agent → Datadog APM (metrics + logs + traces unified)</li>
+              <li><b>Splunk:</b> Universal Forwarder → Splunk Enterprise</li>
+            </ul>
+          </li>
+          <li><b>Best practices:</b>
+            <ul>
+              <li>Always use structured JSON logging (not plain text)</li>
+              <li>Include service name, environment, trace ID, request ID in every log entry</li>
+              <li>Log at appropriate levels — DEBUG in dev, INFO/WARN in production</li>
+              <li>Never log PII or sensitive data (passwords, tokens, credit card numbers)</li>
+              <li>Use asynchronous logging to avoid I/O blocking the application thread</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Asynchronous logging (Logback's <code>AsyncAppender</code>) is critical for high-throughput services — synchronous logging to files or network endpoints can become a bottleneck under load. Configure async with a bounded queue to prevent OutOfMemory from log backpressure.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">216</span>
+        <div class="qa-text">What is <b>OpenTelemetry</b> and how does it relate to Spring Boot observability?</div>
+        <button class="qa-toggle_btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>OpenTelemetry (OTel)</b> is a CNCF (Cloud Native Computing Foundation) open standard for <b>observability instrumentation</b> — it provides vendor-neutral APIs and SDKs for collecting metrics, logs, and traces (the three observability pillars) from applications.</li>
+          <li><b>Key components:</b>
+            <ul>
+              <li><b>OTLP (OpenTelemetry Protocol):</b> Standard format for transmitting telemetry data</li>
+              <li><b>OTel Collector:</b> Receives, processes, and exports telemetry to multiple backends</li>
+              <li><b>Auto-instrumentation:</b> Java agent that automatically instruments popular frameworks without code changes</li>
+            </ul>
+          </li>
+          <li><b>Spring Boot integration:</b> Micrometer Tracing supports OTel Bridge (<code>micrometer-tracing-bridge-otel</code>). Traces can be exported via OTLP to Jaeger, Tempo (Grafana), Datadog, New Relic, Honeycomb.</li>
+        </ul>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-tracing-bridge-otel&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.opentelemetry&lt;/groupId&gt;
+    &lt;artifactId&gt;opentelemetry-exporter-otlp&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> OpenTelemetry is the future of observability — it prevents vendor lock-in. By instrumenting once with OTel, you can switch between Datadog, Grafana Tempo, Jaeger, and Honeycomb by simply changing the exporter configuration. This is increasingly important in enterprise observability strategies.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">217</span>
+        <div class="qa-text">How do you configure <b>graceful shutdown</b> in Spring Boot applications?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml">server:
+  shutdown: graceful  # Default is immediate
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s  # Wait up to 30s for in-flight requests</code></pre>
+        <ul>
+          <li><b>What graceful shutdown does:</b>
+            <ol>
+              <li>Marks the readiness probe as DOWN — Kubernetes stops routing new traffic to this pod</li>
+              <li>Waits for in-flight requests to complete (up to the timeout)</li>
+              <li>Closes database connections, Kafka consumers, thread pools cleanly</li>
+              <li>Runs <code>@PreDestroy</code> methods and Spring context shutdown hooks</li>
+              <li>JVM exits with code 0</li>
+            </ol>
+          </li>
+          <li><b>Kubernetes grace period alignment:</b> Set Kubernetes <code>terminationGracePeriodSeconds</code> > Spring Boot's timeout + buffer (e.g., Spring Boot 30s timeout → Kubernetes 40s termination period).</li>
+        </ul>
+<pre><code class="language-yaml"># Kubernetes deployment
+spec:
+  template:
+    spec:
+      terminationGracePeriodSeconds: 40  # Must exceed Spring Boot's shutdown timeout
+      containers:
+        - lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 5"]  # Small delay for load balancer routing update</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Graceful shutdown is non-negotiable for zero-downtime deployments. Without it, rolling updates kill pods mid-request, causing 5xx errors. The preStop hook adds a brief sleep to allow the load balancer to remove the pod before the process starts draining.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">218</span>
+        <div class="qa-text">What are <b>performance tuning tips</b> for Spring Boot in production?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>JVM tuning:</b>
+            <ul>
+              <li>Use G1GC (default in Java 11+) or ZGC for low-latency applications</li>
+              <li>Set <code>-Xms</code> = <code>-Xmx</code> to avoid GC overhead from heap resizing</li>
+              <li>Enable JVM ergonomics: <code>-XX:+UseContainerSupport</code> for Docker/Kubernetes CPU/memory awareness</li>
+            </ul>
+          </li>
+          <li><b>Spring Boot:</b>
+            <ul>
+              <li>Enable lazy initialization in dev: <code>spring.main.lazy-initialization=true</code></li>
+              <li>Use <code>@Transactional(readOnly = true)</code> — skips dirty checking for read queries</li>
+              <li>Enable Spring Boot's layered JAR for faster Docker image builds</li>
+            </ul>
+          </li>
+          <li><b>Database:</b>
+            <ul>
+              <li>Tune HikariCP pool size: <code>maximumPoolSize = (cpu_cores * 2) + spindle_count</code></li>
+              <li>Enable second-level cache (Ehcache/Redis) for frequently-read, rarely-changed data</li>
+              <li>Use <code>@BatchSize</code> or <code>JOIN FETCH</code> to avoid N+1 query problems</li>
+            </ul>
+          </li>
+          <li><b>Web layer:</b>
+            <ul>
+              <li>Set appropriate Tomcat thread pool: <code>server.tomcat.threads.max=200</code></li>
+              <li>Enable HTTP/2: <code>server.http2.enabled=true</code></li>
+              <li>Use <code>@Cacheable</code> for expensive, stable computations</li>
+              <li>Enable response compression: <code>server.compression.enabled=true</code></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always profile before optimizing. Use Micrometer metrics + Grafana to identify actual bottlenecks (is it GC, DB queries, external API latency?). Premature optimization wastes time — measure, identify, fix, measure again.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">219</span>
+        <div class="qa-text">How do you handle <b>thread pool tuning</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-yaml"># Tomcat thread pool (synchronous web)
+server:
+  tomcat:
+    threads:
+      max: 200          # Max concurrent request handler threads
+      min-spare: 10     # Min always-alive threads
+    connection-timeout: 20000  # 20s connection timeout
+    max-connections: 8192      # Max simultaneous connections
+    accept-count: 100          # Queue size when all threads busy
+
+# Async executor
+spring:
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 20
+        queue-capacity: 500
+        keep-alive: 60s
+      thread-name-prefix: "async-"</code></pre>
+<pre><code class="language-java">// HikariCP connection pool tuning
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 10   # (cpu_cores * 2) + effective_spindle_count
+      minimum-idle: 5
+      idle-timeout: 600000    # 10 minutes
+      max-lifetime: 1800000   # 30 minutes (less than DB connection timeout)
+      connection-timeout: 30000</code></pre>
+        <ul>
+          <li><b>Guideline for Tomcat threads:</b> Too many threads = context switching overhead + excessive memory. Too few = request queuing under load. Profile under realistic load with Gatling/JMeter to find the right size.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> For I/O-bound applications, more threads are beneficial (threads wait on I/O, not CPU). For CPU-bound applications, more threads than CPU cores causes context switching overhead. Use Reactive (WebFlux) for highly concurrent I/O-bound scenarios instead of increasing thread pool size.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">220</span>
+        <div class="qa-text">What are the <b>common production pitfalls in Spring Boot</b> and how to avoid them?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>N+1 query problem:</b> <code>@OneToMany</code> with <code>LAZY</code> fetch + loop → 1 query for list + N queries for each item. Fix: <code>JOIN FETCH</code> or <code>@EntityGraph</code>. Detect: <code>spring.jpa.show-sql=true</code> + Hibernate statistics.</li>
+          <li><b>Thread pool exhaustion:</b> All Tomcat threads blocked waiting on slow external calls → 503 errors. Fix: Set timeouts on all external calls, use circuit breakers, or switch to reactive stack.</li>
+          <li><b>Memory leaks:</b> Static collection holding references to request-scoped objects, ThreadLocal variables not cleaned up. Fix: Review static fields, always clean up ThreadLocal in finally blocks.</li>
+          <li><b>Connection pool exhaustion:</b> Too many concurrent DB operations, or connections not returned due to exceptions. Fix: Tune HikariCP pool size, set connection timeout, use try-with-resources, ensure transactions are bounded.</li>
+          <li><b>Unprotected Actuator endpoints:</b> Leaking config, thread dumps, bean definitions. Fix: Secure actuator with security config or separate management port on private network.</li>
+          <li><b>Swallowed exceptions in <code>@Transactional</code>:</b> Catching and logging without rethrowing — transaction commits with partial data. Fix: Rethrow or use <code>TransactionAspectSupport.currentTransactionStatus().setRollbackOnly()</code>.</li>
+          <li><b>Missing <code>@Async</code> proxy bypass:</b> Calling <code>@Async</code> from the same class — proxy not invoked, runs synchronously. Fix: Call from different bean, or use <code>@Autowired self</code> injection (with caution).</li>
+          <li><b>Database schema drift in production:</b> Using <code>ddl-auto=update</code> in production. Fix: Always use <code>ddl-auto=validate</code> or <code>none</code> in production; use Flyway/Liquibase for migrations.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Knowing these pitfalls and their root causes demonstrates production experience. The best interviewers ask "have you ever encountered X in production?" — having concrete examples of these issues, their symptoms, and how you fixed them makes a very strong impression.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

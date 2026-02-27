@@ -1,0 +1,592 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">41</span>
+        <div class="qa-text">What is <b>Dependency Injection (DI)</b> in Spring? Why is it important?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Dependency Injection</b> is a design pattern where an object's dependencies are provided externally (by the IoC container) rather than created by the object itself. Spring's IoC (Inversion of Control) container manages this process.</li>
+          <li><b>Why it's important:</b>
+            <ul>
+              <li><b>Loose coupling:</b> Objects depend on abstractions (interfaces), not concrete implementations — enabling easy substitution and testing.</li>
+              <li><b>Testability:</b> Dependencies can be mocked in unit tests without a running Spring context.</li>
+              <li><b>Maintainability:</b> Changing an implementation only requires a change in one place (the configuration), not in all classes that use it.</li>
+              <li><b>Single Responsibility:</b> Objects focus on their business logic, not on constructing their dependencies.</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Without DI — tightly coupled, untestable
+public class OrderService {
+    private PaymentService paymentService = new StripePaymentService(); // hardcoded
+}
+
+// With DI — loosely coupled, testable
+@Service
+public class OrderService {
+    private final PaymentService paymentService; // injected by Spring
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> DI is the enabler of SOLID principles — particularly Dependency Inversion (D in SOLID). Always frame DI as "what you depend on should be an abstraction, not a concrete class."</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">42</span>
+        <div class="qa-text">What are the <b>different types of Dependency Injection</b> in Spring?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring supports three types of DI:
+            <ul>
+              <li><b>Constructor Injection:</b> Dependencies are provided through the class constructor. Marked with <code>@Autowired</code> (optional in Spring 4.3+ if there is only one constructor).</li>
+              <li><b>Setter Injection:</b> Dependencies are injected through setter methods after object construction. Useful for optional dependencies.</li>
+              <li><b>Field Injection:</b> Dependencies are directly injected into fields using <code>@Autowired</code>. Convenient but discouraged for production code.</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Constructor Injection (preferred)
+@Service
+public class OrderService {
+    private final PaymentService paymentService;
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+
+// Setter Injection
+@Service
+public class NotificationService {
+    private EmailService emailService;
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+}
+
+// Field Injection (avoid in production)
+@Service
+public class ReportService {
+    @Autowired
+    private DataService dataService;
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Constructor injection is the Spring team's official recommendation. It enforces immutability (<code>final</code> fields), makes dependencies explicit, and enables easy unit testing without a Spring context.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">43</span>
+        <div class="qa-text">What is the difference between <b>constructor injection</b> and <b>setter injection</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Constructor Injection</th><th>Setter Injection</th></tr></thead>
+          <tbody>
+            <tr><td>Immutability</td><td>Fields can be <code>final</code> — truly immutable</td><td>Fields cannot be <code>final</code> — mutable after construction</td></tr>
+            <tr><td>Mandatory deps</td><td>Perfect — object cannot be created without all deps</td><td>Optional — object can be created with null dependencies</td></tr>
+            <tr><td>Circular deps</td><td>Detected at startup — <code>BeanCurrentlyInCreationException</code></td><td>Can work around circular deps (but indicates design flaw)</td></tr>
+            <tr><td>Testability</td><td>Easy — pass mocks via constructor</td><td>Easy — call setters before test</td></tr>
+            <tr><td>Verbosity</td><td>More code for many dependencies</td><td>Less boilerplate per dependency</td></tr>
+            <tr><td>Best for</td><td>Required, mandatory dependencies</td><td>Optional or reconfigurable dependencies</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Spring documentation explicitly recommends constructor injection for mandatory dependencies and setter injection only for optional ones. If your constructor has too many parameters, it's a sign the class violates SRP and should be split.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">44</span>
+        <div class="qa-text">Which <b>injection method is preferred</b> in Spring and why?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Constructor injection is the recommended approach</b> by the Spring team and the broader Java community. Reasons:</li>
+          <li><b>Immutability:</b> <code>final</code> fields prevent accidental reassignment after construction.</li>
+          <li><b>Mandatory dependency enforcement:</b> If a required dependency isn't available, the container fails fast at startup rather than producing a <code>NullPointerException</code> later.</li>
+          <li><b>Circular dependency detection:</b> Spring immediately throws <code>BeanCurrentlyInCreationException</code> for circular dependencies between constructor-injected beans — revealing design flaws early.</li>
+          <li><b>Pure unit testing:</b> No Spring context needed — simply call <code>new MyService(mockDependency)</code> in tests.</li>
+          <li><b>Avoids reflection:</b> Unlike field injection, constructor injection works without breaking encapsulation.</li>
+          <li><b>Lombok integration:</b> <code>@RequiredArgsConstructor</code> generates a constructor for all <code>final</code> fields, eliminating boilerplate.</li>
+        </ul>
+<pre><code class="language-java">@Service
+@RequiredArgsConstructor  // Lombok generates constructor
+public class OrderService {
+    private final PaymentService paymentService;
+    private final InventoryService inventoryService;
+    private final NotificationService notificationService;
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Field injection is often seen in tutorials for brevity, but it's an anti-pattern in production code. Always advocate for constructor injection and explain why — this shows senior-level understanding.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">45</span>
+        <div class="qa-text">How does <b>Spring manage the lifecycle of a bean</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring beans go through a well-defined lifecycle managed by the <code>ApplicationContext</code>:
+            <ol>
+              <li><b>Instantiation:</b> Spring creates the bean instance via the constructor.</li>
+              <li><b>Property Population:</b> Dependencies are injected via setter injection or field injection.</li>
+              <li><b>BeanNameAware / BeanFactoryAware / ApplicationContextAware:</b> If the bean implements these interfaces, Spring invokes the corresponding setter methods.</li>
+              <li><b>BeanPostProcessor — postProcessBeforeInitialization():</b> Custom pre-init processing (e.g., AOP proxying begins here).</li>
+              <li><b>@PostConstruct / InitializingBean.afterPropertiesSet() / init-method:</b> Custom initialization logic runs.</li>
+              <li><b>BeanPostProcessor — postProcessAfterInitialization():</b> Custom post-init processing (AOP proxy wrapping completes here).</li>
+              <li><b>Bean is ready for use.</b></li>
+              <li><b>@PreDestroy / DisposableBean.destroy() / destroy-method:</b> On context shutdown, cleanup runs.</li>
+            </ol>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Prefer <code>@PostConstruct</code> and <code>@PreDestroy</code> over implementing <code>InitializingBean</code>/<code>DisposableBean</code> — the annotation approach is less invasive and doesn't couple your bean to Spring API interfaces.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">46</span>
+        <div class="qa-text">What is the role of the <b>BeanFactory</b> interface?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>BeanFactory</code> is the <b>root interface</b> for the Spring IoC container. It provides the basic contract for bean access: <code>getBean()</code>, <code>containsBean()</code>, <code>isSingleton()</code>, <code>isPrototype()</code>.</li>
+          <li><b>Characteristics:</b>
+            <ul>
+              <li>Lazy initialization — beans are created only when requested (unless configured otherwise)</li>
+              <li>Lightweight — suitable for resource-constrained environments</li>
+              <li>No built-in AOP, event publishing, or internationalization support</li>
+            </ul>
+          </li>
+          <li><b>Common implementation:</b> <code>DefaultListableBeanFactory</code> (the actual container used internally by <code>ApplicationContext</code>).</li>
+          <li>In practice, you almost never use <code>BeanFactory</code> directly — use <code>ApplicationContext</code>, which extends it with additional capabilities.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>BeanFactory</code> is the contract; <code>ApplicationContext</code> is the full implementation. Think of <code>BeanFactory</code> as a bare-bones vending machine and <code>ApplicationContext</code> as a full grocery store with AOP, events, and messages.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">47</span>
+        <div class="qa-text">Difference between <b>ApplicationContext</b> and <b>BeanFactory</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Feature</th><th>BeanFactory</th><th>ApplicationContext</th></tr></thead>
+          <tbody>
+            <tr><td>Bean initialization</td><td>Lazy (on demand)</td><td>Eager (all singletons at startup)</td></tr>
+            <tr><td>AOP integration</td><td>Manual setup required</td><td>Built-in</td></tr>
+            <tr><td>Event publishing</td><td>Not supported</td><td><code>ApplicationEventPublisher</code> support</td></tr>
+            <tr><td>Internationalization</td><td>Not supported</td><td><code>MessageSource</code> for i18n</td></tr>
+            <tr><td>Bean post-processing</td><td>Manual registration</td><td>Automatic BeanPostProcessor detection</td></tr>
+            <tr><td>Environment</td><td>No <code>Environment</code> abstraction</td><td>Full <code>Environment</code> and profile support</td></tr>
+            <tr><td>Use case</td><td>Resource-constrained, legacy</td><td>All Spring Boot applications</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> In Spring Boot, you always deal with <code>ApplicationContext</code>. <code>BeanFactory</code> is relevant primarily in academic Spring discussions or embedded/IoT scenarios where memory is severely constrained.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">48</span>
+        <div class="qa-text">What are the <b>different bean scopes</b> available in Spring?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>singleton</b> (default) — one shared instance per <code>ApplicationContext</code>. Stateless beans (services, repositories, utilities) should use this scope.</li>
+          <li><b>prototype</b> — a new instance is created every time the bean is requested from the container. Used for stateful beans (form beans, command objects).</li>
+          <li><b>request</b> — one instance per HTTP request; the instance is created at the start of a request and destroyed at its end. Web-aware <code>ApplicationContext</code> required.</li>
+          <li><b>session</b> — one instance per HTTP session; tied to the user's session lifecycle. Used for user-specific state.</li>
+          <li><b>application</b> — one instance per <code>ServletContext</code> (similar to singleton but shared across all Spring contexts in the same web app).</li>
+          <li><b>websocket</b> — one instance per WebSocket session.</li>
+          <li><b>Custom scopes</b> — implement <code>org.springframework.beans.factory.config.Scope</code> and register it with the container (e.g., thread scope, tenant scope).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The most common gotcha: injecting a <code>prototype</code> bean into a <code>singleton</code> bean. After the first injection, the singleton holds the same prototype reference forever. Use <code>@Lookup</code> or <code>ObjectProvider&lt;T&gt;</code> to get a new prototype instance on each call.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">49</span>
+        <div class="qa-text">How do you create a <b>prototype-scoped bean</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Option 1: @Scope annotation
+@Component
+@Scope("prototype")
+public class PdfGenerator {
+    public byte[] generate(ReportData data) { ... }
+}
+
+// Option 2: @Bean with scope
+@Configuration
+public class AppConfig {
+    @Bean
+    @Scope("prototype")
+    public PdfGenerator pdfGenerator() {
+        return new PdfGenerator();
+    }
+}
+
+// Correctly consuming a prototype from a singleton bean:
+@Service
+public class ReportService {
+    // ObjectProvider is the recommended way — gets new instance on every call
+    private final ObjectProvider&lt;PdfGenerator&gt; pdfGeneratorProvider;
+
+    public ReportService(ObjectProvider&lt;PdfGenerator&gt; pdfGeneratorProvider) {
+        this.pdfGeneratorProvider = pdfGeneratorProvider;
+    }
+
+    public byte[] createReport(ReportData data) {
+        PdfGenerator generator = pdfGeneratorProvider.getObject(); // new instance each call
+        return generator.generate(data);
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Direct <code>@Autowired</code> injection of a prototype into a singleton gives you a stale singleton-equivalent prototype. The correct patterns are <code>ObjectProvider</code>, <code>@Lookup</code> method injection, or <code>ApplicationContext.getBean()</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">50</span>
+        <div class="qa-text">What is the <b>default bean scope</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>The default bean scope in Spring (and Spring Boot) is <b>singleton</b>.</li>
+          <li>This means a single instance of the bean is created at application startup and shared across the entire <code>ApplicationContext</code>. All requests for that bean return the same instance.</li>
+          <li><b>Implications for thread safety:</b> Singleton beans shared across multiple threads must be stateless or thread-safe. Storing mutable state (like a user-specific field) in a singleton service is a critical bug — it causes data leakage between concurrent requests.</li>
+          <li><b>Why singleton by default?</b> It's memory-efficient, provides faster response (no object creation overhead), and encourages stateless design.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> "Are Spring singleton beans thread-safe?" — No, not inherently. Thread safety depends on whether the bean holds mutable state. Spring services and repositories should be stateless (no instance fields storing request-scoped data), making them naturally thread-safe.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">51</span>
+        <div class="qa-text">Explain the difference between <b>singleton bean</b> and <b>prototype bean</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Singleton</th><th>Prototype</th></tr></thead>
+          <tbody>
+            <tr><td>Instances</td><td>One per <code>ApplicationContext</code></td><td>New instance on each <code>getBean()</code> call</td></tr>
+            <tr><td>Lifecycle</td><td>Created at startup, destroyed on context close</td><td>Created on request; Spring doesn't manage destruction</td></tr>
+            <tr><td>State</td><td>Should be stateless (shared by all)</td><td>Can hold state (private to each caller)</td></tr>
+            <tr><td>Memory</td><td>Efficient — one object</td><td>More memory — new object per use</td></tr>
+            <tr><td>Use cases</td><td>Services, repositories, utilities</td><td>Stateful objects, form beans, command processors</td></tr>
+            <tr><td>Destruction callbacks</td><td>Spring calls <code>@PreDestroy</code></td><td>Spring does NOT call <code>@PreDestroy</code> for prototype beans</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Important gotcha:</b> Spring does <em>not</em> manage the full lifecycle of prototype beans. It creates and injects them, but does not call <code>@PreDestroy</code> methods. If a prototype bean holds resources (connections, file handles), you must close them manually.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">52</span>
+        <div class="qa-text">What is the role of <b>@PostConstruct</b> and <b>@PreDestroy</b> annotations?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@PostConstruct</code> marks a method to be called <b>after dependency injection is complete</b> and before the bean is put into service. Used for initialization logic that requires injected dependencies to be available.</li>
+          <li><code>@PreDestroy</code> marks a method to be called <b>just before the bean is removed from the container</b> (on context close). Used for cleanup — releasing connections, closing streams, etc.</li>
+        </ul>
+<pre><code class="language-java">@Component
+public class CacheManager {
+
+    @Autowired
+    private RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    private Map&lt;String, Object&gt; localCache;
+
+    @PostConstruct
+    public void initCache() {
+        // Safe to use redisTemplate here — it's already injected
+        localCache = new HashMap&lt;&gt;();
+        // Pre-load frequently accessed data
+    }
+
+    @PreDestroy
+    public void evictCache() {
+        // Clean up before shutdown
+        localCache.clear();
+    }
+}</code></pre>
+        <ul>
+          <li><b>Execution order:</b> Constructor → DI → <code>@PostConstruct</code> → bean is in use → <code>@PreDestroy</code> → bean destroyed.</li>
+          <li>These are JSR-250 annotations (<code>jakarta.annotation</code> package) — not Spring-specific, so they work with any JSR-250-compliant container.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@PostConstruct</code> is a safer initialization point than constructor — at constructor time, dependencies may not be set yet (for setter/field injection). Use constructor + <code>final</code> fields to avoid this ambiguity entirely.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">53</span>
+        <div class="qa-text">How do you define <b>custom initialization and destruction methods</b> for beans?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Three approaches:</b>
+            <ul>
+              <li><code>@PostConstruct</code> / <code>@PreDestroy</code> — simplest, no Spring coupling</li>
+              <li>Implement <code>InitializingBean.afterPropertiesSet()</code> / <code>DisposableBean.destroy()</code> — couples to Spring API</li>
+              <li>Specify <code>initMethod</code> / <code>destroyMethod</code> on <code>@Bean</code> — useful for third-party classes</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Option 3 — for third-party classes you can't annotate
+@Configuration
+public class DataSourceConfig {
+
+    @Bean(initMethod = "initialize", destroyMethod = "close")
+    public HikariDataSource dataSource() {
+        HikariDataSource ds = new HikariDataSource();
+        ds.setJdbcUrl("jdbc:postgresql://localhost:5432/mydb");
+        return ds;
+    }
+}
+
+// global default: if all beans have a method called "close" or "shutdown"
+// Spring Boot auto-detects and calls it unless destroyMethod="" is set
+</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Boot has a smart default — if a <code>@Bean</code> method's return type has a public <code>close()</code> or <code>shutdown()</code> method, Spring Boot calls it on context close automatically (inferred <code>destroyMethod</code>). This handles most resource cleanup without explicit configuration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">54</span>
+        <div class="qa-text">What are <b>BeanPostProcessor</b> and <b>BeanFactoryPostProcessor</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>BeanFactoryPostProcessor:</b> Runs <em>before</em> any bean is instantiated. It modifies the <b>bean definitions</b> (metadata) in the container. Examples: <code>PropertySourcesPlaceholderConfigurer</code> resolves <code>${}</code> property placeholders in bean definitions.</li>
+          <li><b>BeanPostProcessor:</b> Runs <em>after</em> each bean is instantiated but before it's returned to the application. It modifies <b>bean instances</b>. This is how Spring applies AOP proxies, <code>@Autowired</code> injection, and <code>@PostConstruct</code>/<code>@PreDestroy</code> callbacks.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>BeanFactoryPostProcessor</th><th>BeanPostProcessor</th></tr></thead>
+          <tbody>
+            <tr><td>When</td><td>After BeanFactory loaded, before bean instantiation</td><td>After each bean instantiation, before use</td></tr>
+            <tr><td>Works on</td><td>Bean definitions (metadata)</td><td>Bean instances (objects)</td></tr>
+            <tr><td>Example</td><td><code>PropertySourcesPlaceholderConfigurer</code></td><td><code>AutowiredAnnotationBeanPostProcessor</code>, AOP proxies</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> <code>BeanPostProcessor</code> is the foundation of many Spring features. Understanding it explains how <code>@Transactional</code>, <code>@Async</code>, and AOP work — they all use <code>BeanPostProcessor</code> to wrap beans in proxies.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">55</span>
+        <div class="qa-text">What is the difference between <b>@Autowired</b> and <b>@Inject</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@Autowired</th><th>@Inject</th></tr></thead>
+          <tbody>
+            <tr><td>Source</td><td>Spring Framework (<code>org.springframework.beans.factory.annotation</code>)</td><td>JSR-330 / CDI standard (<code>jakarta.inject</code>)</td></tr>
+            <tr><td>Optional injection</td><td><code>@Autowired(required = false)</code></td><td>Use <code>Optional&lt;T&gt;</code> or <code>@Nullable</code></td></tr>
+            <tr><td>Spring-specific</td><td>Yes</td><td>No — portable across CDI and Spring</td></tr>
+            <tr><td>Behavior</td><td>Identical — both inject by type, then by name</td><td>Identical</td></tr>
+            <tr><td>Qualifier</td><td><code>@Qualifier</code></td><td><code>@Named</code> (JSR-330) or Spring's <code>@Qualifier</code></td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>In Spring Boot applications, <code>@Autowired</code> is the standard. <code>@Inject</code> provides portability to CDI containers (like Quarkus or Jakarta EE) — use it only if cross-container portability is a requirement.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Both annotations are functionally identical in Spring. However, constructor injection with no annotation (Spring 4.3+ implicit autowiring for single-constructor beans) is the cleanest approach — no dependency on either annotation.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">56</span>
+        <div class="qa-text">What is <b>circular dependency</b> in Spring? How is it handled?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Circular dependency</b> occurs when Bean A depends on Bean B, and Bean B depends on Bean A (directly or transitively). Spring cannot create either bean first.</li>
+          <li><b>With constructor injection:</b> Spring throws <code>BeanCurrentlyInCreationException</code> at startup — it cannot resolve the cycle. This is the desired behavior as it surfaces the design flaw.</li>
+          <li><b>With setter/field injection:</b> Spring Boot 2.6+ also throws an error by default (<code>spring.main.allow-circular-references</code> is <code>false</code>). Older versions handled it by using partially-constructed beans.</li>
+          <li><b>How to fix:</b>
+            <ul>
+              <li><b>Refactor:</b> Extract shared functionality into a third bean that neither depends on the other (preferred).</li>
+              <li><code>@Lazy</code> on one injection point — breaks the cycle by using a proxy for the lazily-initialized bean.</li>
+              <li>Use an event/observer pattern to decouple the two services.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Circular dependencies are a code smell indicating poor separation of concerns. The correct answer is always "refactor to eliminate the circular dependency" rather than "configure Spring to allow it."</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">57</span>
+        <div class="qa-text">Difference between <b>field injection</b>, <b>setter injection</b>, and <b>constructor injection</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Field Injection</th><th>Setter Injection</th><th>Constructor Injection</th></tr></thead>
+          <tbody>
+            <tr><td>Syntax</td><td><code>@Autowired</code> on field</td><td><code>@Autowired</code> on setter</td><td><code>@Autowired</code> on constructor (optional)</td></tr>
+            <tr><td>Immutability</td><td>No</td><td>No</td><td>Yes (<code>final</code> fields)</td></tr>
+            <tr><td>Mandatory deps</td><td>No enforcement</td><td>No enforcement</td><td>Enforced at creation</td></tr>
+            <tr><td>Unit testability</td><td>Requires Spring / reflection</td><td>Easy (call setter)</td><td>Easy (call constructor)</td></tr>
+            <tr><td>Circular deps</td><td>Allowed (bad)</td><td>Allowed (bad)</td><td>Detected immediately</td></tr>
+            <tr><td>Recommended?</td><td>No — avoid</td><td>Optional dependencies only</td><td>Yes — always prefer</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> The Spring team officially discourages field injection in their documentation. When reviewing code, field injection is a red flag — it hides the class's dependencies and makes testing without Spring container much harder.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">58</span>
+        <div class="qa-text">What is <b>@DependsOn</b> annotation in Spring?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@DependsOn</code> forces Spring to initialize the specified beans <b>before</b> the current bean, even if there's no direct dependency relationship through injection.</li>
+          <li><b>Use case:</b> When a bean has an implicit startup ordering requirement — e.g., a database migration bean must run before any JPA repository beans are initialized.</li>
+        </ul>
+<pre><code class="language-java">@Component
+@DependsOn("flywayMigration")
+public class ProductRepository { ... }
+
+@Bean(name = "flywayMigration")
+public Flyway flyway(DataSource dataSource) {
+    Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+    flyway.migrate();
+    return flyway;
+}</code></pre>
+        <ul>
+          <li><b>Note:</b> This only guarantees initialization order — it does not inject the dependency. It's for cases where Bean A's constructor has a side effect (like running migrations) that must complete before Bean B starts.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@DependsOn</code> should be used sparingly. If you find yourself using it frequently, it often indicates a design issue. Explicit dependency injection is always preferred over implicit ordering.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">59</span>
+        <div class="qa-text">How do you create <b>lazy-initialized beans</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Annotation-level:</b> <code>@Lazy</code> on a <code>@Component</code> or <code>@Bean</code> method — that specific bean is created on first request.</li>
+          <li><b>Injection-point level:</b> <code>@Autowired @Lazy private ExpensiveService service;</code> — Spring injects a CGLIB proxy; actual bean creation deferred to first method call.</li>
+          <li><b>Global lazy initialization:</b> <code>spring.main.lazy-initialization=true</code> — all beans lazy by default. Override individual critical beans with <code>@Lazy(false)</code>.</li>
+        </ul>
+<pre><code class="language-java">// Individual lazy bean
+@Service
+@Lazy
+public class HeavyReportService {
+    public HeavyReportService() {
+        // Expensive initialization — only runs when first used
+    }
+}
+
+// Global + specific override
+// application.properties:
+// spring.main.lazy-initialization=true
+
+@Component
+@Lazy(false)  // This critical bean must be eager
+public class DatabaseHealthChecker { ... }</code></pre>
+        <ul>
+          <li><b>Benefit in tests:</b> Significantly reduces context startup time in <code>@SpringBootTest</code> tests by not instantiating all beans.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Global lazy initialization can mask startup configuration errors — a misconfigured bean won't fail until first use. Use it in development/testing, but consider eager initialization in production for fail-fast behavior.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">60</span>
+        <div class="qa-text">Explain the <b>lifecycle phases of a Spring bean</b> with example.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@Component
+public class AuditService implements InitializingBean, DisposableBean,
+        BeanNameAware, ApplicationContextAware {
+
+    @Autowired
+    private AuditRepository repository; // Step 2: DI
+
+    // Step 3: Aware interfaces
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("Bean name: " + name);
+    }
+
+    // Step 5: InitializingBean
+    @Override
+    public void afterPropertiesSet() {
+        System.out.println("afterPropertiesSet called");
+    }
+
+    // Step 5: @PostConstruct (runs before afterPropertiesSet in same order as in spec)
+    @PostConstruct
+    public void init() {
+        System.out.println("@PostConstruct - verifying DB connection");
+        repository.count(); // safe — repository is injected
+    }
+
+    // Step 8: @PreDestroy
+    @PreDestroy
+    public void cleanup() {
+        System.out.println("@PreDestroy - flushing audit queue");
+    }
+
+    // Step 8: DisposableBean
+    @Override
+    public void destroy() {
+        System.out.println("destroy() called");
+    }
+}</code></pre>
+        <ul>
+          <li><b>Full lifecycle sequence:</b> Instantiate → Set properties/DI → <code>*Aware</code> callbacks → BeanPostProcessor.before → <code>@PostConstruct</code> → <code>afterPropertiesSet</code> → custom init-method → BeanPostProcessor.after → <b>Ready</b> → <code>@PreDestroy</code> → <code>destroy()</code> → custom destroy-method</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Know the order: <code>@PostConstruct</code> runs before <code>InitializingBean.afterPropertiesSet()</code> which runs before <code>initMethod</code>. This ordering is deterministic and important when multiple initialization mechanisms are used simultaneously.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

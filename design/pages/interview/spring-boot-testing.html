@@ -1,0 +1,814 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">181</span>
+        <div class="qa-text">What are the <b>different types of testing</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Unit Tests:</b> Test a single class in isolation. All dependencies are mocked. Fast (milliseconds), no Spring context, no database. Use JUnit 5 + Mockito.</li>
+          <li><b>Integration Tests:</b> Test multiple components working together with a real Spring context and (usually) a real or in-memory database. Slower, but verify component interactions.</li>
+          <li><b>Slice Tests:</b> Test a specific layer of the application with a partial Spring context:
+            <ul>
+              <li><code>@WebMvcTest</code> — controller + MVC infrastructure only</li>
+              <li><code>@DataJpaTest</code> — JPA repositories + in-memory database</li>
+              <li><code>@JsonTest</code> — JSON serialization only</li>
+              <li><code>@WebFluxTest</code> — reactive web layer</li>
+            </ul>
+          </li>
+          <li><b>System/E2E Tests:</b> Test the entire application running with all dependencies. Often uses Testcontainers for real DB, Kafka, etc. Slowest but most realistic.</li>
+          <li><b>Contract Tests:</b> Verify API contracts between services (Spring Cloud Contract, Pact). Enables independent deployment with confidence.</li>
+          <li><b>Performance Tests:</b> Load/stress testing with JMeter, Gatling, k6.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Follow the Testing Pyramid — many fast unit tests at the base, fewer integration tests in the middle, minimal but critical E2E tests at the top. Don't invert the pyramid with too many slow, expensive integration tests.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">182</span>
+        <div class="qa-text">Difference between <b>unit test</b> and <b>integration test</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Unit Test</th><th>Integration Test</th></tr></thead>
+          <tbody>
+            <tr><td>Scope</td><td>Single class/method</td><td>Multiple classes/layers/systems</td></tr>
+            <tr><td>Dependencies</td><td>All mocked (Mockito)</td><td>Real or partially real (Spring context, H2/Testcontainers)</td></tr>
+            <tr><td>Speed</td><td>Milliseconds</td><td>Seconds to minutes</td></tr>
+            <tr><td>Spring context</td><td>Not needed</td><td>Required — <code>@SpringBootTest</code> or slice test</td></tr>
+            <tr><td>Purpose</td><td>Verify business logic in isolation</td><td>Verify component integration, configurations, DB queries</td></tr>
+            <tr><td>Example</td><td>Test <code>OrderService.calculateTotal()</code></td><td>Test <code>OrderRepository.findByStatus()</code> against H2</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> A unit test that requires Spring context, database, or external services is actually an integration test by another name. Keep unit tests pure — single class, no framework, no I/O. This makes them fast enough to run on every save.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">183</span>
+        <div class="qa-text">How do you write a simple <b>JUnit 5 test</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Pure unit test — no Spring context needed
+class OrderServiceTest {
+
+    private OrderService orderService;
+    private OrderRepository orderRepository;
+    private PaymentService paymentService;
+
+    @BeforeEach
+    void setUp() {
+        orderRepository = Mockito.mock(OrderRepository.class);
+        paymentService = Mockito.mock(PaymentService.class);
+        orderService = new OrderService(orderRepository, paymentService);
+    }
+
+    @Test
+    @DisplayName("createOrder should persist order and return DTO with generated ID")
+    void createOrder_withValidRequest_shouldReturnOrderDto() {
+        // Given
+        CreateOrderRequest request = new CreateOrderRequest(1L, List.of(new OrderItem(101L, 2)));
+        Order savedOrder = Order.builder().id(100L).status(OrderStatus.PENDING).build();
+        Mockito.when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
+
+        // When
+        OrderDto result = orderService.createOrder(request);
+
+        // Then
+        assertThat(result.getId()).isEqualTo(100L);
+        assertThat(result.getStatus()).isEqualTo("PENDING");
+        Mockito.verify(orderRepository, times(1)).save(any(Order.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1, -100})
+    void createOrder_withInvalidQuantity_shouldThrowException(int quantity) {
+        CreateOrderRequest request = new CreateOrderRequest(1L, List.of(new OrderItem(101L, quantity)));
+        assertThatThrownBy(() -> orderService.createOrder(request))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("quantity");
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Follow the Given/When/Then (GWT) structure — it makes tests self-documenting. Use <code>@DisplayName</code> to describe business behavior, not implementation details. Use <code>@ParameterizedTest</code> to avoid duplicating test methods for multiple inputs.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">184</span>
+        <div class="qa-text">How do you <b>mock dependencies using Mockito</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@ExtendWith(MockitoExtension.class)  // Initializes @Mock fields automatically
+class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private EmailService emailService;
+
+    @InjectMocks
+    private UserService userService;  // Dependencies injected by Mockito
+
+    @Test
+    void findUser_whenExists_shouldReturnDto() {
+        // Stub behavior
+        User user = new User(1L, "Alice", "alice@example.com");
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        // Execute
+        UserDto dto = userService.findById(1L);
+
+        // Verify
+        assertThat(dto.getName()).isEqualTo("Alice");
+    }
+
+    @Test
+    void findUser_whenNotFound_shouldThrowException() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.findById(99L))
+            .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    void createUser_shouldSendWelcomeEmail() {
+        when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        userService.createUser(new CreateUserRequest("Bob", "bob@example.com"));
+
+        // Verify interaction
+        verify(emailService, times(1)).sendWelcomeEmail("bob@example.com");
+        verifyNoMoreInteractions(emailService);
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Prefer <code>@ExtendWith(MockitoExtension.class)</code> over <code>@RunWith(MockitoJUnitRunner.class)</code> (JUnit 4). Use <code>ArgumentCaptor</code> when you need to verify the exact value passed to a mock. Use <code>@Spy</code> to partially mock a real object.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">185</span>
+        <div class="qa-text">Difference between <b>@Mock</b> and <b>@MockBean</b> in Spring Boot tests.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@Mock (Mockito)</th><th>@MockBean (Spring Boot)</th></tr></thead>
+          <tbody>
+            <tr><td>Spring context</td><td>No context needed</td><td>Requires Spring context</td></tr>
+            <tr><td>Bean registration</td><td>Not a Spring bean</td><td>Replaces an existing Spring bean with a mock</td></tr>
+            <tr><td>Use in</td><td>Pure unit tests (<code>@ExtendWith(MockitoExtension.class)</code>)</td><td>Spring integration/slice tests (<code>@SpringBootTest</code>, <code>@WebMvcTest</code>)</td></tr>
+            <tr><td>Autowiring</td><td>Manual injection via constructor</td><td>Auto-wired into controllers/services by Spring</td></tr>
+            <tr><td>Context caching</td><td>No impact</td><td>Changes application context — impacts test caching</td></tr>
+          </tbody>
+        </table>
+<pre><code class="language-java">// @MockBean — in Spring slice test
+@WebMvcTest(UserController.class)
+class UserControllerTest {
+
+    @Autowired MockMvc mockMvc;
+
+    @MockBean  // Replaces UserService bean in Spring context
+    private UserService userService;
+
+    @Test
+    void getUser_shouldReturn200() throws Exception {
+        when(userService.findById(1L)).thenReturn(new UserDto(1L, "Alice"));
+
+        mockMvc.perform(get("/api/users/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Alice"));
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@MockBean</code> is expensive — it reloads the Spring context for every test class that uses it in a unique way. Minimize context reloads by grouping tests that share the same mocks and using <code>@TestConfiguration</code> for shared test setups.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">186</span>
+        <div class="qa-text">What is the role of <b>@SpringBootTest</b> annotation?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@SpringBootTest</code> loads the <b>full Spring application context</b> for integration testing — equivalent to starting the actual application. All beans are configured, including auto-configuration.</li>
+          <li><b>Web environment modes:</b>
+            <ul>
+              <li><code>MOCK</code> (default) — loads a mock servlet environment; use with <code>MockMvc</code></li>
+              <li><code>RANDOM_PORT</code> — starts embedded server on a random port; use with <code>TestRestTemplate</code> or <code>WebTestClient</code></li>
+              <li><code>DEFINED_PORT</code> — starts on the configured port</li>
+              <li><code>NONE</code> — loads context without any servlet environment</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional  // Rollback after each test
+class OrderIntegrationTest {
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    void createOrder_shouldPersistInDatabase() {
+        CreateOrderRequest request = new CreateOrderRequest(1L, List.of(new OrderItem(101L, 1)));
+
+        ResponseEntity&lt;OrderDto&gt; response = restTemplate.postForEntity(
+            "http://localhost:" + port + "/api/orders", request, OrderDto.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(orderRepository.findById(response.getBody().getId())).isPresent();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@SpringBootTest</code> is the slowest test type — it starts the entire application. Use slice tests (<code>@WebMvcTest</code>, <code>@DataJpaTest</code>) whenever possible to test specific layers quickly. Use <code>@SpringBootTest</code> only for end-to-end scenarios that need the full context.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">187</span>
+        <div class="qa-text">What is <b>@DataJpaTest</b> used for?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@DataJpaTest</code> is a <b>JPA slice test</b> annotation that loads only the JPA-related components: entities, repositories, Hibernate, and an embedded in-memory database (H2 by default).</li>
+          <li><b>What it includes:</b> JPA repositories, <code>@Entity</code> classes, Spring Data JPA configuration, embedded database (H2). By default, each test is wrapped in a transaction that rolls back after the test.</li>
+          <li><b>What it excludes:</b> Services, controllers, security, full auto-configuration — making it significantly faster than <code>@SpringBootTest</code>.</li>
+        </ul>
+<pre><code class="language-java">@DataJpaTest
+class ProductRepositoryTest {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @Test
+    void findByCategory_shouldReturnMatchingProducts() {
+        // Given — persist test data
+        entityManager.persistAndFlush(new Product(null, "Laptop", "ELECTRONICS", 999.99, true));
+        entityManager.persistAndFlush(new Product(null, "Phone", "ELECTRONICS", 699.99, true));
+        entityManager.persistAndFlush(new Product(null, "Desk", "FURNITURE", 299.99, true));
+
+        // When
+        List&lt;Product&gt; electronics = productRepository.findByCategory("ELECTRONICS");
+
+        // Then
+        assertThat(electronics).hasSize(2);
+        assertThat(electronics).extracting(Product::getName).containsExactlyInAnyOrder("Laptop", "Phone");
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Use <code>TestEntityManager</code> to set up test data in <code>@DataJpaTest</code> — it wraps JPA operations and works within the test transaction. For testing against a real database (closer to production), use Testcontainers with <code>@DataJpaTest(replace = Replace.NONE)</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">188</span>
+        <div class="qa-text">How do you <b>test REST controllers</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@WebMvcTest(ProductController.class)  // Only loads web layer
+class ProductControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ProductService productService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    void getProduct_whenExists_shouldReturn200WithBody() throws Exception {
+        when(productService.findById(1L))
+            .thenReturn(new ProductDto(1L, "Laptop", 999.99, "ELECTRONICS"));
+
+        mockMvc.perform(get("/api/v1/products/1")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.name").value("Laptop"))
+            .andExpect(jsonPath("$.price").value(999.99));
+    }
+
+    @Test
+    void createProduct_withInvalidBody_shouldReturn400() throws Exception {
+        CreateProductRequest invalid = new CreateProductRequest("", null, -1.0);  // blank name, null category, negative price
+
+        mockMvc.perform(post("/api/v1/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalid)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors.name").exists());
+    }
+
+    @Test
+    void getProduct_whenNotFound_shouldReturn404() throws Exception {
+        when(productService.findById(99L))
+            .thenThrow(new ResourceNotFoundException("Product", 99L));
+
+        mockMvc.perform(get("/api/v1/products/99"))
+            .andExpect(status().isNotFound());
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@WebMvcTest</code> is the right choice for controller testing — it loads only the web layer, making tests fast. Always test: happy path, validation errors, not-found scenarios, and security authorization (use <code>@WithMockUser</code> for role-based tests).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">189</span>
+        <div class="qa-text">What is <b>MockMvc</b> and how is it used?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>MockMvc</code> is Spring's test framework for testing <code>@Controller</code>/<code>@RestController</code> endpoints <b>without starting an actual HTTP server</b>. It simulates HTTP requests and provides fluent assertions on the response.</li>
+          <li><b>Capabilities:</b> Make HTTP requests (GET, POST, PUT, DELETE), set headers, request body, path/query parameters. Assert response status, headers, body (JSON/XML), content type.</li>
+        </ul>
+<pre><code class="language-java">// Full feature MockMvc test
+@Test
+void createProduct_withAuthentication_shouldReturn201() throws Exception {
+    CreateProductRequest request = new CreateProductRequest("Laptop", "ELECTRONICS", 999.99);
+
+    mockMvc.perform(post("/api/v1/products")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request))
+            .header("Authorization", "Bearer " + validJwtToken)
+            .with(csrf()))  // CSRF token if security enabled
+        .andDo(print())  // Print request/response for debugging
+        .andExpect(status().isCreated())
+        .andExpect(header().exists("Location"))
+        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.name").value("Laptop"))
+        .andReturn(); // Get MvcResult for further assertions
+}
+
+// MockMvc setup options
+@Autowired MockMvc mockMvc;  // Auto-configured by @WebMvcTest
+
+// OR standalone setup (without Spring context)
+MockMvc mockMvc = MockMvcBuilders
+    .standaloneSetup(new ProductController(productService))
+    .setControllerAdvice(new GlobalExceptionHandler())
+    .build();</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Use <code>.andDo(print())</code> during development to debug request/response details. Use <code>.andDo(document(...))</code> with Spring REST Docs to generate API documentation from tests — living documentation that never goes stale.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">190</span>
+        <div class="qa-text">Difference between <b>WebMvcTest</b> and <b>SpringBootTest</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>@WebMvcTest</th><th>@SpringBootTest</th></tr></thead>
+          <tbody>
+            <tr><td>Context</td><td>Partial — MVC layer only (controllers, filters, advice)</td><td>Full application context</td></tr>
+            <tr><td>Speed</td><td>Fast (~1-3s)</td><td>Slow (5-30s)</td></tr>
+            <tr><td>Services/Repos</td><td>Not loaded — must be <code>@MockBean</code></td><td>Loaded — use real or mocked</td></tr>
+            <tr><td>Database</td><td>Not loaded</td><td>Real or embedded DB</td></tr>
+            <tr><td>HTTP server</td><td>No real server — MockMvc (simulated)</td><td>Embedded server (with RANDOM_PORT)</td></tr>
+            <tr><td>Best for</td><td>Controller logic, request mapping, validation, serialization</td><td>End-to-end integration, workflow testing</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Use <code>@WebMvcTest</code> for 80% of controller tests and <code>@SpringBootTest</code> for the 20% that require verifying the entire request-to-database flow. Test pyramid recommends fast, focused tests — <code>@WebMvcTest</code> is significantly faster than <code>@SpringBootTest</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">191</span>
+        <div class="qa-text">How do you <b>test service layer components</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+
+    @Mock private OrderRepository orderRepository;
+    @Mock private InventoryClient inventoryClient;
+    @Mock private PaymentService paymentService;
+    @Mock private NotificationService notificationService;
+
+    @InjectMocks private OrderService orderService;
+
+    @Test
+    void placeOrder_withSufficientStock_shouldCreateOrderAndInitiatePayment() {
+        // Given
+        Long customerId = 1L;
+        Long productId = 101L;
+        int quantity = 2;
+
+        when(inventoryClient.checkStock(productId)).thenReturn(new InventoryDto(productId, 10, true));
+        when(orderRepository.save(any())).thenAnswer(inv -> {
+            Order o = inv.getArgument(0);
+            o.setId(100L);
+            return o;
+        });
+
+        // When
+        OrderDto result = orderService.placeOrder(customerId, productId, quantity);
+
+        // Then
+        assertThat(result.getId()).isEqualTo(100L);
+        assertThat(result.getStatus()).isEqualTo("PAYMENT_PENDING");
+
+        // Verify side effects
+        InOrder inOrder = inOrder(inventoryClient, orderRepository, paymentService);
+        inOrder.verify(inventoryClient).checkStock(productId);
+        inOrder.verify(orderRepository).save(any());
+        inOrder.verify(paymentService).initiatePayment(eq(100L), any(BigDecimal.class));
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Service tests should verify both the return value AND the side effects (which dependencies were called, in what order, with what arguments). Use <code>InOrder</code> when sequence matters — e.g., stock must be checked before payment is initiated.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">192</span>
+        <div class="qa-text">How do you <b>test exception handling</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Test service-level exception throwing
+@Test
+void findOrder_whenNotFound_shouldThrowResourceNotFoundException() {
+    when(orderRepository.findById(99L)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> orderService.findById(99L))
+        .isInstanceOf(ResourceNotFoundException.class)
+        .hasMessageContaining("Order")
+        .hasMessageContaining("99");
+}
+
+// Test global exception handler via MockMvc
+@WebMvcTest(OrderController.class)
+class OrderControllerExceptionTest {
+
+    @Autowired MockMvc mockMvc;
+    @MockBean OrderService orderService;
+
+    @Test
+    void getOrder_whenNotFound_shouldReturn404WithErrorBody() throws Exception {
+        when(orderService.findById(99L))
+            .thenThrow(new ResourceNotFoundException("Order", 99L));
+
+        mockMvc.perform(get("/api/orders/99"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+            .andExpect(jsonPath("$.message").value(containsString("Order")))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    void createOrder_withInvalidInput_shouldReturn400WithFieldErrors() throws Exception {
+        String invalidBody = "{\"customerId\": null, \"items\": []}";
+
+        mockMvc.perform(post("/api/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidBody))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors.customerId").exists());
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Always test both the exception being thrown (service layer) AND the HTTP response it maps to (controller layer). A well-designed error response is part of your API contract and should be tested just as rigorously as the happy path.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">193</span>
+        <div class="qa-text">What are <b>Testcontainers</b>? Why are they useful?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Testcontainers</b> is a Java library that provides lightweight, throwaway Docker containers for use in tests. It starts real databases, message brokers, and other services as Docker containers during test execution, then stops and removes them after.</li>
+          <li><b>Why useful:</b>
+            <ul>
+              <li><b>Real database behavior:</b> Test against PostgreSQL, MySQL, MongoDB — not H2 in-memory DB with subtle compatibility differences</li>
+              <li><b>No mocking needed:</b> Test Kafka producers/consumers, Redis caching, Elasticsearch queries with real implementations</li>
+              <li><b>Environment consistency:</b> Same container image in local dev, CI, and staging — eliminates "works on my machine" issues</li>
+              <li><b>Cleanup:</b> Containers are automatically removed after tests — no state leakage between test runs</li>
+            </ul>
+          </li>
+          <li><b>Supported containers:</b> PostgreSQL, MySQL, MongoDB, Redis, Kafka, RabbitMQ, Elasticsearch, LocalStack (AWS), and any Docker image.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Testcontainers is particularly valuable for testing database migration scripts (Flyway/Liquibase) and JPA queries against the real target database. H2 doesn't support PostgreSQL-specific features like <code>jsonb</code>, window functions, or custom types.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">194</span>
+        <div class="qa-text">How do you use <b>Testcontainers</b> with Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@SpringBootTest
+@Testcontainers
+class OrderRepositoryIntegrationTest {
+
+    @Container
+    static PostgreSQLContainer&lt;?&gt; postgres = new PostgreSQLContainer&lt;&gt;("postgres:16-alpine")
+        .withDatabaseName("testdb")
+        .withUsername("testuser")
+        .withPassword("testpass");
+
+    @DynamicPropertySource
+    static void configureDataSource(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Test
+    void save_shouldPersistOrderToPostgres() {
+        Order order = new Order(null, 1L, OrderStatus.PENDING, BigDecimal.valueOf(99.99));
+        Order saved = orderRepository.save(order);
+        assertThat(saved.getId()).isNotNull();
+        assertThat(orderRepository.findById(saved.getId())).isPresent();
+    }
+}
+
+// Spring Boot 3.1+ simplified approach using ServiceConnection
+@SpringBootTest
+class ModernTestcontainersTest {
+    @Bean
+    @ServiceConnection
+    static PostgreSQLContainer&lt;?&gt; postgres() {
+        return new PostgreSQLContainer&lt;&gt;("postgres:16-alpine");
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Use <code>static</code> containers with <code>@Container</code> to share the container across all test methods in the class — much faster than creating a new container per test. Spring Boot 3.1+ introduced <code>@ServiceConnection</code> which auto-configures datasource properties from the container.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">195</span>
+        <div class="qa-text">How do you test with an <b>in-memory database like H2</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-xml">&lt;!-- Test scope H2 dependency --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+    &lt;artifactId&gt;h2&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+<pre><code class="language-yaml"># application-test.yml
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # H2 creates schema from entities
+    show-sql: true</code></pre>
+<pre><code class="language-java">@DataJpaTest
+@ActiveProfiles("test")
+class ProductRepositoryTest {
+    @Autowired ProductRepository productRepository;
+
+    @Test
+    void findByCategory_shouldWork() {
+        productRepository.save(new Product(null, "Laptop", "ELECTRONICS"));
+        assertThat(productRepository.findByCategory("ELECTRONICS")).hasSize(1);
+    }
+}</code></pre>
+        <ul>
+          <li><b>H2 PostgreSQL compatibility mode:</b> <code>MODE=PostgreSQL</code> helps but doesn't support all PostgreSQL features. Use Testcontainers for testing PostgreSQL-specific queries.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> H2 is fast and requires no Docker, making it ideal for CI pipelines with resource constraints. Use it for simple CRUD repository tests. Use Testcontainers when your code uses database-specific features (PostgreSQL <code>jsonb</code>, full-text search, triggers).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">196</span>
+        <div class="qa-text">What is the role of <b>embedded Kafka/RabbitMQ</b> in integration tests?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Embedded Kafka for testing
+@SpringBootTest
+@EmbeddedKafka(partitions = 1, topics = {"order-events"})
+class OrderEventConsumerTest {
+
+    @Autowired private KafkaTemplate&lt;String, OrderEvent&gt; kafkaTemplate;
+    @Autowired private OrderEventConsumer consumer;
+
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Test
+    void publishedEvent_shouldBeConsumed() throws InterruptedException {
+        OrderEvent event = new OrderEvent("ORDER_CREATED", 123L);
+        kafkaTemplate.send("order-events", event);
+
+        // Wait for async consumer to process
+        CountDownLatch latch = consumer.getLatch();
+        assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
+        assertThat(consumer.getLastReceivedEvent().getOrderId()).isEqualTo(123L);
+    }
+}
+
+// RabbitMQ via Testcontainers
+@Container
+static RabbitMQContainer rabbitMQ = new RabbitMQContainer("rabbitmq:3.12-management-alpine");
+</code></pre>
+        <ul>
+          <li><b>Embedded Kafka (<code>spring-kafka-test</code>):</b> In-memory Kafka broker that starts with the test context. Fast but limited to single-node scenarios. Good for testing message flow without Docker.</li>
+          <li><b>Testcontainers Kafka:</b> Real Kafka in Docker — better for multi-broker, topic configuration, and partition behavior testing.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Integration testing message-driven components is critical — producers/consumers must be tested end-to-end. Embedded Kafka is sufficient for most consumer/producer tests; Testcontainers Kafka is needed for testing more complex Kafka behaviors (consumer groups, offsets, rebalancing).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">197</span>
+        <div class="qa-text">How do you measure <b>code coverage</b> in Spring Boot tests?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>JaCoCo (Java Code Coverage):</b> The standard code coverage tool for Spring Boot projects. Integrated via Maven/Gradle plugin.</li>
+          <li><b>Maven setup:</b></li>
+        </ul>
+<pre><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+    &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.8.11&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;&lt;goal&gt;prepare-agent&lt;/goal&gt;&lt;/goals&gt;
+        &lt;/execution&gt;
+        &lt;execution&gt;
+            &lt;id&gt;report&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;&lt;goal&gt;report&lt;/goal&gt;&lt;/goals&gt;
+        &lt;/execution&gt;
+        &lt;!-- Enforce minimum coverage --&gt;
+        &lt;execution&gt;
+            &lt;id&gt;check&lt;/id&gt;
+            &lt;goals&gt;&lt;goal&gt;check&lt;/goal&gt;&lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;rules&gt;
+                    &lt;rule&gt;
+                        &lt;limits&gt;
+                            &lt;limit&gt;
+                                &lt;counter&gt;LINE&lt;/counter&gt;
+                                &lt;value&gt;COVEREDRATIO&lt;/value&gt;
+                                &lt;minimum&gt;0.80&lt;/minimum&gt;
+                            &lt;/limit&gt;
+                        &lt;/limits&gt;
+                    &lt;/rule&gt;
+                &lt;/rules&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</code></pre>
+        <ul>
+          <li>Generates HTML/XML reports in <code>target/site/jacoco/</code>. Integrate with SonarQube or Codecov for team-wide visibility.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> 80% coverage is a reasonable industry target, but coverage is a means, not an end. 100% coverage with poor assertions is worse than 70% coverage with meaningful assertions. Focus on testing behavior, not just hitting lines.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">198</span>
+        <div class="qa-text">How do you test <b>asynchronous methods</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">@ExtendWith(MockitoExtension.class)
+class EmailServiceTest {
+
+    @InjectMocks
+    private EmailService emailService;
+
+    @Test
+    void sendWelcomeEmail_shouldCompleteSuccessfully() throws Exception {
+        // Test @Async method by getting the CompletableFuture result
+        CompletableFuture&lt;Void&gt; future = emailService.sendWelcomeEmailAsync("user@example.com");
+
+        // Wait for async completion with timeout
+        future.get(5, TimeUnit.SECONDS);  // throws if not complete within 5s
+
+        // Assert side effects
+        verify(emailClient, times(1)).send(eq("user@example.com"), any());
+    }
+
+    // For @Async with side effects (fire-and-forget), use Awaitility
+    @Test
+    void processOrderAsync_shouldUpdateDatabaseEventually() {
+        orderService.processAsync(123L);
+
+        // Awaitility polls condition until true or timeout
+        Awaitility.await()
+            .atMost(5, TimeUnit.SECONDS)
+            .pollInterval(100, TimeUnit.MILLISECONDS)
+            .untilAsserted(() -> {
+                Order order = orderRepository.findById(123L).orElseThrow();
+                assertThat(order.getStatus()).isEqualTo(OrderStatus.PROCESSED);
+            });
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <b>Awaitility</b> is the standard library for testing asynchronous operations. It polls a condition until it's satisfied or times out — much cleaner than manual <code>Thread.sleep()</code> hacks. Add it to your test toolkit: <code>awaitility</code> dependency in test scope.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">199</span>
+        <div class="qa-text">How do you run <b>Spring Boot tests in parallel</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-properties"># src/test/resources/junit-platform.properties
+junit.jupiter.execution.parallel.enabled=true
+junit.jupiter.execution.parallel.mode.default=concurrent
+junit.jupiter.execution.parallel.mode.classes.default=concurrent
+junit.jupiter.execution.parallel.config.strategy=dynamic
+junit.jupiter.execution.parallel.config.dynamic.factor=2  # 2 threads per CPU core</code></pre>
+<pre><code class="language-java">// Test class must be thread-safe for parallel execution
+@Execution(ExecutionMode.CONCURRENT)  // Parallel at class level
+class ProductServiceTest {
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)  // Sequential within class
+    void threadSensitiveTest() { ... }
+}
+</code></pre>
+        <ul>
+          <li><b>Context caching with parallel tests:</b> Spring Boot caches the application context. Tests sharing the same context configuration share one context instance — parallel execution may cause data conflicts without proper isolation.</li>
+          <li><b>Solutions for test isolation:</b>
+            <ul>
+              <li><code>@Transactional</code> on each test — rollback after every test</li>
+              <li><code>@DirtiesContext</code> — recreate context after test (expensive)</li>
+              <li>Dedicated test databases per test class via Testcontainers</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Parallel unit tests are safe (no shared state). Parallel integration tests require careful isolation — database state must not leak between tests. Use <code>@Transactional</code> or Testcontainers with dedicated database per parallel test class.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">200</span>
+        <div class="qa-text">What are <b>best practices for writing maintainable Spring Boot tests</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Test behavior, not implementation:</b> Tests should verify what the code does (observable outcomes), not how it does it (internal method calls). Implementation-coupled tests break on every refactoring.</li>
+          <li><b>Follow Testing Pyramid:</b> Many fast unit tests → fewer integration tests → minimal E2E tests. Avoid inverting the pyramid.</li>
+          <li><b>Use Given/When/Then structure:</b> Clear setup, action, assertion. Self-documenting tests.</li>
+          <li><b>One assertion per test (logical):</b> Test methods verify one business scenario. Multiple assertions asserting the same thing (e.g., all fields of a DTO) are fine; separate tests for separate scenarios.</li>
+          <li><b>Use descriptive test names:</b> <code>@DisplayName("createOrder_withOutOfStockProduct_shouldThrowInventoryException")</code></li>
+          <li><b>Minimize context reloads:</b> Group tests by slice type. Each unique context configuration causes a reload. Shared test base classes with <code>@SpringBootTest</code> settings reuse contexts.</li>
+          <li><b>Use test data builders:</b> Create builder utilities (<code>TestOrderFactory.createValidOrder()</code>) for reusable test data. Avoid copying the same object creation code across tests.</li>
+          <li><b>Avoid <code>@SpringBootTest</code> for unit tests:</b> Use it only when you actually need the full context. Prefer <code>@WebMvcTest</code>, <code>@DataJpaTest</code>, or pure Mockito tests.</li>
+          <li><b>Test edge cases:</b> Empty collections, null values, boundary conditions, concurrent access, timeout scenarios.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Good tests are the best documentation — they show exactly what the code does and why. If a test fails, it should immediately tell the developer what business behavior broke and why. Tests should be maintained with the same care as production code.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

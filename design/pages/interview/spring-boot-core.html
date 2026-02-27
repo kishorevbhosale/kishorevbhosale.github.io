@@ -1,0 +1,503 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">1</span>
+        <div class="qa-text">What is <b>Spring Framework</b>? How is it different from <b>Spring Boot</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring Framework</b> is a comprehensive Java application framework providing infrastructure support for building enterprise applications. It covers Dependency Injection (DI), Aspect-Oriented Programming (AOP), transaction management, MVC, security, data access, and more — but requires significant manual configuration.</li>
+          <li><b>Spring Boot</b> is an opinionated extension of the Spring Framework that eliminates boilerplate setup. It provides auto-configuration, embedded web servers (Tomcat/Jetty), starter dependencies, and production-ready features out of the box.</li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Spring Framework</th><th>Spring Boot</th></tr></thead>
+          <tbody>
+            <tr><td>Configuration</td><td>Requires explicit XML or Java config</td><td>Auto-configured based on classpath</td></tr>
+            <tr><td>Web Server</td><td>External server required (deploy WAR)</td><td>Embedded server (Tomcat/Jetty/Undertow)</td></tr>
+            <tr><td>Startup</td><td>More boilerplate setup</td><td>Convention over configuration; rapid start</td></tr>
+            <tr><td>Dependency Mgmt</td><td>Manual version management</td><td>Starter POMs with tested, compatible versions</td></tr>
+            <tr><td>Production Features</td><td>Must integrate manually</td><td>Actuator built-in for health, metrics, info</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Emphasize that Spring Boot doesn't replace Spring — it orchestrates it. All Spring modules remain available; Spring Boot just removes the configuration tax so developers focus on business logic.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">2</span>
+        <div class="qa-text">Why was <b>Spring Boot introduced</b>? What problems does it solve?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Problem 1 — Configuration Overload:</b> Traditional Spring required hundreds of lines of XML (beans, data sources, transaction managers, view resolvers). Spring Boot auto-configures all of these based on what's on the classpath.</li>
+          <li><b>Problem 2 — Dependency Hell:</b> Choosing compatible versions of Spring, Hibernate, Jackson, etc. was error-prone. Spring Boot Starters provide curated, tested dependency sets.</li>
+          <li><b>Problem 3 — Deployment Complexity:</b> WAR files required an external application server. Spring Boot bundles an embedded server, producing a self-contained executable JAR.</li>
+          <li><b>Problem 4 — Production Readiness:</b> Adding health checks, metrics, and monitoring required separate tooling. Spring Boot Actuator provides these out of the box.</li>
+          <li><b>Problem 5 — Slow Developer Feedback Loop:</b> Spring Boot DevTools enables automatic restarts on code changes, significantly improving developer productivity.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Summarize with: "Spring Boot was born to make the 80% use case zero-config while keeping full Spring flexibility for the 20% requiring customization."</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">3</span>
+        <div class="qa-text">What are the <b>advantages of using Spring Boot</b> in enterprise applications?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Rapid Development:</b> Minimal configuration; a production-ready REST API can be running in minutes with Spring Initializr.</li>
+          <li><b>Auto-Configuration:</b> Intelligently configures beans (DataSource, JPA, Security, MVC) based on classpath dependencies and application properties.</li>
+          <li><b>Embedded Server:</b> No need to install and manage external servers. JARs are self-contained and easy to containerize (Docker).</li>
+          <li><b>Starter Dependencies:</b> Pre-tested, compatible dependency bundles eliminate version conflicts and reduce Maven/Gradle complexity.</li>
+          <li><b>Actuator:</b> Built-in health checks, metrics, environment info, and thread dumps — critical for production operations.</li>
+          <li><b>Microservices-Ready:</b> Spring Cloud integrates seamlessly, enabling service discovery, config server, circuit breakers, and API gateways.</li>
+          <li><b>Testability:</b> First-class testing support via <code>@SpringBootTest</code>, <code>@DataJpaTest</code>, <code>MockMvc</code>, and Testcontainers.</li>
+          <li><b>Active Ecosystem:</b> Broad community, frequent releases, extensive documentation, and enterprise adoption.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Relate advantages to real scenarios — e.g., "In my last project, Spring Boot DevTools reduced restart time from 30 seconds to under 3 seconds, improving daily developer productivity significantly."</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">4</span>
+        <div class="qa-text">Explain the differences between <b>Spring</b>, <b>Spring MVC</b>, and <b>Spring Boot</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring (Core Framework):</b> The foundation — provides the IoC container, Dependency Injection, AOP, core utilities, and integration modules (Spring Data, Spring Security, Spring Batch, etc.). You use Spring when you need any of these capabilities.</li>
+          <li><b>Spring MVC:</b> A web framework built on top of Spring Core. Implements the Model-View-Controller pattern for building web apps and REST APIs. Uses <code>DispatcherServlet</code> as the front controller that routes requests to <code>@Controller</code> handlers. Requires manual configuration of <code>DispatcherServlet</code>, view resolvers, and message converters.</li>
+          <li><b>Spring Boot:</b> A bootstrap layer on top of both Spring Core and Spring MVC (and all other Spring projects). Provides auto-configuration, starter dependencies, and embedded servers so developers get a working Spring MVC (or WebFlux) application without any configuration files.</li>
+        </ul>
+        <div class="qa-tip"><b>Analogy:</b> Spring Core is the engine, Spring MVC is the car body for web apps, and Spring Boot is the fully assembled car with GPS and auto-everything — ready to drive.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">5</span>
+        <div class="qa-text">How does <b>Spring Boot simplify dependency management</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring Boot Parent POM:</b> Inheriting from <code>spring-boot-starter-parent</code> brings a curated Bill of Materials (BOM) that pins compatible versions for hundreds of libraries — Hibernate, Jackson, SLF4J, Lettuce, etc. Developers declare dependencies without specifying versions.</li>
+          <li><b>Starter Dependencies:</b> Each <code>spring-boot-starter-*</code> is a single dependency that transitively pulls all required libraries. For example, <code>spring-boot-starter-web</code> includes Spring MVC, Jackson, Tomcat, and Validation — no manual wiring.</li>
+          <li><b>BOM Import:</b> Non-Boot projects can import <code>spring-boot-dependencies</code> BOM to get the same version management without the parent POM.</li>
+          <li><b>No Version Conflicts:</b> Since all versions are tested together by the Spring team, you rarely encounter <code>ClassNotFoundException</code> or binary incompatibility issues.</li>
+        </ul>
+<pre><code class="language-xml">&lt;!-- Just declare the feature, not the version --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> Mention that you can still override a specific version in <code>properties</code> (e.g., <code>&lt;jackson.version&gt;2.16.0&lt;/jackson.version&gt;</code>) when you need a particular bug fix or feature.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">6</span>
+        <div class="qa-text">What is an <b>embedded server</b> in Spring Boot? Which servers are supported?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>An <b>embedded server</b> is a web server packaged inside the application's JAR file. Spring Boot starts this server programmatically at application startup — no external Tomcat/JBoss/WebLogic installation is required.</li>
+          <li><b>Supported servers:</b>
+            <ul>
+              <li><b>Apache Tomcat</b> (default) — included via <code>spring-boot-starter-web</code>. Battle-tested, thread-per-request model.</li>
+              <li><b>Jetty</b> — lightweight, good for embedded/IoT scenarios. Exclude Tomcat and add <code>spring-boot-starter-jetty</code>.</li>
+              <li><b>Undertow</b> (JBoss) — high performance, non-blocking I/O, lower memory footprint. Used heavily in reactive apps.</li>
+              <li><b>Reactor Netty</b> — used automatically with <code>spring-boot-starter-webflux</code> for reactive (non-blocking) applications.</li>
+            </ul>
+          </li>
+          <li><b>Configuration:</b> <code>server.port</code>, <code>server.servlet.context-path</code>, SSL via <code>server.ssl.*</code> in <code>application.properties</code>.</li>
+          <li><b>Switching servers:</b> Exclude the default Tomcat dependency and add the desired server starter.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The embedded server model is a key enabler of containerization — a Spring Boot JAR inside a Docker container is completely self-sufficient, which is why it maps so well to Kubernetes deployments.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">7</span>
+        <div class="qa-text">Explain the concept of <b>convention over configuration</b> in Spring Boot.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Core Idea:</b> Spring Boot applies sensible, tested defaults so developers only need to configure things when they deviate from the convention. The framework "guesses" what you need based on available libraries on the classpath.</li>
+          <li><b>Examples:</b>
+            <ul>
+              <li>If <code>spring-boot-starter-web</code> is on the classpath → Spring Boot configures a <code>DispatcherServlet</code>, MVC, Jackson, and Tomcat on port 8080.</li>
+              <li>If <code>spring-boot-starter-data-jpa</code> is present and H2 is on the classpath → an in-memory DataSource and EntityManagerFactory are configured automatically.</li>
+              <li>If <code>spring-security</code> is on the classpath → all endpoints are secured with Basic Auth by default.</li>
+            </ul>
+          </li>
+          <li><b>Overriding conventions:</b> Any auto-configured bean can be overridden by declaring your own bean of the same type. <code>@ConditionalOnMissingBean</code> ensures auto-config backs off when a user-defined bean exists.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> This principle dramatically reduces the barrier to entry for new projects. The key insight is that conventions are not restrictions — they are simply defaults that can always be overridden with a single property or bean declaration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">8</span>
+        <div class="qa-text">What are <b>Spring Boot Starters</b>? Give examples of commonly used ones.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Definition:</b> Spring Boot Starters are pre-packaged dependency descriptors. Each starter pulls in all the libraries needed for a specific functionality — tested and version-aligned by the Spring team.</li>
+          <li><b>Common starters and what they include:</b>
+            <ul>
+              <li><code>spring-boot-starter-web</code> — Spring MVC, Tomcat, Jackson, Validation</li>
+              <li><code>spring-boot-starter-data-jpa</code> — Hibernate, Spring Data JPA, transaction management</li>
+              <li><code>spring-boot-starter-security</code> — Spring Security (authentication, authorization)</li>
+              <li><code>spring-boot-starter-test</code> — JUnit 5, Mockito, AssertJ, Spring Test utilities</li>
+              <li><code>spring-boot-starter-actuator</code> — Health, metrics, info, env endpoints</li>
+              <li><code>spring-boot-starter-cache</code> — Spring Cache abstraction with ConcurrentHashMap by default</li>
+              <li><code>spring-boot-starter-webflux</code> — Project Reactor, Netty (reactive non-blocking)</li>
+              <li><code>spring-boot-starter-amqp</code> — RabbitMQ integration</li>
+              <li><code>spring-boot-starter-data-redis</code> — Lettuce Redis client</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Starters follow the naming convention <code>spring-boot-starter-{feature}</code>. Third-party starters use <code>{name}-spring-boot-starter</code> (e.g., <code>mybatis-spring-boot-starter</code>).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">9</span>
+        <div class="qa-text">What are <b>Spring Boot DevTools</b>? Why are they used?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring Boot DevTools</b> (<code>spring-boot-devtools</code>) is a development-only module that enhances developer productivity.</li>
+          <li><b>Key features:</b>
+            <ul>
+              <li><b>Automatic Restart:</b> Monitors the classpath for changes. When a class changes and is compiled, DevTools restarts the application using two classloaders — the "base" classloader (third-party JARs, rarely changed) and the "restart" classloader (your code). Only the restart classloader is reloaded, making restarts ~5-10x faster than a cold start.</li>
+              <li><b>LiveReload:</b> Triggers browser refresh on resource changes (HTML, CSS, JS) via an embedded LiveReload server.</li>
+              <li><b>Disabled Caches:</b> Thymeleaf template caching, Spring MVC resource caching are disabled — changes reflect immediately without restart.</li>
+              <li><b>Remote DevTools:</b> Enables remote restart for apps deployed on remote servers (used cautiously).</li>
+            </ul>
+          </li>
+          <li><b>Automatically disabled in production:</b> DevTools is not activated when running a fully packaged JAR or when launched via a production JVM agent flag.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> DevTools never belongs in a production deployment — the <code>spring-boot-devtools</code> dependency is automatically excluded when you package a fat JAR with <code>mvn package</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">10</span>
+        <div class="qa-text">How does <b>Spring Boot differ from traditional WAR-based deployments</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>Traditional WAR Deployment</th><th>Spring Boot JAR Deployment</th></tr></thead>
+          <tbody>
+            <tr><td>Artifact</td><td>WAR (Web Archive)</td><td>Executable Fat JAR</td></tr>
+            <tr><td>Server</td><td>External (Tomcat, JBoss, WebLogic)</td><td>Embedded (Tomcat/Jetty/Undertow)</td></tr>
+            <tr><td>Startup</td><td><code>java -jar container.jar deploy app.war</code></td><td><code>java -jar myapp.jar</code></td></tr>
+            <tr><td>Configuration</td><td>Server-level config in <code>server.xml</code></td><td>App-level config in <code>application.properties</code></td></tr>
+            <tr><td>Containerization</td><td>Complex — need separate server image</td><td>Simple — single JAR in Alpine/JRE Docker image</td></tr>
+            <tr><td>Multiple apps</td><td>Multiple WARs in one server (shared JVM)</td><td>Each app is an independent process</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Spring Boot applications can still be deployed as WAR files by extending <code>SpringBootServletInitializer</code> — useful for organizations with legacy app server infrastructure.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The JAR + embedded server model is fundamental to modern cloud-native deployments — each microservice runs in its own container, owns its server config, and scales independently.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">11</span>
+        <div class="qa-text">What is <b>Spring Initializr</b> and how does it help in project setup?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring Initializr</b> (<a href="https://start.spring.io" target="_blank">start.spring.io</a>) is a web-based tool that generates a ready-to-run Spring Boot project skeleton.</li>
+          <li><b>What it generates:</b>
+            <ul>
+              <li>A valid Maven or Gradle build file with selected dependencies</li>
+              <li>Correct Spring Boot parent version</li>
+              <li>Main application class with <code>@SpringBootApplication</code></li>
+              <li>Empty test class</li>
+              <li><code>application.properties</code> placeholder</li>
+              <li>Correct directory structure following Maven conventions</li>
+            </ul>
+          </li>
+          <li><b>Inputs:</b> Project type (Maven/Gradle), language (Java/Kotlin/Groovy), Spring Boot version, Group/Artifact/Name, Java version, and dependencies.</li>
+          <li><b>IDE Integration:</b> IntelliJ IDEA, Eclipse (STS), and VS Code all have built-in Spring Initializr wizards — no browser required.</li>
+          <li><b>API:</b> Can be used programmatically (e.g., in custom project generators or CI pipelines).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Initializr eliminates the "blank page" problem — it ensures the project structure is correct from day one, reducing early configuration errors common in manual setup.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">12</span>
+        <div class="qa-text">What is the role of <b>Spring Boot CLI</b>? When is it useful?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Spring Boot CLI</b> (Command Line Interface) is a command-line tool that enables rapid development of Spring Boot applications using Groovy scripts — without requiring a Maven/Gradle build setup.</li>
+          <li><b>Key capabilities:</b>
+            <ul>
+              <li><code>spring run app.groovy</code> — runs a Groovy-based Spring Boot app directly</li>
+              <li><code>spring init</code> — calls Spring Initializr from the command line</li>
+              <li><code>spring test</code> — runs tests in Groovy scripts</li>
+            </ul>
+          </li>
+          <li><b>Use cases:</b>
+            <ul>
+              <li><b>Rapid prototyping:</b> Write a few lines of Groovy to prototype a REST endpoint without any build files</li>
+              <li><b>Demos and proof-of-concepts:</b> Show a working API in a single file</li>
+              <li><b>Scripting:</b> Automate Spring Boot project creation in CI pipelines</li>
+            </ul>
+          </li>
+          <li><b>Not for production:</b> CLI-based apps are not standard for production use — they lack the structure and build lifecycle of Maven/Gradle projects.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Most teams don't use the CLI day-to-day, but it demonstrates the depth of Spring Boot's tooling ecosystem. Knowing it exists shows breadth of knowledge.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">13</span>
+        <div class="qa-text">How does <b>Spring Boot achieve auto-configuration</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Trigger:</b> <code>@EnableAutoConfiguration</code> (included in <code>@SpringBootApplication</code>) activates auto-configuration at startup.</li>
+          <li><b>Discovery mechanism:</b>
+            <ul>
+              <li><b>Spring Boot 2.x:</b> Reads all auto-configuration class names from <code>META-INF/spring.factories</code> under the key <code>org.springframework.boot.autoconfigure.EnableAutoConfiguration</code>.</li>
+              <li><b>Spring Boot 3.x:</b> Uses <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> (more performant, explicit imports).</li>
+            </ul>
+          </li>
+          <li><b>Conditional application:</b> Each auto-configuration class is annotated with conditional annotations that control whether it activates:
+            <ul>
+              <li><code>@ConditionalOnClass</code> — applies only if a specific class is on the classpath</li>
+              <li><code>@ConditionalOnMissingBean</code> — backs off if a user-defined bean already exists</li>
+              <li><code>@ConditionalOnProperty</code> — activates based on a property value</li>
+            </ul>
+          </li>
+          <li><b>Example — DataSource auto-config:</b> If <code>HikariCP</code> and <code>spring.datasource.url</code> are present, Spring Boot creates a <code>HikariDataSource</code> bean automatically.</li>
+          <li><b>Debugging:</b> Run with <code>--debug</code> flag or set <code>logging.level.org.springframework.boot.autoconfigure=DEBUG</code> to see the auto-configuration report.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Understanding the conditional mechanism is key. The "backs off" behavior (<code>@ConditionalOnMissingBean</code>) is what allows users to override any auto-configuration by simply declaring their own bean.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">14</span>
+        <div class="qa-text">What are common <b>application.properties</b> and <b>application.yml</b> configurations?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Server configuration:</b>
+<pre><code class="language-properties">server.port=8080
+server.servlet.context-path=/api
+server.ssl.key-store=classpath:keystore.p12</code></pre>
+          </li>
+          <li><b>DataSource:</b>
+<pre><code class="language-properties">spring.datasource.url=jdbc:postgresql://localhost:5432/mydb
+spring.datasource.username=admin
+spring.datasource.password=secret
+spring.datasource.hikari.maximum-pool-size=10</code></pre>
+          </li>
+          <li><b>JPA/Hibernate:</b>
+<pre><code class="language-properties">spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</code></pre>
+          </li>
+          <li><b>Logging:</b>
+<pre><code class="language-properties">logging.level.root=INFO
+logging.level.com.myapp=DEBUG
+logging.file.name=logs/app.log</code></pre>
+          </li>
+          <li><b>Profiles:</b> <code>spring.profiles.active=dev</code></li>
+          <li><b>Actuator:</b> <code>management.endpoints.web.exposure.include=health,info,metrics</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Never hardcode sensitive values (passwords, API keys) in properties files checked into source control. Use environment variables, AWS Secrets Manager, or Spring Cloud Config Server instead.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">15</span>
+        <div class="qa-text">What is the difference between <b>application.properties</b> and <b>application.yml</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>application.properties</th><th>application.yml</th></tr></thead>
+          <tbody>
+            <tr><td>Format</td><td>Flat key=value pairs</td><td>YAML hierarchical structure</td></tr>
+            <tr><td>Readability</td><td>Verbose for nested properties</td><td>Clean, hierarchical — easier to read</td></tr>
+            <tr><td>Lists</td><td><code>key[0]=a, key[1]=b</code></td><td><code>key: [a, b]</code> or YAML list syntax</td></tr>
+            <tr><td>Multi-profile</td><td>Separate files per profile</td><td>Multiple profiles in one file using <code>---</code> separator</td></tr>
+            <tr><td>Precedence</td><td>Same precedence (both loaded)</td><td>Same — loaded by <code>PropertySourceLoader</code></td></tr>
+            <tr><td>Pitfalls</td><td>None common</td><td>Indentation-sensitive (tabs not allowed)</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Both are functionally equivalent — Spring Boot processes them the same way. Teams choose based on preference. Many prefer YAML for complex configs; properties files are simpler for flat configs.</li>
+          <li>If both exist, properties take precedence over YAML by default, but this is configurable.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> YAML's ability to contain multiple profiles in one file (using <code>---</code>) is particularly useful: dev, staging, and prod configurations coexist in a single <code>application.yml</code>.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">16</span>
+        <div class="qa-text">Explain <b>Spring Boot's layered architecture</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot applications typically follow a <b>multi-tier layered architecture</b>:
+            <ul>
+              <li><b>Presentation Layer (Controller):</b> <code>@RestController</code> / <code>@Controller</code> — handles HTTP requests, input validation, serialization/deserialization. Delegates to service layer.</li>
+              <li><b>Service Layer:</b> <code>@Service</code> — contains business logic, orchestrates multiple repository calls, manages transactions. Decoupled from HTTP and persistence concerns.</li>
+              <li><b>Repository / Data Access Layer:</b> <code>@Repository</code> — interacts with the database via JPA repositories, JDBC, or other ORMs. Translates persistence exceptions to Spring's <code>DataAccessException</code> hierarchy.</li>
+              <li><b>Domain / Model Layer:</b> Plain Java objects (POJOs), JPA entities, DTOs — represent business domain data.</li>
+            </ul>
+          </li>
+          <li><b>Layered JAR (Spring Boot 2.3+):</b> Spring Boot also introduced a "layered JAR" concept for Docker optimization — the fat JAR is split into layers (dependencies, snapshot-dependencies, resources, application) enabling incremental Docker image builds.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always separate concerns between layers. A common interview scenario: "What if business logic ends up in the controller?" Answer: it breaks testability, reusability, and violates SRP — service layer is the correct place for business logic.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">17</span>
+        <div class="qa-text">What is the <b>default logging framework</b> used in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot uses <b>SLF4J (Simple Logging Facade for Java)</b> as the logging API, backed by <b>Logback</b> as the default implementation — both included transitively via <code>spring-boot-starter-logging</code>.</li>
+          <li><b>Default log format:</b> Timestamp, log level, PID, thread name, logger name, and message.</li>
+          <li><b>Switching to Log4j2:</b> Exclude <code>spring-boot-starter-logging</code> and add <code>spring-boot-starter-log4j2</code>.</li>
+          <li><b>Configuration:</b> Simple settings via <code>application.properties</code>:
+<pre><code class="language-properties">logging.level.com.myapp=DEBUG
+logging.file.name=application.log
+logging.pattern.console=%d{yyyy-MM-dd} %-5level %logger{36} - %msg%n</code></pre>
+          </li>
+          <li><b>Structured logging (Spring Boot 3.4+):</b> Native support for JSON-structured logs for ELK/Loki pipelines.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always code against SLF4J (<code>LoggerFactory.getLogger(...)</code>), never directly against Logback or Log4j — this decouples your code from the logging implementation and enables painless switching.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">18</span>
+        <div class="qa-text">What are the <b>limitations of Spring Boot</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Opinionated defaults can be limiting:</b> When you need non-standard configurations (e.g., custom Hibernate session factory, custom security chain), fighting Spring Boot's defaults can be complex and confusing.</li>
+          <li><b>Large artifact size:</b> Fat JARs bundle all dependencies — a simple REST service can be 50–80 MB. This impacts cold start times (especially for serverless/Lambda) and network transfer in CI/CD.</li>
+          <li><b>Startup time:</b> Full Spring Boot applications with many beans can take 10–30 seconds to start. Spring Native (GraalVM AOT compilation) partially addresses this.</li>
+          <li><b>Auto-configuration magic:</b> Can be hard to debug — unexpected beans may be configured, leading to hard-to-trace behavior. Requires understanding of conditional configuration.</li>
+          <li><b>Memory footprint:</b> Higher baseline memory compared to micro-frameworks like Quarkus or Micronaut — relevant for constrained environments.</li>
+          <li><b>Over-engineering risk:</b> For simple use cases, Spring Boot introduces unnecessary complexity; a simple web server might not need a full IoC container.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> This is a maturity question — interviewers want to know you understand trade-offs, not just capabilities. Acknowledge that Spring Boot is excellent for the vast majority of enterprise use cases while being honest about its limitations.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">19</span>
+        <div class="qa-text">How do <b>profiles</b> work in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Profiles</b> enable environment-specific configuration and bean registration in Spring Boot.</li>
+          <li><b>Profile-specific property files:</b> <code>application-{profile}.properties</code> or <code>application-{profile}.yml</code> are loaded when that profile is active. Properties override the base <code>application.properties</code>.</li>
+          <li><b>Activating profiles:</b>
+            <ul>
+              <li><code>spring.profiles.active=dev</code> in <code>application.properties</code></li>
+              <li><code>--spring.profiles.active=prod</code> as a command-line argument</li>
+              <li><code>SPRING_PROFILES_ACTIVE=staging</code> environment variable (recommended in containers)</li>
+              <li><code>@ActiveProfiles("test")</code> in test classes</li>
+            </ul>
+          </li>
+          <li><b>Profile-conditional beans:</b> <code>@Profile("dev")</code> on a <code>@Bean</code> or <code>@Configuration</code> class — that bean is only registered when the named profile is active.</li>
+          <li><b>Profile groups (Spring Boot 2.4+):</b> <code>spring.profiles.group.prod=proddb,prodmq</code> — activating "prod" activates all grouped profiles.</li>
+        </ul>
+<pre><code class="language-yaml"># application-dev.yml
+spring:
+  datasource:
+    url: jdbc:h2:mem:devdb
+  jpa:
+    show-sql: true
+
+# application-prod.yml
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-host:5432/appdb</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> In production, always activate profiles via environment variables — never hardcode <code>spring.profiles.active=prod</code> in the deployed artifact, as it reduces portability.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">20</span>
+        <div class="qa-text">How do you <b>override default properties</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot uses a <b>property source priority chain</b> (highest priority first):
+            <ol>
+              <li>Command-line arguments: <code>--server.port=9090</code></li>
+              <li>Java System Properties: <code>-Dserver.port=9090</code></li>
+              <li>OS environment variables: <code>SERVER_PORT=9090</code></li>
+              <li>Profile-specific properties: <code>application-prod.yml</code></li>
+              <li>Application properties: <code>application.yml</code> / <code>application.properties</code></li>
+              <li>Default values in <code>@Value</code> and <code>@ConfigurationProperties</code></li>
+            </ol>
+          </li>
+          <li><b>Overriding a Spring Boot default:</b> Set the property with the same key at a higher-priority source. E.g., to change the default Tomcat port from 8080: add <code>server.port=8085</code> in <code>application.properties</code>.</li>
+          <li><b>Overriding via custom bean:</b> Define your own <code>@Bean</code> of the auto-configured type — Spring Boot backs off due to <code>@ConditionalOnMissingBean</code>.</li>
+          <li><b>Excluding auto-config:</b> <code>@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})</code></li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Understanding this priority chain is essential for debugging — "why is my app still using the wrong database URL?" is usually caused by a lower-priority property file being overridden by an environment variable.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

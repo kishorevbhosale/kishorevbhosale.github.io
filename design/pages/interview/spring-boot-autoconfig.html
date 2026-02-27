@@ -1,0 +1,560 @@
+<div class="qa-section">
+  <div class="qa-section-controls">
+    <button class="qa-expand-all">Expand All</button>
+  </div>
+  <div class="qa-list">
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">61</span>
+        <div class="qa-text">What is <b>auto-configuration</b> in Spring Boot? How does it work?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Auto-configuration is Spring Boot's mechanism to <b>automatically configure the application context</b> based on the libraries on the classpath and the properties set — without requiring any explicit bean definitions from the developer.</li>
+          <li><b>How it works (step by step):</b>
+            <ol>
+              <li><code>@SpringBootApplication</code> includes <code>@EnableAutoConfiguration</code>.</li>
+              <li>Spring Boot loads all auto-configuration candidates from <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> (Boot 3.x) or <code>META-INF/spring.factories</code> (Boot 2.x).</li>
+              <li>Each auto-configuration class is annotated with <code>@AutoConfiguration</code> or <code>@Configuration</code> and conditional annotations (<code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>, etc.).</li>
+              <li>Only configurations whose conditions are satisfied are applied — the rest are silently skipped.</li>
+            </ol>
+          </li>
+          <li><b>Example:</b> If <code>DataSource</code> and <code>JPA</code> are on the classpath and <code>spring.datasource.url</code> is set, <code>DataSourceAutoConfiguration</code> creates a <code>DataSource</code> bean, <code>HibernateJpaAutoConfiguration</code> creates an <code>EntityManagerFactory</code>, and <code>TransactionAutoConfiguration</code> sets up transaction management.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Auto-configuration is not magic — it's conditional <code>@Configuration</code> classes loaded via the service loader pattern. Running with <code>--debug</code> prints the auto-configuration report showing what was applied and what was skipped and why.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">62</span>
+        <div class="qa-text">What is the role of <b>spring.factories</b> in auto-configuration?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>META-INF/spring.factories</code> is a properties file inside each Spring Boot JAR (including <code>spring-boot-autoconfigure.jar</code>) that registers implementations of various Spring extension interfaces.</li>
+          <li><b>In the context of auto-configuration:</b> It maps the key <code>org.springframework.boot.autoconfigure.EnableAutoConfiguration</code> to a comma-separated list of <code>@Configuration</code> classes to be considered for auto-configuration.</li>
+          <li><b>Spring Boot 3.x change:</b> Auto-configuration class registration was moved to a dedicated file <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> for better performance and clarity. <code>spring.factories</code> still exists for other extension points (like <code>ApplicationListener</code>, <code>EnvironmentPostProcessor</code>).</li>
+        </ul>
+<pre><code class="language-properties"># META-INF/spring.factories (Spring Boot 2.x)
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,\
+  org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,\
+  org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> The service loader pattern via <code>spring.factories</code> is what makes Spring Boot's auto-configuration pluggable — any third-party library can add its own auto-configuration by simply including a <code>spring.factories</code> file in its JAR.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">63</span>
+        <div class="qa-text">What is the difference between <b>@EnableAutoConfiguration</b> and <b>@SpringBootApplication</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@EnableAutoConfiguration</code> is a <b>focused annotation</b> that solely activates Spring Boot's auto-configuration mechanism. It triggers the loading and conditional application of auto-configuration classes.</li>
+          <li><code>@SpringBootApplication</code> is a <b>convenience meta-annotation</b> that combines:
+            <ul>
+              <li><code>@SpringBootConfiguration</code> (marks the class as a Spring config source)</li>
+              <li><code>@EnableAutoConfiguration</code> (triggers auto-config)</li>
+              <li><code>@ComponentScan</code> (scans the application's packages for components)</li>
+            </ul>
+          </li>
+          <li>Using <code>@SpringBootApplication</code> is equivalent to using all three, with the advantage of being a single annotation.</li>
+          <li><b>When to use <code>@EnableAutoConfiguration</code> directly:</b> When you need fine-grained control — e.g., separating the main application class from the component scan root, or in non-standard configurations.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Always use <code>@SpringBootApplication</code> on the main class. Use the individual annotations only in specialized scenarios where the combined behavior needs to be split across multiple classes.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">64</span>
+        <div class="qa-text">How do you <b>exclude an auto-configuration class</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Three approaches:</b></li>
+        </ul>
+<pre><code class="language-java">// Option 1: exclude attribute on @SpringBootApplication
+@SpringBootApplication(exclude = {
+    DataSourceAutoConfiguration.class,
+    SecurityAutoConfiguration.class
+})
+public class MyApp { ... }
+
+// Option 2: excludeName for classes not on the classpath
+@SpringBootApplication(excludeName = {
+    "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
+})
+public class MyApp { ... }</code></pre>
+<pre><code class="language-properties"># Option 3: application.properties
+spring.autoconfigure.exclude=\
+  org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,\
+  org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration</code></pre>
+        <ul>
+          <li><b>Common use cases:</b>
+            <ul>
+              <li>Exclude <code>DataSourceAutoConfiguration</code> when managing DataSource manually</li>
+              <li>Exclude <code>SecurityAutoConfiguration</code> to configure security from scratch</li>
+              <li>Exclude <code>JmxAutoConfiguration</code> in containers where JMX is not needed</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Excluding auto-configuration should be a deliberate decision — always explain <em>why</em>. Simply excluding to suppress startup errors usually masks an underlying configuration problem that should be fixed properly.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">65</span>
+        <div class="qa-text">What is the purpose of <b>META-INF/spring.factories</b> file?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>META-INF/spring.factories</code> is Spring Boot's <b>extension registry</b> — a properties file that maps extension point interfaces to their implementations, discovered via the Java service loader mechanism.</li>
+          <li><b>Extension points registered here:</b>
+            <ul>
+              <li><code>EnableAutoConfiguration</code> — auto-configuration classes</li>
+              <li><code>ApplicationContextInitializer</code> — customize context before refresh</li>
+              <li><code>ApplicationListener</code> — listen to application events</li>
+              <li><code>EnvironmentPostProcessor</code> — modify the <code>Environment</code> before context creation</li>
+              <li><code>SpringApplicationRunListener</code> — hook into the application run lifecycle</li>
+              <li><code>FailureAnalyzer</code> — provide human-readable failure messages</li>
+            </ul>
+          </li>
+          <li>Any library that wants to integrate with Spring Boot adds its own <code>spring.factories</code> to its JAR — this is how third-party auto-configurations (Flyway, Micrometer, Spring Data) are discovered.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Understanding <code>spring.factories</code> is key to writing custom Spring Boot Starters. Your starter's auto-configuration class must be registered here (or in <code>AutoConfiguration.imports</code> for Boot 3.x) to be picked up by the container.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">66</span>
+        <div class="qa-text">How do you create a <b>custom auto-configuration</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+<pre><code class="language-java">// Step 1: Create the auto-configuration class
+@AutoConfiguration  // Spring Boot 3.x (@Configuration for 2.x)
+@ConditionalOnClass(AuditClient.class)
+@ConditionalOnMissingBean(AuditService.class)
+@EnableConfigurationProperties(AuditProperties.class)
+public class AuditAutoConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(name = "audit.enabled", havingValue = "true", matchIfMissing = true)
+    public AuditService auditService(AuditProperties properties) {
+        return new DefaultAuditService(properties.getEndpoint());
+    }
+}
+
+// Step 2: Register in auto-configuration imports
+// For Spring Boot 3.x:
+// META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+// com.mylib.audit.AuditAutoConfiguration
+
+// For Spring Boot 2.x:
+// META-INF/spring.factories
+// org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+//   com.mylib.audit.AuditAutoConfiguration</code></pre>
+        <ul>
+          <li><b>Key principles:</b> Make your auto-configuration fully conditional — always use <code>@ConditionalOnMissingBean</code> to back off when users define their own implementation. This is the "opinionated but overridable" contract.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The most common mistake in custom auto-configuration is forgetting <code>@ConditionalOnMissingBean</code>. Without it, your auto-configured bean cannot be overridden, violating the Spring Boot contract.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">67</span>
+        <div class="qa-text">What is the difference between <b>@ConditionalOnClass</b> and <b>@ConditionalOnMissingBean</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b><code>@ConditionalOnClass</code></b> — applies the configuration only if the specified class(es) are <b>present on the classpath</b>. Used to activate configuration for a library that may or may not be a dependency.
+            <br><i>Example:</i> <code>@ConditionalOnClass(HikariDataSource.class)</code> — HikariCP auto-configuration only activates if HikariCP JAR is on the classpath.
+          </li>
+          <li><b><code>@ConditionalOnMissingBean</code></b> — applies the configuration only if the specified bean type is <b>not already registered</b> in the application context. Enables user override — if you define your own <code>DataSource</code> bean, Spring Boot's auto-configured one backs off.
+            <br><i>Example:</i> <code>@ConditionalOnMissingBean(DataSource.class)</code> — auto-configured DataSource only registers if no DataSource bean exists.
+          </li>
+        </ul>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Annotation</th><th>Condition</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>@ConditionalOnClass</code></td><td>Class on classpath</td><td>Library presence detection</td></tr>
+            <tr><td><code>@ConditionalOnMissingClass</code></td><td>Class NOT on classpath</td><td>Activate when library absent</td></tr>
+            <tr><td><code>@ConditionalOnBean</code></td><td>Bean already exists</td><td>Activate when dependency bean is present</td></tr>
+            <tr><td><code>@ConditionalOnMissingBean</code></td><td>Bean does NOT exist</td><td>User override support</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@ConditionalOnClass</code> and <code>@ConditionalOnMissingBean</code> are the two most important conditional annotations. Every auto-configuration class uses them to ensure it only activates when appropriate and always yields to user-defined beans.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">68</span>
+        <div class="qa-text">What is <b>@ConditionalOnProperty</b> and when would you use it?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@ConditionalOnProperty</code> conditionally activates a bean or configuration based on the <b>presence and value of a property</b> in the Spring Environment.</li>
+          <li><b>Parameters:</b>
+            <ul>
+              <li><code>name</code>/<code>value</code> — property key</li>
+              <li><code>havingValue</code> — expected value (default: non-false, non-empty string)</li>
+              <li><code>matchIfMissing</code> — if <code>true</code>, condition passes even if the property is absent (default: <code>false</code>)</li>
+              <li><code>prefix</code> — property prefix (combined with <code>name</code>)</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">// Feature toggle for Stripe payment
+@Configuration
+@ConditionalOnProperty(prefix = "payment", name = "provider", havingValue = "stripe")
+public class StripePaymentConfig {
+    @Bean
+    public PaymentGateway stripeGateway() { return new StripeGateway(); }
+}
+
+// Activate if property is absent OR set to true
+@Bean
+@ConditionalOnProperty(name = "cache.enabled", havingValue = "true", matchIfMissing = true)
+public CacheManager cacheManager() { return new RedisCacheManager(); }
+</code></pre>
+        <ul>
+          <li><b>Use cases:</b> Feature flags, environment-specific integrations, enabling optional modules, A/B configuration testing.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@ConditionalOnProperty</code> is the Spring Boot way to implement feature toggles. Combined with Spring Cloud Config Server, you can change feature flags at runtime across all microservice instances without redeployment.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">69</span>
+        <div class="qa-text">Explain <b>@ConditionalOnResource</b> and its use case.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>@ConditionalOnResource</code> applies configuration only if a <b>specific resource file exists</b> in the classpath or file system.</li>
+          <li><b>Syntax:</b> <code>@ConditionalOnResource(resources = "classpath:mybatis-config.xml")</code></li>
+          <li><b>Use cases:</b>
+            <ul>
+              <li>Auto-configure MyBatis only if a <code>mybatis-config.xml</code> is present</li>
+              <li>Enable HTTPS-specific config only if a keystore file exists</li>
+              <li>Activate legacy configuration only if a specific properties file is present</li>
+            </ul>
+          </li>
+        </ul>
+<pre><code class="language-java">@Configuration
+@ConditionalOnResource(resources = "classpath:logback-custom.xml")
+public class CustomLoggingConfig {
+    // Applied only if logback-custom.xml exists in classpath
+    @Bean
+    public LoggingAspect loggingAspect() {
+        return new LoggingAspect();
+    }
+}</code></pre>
+        <div class="qa-tip"><b>Interview tip:</b> <code>@ConditionalOnResource</code> is less commonly used than <code>@ConditionalOnClass</code> or <code>@ConditionalOnProperty</code>, but it's valuable for detecting optional configuration files. It checks for resource existence, not content.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">70</span>
+        <div class="qa-text">What are <b>Spring Boot Starter dependencies</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>Spring Boot Starters are <b>curated, pre-packaged dependency descriptors</b> that aggregate all the libraries needed for a specific feature or technology into a single Maven/Gradle dependency.</li>
+          <li><b>What each starter provides:</b>
+            <ul>
+              <li>Transitive dependencies — all required libraries, version-aligned</li>
+              <li>Auto-configuration classes — registered in <code>spring.factories</code></li>
+              <li>Default configuration — via auto-configuration and property defaults</li>
+            </ul>
+          </li>
+          <li><b>Benefits:</b>
+            <ul>
+              <li>No more "which version of Hibernate works with this version of Spring?"</li>
+              <li>One line in <code>pom.xml</code> instead of 10+ individual dependencies</li>
+              <li>Tested, known-good dependency combinations</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> When asked about dependency management best practices, mention that Spring Boot Starters implement the "Transitive Dependencies" pattern — they abstract away the details of what libraries are needed, letting developers focus on features rather than classpath management.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">71</span>
+        <div class="qa-text">Give examples of <b>commonly used Spring Boot Starter dependencies</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Starter</th><th>Purpose</th><th>Key inclusions</th></tr></thead>
+          <tbody>
+            <tr><td><code>spring-boot-starter-web</code></td><td>REST/MVC web apps</td><td>Spring MVC, Tomcat, Jackson, Validation</td></tr>
+            <tr><td><code>spring-boot-starter-webflux</code></td><td>Reactive web apps</td><td>Spring WebFlux, Reactor, Netty</td></tr>
+            <tr><td><code>spring-boot-starter-data-jpa</code></td><td>JPA/Hibernate persistence</td><td>Hibernate, Spring Data JPA, HikariCP</td></tr>
+            <tr><td><code>spring-boot-starter-security</code></td><td>Authentication/Authorization</td><td>Spring Security, BCrypt, CSRF</td></tr>
+            <tr><td><code>spring-boot-starter-test</code></td><td>Testing (scope: test)</td><td>JUnit 5, Mockito, AssertJ, MockMvc</td></tr>
+            <tr><td><code>spring-boot-starter-actuator</code></td><td>Production monitoring</td><td>Health, metrics, info endpoints</td></tr>
+            <tr><td><code>spring-boot-starter-data-redis</code></td><td>Redis caching/messaging</td><td>Lettuce client, Spring Data Redis</td></tr>
+            <tr><td><code>spring-boot-starter-amqp</code></td><td>RabbitMQ messaging</td><td>RabbitMQ client, Spring AMQP</td></tr>
+            <tr><td><code>spring-boot-starter-cache</code></td><td>Caching abstraction</td><td>Spring Cache, Caffeine support</td></tr>
+            <tr><td><code>spring-boot-starter-mail</code></td><td>Email sending</td><td>JavaMail, Spring Email</td></tr>
+          </tbody>
+        </table>
+        <div class="qa-tip"><b>Interview tip:</b> Know which starter to choose for common scenarios. For a microservice: <code>starter-web</code> + <code>starter-data-jpa</code> + <code>starter-actuator</code> + <code>starter-security</code> covers 90% of typical requirements.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">72</span>
+        <div class="qa-text">How do <b>Spring Boot Starters simplify dependency management</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Single dependency declaration:</b> Instead of individually adding Spring MVC, Tomcat, Jackson, and Validation with specific compatible versions, developers add one <code>spring-boot-starter-web</code> entry.</li>
+          <li><b>BOM-managed versions:</b> The parent POM (<code>spring-boot-starter-parent</code>) pins all dependency versions. No version conflicts, no <code>ClassNotFoundException</code> from mismatched versions.</li>
+          <li><b>Automatic transitive dependency resolution:</b> Maven/Gradle resolves all transitive dependencies declared by the starter — developers don't need to know the full dependency tree.</li>
+          <li><b>Easy upgrades:</b> Upgrading Spring Boot version in the parent POM upgrades all transitive dependencies together, maintaining compatibility.</li>
+          <li><b>Exclusion mechanism:</b> Default dependencies can be excluded and replaced: exclude Tomcat from <code>spring-boot-starter-web</code>, add <code>spring-boot-starter-undertow</code>.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Before Spring Boot Starters, setting up a Spring MVC + JPA application required 15-20 manually-versioned dependencies. With starters, it's 3-4 entries. This is a huge productivity gain in enterprise environments where teams manage hundreds of services.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">73</span>
+        <div class="qa-text">What is the difference between <b>spring-boot-starter-web</b> and <b>spring-boot-starter-webflux</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <table class="table table-bordered table-sm">
+          <thead><tr><th>Aspect</th><th>spring-boot-starter-web</th><th>spring-boot-starter-webflux</th></tr></thead>
+          <tbody>
+            <tr><td>Programming model</td><td>Imperative (blocking I/O)</td><td>Reactive (non-blocking I/O)</td></tr>
+            <tr><td>Server</td><td>Tomcat (default), Jetty, Undertow</td><td>Reactor Netty (default), Jetty, Undertow</td></tr>
+            <tr><td>Thread model</td><td>Thread-per-request</td><td>Event loop (few threads handle many requests)</td></tr>
+            <tr><td>Return types</td><td>Plain objects, <code>ResponseEntity</code></td><td><code>Mono&lt;T&gt;</code>, <code>Flux&lt;T&gt;</code></td></tr>
+            <tr><td>Controller type</td><td><code>@RestController</code></td><td><code>@RestController</code> + Router Functions</td></tr>
+            <tr><td>Best for</td><td>CRUD apps, most enterprise scenarios</td><td>High-concurrency, streaming, SSE</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><b>Note:</b> If both starters are on the classpath, <code>spring-boot-starter-web</code> takes precedence by default. They cannot be mixed in the same application without careful configuration.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Don't use WebFlux just because it's reactive — it adds complexity and requires a fully reactive stack (reactive DB drivers, reactive HTTP clients). Use it when you genuinely need to handle high concurrency with limited threads (e.g., streaming, SSE, high-throughput APIs).</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">74</span>
+        <div class="qa-text">What is <b>spring-boot-starter-data-jpa</b> and what does it provide?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>spring-boot-starter-data-jpa</code> provides everything needed for JPA-based database persistence:</li>
+          <li><b>Transitive dependencies included:</b>
+            <ul>
+              <li><b>Hibernate ORM</b> — the JPA implementation (provider)</li>
+              <li><b>Spring Data JPA</b> — repository abstraction, query methods, <code>JpaRepository</code></li>
+              <li><b>Spring ORM</b> — Spring's transaction management integration with JPA</li>
+              <li><b>HikariCP</b> — high-performance JDBC connection pool (included transitively via <code>spring-boot-starter-jdbc</code>)</li>
+            </ul>
+          </li>
+          <li><b>Auto-configuration provided:</b>
+            <ul>
+              <li><code>DataSourceAutoConfiguration</code> — configures DataSource based on <code>spring.datasource.*</code></li>
+              <li><code>HibernateJpaAutoConfiguration</code> — configures EntityManagerFactory</li>
+              <li><code>JpaRepositoriesAutoConfiguration</code> — enables repository scanning</li>
+              <li><code>TransactionAutoConfiguration</code> — enables transaction management</li>
+            </ul>
+          </li>
+          <li>Requires a JDBC driver dependency (e.g., <code>postgresql</code>, <code>h2</code>) to be added separately.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Know that <code>spring.jpa.hibernate.ddl-auto=validate</code> is the recommended production setting — it validates the schema matches the entities without modifying it. Never use <code>create-drop</code> in production.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">75</span>
+        <div class="qa-text">Explain the role of <b>spring-boot-starter-security</b>.</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>spring-boot-starter-security</code> includes Spring Security and enables automatic security hardening:</li>
+          <li><b>What happens when you add this starter:</b>
+            <ul>
+              <li>All HTTP endpoints are secured — require authentication by default</li>
+              <li>A default user is created (<code>user</code>/<em>randomly-generated password printed in logs</em>)</li>
+              <li>Login form is provided at <code>/login</code></li>
+              <li>CSRF protection is enabled for state-changing operations</li>
+              <li>HTTP Basic Auth is enabled</li>
+              <li>Security headers (X-Frame-Options, X-XSS-Protection, HSTS) are added to all responses</li>
+            </ul>
+          </li>
+          <li><b>Customization:</b> Create a <code>@Configuration</code> class with a <code>SecurityFilterChain</code> bean to override defaults — configure custom authentication, authorization rules, JWT, OAuth2, etc.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Adding <code>spring-boot-starter-security</code> to an existing application is often a breaking change because all endpoints suddenly require authentication. Always plan security integration early in the project.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">76</span>
+        <div class="qa-text">What is the purpose of <b>spring-boot-starter-test</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>spring-boot-starter-test</code> is a test-scope starter that bundles everything needed for writing Spring Boot tests:</li>
+          <li><b>Included libraries:</b>
+            <ul>
+              <li><b>JUnit 5 (Jupiter)</b> — test framework with <code>@Test</code>, <code>@ExtendWith</code>, parameterized tests</li>
+              <li><b>Mockito</b> — mocking framework (<code>@Mock</code>, <code>@Spy</code>, <code>when(...).thenReturn(...)</code>)</li>
+              <li><b>AssertJ</b> — fluent assertion library (<code>assertThat(result).isEqualTo(expected)</code>)</li>
+              <li><b>Spring Test + Spring Boot Test</b> — <code>@SpringBootTest</code>, <code>@DataJpaTest</code>, <code>@WebMvcTest</code>, <code>MockMvc</code></li>
+              <li><b>Hamcrest</b> — matcher-based assertions (for legacy compatibility)</li>
+              <li><b>JSONPath</b> — JSON response testing</li>
+            </ul>
+          </li>
+          <li><b>Scope:</b> Always declared with <code>&lt;scope&gt;test&lt;/scope&gt;</code> — not included in production artifacts.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Spring Boot 2.2+ uses JUnit 5 by default. If you need JUnit 4, you must add the vintage engine: <code>junit-vintage-engine</code>. Most modern projects should use JUnit 5 exclusively.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">77</span>
+        <div class="qa-text">How do you create a <b>custom Spring Boot Starter</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li>A custom Spring Boot Starter consists of two modules (by convention):
+            <ol>
+              <li><code>{name}-spring-boot-autoconfigure</code> — contains the auto-configuration class and <code>@ConfigurationProperties</code>.</li>
+              <li><code>{name}-spring-boot-starter</code> — a thin wrapper that depends on the autoconfigure module and any required third-party libraries.</li>
+            </ol>
+          </li>
+        </ul>
+<pre><code class="language-java">// autoconfigure module
+@AutoConfiguration
+@ConditionalOnClass(AuditClient.class)
+@EnableConfigurationProperties(AuditProperties.class)
+public class AuditAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AuditService auditService(AuditProperties props) {
+        return new AuditServiceImpl(props.getServerUrl());
+    }
+}
+
+// META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports:
+// com.company.audit.AuditAutoConfiguration
+</code></pre>
+        <ul>
+          <li><b>Naming convention:</b> Third-party starters use <code>{name}-spring-boot-starter</code> (e.g., <code>mybatis-spring-boot-starter</code>), not <code>spring-boot-starter-{name}</code> (that prefix is reserved for official Spring projects).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Custom starters are the right pattern for shared infrastructure in large organizations — common audit logging, company-wide security configuration, standard metrics setup. One team builds the starter; all teams consume it with zero configuration.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">78</span>
+        <div class="qa-text">What are the <b>advantages of custom Spring Boot Starters</b>?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>DRY principle at the infrastructure level:</b> Common cross-cutting concerns (security, logging, metrics, audit) are implemented once in a starter and consumed by all services.</li>
+          <li><b>Enforced organizational standards:</b> Security policies, logging formats, and monitoring configuration are baked into the starter — developers can't accidentally skip them.</li>
+          <li><b>Zero-configuration for consumers:</b> Services that add the starter get all functionality out of the box — same opinionated-but-overridable contract as official Spring Boot Starters.</li>
+          <li><b>Centralized upgrades:</b> When the organization upgrades its standard logging framework, updating the starter version in all services' <code>pom.xml</code> is sufficient.</li>
+          <li><b>Testability:</b> The starter can include test utilities that all consuming services can use (e.g., <code>@EnableTestAuditService</code>).</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> Custom starters are a hallmark of mature microservice platforms. Mentioning that you've created internal starters for shared infrastructure shows platform engineering experience — a strong differentiator in senior interviews.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">79</span>
+        <div class="qa-text">How do you <b>debug issues with auto-configuration</b> in Spring Boot?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><b>Auto-configuration report:</b> Run with <code>--debug</code> flag or set <code>logging.level.org.springframework.boot.autoconfigure=DEBUG</code>. Spring Boot prints a detailed report showing:
+            <ul>
+              <li><b>Positive matches:</b> Auto-configurations that applied and why</li>
+              <li><b>Negative matches:</b> Auto-configurations that were skipped and why (missing class, existing bean, property not set)</li>
+              <li><b>Exclusions:</b> Explicitly excluded auto-configurations</li>
+              <li><b>Unconditional classes:</b> Always applied</li>
+            </ul>
+          </li>
+          <li><b>Actuator conditions endpoint:</b> <code>GET /actuator/conditions</code> returns the auto-configuration report as JSON (requires Actuator dependency).</li>
+          <li><b>Common debugging patterns:</b>
+            <ul>
+              <li>Bean unexpectedly created → check if you have both the auto-config class AND a <code>@ConditionalOnMissingBean</code> on it</li>
+              <li>Expected auto-config not applied → verify the required class is on the classpath or property is set</li>
+              <li>Use <code>ConditionEvaluationReport</code> programmatically in tests</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> The auto-configuration report is your first tool when Spring Boot "doesn't do what you expect." Knowing to check it immediately demonstrates experienced troubleshooting skills.</div>
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-header">
+        <span class="qa-num">80</span>
+        <div class="qa-text">What is the role of <b>spring-boot-autoconfigure</b> module?</div>
+        <button class="qa-toggle-btn" aria-expanded="false">Show Answer</button>
+      </div>
+      <div class="qa-answer">
+        <ul>
+          <li><code>spring-boot-autoconfigure</code> is the core Spring Boot module that contains <b>all of Spring Boot's built-in auto-configuration classes</b> — over 130+ configurations covering web, data, security, messaging, caching, and more.</li>
+          <li><b>Contents:</b>
+            <ul>
+              <li>Auto-configuration classes for every Spring technology (JPA, Security, Web, Cache, Actuator, etc.)</li>
+              <li>All <code>@ConditionalOn*</code> annotations are defined here</li>
+              <li>The <code>AutoConfiguration.imports</code> file registering all auto-config classes</li>
+              <li><code>@ConfigurationProperties</code> classes for all Spring Boot configurable properties</li>
+            </ul>
+          </li>
+          <li>This module is included transitively via any Spring Boot Starter — you don't add it directly.</li>
+          <li><b>Source of truth:</b> When you need to understand exactly what Spring Boot configures for a feature, reading the corresponding class in <code>spring-boot-autoconfigure</code> is the definitive answer.</li>
+        </ul>
+        <div class="qa-tip"><b>Interview tip:</b> If you want to understand why a Spring Boot feature behaves a certain way, the source code of <code>spring-boot-autoconfigure</code> is the ground truth. Senior engineers reference it — it's publicly available on GitHub.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
