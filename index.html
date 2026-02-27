@@ -8,6 +8,9 @@
     <meta name="keywords" content="Backend Development, Java, Microservices, System Design, Databases, Interview Questions, Spring Boot, AWS, Low-Level Design, Data Structures">
     <meta name="author" content="Kishor Bhosale">
     <meta name="robots" content="index, follow">
+    <!-- Security headers -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com pagead2.googlesyndication.com *.googlesyndication.com *.googletagservices.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com cdn.jsdelivr.net; img-src 'self' data: https:; frame-src *.googlesyndication.com; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;">
     <meta property="og:title" content="Tech Preparation Zone — Backend Development & System Design Interview Prep">
     <meta property="og:description" content="Revise, prepare, and excel in backend development and system design interviews with structured, interview-oriented content.">
     <meta property="og:image" content="https://www.preparationzone.com/images/tech-banner.jpg">
@@ -24,6 +27,11 @@
     <base href="/">
     <script>
         (function () {
+            // Anti-clickjacking: break out of any iframe embedding
+            if (window.self !== window.top) {
+                window.top.location = window.self.location;
+            }
+            // Fix base href for file:// protocol (local dev)
             if (window.location.protocol === 'file:') {
                 var path = window.location.pathname;
                 var basePath = path.substring(0, path.lastIndexOf('/') + 1);
@@ -32,14 +40,44 @@
         })();
     </script>
 
+    <!-- DNS prefetch for CDN domains (resolves hostnames early) -->
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+    <!-- Preconnect for highest-priority external origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Preload critical local assets (eliminates render-blocking delay) -->
+    <link rel="preload" href="/styles.css" as="style">
+    <link rel="preload" href="/script.js" as="script">
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css">
+
+    <!-- Bootstrap 5.3.8 — updated with SRI integrity to prevent supply-chain attacks -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+
+    <!-- Bootstrap Icons 1.11.1 -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+          crossorigin="anonymous">
+
+    <!-- Prism syntax highlighting (non-blocking — loaded after paint) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" crossorigin="anonymous">
+
     <link rel="stylesheet" href="/styles.css">
     <link rel="icon" type="image/png" href="/images/favicon.png">
 
@@ -67,6 +105,18 @@
 
 <body>
 
+    <!-- Announcement Banner -->
+    <div id="announcementBanner" class="announcement-banner" role="banner" aria-label="Site announcement">
+        <div class="banner-content">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span><strong>New:</strong> Spring Boot Security Q&amp;A added &mdash;
+            <a href="/index.html#design/pages/interview/spring-boot-security.html" onclick="loadPage(event); AnnouncementBanner.hide()">Check it out &rarr;</a></span>
+        </div>
+        <button class="banner-close" id="bannerClose" aria-label="Dismiss announcement">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+    </div>
+
     <!-- Reading Progress Bar -->
     <div id="readingProgress" class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         <div class="reading-progress-bar"></div>
@@ -89,7 +139,7 @@
                 <!-- Center: Search (Desktop) -->
                 <div class="d-none d-md-flex flex-grow-1 justify-content-center mx-4" style="max-width: 480px;">
                     <div class="search-container w-100">
-                        <input type="search" id="searchInput" class="form-control form-control-sm" placeholder="Search topics, articles..." aria-label="Search content">
+                        <input type="search" id="searchInput" class="form-control form-control-sm" placeholder="Search topics, articles..." aria-label="Search content" maxlength="100" autocomplete="off" spellcheck="false">
                         <i class="bi bi-search search-icon" aria-hidden="true"></i>
                         <div id="searchResults" class="search-results"></div>
                     </div>
@@ -126,7 +176,7 @@
         <!-- Mobile Search -->
         <div class="d-md-none px-3 pb-2">
             <div class="search-container">
-                <input type="search" id="searchInputMobile" class="form-control form-control-sm" placeholder="Search..." aria-label="Search content">
+                <input type="search" id="searchInputMobile" class="form-control form-control-sm" placeholder="Search..." aria-label="Search content" maxlength="100" autocomplete="off" spellcheck="false">
                 <i class="bi bi-search search-icon" aria-hidden="true"></i>
                 <div id="searchResultsMobile" class="search-results"></div>
             </div>
@@ -141,13 +191,18 @@
             <aside class="left-panel" role="complementary" aria-label="Navigation sidebar">
                 <h5 class="sidebar-title">Topics</h5>
 
+                <div class="read-progress-strip">
+                    <span id="readProgressCounter">0 of 0 read</span>
+                    <div class="read-progress-track"><div class="read-progress-fill" id="readProgressFill"></div></div>
+                </div>
+
                 <div class="accordion" id="sidebarAccordion">
 
                     <!-- Coding Interview & DSA -->
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingCoding">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCoding" aria-expanded="false" aria-controls="collapseCoding">
-                                <i class="bi bi-code-slash me-2"></i> Coding Interview & DSA
+                                <i class="bi bi-code-slash me-2"></i> Coding Interview & DSA <span class="section-count">2</span>
                             </button>
                         </h2>
                         <div id="collapseCoding" class="accordion-collapse collapse" aria-labelledby="headingCoding" data-bs-parent="#sidebarAccordion">
@@ -172,7 +227,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingJava">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJava" aria-expanded="false" aria-controls="collapseJava">
-                                <i class="bi bi-cup-hot-fill me-2"></i> Java
+                                <i class="bi bi-cup-hot-fill me-2"></i> Java <span class="section-count">15</span>
                             </button>
                         </h2>
                         <div id="collapseJava" class="accordion-collapse collapse" aria-labelledby="headingJava" data-bs-parent="#sidebarAccordion">
@@ -183,7 +238,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingJavaQA">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJavaQA" aria-expanded="false" aria-controls="collapseJavaQA">
-                                                <i class="bi bi-clipboard-check me-2"></i> Java Interview Q&A
+                                                <i class="bi bi-clipboard-check me-2"></i> Java Interview Q&A <span class="section-count">8</span>
                                             </button>
                                         </h2>
                                         <div id="collapseJavaQA" class="accordion-collapse collapse" aria-labelledby="headingJavaQA" data-bs-parent="#javaSubsections">
@@ -206,7 +261,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingSOLID">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSOLID" aria-expanded="false" aria-controls="collapseSOLID">
-                                                <i class="bi bi-shield-check me-2"></i> SOLID Principles
+                                                <i class="bi bi-shield-check me-2"></i> SOLID Principles <span class="section-count">5</span>
                                             </button>
                                         </h2>
                                         <div id="collapseSOLID" class="accordion-collapse collapse" aria-labelledby="headingSOLID" data-bs-parent="#javaSubsections">
@@ -226,7 +281,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingDesignPatterns">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDesignPatterns" aria-expanded="false" aria-controls="collapseDesignPatterns">
-                                                <i class="bi bi-puzzle me-2"></i> Design Patterns
+                                                <i class="bi bi-puzzle me-2"></i> Design Patterns <span class="section-count">2</span>
                                             </button>
                                         </h2>
                                         <div id="collapseDesignPatterns" class="accordion-collapse collapse" aria-labelledby="headingDesignPatterns" data-bs-parent="#javaSubsections">
@@ -248,7 +303,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingDb">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDb" aria-expanded="false" aria-controls="collapseDb">
-                                <i class="bi bi-database-fill me-2"></i> Databases
+                                <i class="bi bi-database-fill me-2"></i> Databases <span class="section-count">6</span>
                             </button>
                         </h2>
                         <div id="collapseDb" class="accordion-collapse collapse" aria-labelledby="headingDb" data-bs-parent="#sidebarAccordion">
@@ -269,7 +324,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingLLD">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLLD" aria-expanded="false" aria-controls="collapseLLD">
-                                <i class="bi bi-gear-fill me-2"></i> Low-Level Design
+                                <i class="bi bi-gear-fill me-2"></i> Low-Level Design <span class="section-count">12</span>
                             </button>
                         </h2>
                         <div id="collapseLLD" class="accordion-collapse collapse" aria-labelledby="headingLLD" data-bs-parent="#sidebarAccordion">
@@ -296,7 +351,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingSystemDesign">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSystemDesign" aria-expanded="false" aria-controls="collapseSystemDesign">
-                                <i class="bi bi-diagram-3-fill me-2"></i> System Design
+                                <i class="bi bi-diagram-3-fill me-2"></i> System Design <span class="section-count">22</span>
                             </button>
                         </h2>
                         <div id="collapseSystemDesign" class="accordion-collapse collapse" aria-labelledby="headingSystemDesign" data-bs-parent="#sidebarAccordion">
@@ -307,7 +362,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingTheory">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTheory" aria-expanded="false" aria-controls="collapseTheory">
-                                                <i class="bi bi-book-fill me-2"></i> Theory
+                                                <i class="bi bi-book-fill me-2"></i> Theory <span class="section-count">15</span>
                                             </button>
                                         </h2>
                                         <div id="collapseTheory" class="accordion-collapse collapse" aria-labelledby="headingTheory" data-bs-parent="#systemDesignSubsections">
@@ -337,7 +392,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingExamples">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExamples" aria-expanded="false" aria-controls="collapseExamples">
-                                                <i class="bi bi-boxes me-2"></i> Real-World Examples
+                                                <i class="bi bi-boxes me-2"></i> Real-World Examples <span class="section-count">7</span>
                                             </button>
                                         </h2>
                                         <div id="collapseExamples" class="accordion-collapse collapse" aria-labelledby="headingExamples" data-bs-parent="#systemDesignSubsections">
@@ -364,7 +419,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingMicroservices">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMicroservices" aria-expanded="false" aria-controls="collapseMicroservices">
-                                <i class="bi bi-boxes me-2"></i> Microservices
+                                <i class="bi bi-boxes me-2"></i> Microservices <span class="section-count">11</span>
                             </button>
                         </h2>
                         <div id="collapseMicroservices" class="accordion-collapse collapse" aria-labelledby="headingMicroservices" data-bs-parent="#sidebarAccordion">
@@ -390,7 +445,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingSpringBoot">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpringBoot" aria-expanded="false" aria-controls="collapseSpringBoot">
-                                <i class="bi bi-cup-hot me-2"></i> Spring Boot
+                                <i class="bi bi-cup-hot me-2"></i> Spring Boot <span class="section-count">14</span>
                             </button>
                         </h2>
                         <div id="collapseSpringBoot" class="accordion-collapse collapse" aria-labelledby="headingSpringBoot" data-bs-parent="#sidebarAccordion">
@@ -419,7 +474,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingDevOps">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDevOps" aria-expanded="false" aria-controls="collapseDevOps">
-                                <i class="bi bi-gear-wide-connected me-2"></i> DevOps & CI/CD
+                                <i class="bi bi-gear-wide-connected me-2"></i> DevOps & CI/CD <span class="section-count">4</span>
                             </button>
                         </h2>
                         <div id="collapseDevOps" class="accordion-collapse collapse" aria-labelledby="headingDevOps" data-bs-parent="#sidebarAccordion">
@@ -438,7 +493,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingDDIA">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDDIA" aria-expanded="false" aria-controls="collapseDDIA">
-                                <i class="bi bi-database me-2"></i> Designing Data-Intensive Apps
+                                <i class="bi bi-database me-2"></i> Designing Data-Intensive Apps <span class="section-count">1</span>
                             </button>
                         </h2>
                         <div id="collapseDDIA" class="accordion-collapse collapse" aria-labelledby="headingDDIA" data-bs-parent="#sidebarAccordion">
@@ -454,7 +509,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingGeneral">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGeneral" aria-expanded="false" aria-controls="collapseGeneral">
-                                <i class="bi bi-lightbulb me-2"></i> General Concepts
+                                <i class="bi bi-lightbulb me-2"></i> General Concepts <span class="section-count">3</span>
                             </button>
                         </h2>
                         <div id="collapseGeneral" class="accordion-collapse collapse" aria-labelledby="headingGeneral" data-bs-parent="#sidebarAccordion">
@@ -472,7 +527,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingApiDesign">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApiDesign" aria-expanded="false" aria-controls="collapseApiDesign">
-                                <i class="bi bi-braces me-2"></i> API Design
+                                <i class="bi bi-braces me-2"></i> API Design <span class="section-count">1</span>
                             </button>
                         </h2>
                         <div id="collapseApiDesign" class="accordion-collapse collapse" aria-labelledby="headingApiDesign" data-bs-parent="#sidebarAccordion">
@@ -488,7 +543,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingInterview">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInterview" aria-expanded="false" aria-controls="collapseInterview">
-                                <i class="bi bi-trophy me-2"></i> Interview Masterlist (Last-Week Revision)
+                                <i class="bi bi-trophy me-2"></i> Interview Masterlist (Last-Week Revision) <span class="section-count">6</span>
                             </button>
                         </h2>
                         <div id="collapseInterview" class="accordion-collapse collapse" aria-labelledby="headingInterview" data-bs-parent="#sidebarAccordion">
@@ -509,7 +564,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingPapers">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePaper" aria-expanded="false" aria-controls="collapsePaper">
-                                <i class="bi bi-journal-richtext me-2"></i> Papers & Tech Blogs
+                                <i class="bi bi-journal-richtext me-2"></i> Papers & Tech Blogs <span class="section-count">3</span>
                             </button>
                         </h2>
                         <div id="collapsePaper" class="accordion-collapse collapse" aria-labelledby="headingPapers" data-bs-parent="#sidebarAccordion">
@@ -527,7 +582,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingPOC">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePOC" aria-expanded="false" aria-controls="collapsePOC">
-                                <i class="bi bi-rocket-takeoff me-2"></i> Proof of Concepts
+                                <i class="bi bi-rocket-takeoff me-2"></i> Proof of Concepts <span class="section-count">1</span>
                             </button>
                         </h2>
                         <div id="collapsePOC" class="accordion-collapse collapse" aria-labelledby="headingPOC" data-bs-parent="#sidebarAccordion">
@@ -547,8 +602,17 @@
                 <article id="content">
                     <div class="welcome-section">
                         <div class="welcome-hero">
-                            <h2>Backend Interview Preparation Hub</h2>
-                            <p>Your structured, interview-oriented guide to mastering backend development, system design, and core computer science concepts.</p>
+                            <span class="hero-badge"><i class="bi bi-stars"></i> Updated Feb 2026</span>
+                            <h2 class="hero-headline">Backend Interview<br><span class="hero-gradient-text">Preparation Hub</span></h2>
+                            <p>Your structured, interview-oriented guide to mastering backend development,<br class="d-none d-md-inline"> system design, and core computer science concepts.</p>
+                            <div class="hero-cta-group">
+                                <a href="/index.html#design/pages/java/basic-java.html" class="btn hero-btn-primary" onclick="loadPage(event)">
+                                    Start Learning <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                                <button class="btn hero-btn-secondary" onclick="browseTopics(event)">
+                                    Browse Topics <i class="bi bi-grid-3x3-gap ms-1"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="stats-strip">
@@ -571,46 +635,80 @@
                         </div>
 
                         <div class="feature-grid">
-                            <div class="feature-card">
+                            <a href="/index.html#design/pages/java/basic-java.html" class="feature-card fc--blue" onclick="loadPage(event)">
                                 <div class="icon"><i class="bi bi-cup-hot-fill"></i></div>
                                 <h5>Core Java & OOPs</h5>
                                 <p>Deep-dive into JVM, memory management, multithreading, collections, exception handling, and Java 8+ features with interview-ready answers.</p>
-                            </div>
-                            <div class="feature-card">
+                                <span class="card-explore">Explore <i class="bi bi-arrow-right"></i></span>
+                            </a>
+                            <a href="/index.html#design/pages/system_design_theory/sd_interview_tips.html" class="feature-card fc--purple" onclick="loadPage(event)">
                                 <div class="icon"><i class="bi bi-diagram-3-fill"></i></div>
                                 <h5>System Design</h5>
                                 <p>Learn building blocks like load balancers, caches, queues, and CDNs. Practice with real-world designs for YouTube, WhatsApp, and more.</p>
-                            </div>
-                            <div class="feature-card">
+                                <span class="card-explore">Explore <i class="bi bi-arrow-right"></i></span>
+                            </a>
+                            <a href="/index.html#design/pages/low_level_design/parking_lot.html" class="feature-card fc--orange" onclick="loadPage(event)">
                                 <div class="icon"><i class="bi bi-gear-fill"></i></div>
                                 <h5>Low-Level Design</h5>
                                 <p>12 classic LLD problems with full Java implementations — parking lot, elevator, vending machine, cache system, and more.</p>
-                            </div>
-                            <div class="feature-card">
+                                <span class="card-explore">Explore <i class="bi bi-arrow-right"></i></span>
+                            </a>
+                            <a href="/index.html#design/pages/microservices/mono_vs_micro.html" class="feature-card fc--green" onclick="loadPage(event)">
                                 <div class="icon"><i class="bi bi-boxes"></i></div>
                                 <h5>Microservices & Spring Boot</h5>
                                 <p>From monolith-to-microservices migration to service discovery, configuration management, and production-ready Spring Boot patterns.</p>
-                            </div>
-                            <div class="feature-card">
+                                <span class="card-explore">Explore <i class="bi bi-arrow-right"></i></span>
+                            </a>
+                            <a href="/index.html#design/pages/db/database.html" class="feature-card fc--teal" onclick="loadPage(event)">
                                 <div class="icon"><i class="bi bi-database-fill"></i></div>
                                 <h5>Databases & Caching</h5>
                                 <p>SQL vs NoSQL decision guide, Redis, Elasticsearch, DynamoDB — understand when and why to pick each technology.</p>
-                            </div>
-                            <div class="feature-card">
+                                <span class="card-explore">Explore <i class="bi bi-arrow-right"></i></span>
+                            </a>
+                            <a href="/index.html#design/pages/interview/java.html" class="feature-card fc--amber" onclick="loadPage(event)">
                                 <div class="icon"><i class="bi bi-trophy"></i></div>
                                 <h5>Last-Week Interview Revision</h5>
                                 <p>Curated masterlist of 200+ frequently asked Q&As across Java, microservices, Spring Boot, Kafka, AWS, and distributed systems.</p>
-                            </div>
+                                <span class="card-explore">Explore <i class="bi bi-arrow-right"></i></span>
+                            </a>
                         </div>
 
-                        <div style="margin-top: 32px; padding: 20px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                            <h5 style="margin-top: 0; color: var(--text-primary); font-size: 1rem; font-weight: 700;">How to Use This Resource</h5>
-                            <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                                <li><strong>Browse by topic</strong> — Use the sidebar to navigate through Java, System Design, LLD, Microservices, and more.</li>
-                                <li><strong>Search instantly</strong> — Press <kbd>Ctrl</kbd>+<kbd>K</kbd> to search across all topics.</li>
-                                <li><strong>Interview-first approach</strong> — Every article is structured as Q&A with concise, interview-ready answers.</li>
-                                <li><strong>Last-week revision</strong> — Use the Interview Masterlist section for rapid revision before your interview.</li>
-                            </ul>
+                        <div class="how-to-section">
+                            <h5 class="how-to-title">How to Use This Resource</h5>
+                            <div class="how-to-grid">
+                                <div class="how-to-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+                                    <div class="step-body">
+                                        <strong>Browse by Topic</strong>
+                                        <p>Use the sidebar to navigate Java, System Design, LLD, Microservices, and more — all organized by category.</p>
+                                    </div>
+                                </div>
+                                <div class="how-to-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-icon"><i class="bi bi-search"></i></div>
+                                    <div class="step-body">
+                                        <strong>Search Instantly</strong>
+                                        <p>Press <kbd>Ctrl</kbd>+<kbd>K</kbd> to search across all 120+ articles. Find any topic in under a second.</p>
+                                    </div>
+                                </div>
+                                <div class="how-to-step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-icon"><i class="bi bi-patch-question-fill"></i></div>
+                                    <div class="step-body">
+                                        <strong>Interview-First Format</strong>
+                                        <p>Every article is structured as Q&amp;A with concise, interview-ready answers you can recall under pressure.</p>
+                                    </div>
+                                </div>
+                                <div class="how-to-step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-icon"><i class="bi bi-trophy-fill"></i></div>
+                                    <div class="step-body">
+                                        <strong>Last-Week Revision</strong>
+                                        <p>Use the Interview Masterlist for a 1000+ Q&amp;A rapid-fire revision session the week before your interview.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -624,43 +722,44 @@
     </button>
 
     <!-- Footer -->
-    <footer class="footer text-white py-4 mt-4" role="contentinfo" id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <h5>Tech Preparation Zone</h5>
-                    <p class="mb-0">Revise, prepare, and excel in tech interviews.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <div class="social-links mb-3">
-                        <a href="https://linkedin.com/in/kishorevbhosale" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="text-white me-2">
-                            <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://github.com/kishorevbhosale" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="text-white me-2">
-                            <i class="fab fa-github fa-lg" aria-hidden="true"></i>
-                        </a>
-                        <a href="mailto:kishorevbhosale@gmail.com" aria-label="Email" class="text-white">
-                            <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="footer-links mb-2">
-                        <a href="design/pages/privacy-policy.html" class="text-white me-3 text-decoration-none">Privacy Policy</a>
-                        <a href="design/pages/terms-of-service.html" class="text-white me-3 text-decoration-none">Terms of Service</a>
-                        <a href="design/about_me.html" class="text-white text-decoration-none">About</a>
-                    </div>
-                    <p class="mb-0">&copy; 2026 Kishor Bhosale. All rights reserved.</p>
-                </div>
+    <footer class="footer" role="contentinfo" id="contact">
+        <div class="footer-main">
+            <span class="footer-logo">Tech Preparation Zone</span>
+            <p class="footer-tagline">Built for engineers, by an engineer.</p>
+            <div class="footer-socials">
+                <a href="https://linkedin.com/in/kishorevbhosale" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="mailto:kishorevbhosale@gmail.com" aria-label="Email">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                </a>
             </div>
+            <span class="footer-copy">&copy; 2026 Kishor Bhosale. All rights reserved.</span>
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <!-- Bootstrap 5.3.8 JS bundle with SRI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+
+    <!-- Prism.js — deferred so it never blocks first paint -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" crossorigin="anonymous"></script>
+
+    <!-- Main app script -->
     <script src="/script.js"></script>
+
+    <!-- Service Worker registration — enables offline support and instant repeat loads -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').catch(function () {});
+            });
+        }
+    </script>
 
     <!-- Modals -->
     <div class="modal fade" id="shortcutsModal" tabindex="-1" aria-labelledby="shortcutsModalLabel" aria-hidden="true">
@@ -697,13 +796,13 @@
                             <i class="bi bi-link-45deg me-2"></i> Copy Link
                         </button>
                         <div class="social-share-buttons">
-                            <a href="#" class="btn btn-primary w-100 mb-2" id="shareTwitter" target="_blank">
+                            <a href="#" class="btn btn-primary w-100 mb-2" id="shareTwitter" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-twitter me-2"></i> Share on Twitter
                             </a>
-                            <a href="#" class="btn btn-primary w-100 mb-2" id="shareLinkedIn" target="_blank">
+                            <a href="#" class="btn btn-primary w-100 mb-2" id="shareLinkedIn" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-linkedin me-2"></i> Share on LinkedIn
                             </a>
-                            <a href="#" class="btn btn-success w-100 mb-2" id="shareWhatsApp" target="_blank">
+                            <a href="#" class="btn btn-success w-100 mb-2" id="shareWhatsApp" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-whatsapp me-2"></i> Share on WhatsApp
                             </a>
                         </div>
@@ -721,7 +820,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control mb-3" id="searchInArticleInput" placeholder="Search for text in this article...">
+                    <input type="text" class="form-control mb-3" id="searchInArticleInput" placeholder="Search for text in this article..." maxlength="200" autocomplete="off">
                     <div id="searchInArticleResults" class="search-results-list"></div>
                 </div>
             </div>

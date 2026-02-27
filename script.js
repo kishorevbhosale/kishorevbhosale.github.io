@@ -37,6 +37,37 @@
     };
 
     // ============================================
+    // Security Utilities
+    // ============================================
+    const SecurityUtils = {
+        escapeHTML: function (str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        },
+
+        sanitizeUrl: function (url) {
+            if (!url) return '#';
+            var trimmed = url.trim().toLowerCase();
+            if (trimmed.startsWith('javascript:') ||
+                trimmed.startsWith('data:') ||
+                trimmed.startsWith('vbscript:')) {
+                return '#';
+            }
+            return url;
+        },
+
+        validateInput: function (str, maxLen) {
+            if (!str) return '';
+            return String(str).substring(0, maxLen || 200);
+        }
+    };
+
+    // ============================================
     // Search Functionality
     // ============================================
     const SearchManager = {
@@ -55,9 +86,14 @@
         initializeSearch: function (input, results) {
             this.buildSearchIndex();
             var self = this;
+            var searchDebounceTimer = null;
 
             input.addEventListener('input', function (e) {
-                self.handleSearch(e.target.value, results);
+                clearTimeout(searchDebounceTimer);
+                var val = e.target.value;
+                searchDebounceTimer = setTimeout(function () {
+                    self.handleSearch(val, results);
+                }, 200);
             });
 
             input.addEventListener('focus', function () {
@@ -74,8 +110,39 @@
                 if (e.key === 'Escape') {
                     results.classList.remove('show');
                     input.blur();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    var first = results.querySelector('.search-result-item');
+                    if (first) first.focus();
                 }
             });
+        },
+
+        categoryMap: {
+            '/dsa/'                    : 'Coding & DSA',
+            '/java/'                   : 'Java',
+            '/solid/'                  : 'SOLID Principles',
+            '/design_pattern/'         : 'Design Patterns',
+            '/db/'                     : 'Databases',
+            '/low_level_design/'       : 'Low-Level Design',
+            '/system_design_theory/'   : 'System Design',
+            '/system_design_example/'  : 'System Design',
+            '/microservices/'          : 'Microservices',
+            '/spring_boot/'            : 'Spring Boot',
+            '/devops/'                 : 'DevOps & CI/CD',
+            '/ddia/'                   : 'DDIA',
+            '/general/'                : 'General Concepts',
+            '/api_design/'             : 'API Design',
+            '/interview/'              : 'Interview Masterlist',
+            '/papers/'                 : 'Papers & Blogs',
+            '/pocs/'                   : 'Proof of Concepts'
+        },
+
+        getCategoryFromUrl: function (url) {
+            for (var key in this.categoryMap) {
+                if (url.includes(key)) return this.categoryMap[key];
+            }
+            return 'Other';
         },
 
         buildSearchIndex: function () {
@@ -84,18 +151,20 @@
             var self = this;
 
             links.forEach(function (link) {
-                var text = link.textContent.trim();
+                var text = link.textContent.trim().replace(/\s+/g, ' ');
                 var href = link.getAttribute('href');
                 var icon = link.querySelector('i');
                 var iconClass = icon ? icon.className : '';
 
                 if (href && href.startsWith('#')) href = href.substring(1);
+                if (href && href.includes('#')) href = href.split('#').pop();
 
                 if (text && href && !href.includes('under_construction')) {
                     self.searchData.push({
                         title: text,
                         url: href,
                         icon: iconClass,
+                        category: self.getCategoryFromUrl(href),
                         keywords: text.toLowerCase().split(/\s+/)
                     });
                 }
@@ -103,7 +172,8 @@
         },
 
         handleSearch: function (query, resultsContainer) {
-            var searchTerm = query.toLowerCase().trim();
+            // Validate and sanitize input before any processing
+            var searchTerm = SecurityUtils.validateInput(query.toLowerCase().trim(), 100);
             if (searchTerm.length < 2) {
                 resultsContainer.classList.remove('show');
                 resultsContainer.innerHTML = '';
@@ -119,37 +189,95 @@
         },
 
         displayResults: function (results, searchTerm, resultsContainer) {
+            // Always escape user-supplied searchTerm before any DOM insertion
+            var safeSearchTerm = SecurityUtils.escapeHTML(searchTerm);
+            resultsContainer.innerHTML = '';
+
             if (results.length === 0) {
-                resultsContainer.innerHTML = '<div class="search-result-item"><p class="mb-0 text-muted">No results found for "' + searchTerm + '"</p></div>';
+                var noResults = document.createElement('div');
+                noResults.className = 'search-no-results';
+                // Safe: safeSearchTerm is HTML-escaped
+                noResults.innerHTML =
+                    '<i class="bi bi-search" aria-hidden="true"></i>' +
+                    '<p>No results for <strong>"' + safeSearchTerm + '"</strong></p>' +
+                    '<p class="search-hint">Try: Java, System Design, Spring Boot, Redis, Kafka\u2026</p>';
+                resultsContainer.appendChild(noResults);
                 resultsContainer.classList.add('show');
                 return;
             }
 
-            var html = '';
-            var self = this;
-            results.forEach(function (result) {
-                var highlightedTitle = self.highlightText(result.title, searchTerm);
-                html += '<div class="search-result-item" role="button" tabindex="0" data-url="' + result.url + '" onclick="PageLoader.loadPageFromUrl(\'' + result.url + '\'); SearchManager.closeSearch();">' +
-                    '<i class="' + result.icon + '" aria-hidden="true"></i>' +
-                    '<span>' + highlightedTitle + '</span></div>';
+            // Group results by category
+            var grouped = {};
+            var groupOrder = [];
+            results.forEach(function (r) {
+                if (!grouped[r.category]) { grouped[r.category] = []; groupOrder.push(r.category); }
+                grouped[r.category].push(r);
             });
 
-            resultsContainer.innerHTML = html;
+            // Header — use textContent (never innerHTML) for user-derived text
+            var header = document.createElement('div');
+            header.className = 'search-results-header';
+            header.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '') + ' for "' + searchTerm + '"';
+            resultsContainer.appendChild(header);
+
+            var allItems = [];
+            var self = this;
+
+            groupOrder.forEach(function (category) {
+                var catEl = document.createElement('div');
+                catEl.className = 'search-category-label';
+                catEl.textContent = category;     // textContent = safe
+                resultsContainer.appendChild(catEl);
+
+                grouped[category].forEach(function (result) {
+                    var item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.setAttribute('role', 'button');
+                    item.setAttribute('tabindex', '0');
+                    // Sanitize URL before storing; never inject into onclick string
+                    item.dataset.url = SecurityUtils.sanitizeUrl(result.url);
+
+                    var icon = document.createElement('i');
+                    icon.className = result.icon;
+                    icon.setAttribute('aria-hidden', 'true');
+
+                    var span = document.createElement('span');
+                    // highlightText receives escaped title + escaped searchTerm
+                    span.innerHTML = self.highlightText(
+                        SecurityUtils.escapeHTML(result.title),
+                        safeSearchTerm
+                    );
+
+                    item.appendChild(icon);
+                    item.appendChild(span);
+
+                    // Use event listener instead of inline onclick string
+                    item.addEventListener('click', function () {
+                        var url = this.dataset.url;
+                        if (url && url !== '#') { PageLoader.loadPageFromUrl(url); SearchManager.closeSearch(); }
+                    });
+
+                    resultsContainer.appendChild(item);
+                    allItems.push(item);
+                });
+            });
+
             resultsContainer.classList.add('show');
 
-            var resultItems = resultsContainer.querySelectorAll('.search-result-item');
+            // Keyboard navigation
             var closeFn = this.closeSearch.bind(this);
-            resultItems.forEach(function (item, index) {
+            allItems.forEach(function (item, index) {
                 item.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter') {
-                        var url = item.getAttribute('data-url');
-                        if (url) { PageLoader.loadPageFromUrl(url); closeFn(); }
+                        var url = item.dataset.url;
+                        if (url && url !== '#') { PageLoader.loadPageFromUrl(url); closeFn(); }
                     } else if (e.key === 'ArrowDown') {
                         e.preventDefault();
-                        if (resultItems[index + 1]) resultItems[index + 1].focus();
+                        if (allItems[index + 1]) allItems[index + 1].focus();
+                        else closeFn();
                     } else if (e.key === 'ArrowUp') {
                         e.preventDefault();
-                        if (resultItems[index - 1]) resultItems[index - 1].focus();
+                        if (allItems[index - 1]) allItems[index - 1].focus();
                     } else if (e.key === 'Escape') {
                         closeFn();
                     }
@@ -358,6 +486,10 @@
             var contentDiv = document.getElementById('content');
             if (!contentDiv) return;
 
+            // Show skeleton + start loading bar immediately
+            PageTransition.start();
+            SkeletonLoader.show(contentDiv);
+
             fetch(url)
                 .then(function (response) {
                     if (!response.ok) throw new Error('Failed to load page: ' + response.status + ' ' + response.statusText);
@@ -368,16 +500,36 @@
                     var extractedContent = PageLoader.extractBodyContent(data);
                     var breadcrumb = BreadcrumbGenerator.generate(url);
 
+                    // Swap content and trigger fade-in slide-up
+                    contentDiv.classList.remove('content-enter');
+                    void contentDiv.offsetWidth;
                     contentDiv.innerHTML = breadcrumb + extractedContent;
-                    PageLoader.initializePageContent();
+                    contentDiv.classList.add('content-enter');
 
+                    PageLoader.initializePageContent();
+                    PrevNextNav.render(url);
                     PageLoader.highlightActiveLink(url);
+                    PageTransition.finish();
+
+                    // Side effects that depend on new DOM being ready
+                    ReadingProgress.init();
+                    ReadingTime.calculateReadingTime();
+                    CodeCopy.init();
+                    BookmarkManager.updateBookmarkButton();
+                    ReadingHistory.addToHistory();
+                    ReadingTracker.markRead(url);
                 })
-                .catch(function (error) {
-                    contentDiv.innerHTML = '<div class="alert alert-danger" role="alert">' +
-                        '<h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error Loading Content</h4>' +
-                        '<p>Unable to load the requested page: ' + error.message + '</p>' +
-                        '<p class="mb-0"><small>URL: ' + url + '</small></p></div>';
+                .catch(function () {
+                    // Never expose raw error.message or url in innerHTML — both are untrusted
+                    contentDiv.innerHTML =
+                        '<div class="alert alert-danger" role="alert">' +
+                            '<h4 class="alert-heading">' +
+                                '<i class="bi bi-exclamation-triangle-fill me-2"></i>Error Loading Content' +
+                            '</h4>' +
+                            '<p>Unable to load the requested page. Please try again or select another topic from the sidebar.</p>' +
+                            '<p class="mb-0"><small>Path: ' + SecurityUtils.escapeHTML(url) + '</small></p>' +
+                        '</div>';
+                    PageTransition.finish();
                 });
         },
 
@@ -985,6 +1137,89 @@
     };
 
     // ============================================
+    // Announcement Banner
+    // ============================================
+    const AnnouncementBanner = {
+        STORAGE_KEY: 'bannerDismissed_v1',
+
+        init: function () {
+            if (localStorage.getItem(this.STORAGE_KEY)) return;
+            var banner = document.getElementById('announcementBanner');
+            var closeBtn = document.getElementById('bannerClose');
+            if (!banner) return;
+
+            banner.classList.add('show');
+            document.body.classList.add('has-banner');
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function () {
+                    AnnouncementBanner.hide();
+                });
+            }
+        },
+
+        hide: function () {
+            var banner = document.getElementById('announcementBanner');
+            if (banner) banner.classList.remove('show');
+            document.body.classList.remove('has-banner');
+            localStorage.setItem(this.STORAGE_KEY, '1');
+        }
+    };
+
+    // ============================================
+    // Reading Progress Tracker
+    // ============================================
+    const ReadingTracker = {
+        STORAGE_KEY: 'readArticles',
+
+        getRead: function () {
+            var stored = localStorage.getItem(this.STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        },
+
+        markRead: function (url) {
+            var read = this.getRead();
+            if (!read.includes(url)) {
+                read.push(url);
+                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(read));
+            }
+            this.updateSidebar();
+        },
+
+        updateSidebar: function () {
+            var read = this.getRead();
+            var allLinks = document.querySelectorAll('.sidebar-link');
+            var total = allLinks.length;
+            var readCount = 0;
+
+            allLinks.forEach(function (link) {
+                var href = link.getAttribute('href') || '';
+                var path = href.includes('#') ? href.split('#').pop() : href;
+                if (read.includes(path)) {
+                    readCount++;
+                    link.classList.add('is-read');
+                    if (!link.querySelector('.read-dot')) {
+                        var dot = document.createElement('span');
+                        dot.className = 'read-dot';
+                        dot.title = 'Completed';
+                        link.appendChild(dot);
+                    }
+                }
+            });
+
+            var counter = document.getElementById('readProgressCounter');
+            var fill = document.getElementById('readProgressFill');
+            if (counter) {
+                var pct = total > 0 ? Math.round((readCount / total) * 100) : 0;
+                counter.innerHTML = readCount + ' of ' + total + ' read &nbsp;<b>' + pct + '%</b>';
+                if (fill) fill.style.width = pct + '%';
+            }
+        },
+
+        init: function () { this.updateSidebar(); }
+    };
+
+    // ============================================
     // Q&A Toggle (Interview Pages)
     // ============================================
     const QAToggle = {
@@ -1077,6 +1312,204 @@
     })();
 
     // ============================================
+    // ============================================
+    // Page Transition — Loading Bar
+    // ============================================
+    const PageTransition = {
+        _bar: null,
+        _timer: null,
+
+        _getBar: function () {
+            if (!this._bar) {
+                var bar = document.createElement('div');
+                bar.id = 'pageLoadBar';
+                bar.className = 'page-load-bar';
+                document.body.appendChild(bar);
+                this._bar = bar;
+            }
+            return this._bar;
+        },
+
+        start: function () {
+            clearTimeout(this._timer);
+            var bar = this._getBar();
+            bar.style.transition = 'none';
+            bar.style.opacity = '1';
+            bar.style.width = '0%';
+            bar.classList.add('active');
+            void bar.offsetWidth;
+            bar.style.transition = 'width 0.4s ease';
+            bar.style.width = '65%';
+            var self = this;
+            this._timer = setTimeout(function () {
+                bar.style.transition = 'width 2.5s ease';
+                bar.style.width = '88%';
+            }, 420);
+        },
+
+        finish: function () {
+            clearTimeout(this._timer);
+            var bar = this._getBar();
+            bar.style.transition = 'width 0.15s ease';
+            bar.style.width = '100%';
+            setTimeout(function () {
+                bar.style.transition = 'opacity 0.25s ease';
+                bar.style.opacity = '0';
+                setTimeout(function () {
+                    bar.classList.remove('active');
+                    bar.style.width = '0%';
+                    bar.style.opacity = '1';
+                }, 260);
+            }, 150);
+        }
+    };
+
+    // ============================================
+    // Skeleton Loading Screen
+    // ============================================
+    const SkeletonLoader = {
+        show: function (contentDiv) {
+            contentDiv.innerHTML =
+                '<div class="skeleton-page" aria-hidden="true" aria-label="Loading...">' +
+                    '<div class="sk-bar sk-title"></div>' +
+                    '<div class="sk-bar sk-meta"></div>' +
+                    '<div class="sk-bar sk-para"></div>' +
+                    '<div class="sk-bar sk-para sk-short"></div>' +
+                    '<div class="sk-bar sk-para"></div>' +
+                    '<div class="sk-bar sk-heading"></div>' +
+                    '<div class="sk-bar sk-para"></div>' +
+                    '<div class="sk-bar sk-para sk-medium"></div>' +
+                    '<div class="sk-code-block">' +
+                        '<div class="sk-bar sk-code-line"></div>' +
+                        '<div class="sk-bar sk-code-line sk-short"></div>' +
+                        '<div class="sk-bar sk-code-line sk-medium"></div>' +
+                        '<div class="sk-bar sk-code-line"></div>' +
+                    '</div>' +
+                    '<div class="sk-bar sk-para"></div>' +
+                    '<div class="sk-bar sk-para sk-short"></div>' +
+                '</div>';
+        }
+    };
+
+    // ============================================
+    // Previous / Next Article Navigation
+    // ============================================
+    const PrevNextNav = {
+        getSidebarLinks: function () {
+            return Array.from(document.querySelectorAll('.left-panel .sidebar-link'));
+        },
+
+        getLinkPath: function (link) {
+            var href = link.getAttribute('href') || '';
+            return href.includes('#') ? href.split('#').pop() : href;
+        },
+
+        getLinkLabel: function (link) {
+            // textContent strips icon <i> nodes (they have no text), returns just the label
+            return link.textContent.trim().replace(/\s+/g, ' ');
+        },
+
+        render: function (currentUrl) {
+            var contentDiv = document.getElementById('content');
+            if (!contentDiv) return;
+
+            // Remove any previous prev/next bar
+            var old = contentDiv.querySelector('.prev-next-nav');
+            if (old) old.remove();
+
+            var links = this.getSidebarLinks();
+            var currentIndex = -1;
+
+            for (var i = 0; i < links.length; i++) {
+                if (this.getLinkPath(links[i]) === currentUrl) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            if (currentIndex === -1) return;
+
+            var prev = currentIndex > 0               ? links[currentIndex - 1] : null;
+            var next = currentIndex < links.length - 1 ? links[currentIndex + 1] : null;
+            if (!prev && !next) return;
+
+            var html = '<nav class="prev-next-nav" aria-label="Article navigation">';
+
+            if (prev) {
+                html += '<a href="' + SecurityUtils.escapeHTML(SecurityUtils.sanitizeUrl(prev.getAttribute('href'))) + '" class="pn-btn pn-prev" onclick="loadPage(event)">' +
+                    '<span class="pn-dir"><i class="bi bi-arrow-left"></i> Previous</span>' +
+                    '<span class="pn-title">' + SecurityUtils.escapeHTML(this.getLinkLabel(prev)) + '</span>' +
+                '</a>';
+            } else {
+                html += '<span></span>';
+            }
+
+            if (next) {
+                html += '<a href="' + SecurityUtils.escapeHTML(SecurityUtils.sanitizeUrl(next.getAttribute('href'))) + '" class="pn-btn pn-next" onclick="loadPage(event)">' +
+                    '<span class="pn-dir">Next <i class="bi bi-arrow-right"></i></span>' +
+                    '<span class="pn-title">' + SecurityUtils.escapeHTML(this.getLinkLabel(next)) + '</span>' +
+                '</a>';
+            } else {
+                html += '<span></span>';
+            }
+
+            html += '</nav>';
+            contentDiv.insertAdjacentHTML('beforeend', html);
+        }
+    };
+
+    // ============================================
+    // Stats Counter Animation
+    // ============================================
+    const StatsCounter = {
+        init: function () {
+            const statNumbers = document.querySelectorAll('.stat-item .number');
+            if (!statNumbers.length) return;
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && !entry.target.dataset.counted) {
+                        entry.target.dataset.counted = 'true';
+                        StatsCounter.animateCounter(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            statNumbers.forEach(function (el) {
+                observer.observe(el);
+            });
+        },
+
+        animateCounter: function (el) {
+            const raw = el.textContent.trim();
+            const suffix = raw.replace(/[\d,]/g, '');   // e.g. "+" or ""
+            const target = parseInt(raw.replace(/[^\d]/g, ''), 10);
+            if (isNaN(target)) return;
+
+            const duration = 1400;
+            const startTime = performance.now();
+
+            function easeOutQuart(t) {
+                return 1 - Math.pow(1 - t, 4);
+            }
+
+            function tick(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.round(easeOutQuart(progress) * target);
+                el.textContent = current.toLocaleString() + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(tick);
+                } else {
+                    el.classList.add('stat-done');
+                }
+            }
+
+            el.textContent = '0' + suffix;
+            requestAnimationFrame(tick);
+        }
+    };
+
     // Initialize
     // ============================================
     document.addEventListener('DOMContentLoaded', function () {
@@ -1097,24 +1530,103 @@
         ArticleSearch.init();
         KeyboardShortcuts.init();
         ReadingHistory.init();
+        AnnouncementBanner.init();
+        StatsCounter.init();
+        ReadingTracker.init();
+        LinkPrefetcher.init();
         PageLoader.initializePageContent();
-
-        var originalFetchContent = PageLoader.fetchContent;
-        PageLoader.fetchContent = function (url) {
-            originalFetchContent.call(this, url);
-            setTimeout(function () {
-                ReadingProgress.init();
-                ReadingTime.calculateReadingTime();
-                CodeCopy.init();
-                BookmarkManager.updateBookmarkButton();
-                ReadingHistory.addToHistory();
-            }, 150);
-        };
     });
 
     window.loadPage = function (event) { PageLoader.loadPage(event); };
+    window.AnnouncementBanner = AnnouncementBanner;
     window.PageLoader = PageLoader;
     window.SearchManager = SearchManager;
     window.ArticleSearch = ArticleSearch;
     window.BookmarkManager = BookmarkManager;
+
+    // ============================================
+    // Link Prefetcher — instant navigation
+    // ============================================
+    // Injects <link rel="prefetch"> when a sidebar link enters the viewport
+    // or the user hovers it, so the browser downloads the article HTML in
+    // the background. When the user clicks, the file is already in cache.
+    var LinkPrefetcher = {
+        prefetched: new Set(),
+
+        prefetch: function (url) {
+            if (!url || this.prefetched.has(url)) return;
+            // Only prefetch same-origin HTML paths
+            if (url.startsWith('http') || url.startsWith('//')) return;
+            this.prefetched.add(url);
+            var link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            link.as = 'document';
+            document.head.appendChild(link);
+        },
+
+        resolveHref: function (href) {
+            if (!href) return null;
+            // Strip the leading '#' used for hash-routing
+            return href.startsWith('#') ? href.slice(1) :
+                   href.includes('#')   ? href.split('#').pop() : href;
+        },
+
+        init: function () {
+            var self = this;
+
+            // Prefetch links as they scroll into view
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            var url = self.resolveHref(entry.target.getAttribute('href'));
+                            if (url) self.prefetch(url);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+
+                document.querySelectorAll('.sidebar-link').forEach(function (link) {
+                    observer.observe(link);
+                });
+            }
+
+            // Also prefetch on hover (fastest possible path)
+            document.querySelectorAll('.sidebar-link').forEach(function (link) {
+                link.addEventListener('mouseover', function () {
+                    var url = self.resolveHref(this.getAttribute('href'));
+                    if (url) self.prefetch(url);
+                }, { once: true });
+            });
+        }
+    };
+
+    window.browseTopics = function (event) {
+        // Stop the click from bubbling to the document listener in SidebarManager
+        // (which would immediately close the sidebar it just opened)
+        if (event) event.stopPropagation();
+
+        var isMobile = window.innerWidth < 768;
+        if (isMobile) {
+            // On mobile: delegate to the real toggle button so SidebarManager
+            // handles all state consistently (aria-expanded, show class, etc.)
+            var toggleBtn = document.getElementById('sidebarToggle');
+            var sidebar = document.querySelector('.left-panel');
+            if (toggleBtn && sidebar && !sidebar.classList.contains('show')) {
+                toggleBtn.click();
+            }
+        } else {
+            // On desktop: sidebar is always visible (fixed).
+            // Scroll it to the top and flash a highlight to draw the eye.
+            var sidebar = document.querySelector('.left-panel');
+            if (sidebar) {
+                sidebar.scrollTop = 0;
+                sidebar.classList.remove('sidebar-highlight');
+                void sidebar.offsetWidth; // force reflow to restart animation
+                sidebar.classList.add('sidebar-highlight');
+                setTimeout(function () { sidebar.classList.remove('sidebar-highlight'); }, 900);
+            }
+        }
+    };
 })();
