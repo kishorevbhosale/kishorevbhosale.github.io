@@ -38,7 +38,7 @@ export default function HomePage() {
       <ProcessSection />
 
       <section className="section" aria-labelledby="finder-heading">
-        <div className="container-x grid items-center gap-12 lg:grid-cols-[1fr_1.15fr]">
+        <div className="container-x grid items-center gap-12 max-md:gap-8 lg:grid-cols-[1fr_1.15fr]">
           <div>
             <SectionHeading
               eyebrow="Free Tool"
@@ -47,12 +47,12 @@ export default function HomePage() {
             />
             <ul className="space-y-3">
               {["Based on FSS (Licensing & Registration) Regulations", "Covers turnover, activity and location criteria", "Takes less than 30 seconds — no sign-up"].map((t) => (
-                <li key={t} className="flex gap-3 text-ink/85">
+                <li key={t} className="flex gap-3 text-ink/85 max-sm:text-[15px]">
                   <CheckCircle2 className="h-5 w-5 shrink-0 text-leaf-600" aria-hidden="true" /> {t}
                 </li>
               ))}
             </ul>
-            <Link href="/fssai-license-finder" className="mt-8 inline-flex items-center gap-1.5 font-semibold text-brand-500 hover:text-brand-700">
+            <Link href="/fssai-license-finder" className="mt-8 inline-flex items-center gap-1.5 font-semibold text-brand-500 hover:text-brand-700 max-md:mt-6">
               Open the full License Finder <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -64,18 +64,21 @@ export default function HomePage() {
       <Testimonials />
 
       <section className="section" aria-labelledby="faq-heading">
-        <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="container-x grid gap-12 max-md:gap-0 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <SectionHeading
               eyebrow="FAQ"
               title={<span id="faq-heading">Frequently Asked Questions</span>}
               description="Quick answers to the questions food business owners ask us most. Can't find yours? Talk to us — it's free."
             />
-            <Link href="/resources" className="inline-flex items-center gap-1.5 font-semibold text-brand-500 hover:text-brand-700">
+            <Link href="/resources" className="inline-flex items-center gap-1.5 font-semibold text-brand-500 hover:text-brand-700 max-md:hidden">
               Browse guides &amp; resources <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           <Accordion items={generalFaqs.slice(0, 7)} />
+          <Link href="/resources" className="mt-6 inline-flex items-center justify-center gap-1.5 font-semibold text-brand-500 hover:text-brand-700 md:hidden">
+            Browse guides &amp; resources <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 

@@ -1,5 +1,34 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --app-surface: #ffffff;
+  --app-surface-muted: #f3f6fb;
+  --app-surface-subtle: #eef2f9;
+  --app-card: #ffffff;
+  --app-border: #e6ecf7;
+  --app-heading: #0f2a5c;
+  --app-ink: #1c2434;
+  --app-muted: #5b6577;
+  --app-shadow-card: 0 1px 2px rgb(15 42 92 / 0.04), 0 8px 24px -12px rgb(15 42 92 / 0.18);
+  --app-shadow-card-hover: 0 2px 4px rgb(15 42 92 / 0.06), 0 22px 40px -18px rgb(15 42 92 / 0.32);
+}
+
+.dark {
+  color-scheme: dark;
+  --app-surface: #0a1120;
+  --app-surface-muted: #0d1729;
+  --app-surface-subtle: #152238;
+  --app-card: #121e33;
+  --app-border: #2a3d5c;
+  --app-heading: #e8eef8;
+  --app-ink: #dde4f0;
+  --app-muted: #9aa8bc;
+  --app-shadow-card: 0 1px 2px rgb(0 0 0 / 0.25), 0 8px 24px -12px rgb(0 0 0 / 0.45);
+  --app-shadow-card-hover: 0 2px 4px rgb(0 0 0 / 0.3), 0 22px 40px -18px rgb(0 0 0 / 0.55);
+}
+
 @theme {
   --color-navy-950: #071a3d;
   --color-navy-900: #0b2150;
@@ -23,15 +52,21 @@
   --color-leaf-600: #3a8d3f;
   --color-leaf-50: #eef7ee;
 
-  --color-ink: #1c2434;
-  --color-muted: #5b6577;
+  --color-ink: var(--app-ink);
+  --color-muted: var(--app-muted);
+  --color-surface: var(--app-surface);
+  --color-surface-muted: var(--app-surface-muted);
+  --color-surface-subtle: var(--app-surface-subtle);
+  --color-card: var(--app-card);
+  --color-border: var(--app-border);
+  --color-heading: var(--app-heading);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --font-script: var(--font-script-face), cursive;
 
-  --shadow-card: 0 1px 2px rgb(15 42 92 / 0.04), 0 8px 24px -12px rgb(15 42 92 / 0.18);
-  --shadow-card-hover: 0 2px 4px rgb(15 42 92 / 0.06), 0 22px 40px -18px rgb(15 42 92 / 0.32);
+  --shadow-card: var(--app-shadow-card);
+  --shadow-card-hover: var(--app-shadow-card-hover);
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -46,17 +81,36 @@
   }
 }
 
+.dark {
+  --color-brand-50: #2a1810;
+  --color-brand-100: #3d2414;
+  --color-navy-50: #152238;
+  --color-navy-100: #243552;
+  --color-crimson-50: #2a1416;
+  --color-leaf-50: #142318;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.2s ease,
+      box-shadow 0.25s ease !important;
+  }
   body {
-    @apply bg-white font-sans text-ink antialiased;
+    @apply bg-surface font-sans text-ink antialiased;
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4, h5 {
-    @apply font-display text-navy-800 tracking-tight;
+    @apply font-display text-heading tracking-tight;
   }
   ::selection {
     @apply bg-brand-500 text-white;
@@ -74,7 +128,7 @@
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
   .section {
-    @apply py-16 md:py-24;
+    @apply py-14 md:py-24;
   }
   .eyebrow {
     @apply text-xs font-bold tracking-[0.18em] text-brand-500 uppercase;
@@ -83,31 +137,31 @@
     @apply mb-4 leading-relaxed text-muted;
   }
   .prose-content h2 {
-    @apply mt-10 mb-4 text-2xl font-bold md:text-3xl;
+    @apply mt-10 mb-4 text-2xl font-bold text-heading md:text-3xl;
   }
   .prose-content h3 {
-    @apply mt-8 mb-3 text-xl font-semibold;
+    @apply mt-8 mb-3 text-xl font-semibold text-heading;
   }
   .prose-content ul {
     @apply mb-5 list-disc space-y-2 pl-5 text-muted marker:text-brand-500;
   }
   .prose-content ol {
-    @apply mb-5 list-decimal space-y-2 pl-5 text-muted marker:font-semibold marker:text-navy-800;
+    @apply mb-5 list-decimal space-y-2 pl-5 text-muted marker:font-semibold marker:text-heading;
   }
   .prose-content a {
-    @apply font-semibold text-brand-600 underline-offset-4 hover:underline;
+    @apply font-semibold text-brand-600 underline-offset-4 hover:underline dark:text-brand-400;
   }
   .prose-content strong {
     @apply text-ink;
   }
   .prose-content table {
-    @apply mb-6 w-full overflow-hidden rounded-xl border border-navy-100 text-left text-sm;
+    @apply mb-6 w-full overflow-hidden rounded-xl border border-border text-left text-sm max-md:min-w-[520px] max-md:text-[13px];
   }
   .prose-content th {
-    @apply bg-navy-800 px-4 py-3 font-semibold text-white;
+    @apply bg-navy-800 px-4 py-3 font-semibold text-white max-md:px-3;
   }
   .prose-content td {
-    @apply border-t border-navy-100 px-4 py-3 align-top text-muted;
+    @apply border-t border-border bg-card px-4 py-3 align-top text-muted max-md:px-3;
   }
   .bg-grid {
     background-image:
@@ -117,7 +171,47 @@
   }
 }
 
-/* Unlayered so it wins over utility transition classes on the same element */
+@media (max-width: 767.98px) {
+  body {
+    overflow-x: clip;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  .mobile-rail {
+    display: flex;
+    gap: 1rem;
+    margin-inline: -1rem;
+    padding: 0.25rem 1rem 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  @media (min-width: 640px) {
+    .mobile-rail {
+      margin-inline: -1.5rem;
+      padding-inline: 1.5rem;
+      scroll-padding-inline: 1.5rem;
+    }
+  }
+  .mobile-rail::-webkit-scrollbar {
+    display: none;
+  }
+  .mobile-rail > * {
+    flex: 0 0 84%;
+    max-width: 340px;
+    scroll-snap-align: start;
+  }
+  html.js .mobile-rail > [data-reveal]:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 [data-reveal] {
   transition-property: opacity, transform, color, background-color, border-color, box-shadow;
   transition-duration: 0.6s, 0.6s, 0.2s, 0.2s, 0.2s, 0.3s;

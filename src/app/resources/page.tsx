@@ -29,18 +29,18 @@ export default function ResourcesPage() {
       />
       <section className="section">
         <div className="container-x">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 max-sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {guides.map((g, i) => (
               <Reveal key={g.slug} delay={(i % 3) * 0.06}>
                 <Link
                   href={`/resources/${g.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-navy-100 bg-white shadow-[var(--shadow-card)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden">
                     <Image src={g.image} alt="" fill sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                    <span className="absolute top-4 left-4 rounded-md bg-white/95 px-2.5 py-1 text-xs font-bold text-navy-800">{g.category}</span>
+                    <span className="absolute top-4 left-4 rounded-md bg-card/95 px-2.5 py-1 text-xs font-bold text-heading">{g.category}</span>
                   </div>
-                  <div className="flex flex-1 flex-col p-6">
+                  <div className="flex flex-1 flex-col p-6 max-sm:p-5">
                     <h2 className="text-lg leading-snug font-bold">{g.title}</h2>
                     <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{g.excerpt}</p>
                     <div className="mt-5 flex items-center justify-between text-sm">
@@ -58,10 +58,10 @@ export default function ResourcesPage() {
           </div>
         </div>
       </section>
-      <section className="section bg-navy-50/60" id="faq" aria-labelledby="faq-heading">
+      <section className="section bg-surface-muted" id="faq" aria-labelledby="faq-heading">
         <div className="container-x max-w-4xl">
           <p className="eyebrow text-center">FAQ</p>
-          <h2 id="faq-heading" className="mt-3 mb-10 text-center text-3xl font-bold md:text-4xl">
+          <h2 id="faq-heading" className="mt-3 mb-10 text-center text-3xl font-bold max-sm:mb-7 max-sm:text-[1.7rem] md:text-4xl">
             Frequently Asked Questions
           </h2>
           <Accordion items={generalFaqs} />

@@ -48,7 +48,7 @@ function Block({ b }: { b: GuideBlock }) {
       );
     case "table":
       return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-md:-mx-4 max-md:px-4">
           <table>
             <thead>
               <tr>
@@ -73,7 +73,7 @@ function Block({ b }: { b: GuideBlock }) {
       );
     case "callout":
       return (
-        <div className="my-8 flex gap-4 rounded-2xl border border-brand-500/20 bg-brand-50 p-6">
+        <div className="my-8 flex gap-4 rounded-2xl border border-brand-500/20 bg-brand-50 p-6 max-sm:my-6 max-sm:gap-3 max-sm:p-4">
           <Lightbulb className="h-6 w-6 shrink-0 text-brand-500" aria-hidden="true" />
           <p className="!mb-0 font-medium !text-ink">{b.text}</p>
         </div>
@@ -101,13 +101,13 @@ export default async function GuidePage({ params }: Props) {
           { name: g.title, path: `/resources/${g.slug}` },
         ]}
       >
-        <p className="mt-5 flex items-center gap-2 text-sm text-white/70">
+        <p className="mt-5 flex items-center gap-2 text-sm text-white/70 max-sm:mt-4 max-sm:text-[13px]">
           <Clock className="h-4 w-4" aria-hidden="true" /> {g.readMinutes} min read · Updated {updated}
         </p>
       </PageHero>
 
-      <div className="container-x grid gap-12 py-14 md:py-20 lg:grid-cols-[1fr_320px]">
-        <article className="prose-content max-w-3xl min-w-0 text-[17px]">
+      <div className="container-x grid gap-12 py-10 max-md:gap-10 sm:py-14 md:py-20 lg:grid-cols-[1fr_320px]">
+        <article className="prose-content max-w-3xl min-w-0 text-[17px] max-sm:text-base">
           {g.body.map((b, i) => (
             <Block key={i} b={b} />
           ))}
@@ -129,8 +129,8 @@ export default async function GuidePage({ params }: Props) {
               </Link>
             </div>
           )}
-          <nav aria-label="More guides" className="rounded-2xl border border-navy-100 p-6">
-            <p className="font-display text-lg font-bold text-navy-800">More guides</p>
+          <nav aria-label="More guides" className="rounded-2xl border border-border p-6">
+            <p className="font-display text-lg font-bold text-heading">More guides</p>
             <ul className="mt-3 space-y-3">
               {more.map((m) => (
                 <li key={m.slug}>

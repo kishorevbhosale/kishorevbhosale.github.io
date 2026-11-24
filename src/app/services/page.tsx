@@ -23,10 +23,10 @@ export default function ServicesPage() {
         description="Thirteen specialised services covering every stage of your food business — from the first registration to global certification."
         crumbs={[{ name: "Services", path: "/services" }]}
       />
-      <section className="section bg-navy-50/60">
+      <section className="section bg-surface-muted">
         <div className="container-x">
           <SectionHeading eyebrow="FSSAI Licensing" title="Licensing, Renewals & Returns" description="Get licensed correctly and stay compliant every year." />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 max-sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {licensingServices.map((s, i) => (
               <Reveal key={s.slug} delay={(i % 3) * 0.06}>
                 <ServiceCard service={s} />
@@ -42,7 +42,7 @@ export default function ServicesPage() {
             title="Training, Audits, Certification & Testing"
             description="Build a food safety culture that satisfies regulators, customers and global buyers."
           />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 max-sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {complianceServices.map((s, i) => (
               <Reveal key={s.slug} delay={(i % 3) * 0.06}>
                 <ServiceCard service={s} />

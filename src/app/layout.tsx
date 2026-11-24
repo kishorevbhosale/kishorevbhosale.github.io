@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { RevealObserver } from "@/components/ui/RevealObserver";
 import { organizationJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/data/site";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: "swap", weight: ["500", "600", "700", "800"] });
@@ -59,26 +60,34 @@ export const viewport: Viewport = {
   themeColor: "#0f2a5c",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-IN" className={`${inter.variable} ${outfit.variable} ${script.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <meta name="theme-color" content="#0f2a5c" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{document.documentElement.classList.add('js');var k='aaradhya-theme';var s=localStorage.getItem(k);var d=s==='dark'||(s!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}}catch(e){document.documentElement.classList.add('js');}})();`,
+          }}
+        />
       </head>
-      <body className="pb-16 md:pb-0">
+      <body className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
         <RevealObserver />
         <a href="#main" className="sr-only z-[60] rounded-md bg-brand-500 px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
           Skip to content
         </a>
-        <ConsultationProvider>
-          <TopBar />
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-          <FloatingActions />
-        </ConsultationProvider>
+        <ThemeProvider>
+          <ConsultationProvider>
+            <TopBar />
+            <Header />
+            <main id="main">{children}</main>
+            <Footer />
+            <FloatingActions />
+          </ConsultationProvider>
+        </ThemeProvider>
         <JsonLd data={organizationJsonLd()} />
       </body>
     </html>

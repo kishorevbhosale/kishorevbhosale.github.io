@@ -41,9 +41,9 @@ export function ConsultationProvider({ children }: { children: ReactNode }) {
         ref={dialogRef}
         aria-labelledby="consult-title"
         onClick={(e) => e.target === dialogRef.current && close()}
-        className="m-auto w-[calc(100%-1.5rem)] max-w-4xl overflow-hidden rounded-2xl p-0 shadow-2xl backdrop:bg-navy-950/70 backdrop:backdrop-blur-sm"
+        className="m-auto w-[calc(100%-1.5rem)] max-w-4xl overflow-hidden rounded-2xl border border-border bg-card p-0 text-ink shadow-2xl backdrop:bg-navy-950/70 backdrop:backdrop-blur-sm max-md:mb-0 max-md:w-full max-md:max-w-none max-md:rounded-b-none max-md:rounded-t-3xl"
       >
-        <div className="grid max-h-[92dvh] overflow-y-auto md:grid-cols-[0.85fr_1.15fr]">
+        <div className="grid max-h-[92dvh] overflow-y-auto overscroll-contain md:grid-cols-[0.85fr_1.15fr]">
           <aside className="relative hidden bg-navy-800 p-8 text-white md:block">
             <div className="bg-grid absolute inset-0 opacity-60" />
             <div className="relative">
@@ -71,19 +71,22 @@ export function ConsultationProvider({ children }: { children: ReactNode }) {
               </ul>
             </div>
           </aside>
-          <div className="relative p-6 sm:p-8">
-            <button
-              type="button"
-              onClick={close}
-              aria-label="Close"
-              className="absolute top-4 right-4 rounded-full p-2 text-muted transition hover:bg-navy-50 hover:text-navy-800"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <h2 id="consult-title" className="mb-1 pr-10 text-2xl font-bold">
-              Get Free Consultation
-            </h2>
-            <p className="mb-6 text-sm text-muted">No obligation. Takes less than a minute.</p>
+          <div className="relative p-6 max-md:px-5 max-md:pt-0 max-md:pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:p-8">
+            <div className="max-md:sticky max-md:top-0 max-md:z-10 max-md:-mx-5 max-md:mb-5 max-md:border-b max-md:border-border max-md:bg-card/95 max-md:px-5 max-md:pt-2.5 max-md:pb-3.5 max-md:backdrop-blur">
+              <span className="mx-auto mb-3 block h-1 w-10 rounded-full bg-navy-100 md:hidden" aria-hidden="true" />
+              <button
+                type="button"
+                onClick={close}
+                aria-label="Close"
+                className="absolute top-4 right-4 rounded-full p-2 text-muted transition hover:bg-surface-subtle hover:text-heading max-md:top-5 max-md:bg-surface-subtle"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <h2 id="consult-title" className="mb-1 pr-10 text-2xl font-bold max-md:text-xl">
+                Get Free Consultation
+              </h2>
+              <p className="mb-6 text-sm text-muted max-md:mb-0">No obligation. Takes less than a minute.</p>
+            </div>
             <ConsultationForm key={formKey} idPrefix="modal" defaultService={opts.service} defaultMessage={opts.message} />
           </div>
         </div>

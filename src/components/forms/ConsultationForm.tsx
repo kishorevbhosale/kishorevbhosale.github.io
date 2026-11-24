@@ -9,7 +9,7 @@ import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 type Status = "idle" | "sending" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-lg border border-navy-100 bg-white px-4 py-3 text-[15px] text-ink placeholder:text-muted/60 transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 focus:outline-none";
+  "w-full rounded-lg border border-border bg-card px-4 py-3 text-[15px] text-ink placeholder:text-muted/60 transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 focus:outline-none";
 
 export function ConsultationForm({
   defaultService = "",
@@ -131,37 +131,37 @@ export function ConsultationForm({
     ) : null;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} noValidate className="grid gap-4 max-sm:gap-3.5 sm:grid-cols-2">
       <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <div>
-        <label htmlFor={field("name")} className="mb-1.5 block text-sm font-semibold text-navy-800">
+        <label htmlFor={field("name")} className="mb-1.5 block text-sm font-semibold text-heading">
           Full name <span className="text-crimson-600">*</span>
         </label>
         <input id={field("name")} name="name" autoComplete="name" autoFocus={idPrefix === "modal"} placeholder="Your name" className={inputClass} aria-invalid={!!errors.name} aria-describedby={errors.name ? field("name-err") : undefined} />
         {err("name")}
       </div>
       <div>
-        <label htmlFor={field("phone")} className="mb-1.5 block text-sm font-semibold text-navy-800">
+        <label htmlFor={field("phone")} className="mb-1.5 block text-sm font-semibold text-heading">
           Mobile number <span className="text-crimson-600">*</span>
         </label>
         <input id={field("phone")} name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="98765 43210" className={inputClass} aria-invalid={!!errors.phone} aria-describedby={errors.phone ? field("phone-err") : undefined} />
         {err("phone")}
       </div>
       <div>
-        <label htmlFor={field("email")} className="mb-1.5 block text-sm font-semibold text-navy-800">
+        <label htmlFor={field("email")} className="mb-1.5 block text-sm font-semibold text-heading">
           Email
         </label>
         <input id={field("email")} name="email" type="email" autoComplete="email" placeholder="you@company.com" className={inputClass} aria-invalid={!!errors.email} />
         {err("email")}
       </div>
       <div>
-        <label htmlFor={field("city")} className="mb-1.5 block text-sm font-semibold text-navy-800">
+        <label htmlFor={field("city")} className="mb-1.5 block text-sm font-semibold text-heading">
           City / State
         </label>
         <input id={field("city")} name="city" autoComplete="address-level2" placeholder="e.g. Thane, Maharashtra" className={inputClass} />
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor={field("service")} className="mb-1.5 block text-sm font-semibold text-navy-800">
+        <label htmlFor={field("service")} className="mb-1.5 block text-sm font-semibold text-heading">
           Service required
         </label>
         <select id={field("service")} name="service" defaultValue={defaultService} className={inputClass}>
@@ -174,7 +174,7 @@ export function ConsultationForm({
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor={field("message")} className="mb-1.5 block text-sm font-semibold text-navy-800">
+        <label htmlFor={field("message")} className="mb-1.5 block text-sm font-semibold text-heading">
           Tell us about your business
         </label>
         <textarea id={field("message")} name="message" rows={3} defaultValue={defaultMessage} placeholder="Business type, products, turnover, number of outlets…" className={inputClass} />
@@ -186,11 +186,11 @@ export function ConsultationForm({
         </p>
       )}
 
-      <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row">
+      <div className="flex flex-col gap-3 max-sm:mt-1 max-sm:gap-2.5 sm:col-span-2 sm:flex-row">
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-brand-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600 disabled:opacity-60"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-brand-500 px-6 py-3.5 max-sm:rounded-xl font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600 disabled:opacity-60"
         >
           {status === "sending" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           {status === "sending" ? "Sending…" : "Get Free Consultation"}
@@ -198,7 +198,7 @@ export function ConsultationForm({
         <button
           type="button"
           onClick={handleWhatsApp}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#25D366] px-6 py-3.5 font-semibold text-[#128C7E] transition hover:bg-[#25D366] hover:text-white"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#25D366] px-6 py-3.5 max-sm:rounded-xl max-sm:py-3 font-semibold text-[#128C7E] transition hover:bg-[#25D366] hover:text-white"
         >
           <WhatsAppIcon className="h-5 w-5" /> Send on WhatsApp
         </button>

@@ -31,21 +31,21 @@ export default function ContactPage() {
       />
 
       <section className="section">
-        <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.25fr]">
-          <div className="space-y-4">
+        <div className="container-x grid grid-cols-1 gap-10 max-md:gap-8 lg:grid-cols-[1fr_1.25fr]">
+          <div className="min-w-0 space-y-4 max-sm:space-y-3">
             {channels.map((c) => (
               <a
                 key={c.title}
                 href={c.href}
                 {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="group flex gap-4 rounded-2xl border border-navy-100 bg-white p-5 shadow-[var(--shadow-card)] transition hover:-translate-y-0.5 hover:border-brand-500/40"
+                className="group flex gap-4 rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)] transition hover:-translate-y-0.5 hover:border-brand-500/40 max-sm:items-center max-sm:p-4"
               >
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-100 text-brand-600 transition group-hover:bg-brand-500 group-hover:text-white">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-100 max-sm:h-11 max-sm:w-11 text-brand-600 transition group-hover:bg-brand-500 group-hover:text-white">
                   <c.icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span className="min-w-0">
                   <span className="block text-sm font-semibold text-muted">{c.title}</span>
-                  <span className="mt-0.5 block font-display text-lg font-semibold break-words text-navy-800">{c.value}</span>
+                  <span className="mt-0.5 block font-display text-lg font-semibold break-words text-heading max-sm:text-base max-sm:leading-snug max-sm:[overflow-wrap:anywhere]">{c.value}</span>
                   <span className="mt-0.5 block text-xs text-muted">{c.note}</span>
                 </span>
               </a>
@@ -54,38 +54,38 @@ export default function ContactPage() {
               href={whatsappLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] p-5 font-semibold text-white shadow-lg transition hover:brightness-95"
+              className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] p-5 font-semibold text-white shadow-lg transition hover:brightness-95 max-sm:p-4"
             >
               <WhatsAppIcon className="h-6 w-6" /> Chat instantly on WhatsApp
             </a>
-            <p className="flex items-center gap-2 px-1 text-sm text-muted">
-              <Clock className="h-4 w-4" aria-hidden="true" /> {siteConfig.hours} · Serving all 28 states & 8 UTs
+            <p className="flex items-center gap-2 px-1 text-sm text-muted max-sm:items-start max-sm:text-[13px]">
+              <Clock className="h-4 w-4 shrink-0 max-sm:mt-0.5" aria-hidden="true" /> {siteConfig.hours} · Serving all 28 states & 8 UTs
             </p>
           </div>
 
-          <div className="rounded-2xl border border-navy-100 bg-white p-6 shadow-[var(--shadow-card-hover)] md:p-9">
-            <h2 className="text-2xl font-bold md:text-3xl">Request a free consultation</h2>
-            <p className="mt-2 mb-7 text-muted">No obligation. We will recommend the right licence or certification with a fixed quote.</p>
+          <div className="min-w-0 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card-hover)] max-sm:p-5 md:p-9">
+            <h2 className="text-2xl font-bold max-sm:text-xl md:text-3xl">Request a free consultation</h2>
+            <p className="mt-2 mb-7 text-muted max-sm:mb-5 max-sm:text-[15px]">No obligation. We will recommend the right licence or certification with a fixed quote.</p>
             <ConsultationForm idPrefix="contact" />
           </div>
         </div>
       </section>
 
-      <section aria-label="Office location on map" className="container-x pb-16 md:pb-24">
-        <div className="overflow-hidden rounded-2xl border border-navy-100 shadow-[var(--shadow-card)]">
+      <section aria-label="Office location on map" className="container-x pb-14 md:pb-24">
+        <div className="overflow-hidden rounded-2xl border border-border shadow-[var(--shadow-card)]">
           <iframe
             title="Aaradhya office location — Haware City, Ghodbunder Road, Thane"
             src={siteConfig.mapEmbed}
-            className="h-[360px] w-full md:h-[440px]"
+            className="h-[280px] w-full sm:h-[360px] md:h-[440px]"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
       </section>
 
-      <section className="section bg-navy-50/60 pt-14">
+      <section className="section bg-surface-muted pt-14">
         <div className="container-x max-w-4xl">
-          <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">Before you reach out</h2>
+          <h2 className="mb-8 text-center text-2xl font-bold max-sm:mb-6 md:text-3xl">Before you reach out</h2>
           <Accordion items={generalFaqs.slice(0, 5)} />
         </div>
       </section>

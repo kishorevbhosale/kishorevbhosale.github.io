@@ -100,11 +100,11 @@ export function LicenseFinder({ compact = false }: { compact?: boolean }) {
     const docs = svc.documents.slice(0, compact ? 5 : 10);
     const message = `License Finder result: ${lic.name}. Business: ${label(businessTypes, answers.type)}; Turnover: ${label(turnovers, answers.turnover)}; Operations: ${label(operations, answers.ops)}.`;
     return (
-      <div className="rounded-2xl border border-navy-100 bg-white p-6 shadow-[var(--shadow-card-hover)] md:p-8" aria-live="polite">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card-hover)] max-sm:p-5 md:p-8" aria-live="polite">
         <p className="eyebrow">Your recommendation</p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <span className={`rounded-lg ${lic.tone} px-3 py-1 text-xs font-bold tracking-wider text-white uppercase`}>{lic.form}</span>
-          <h3 className="text-2xl font-bold md:text-3xl">{lic.name}</h3>
+          <h3 className="text-2xl font-bold max-sm:text-xl md:text-3xl">{lic.name}</h3>
         </div>
         <ul className="mt-4 space-y-2">
           {result.reasons.map((r) => (
@@ -113,21 +113,21 @@ export function LicenseFinder({ compact = false }: { compact?: boolean }) {
             </li>
           ))}
         </ul>
-        <dl className="mt-6 grid grid-cols-3 gap-3 rounded-xl bg-navy-50 p-4 text-center">
+        <dl className="mt-6 grid grid-cols-3 gap-3 rounded-xl bg-surface-subtle p-4 text-center max-sm:gap-2 max-sm:px-2 max-sm:py-3">
           <div>
             <dt className="text-xs text-muted">Govt. fee*</dt>
-            <dd className="mt-1 text-sm font-bold text-navy-800">{lic.fee}</dd>
+            <dd className="mt-1 text-sm font-bold text-heading max-sm:text-[13px] max-sm:leading-snug">{lic.fee}</dd>
           </div>
           <div>
             <dt className="text-xs text-muted">Timeline</dt>
-            <dd className="mt-1 text-sm font-bold text-navy-800">{lic.timeline}</dd>
+            <dd className="mt-1 text-sm font-bold text-heading max-sm:text-[13px] max-sm:leading-snug">{lic.timeline}</dd>
           </div>
           <div>
             <dt className="text-xs text-muted">Validity</dt>
-            <dd className="mt-1 text-sm font-bold text-navy-800">1–5 years</dd>
+            <dd className="mt-1 text-sm font-bold text-heading max-sm:text-[13px] max-sm:leading-snug">1–5 years</dd>
           </div>
         </dl>
-        <p className="mt-6 text-sm font-bold text-navy-800">Key documents you will need</p>
+        <p className="mt-6 text-sm font-bold text-heading">Key documents you will need</p>
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
           {docs.map((d) => (
             <li key={d} className="flex gap-2 text-sm text-muted">
@@ -139,15 +139,15 @@ export function LicenseFinder({ compact = false }: { compact?: boolean }) {
           <button
             type="button"
             onClick={() => open({ service: svc.title, message })}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-brand-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600"
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-brand-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600 max-sm:px-4"
           >
             Get help with this licence <ArrowRight className="h-4 w-4" />
           </button>
-          <Link href={`/services/${svc.slug}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-navy-800/15 px-6 py-3.5 font-semibold text-navy-800 transition hover:bg-navy-50">
+          <Link href={`/services/${svc.slug}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-navy-800/15 px-6 py-3.5 font-semibold text-heading transition hover:bg-surface-subtle">
             Full details
           </Link>
         </div>
-        <button type="button" onClick={reset} className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-navy-800">
+        <button type="button" onClick={reset} className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-heading">
           <RotateCcw className="h-4 w-4" /> Start again
         </button>
         <p className="mt-4 text-xs text-muted">*Indicative government fees as per FSSAI; final category depends on capacity and activity. Our consultants will confirm during your free consultation.</p>
@@ -157,23 +157,23 @@ export function LicenseFinder({ compact = false }: { compact?: boolean }) {
 
   const q = questions[step];
   return (
-    <div className="rounded-2xl border border-navy-100 bg-white p-6 shadow-[var(--shadow-card-hover)] md:p-8">
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card-hover)] max-sm:p-5 md:p-8">
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-muted">
           Question {step + 1} of {questions.length}
         </p>
         {step > 0 && (
-          <button type="button" onClick={() => setStep((s) => s - 1)} className="inline-flex items-center gap-1 text-sm font-semibold text-navy-800 hover:text-brand-500">
+          <button type="button" onClick={() => setStep((s) => s - 1)} className="inline-flex items-center gap-1 text-sm font-semibold text-heading hover:text-brand-500">
             <ArrowLeft className="h-4 w-4" /> Back
           </button>
         )}
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-navy-50" role="progressbar" aria-valuemin={0} aria-valuemax={3} aria-valuenow={step}>
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-subtle" role="progressbar" aria-valuemin={0} aria-valuemax={3} aria-valuenow={step}>
         <div className="h-full rounded-full bg-brand-500 transition-all duration-500" style={{ width: `${((step + 1) / 3) * 100}%` }} />
       </div>
       <fieldset className="mt-6">
-        <legend className="font-display text-xl font-bold text-navy-800 md:text-2xl">{q.title}</legend>
-        <div className={`mt-5 grid gap-3 ${q.options.length > 3 ? "sm:grid-cols-2" : ""}`}>
+        <legend className="font-display text-xl font-bold text-heading max-sm:text-lg max-sm:leading-snug md:text-2xl">{q.title}</legend>
+        <div className={`mt-5 grid gap-3 max-sm:mt-4 max-sm:gap-2.5 ${q.options.length > 3 ? "sm:grid-cols-2" : ""}`}>
           {q.options.map((o) => {
             const active = answers[q.key] === o.id;
             return (
@@ -182,15 +182,15 @@ export function LicenseFinder({ compact = false }: { compact?: boolean }) {
                 type="button"
                 onClick={() => choose(q.key, o.id)}
                 aria-pressed={active}
-                className={`group flex items-center justify-between gap-3 rounded-xl border px-4 py-3.5 text-left transition ${
-                  active ? "border-brand-500 bg-brand-50" : "border-navy-100 hover:border-brand-500/50 hover:bg-brand-50/50"
+                className={`group flex items-center justify-between gap-3 rounded-xl border px-4 py-3.5 text-left transition max-md:py-3 ${
+                  active ? "border-brand-500 bg-brand-50" : "border-border hover:border-brand-500/50 hover:bg-brand-50/50 active:bg-brand-50"
                 }`}
               >
                 <span>
-                  <span className="block text-[15px] font-semibold text-navy-800">{o.label}</span>
+                  <span className="block text-[15px] font-semibold text-heading">{o.label}</span>
                   {o.hint && <span className="mt-0.5 block text-xs text-muted">{o.hint}</span>}
                 </span>
-                <ArrowRight className="h-4 w-4 shrink-0 text-brand-500 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100" aria-hidden="true" />
+                <ArrowRight className="h-4 w-4 shrink-0 text-brand-500 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100 max-md:opacity-60" aria-hidden="true" />
               </button>
             );
           })}

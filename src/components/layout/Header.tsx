@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, Phone, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Icon } from "@/components/ui/Icon";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { useConsultation } from "@/components/forms/ConsultationProvider";
 import { complianceServices, licensingServices } from "@/data/services";
-import { navLinks, siteConfig } from "@/data/site";
+import { navLinks, siteConfig, whatsappLink } from "@/data/site";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const desktopLinks = navLinks.filter((l) => l.href !== "/fssai-license-finder");
 
@@ -42,8 +44,10 @@ export function Header() {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className={`sticky top-0 z-40 bg-navy-800 transition-shadow duration-300 ${scrolled ? "shadow-xl shadow-navy-950/30" : ""}`}>
-      <div className="container-x flex h-[72px] items-center justify-between gap-6">
+    <header
+      className={`sticky top-0 z-40 bg-navy-800 transition-shadow duration-300 dark:bg-navy-950 dark:ring-1 dark:ring-white/5 ${scrolled ? "shadow-xl shadow-navy-950/30 dark:shadow-black/40" : ""}`}
+    >
+      <div className="container-x flex h-16 items-center justify-between gap-3 sm:gap-6 md:h-[72px]">
         <Logo />
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
@@ -78,7 +82,7 @@ export function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             onClick={() => open()}
@@ -86,8 +90,8 @@ export function Header() {
           >
             Get Free Consultation
           </button>
-          <a href={siteConfig.phoneHref} aria-label="Call us" className="rounded-lg p-2.5 text-white hover:bg-white/10 sm:hidden">
-            <Phone className="h-5 w-5" />
+          <a href={siteConfig.phoneHref} aria-label="Call us" className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/15 active:bg-white/20 max-[359px]:hidden sm:hidden">
+            <Phone className="h-[18px] w-[18px]" />
           </a>
           <button
             type="button"
@@ -95,7 +99,7 @@ export function Header() {
             aria-label="Open menu"
             aria-expanded={drawer}
             aria-controls="mobile-nav"
-            className="rounded-lg p-2.5 text-white hover:bg-white/10 lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full text-white hover:bg-white/10 active:bg-white/20 lg:hidden"
           >
             <Menu className="h-6 w-6" />
           </button>
@@ -111,37 +115,59 @@ export function Header() {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className={`absolute top-0 right-0 flex h-dvh w-[86%] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ${
+          className={`absolute top-0 right-0 flex h-dvh w-[88%] max-w-sm flex-col bg-card shadow-2xl transition-transform duration-300 ${
             drawer ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex h-[72px] items-center justify-between bg-navy-800 px-5">
+          <div className="flex h-16 shrink-0 items-center justify-between bg-navy-800 pr-3 pl-4 md:h-[72px]">
             <Logo />
-            <button type="button" onClick={() => setDrawer(false)} aria-label="Close menu" className="rounded-lg p-2 text-white hover:bg-white/10" tabIndex={drawer ? 0 : -1}>
-              <X className="h-6 w-6" />
+            <button
+              type="button"
+              onClick={() => setDrawer(false)}
+              aria-label="Close menu"
+              className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
+              tabIndex={drawer ? 0 : -1}
+            >
+              <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto px-3 py-4">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-3 py-3">
             {navLinks.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 tabIndex={drawer ? 0 : -1}
-                className={`flex items-center justify-between rounded-lg px-4 py-3.5 text-base font-semibold ${
-                  isActive(l.href) ? "bg-brand-50 text-brand-600" : "text-navy-800 hover:bg-navy-50"
+                aria-current={isActive(l.href) ? "page" : undefined}
+                className={`flex items-center justify-between rounded-xl px-4 py-3 text-[15px] font-semibold transition ${
+                  isActive(l.href) ? "bg-brand-50 text-brand-600" : "text-heading active:bg-surface-subtle"
                 }`}
               >
-                {l.label} <ArrowRight className="h-4 w-4 opacity-50" />
+                {l.label}
+                <ArrowRight className={`h-4 w-4 ${isActive(l.href) ? "opacity-100" : "opacity-40"}`} />
               </Link>
             ))}
-            <p className="mt-5 px-4 text-xs font-bold tracking-widest text-muted uppercase">Popular services</p>
-            {licensingServices.slice(0, 4).map((s) => (
-              <Link key={s.slug} href={`/services/${s.slug}`} tabIndex={drawer ? 0 : -1} className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-ink hover:bg-navy-50">
-                <Icon name={s.icon} className="h-4 w-4 text-brand-500" /> {s.title}
-              </Link>
-            ))}
+            <div className="mt-2 flex items-center justify-between rounded-xl px-4 py-2 sm:hidden">
+              <span className="text-[15px] font-semibold text-heading">Appearance</span>
+              <ThemeToggle />
+            </div>
+            <p className="mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest text-muted uppercase">Popular services</p>
+            <div className="grid grid-cols-2 gap-2 px-1">
+              {licensingServices.slice(0, 4).map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/services/${s.slug}`}
+                  tabIndex={drawer ? 0 : -1}
+                  className="flex flex-col gap-2 rounded-xl border border-border bg-surface-subtle/80 p-3 text-[13px] leading-snug font-semibold text-heading active:bg-brand-50"
+                >
+                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-card text-brand-500 shadow-sm">
+                    <Icon name={s.icon} className="h-4 w-4" />
+                  </span>
+                  {s.title}
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="space-y-3 border-t border-navy-100 p-5">
+          <div className="shrink-0 space-y-2.5 border-t border-border p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <button
               type="button"
               tabIndex={drawer ? 0 : -1}
@@ -149,13 +175,24 @@ export function Header() {
                 setDrawer(false);
                 open();
               }}
-              className="w-full rounded-lg bg-brand-500 py-3.5 font-semibold text-white"
+              className="w-full rounded-xl bg-brand-500 py-3.5 font-semibold text-white shadow-lg shadow-brand-500/25 active:bg-brand-600"
             >
               Get Free Consultation
             </button>
-            <a href={siteConfig.phoneHref} tabIndex={drawer ? 0 : -1} className="flex w-full items-center justify-center gap-2 rounded-lg border border-navy-100 py-3 font-semibold text-navy-800">
-              <Phone className="h-4 w-4" /> {siteConfig.phone}
-            </a>
+            <div className="grid grid-cols-2 gap-2.5">
+              <a href={siteConfig.phoneHref} tabIndex={drawer ? 0 : -1} className="flex items-center justify-center gap-2 rounded-xl border border-border py-3 text-sm font-semibold text-heading active:bg-surface-subtle">
+                <Phone className="h-4 w-4" /> Call
+              </a>
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                tabIndex={drawer ? 0 : -1}
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3 text-sm font-semibold text-white active:brightness-95"
+              >
+                <WhatsAppIcon className="h-4 w-4" /> WhatsApp
+              </a>
+            </div>
           </div>
         </nav>
       </div>
@@ -171,12 +208,12 @@ function MegaMenu({ visible, onBlurOut }: { visible: boolean; onBlurOut: () => v
         visible ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"
       }`}
     >
-      <div className="grid grid-cols-2 gap-6 rounded-2xl border border-navy-100 bg-white p-6 shadow-2xl">
+      <div className="grid grid-cols-2 gap-6 rounded-2xl border border-border bg-card p-6 shadow-2xl">
         <MegaColumn title="FSSAI Licensing" items={licensingServices} />
         <MegaColumn title="Food Safety & Compliance" items={complianceServices} />
-        <div className="col-span-2 flex items-center justify-between rounded-xl bg-navy-50 px-5 py-4">
+        <div className="col-span-2 flex items-center justify-between rounded-xl bg-surface-subtle px-5 py-4">
           <div>
-            <p className="font-display font-semibold text-navy-800">Not sure which licence you need?</p>
+            <p className="font-display font-semibold text-heading">Not sure which licence you need?</p>
             <p className="text-sm text-muted">Answer 3 quick questions and get an instant answer.</p>
           </div>
           <Link href="/fssai-license-finder" className="flex items-center gap-1.5 text-sm font-semibold text-brand-500 hover:text-brand-700">
@@ -195,11 +232,11 @@ function MegaColumn({ title, items }: { title: string; items: typeof licensingSe
       <ul>
         {items.map((s) => (
           <li key={s.slug}>
-            <Link href={`/services/${s.slug}`} className="group flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-navy-50">
+            <Link href={`/services/${s.slug}`} className="group flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-surface-subtle">
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-500 transition group-hover:bg-brand-500 group-hover:text-white">
                 <Icon name={s.icon} className="h-4 w-4" />
               </span>
-              <span className="text-sm font-medium text-navy-800">{s.title}</span>
+              <span className="text-sm font-medium text-heading">{s.title}</span>
             </Link>
           </li>
         ))}

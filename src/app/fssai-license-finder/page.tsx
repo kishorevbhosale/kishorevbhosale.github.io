@@ -29,11 +29,32 @@ export default function FinderPage() {
         image="/images/produce.webp"
       />
       <section className="section">
-        <div className="container-x grid grid-cols-1 gap-12 lg:grid-cols-[1.2fr_1fr]">
+        <div className="container-x grid grid-cols-1 gap-12 max-md:gap-10 lg:grid-cols-[1.2fr_1fr]">
           <LicenseFinder />
           <div className="min-w-0">
-            <h2 className="text-2xl font-bold">FSSAI licence categories at a glance</h2>
-            <div className="mt-5 overflow-x-auto rounded-2xl border border-navy-100">
+            <h2 className="text-2xl font-bold max-sm:text-xl">FSSAI licence categories at a glance</h2>
+            <ul className="mt-5 space-y-3 sm:hidden">
+              {rows.map(([category, turnover, form, fee, typical]) => (
+                <li key={category} className="rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-display text-base font-bold text-heading">{category}</p>
+                    <span className="shrink-0 rounded-md bg-navy-800 px-2 py-0.5 text-[11px] font-bold tracking-wider text-white uppercase">{form}</span>
+                  </div>
+                  <dl className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-surface-subtle p-3 text-[13px]">
+                    <div>
+                      <dt className="text-xs text-muted">Turnover</dt>
+                      <dd className="font-semibold text-heading">{turnover}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs text-muted">Fee / yr*</dt>
+                      <dd className="font-semibold text-heading">{fee}</dd>
+                    </div>
+                  </dl>
+                  <p className="mt-3 text-[13px] leading-relaxed text-muted">{typical}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 overflow-x-auto rounded-2xl border border-border max-sm:hidden">
               <table className="w-full min-w-[520px] text-left text-sm">
                 <thead className="bg-navy-800 text-white">
                   <tr>
@@ -46,9 +67,9 @@ export default function FinderPage() {
                 </thead>
                 <tbody>
                   {rows.map((r, i) => (
-                    <tr key={r[0]} className={i % 2 ? "bg-white" : "bg-navy-50/60"}>
+                    <tr key={r[0]} className={i % 2 ? "bg-card" : "bg-surface-muted"}>
                       {r.map((c, j) => (
-                        <td key={j} className={`px-4 py-3 align-top ${j === 0 ? "font-semibold text-navy-800" : "text-muted"}`}>
+                        <td key={j} className={`px-4 py-3 align-top ${j === 0 ? "font-semibold text-heading" : "text-muted"}`}>
                           {c}
                         </td>
                       ))}

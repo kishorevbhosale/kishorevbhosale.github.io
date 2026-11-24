@@ -67,55 +67,55 @@ export default async function ServicePage({ params }: Props) {
           { name: s.title, path: `/services/${s.slug}` },
         ]}
       >
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row">
           <ConsultButton
             service={s.title}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-7 py-4 font-semibold text-white shadow-lg shadow-brand-500/30 transition hover:-translate-y-0.5 hover:bg-brand-600"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-7 py-4 font-semibold text-white shadow-lg shadow-brand-500/30 max-sm:py-3.5 transition hover:-translate-y-0.5 hover:bg-brand-600"
           >
             Get Free Consultation <ArrowRight className="h-4 w-4" />
           </ConsultButton>
           <a
             href={siteConfig.phoneHref}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur transition hover:bg-white hover:text-navy-800"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur max-sm:py-3.5 transition hover:bg-card hover:text-heading"
           >
             <Phone className="h-4 w-4" /> {siteConfig.phone}
           </a>
         </div>
       </PageHero>
 
-      <div className="container-x grid gap-12 py-14 md:py-20 lg:grid-cols-[1fr_360px]">
+      <div className="container-x grid gap-12 py-12 max-md:gap-10 md:py-20 lg:grid-cols-[1fr_360px]">
         <article className="min-w-0">
           <section aria-labelledby="overview">
             <h2 id="overview" className="text-2xl font-bold md:text-3xl">
               Overview
             </h2>
             {s.overview.map((p) => (
-              <p key={p.slice(0, 20)} className="mt-4 leading-relaxed text-muted md:text-lg">
+              <p key={p.slice(0, 20)} className="mt-4 leading-relaxed text-muted max-sm:text-[15px] md:text-lg">
                 {p}
               </p>
             ))}
           </section>
 
-          <section aria-labelledby="who" className="mt-12">
-            <h2 id="who" className="flex items-center gap-3 text-2xl font-bold md:text-3xl">
-              <Users className="h-7 w-7 text-brand-500" aria-hidden="true" /> Who needs this?
+          <section aria-labelledby="who" className="mt-12 max-sm:mt-10">
+            <h2 id="who" className="flex items-center gap-3 text-2xl font-bold max-sm:text-[1.4rem] md:text-3xl">
+              <Users className="h-7 w-7 max-sm:h-6 max-sm:w-6 text-brand-500" aria-hidden="true" /> Who needs this?
             </h2>
             <ul className="mt-5 grid gap-3 sm:grid-cols-2">
               {s.whoNeeds.map((w) => (
-                <li key={w} className="flex gap-3 rounded-xl border border-navy-100 bg-navy-50/50 p-4 text-[15px] text-ink/85">
+                <li key={w} className="flex gap-3 rounded-xl border border-border bg-surface-subtle/80 p-4 text-[15px] text-ink/85 max-sm:p-3.5 max-sm:text-sm">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-leaf-600" aria-hidden="true" /> {w}
                 </li>
               ))}
             </ul>
           </section>
 
-          <section aria-labelledby="docs" className="mt-12">
-            <h2 id="docs" className="flex items-center gap-3 text-2xl font-bold md:text-3xl">
-              <FileText className="h-7 w-7 text-brand-500" aria-hidden="true" /> Documents required
+          <section aria-labelledby="docs" className="mt-12 max-sm:mt-10">
+            <h2 id="docs" className="flex items-center gap-3 text-2xl font-bold max-sm:text-[1.4rem] md:text-3xl">
+              <FileText className="h-7 w-7 max-sm:h-6 max-sm:w-6 text-brand-500" aria-hidden="true" /> Documents required
             </h2>
             <ol className="mt-5 space-y-2.5">
               {s.documents.map((d, i) => (
-                <li key={d} className="flex gap-3 text-[15px] text-ink/85">
+                <li key={d} className="flex gap-3 text-[15px] text-ink/85 max-sm:text-sm max-sm:leading-relaxed">
                   <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-navy-800 text-xs font-bold text-white">{i + 1}</span>
                   {d}
                 </li>
@@ -123,35 +123,35 @@ export default async function ServicePage({ params }: Props) {
             </ol>
           </section>
 
-          <section aria-labelledby="process" className="mt-12">
+          <section aria-labelledby="process" className="mt-12 max-sm:mt-10">
             <h2 id="process" className="text-2xl font-bold md:text-3xl">
               Our step-by-step process
             </h2>
-            <ol className="relative mt-6 ml-[18px] space-y-6 border-l-2 border-dashed border-brand-500/40 pl-8">
+            <ol className="relative mt-6 ml-[18px] space-y-6 border-l-2 border-dashed border-brand-500/40 pl-8 max-sm:ml-4 max-sm:pl-7">
               {s.process.map((p, i) => (
                 <li key={p.title} className="relative">
-                  <span className="absolute top-0 -left-[51px] grid h-9 w-9 place-items-center rounded-full bg-brand-500 font-display font-bold text-white ring-4 ring-white">{i + 1}</span>
-                  <h3 className="text-lg font-bold">{p.title}</h3>
-                  <p className="mt-1 text-muted">{p.text}</p>
+                  <span className="absolute top-0 -left-[51px] grid h-9 w-9 max-sm:-left-[46px] max-sm:h-8 max-sm:w-8 max-sm:text-sm place-items-center rounded-full bg-brand-500 font-display font-bold text-white ring-4 ring-white">{i + 1}</span>
+                  <h3 className="text-lg font-bold max-sm:text-base">{p.title}</h3>
+                  <p className="mt-1 text-muted max-sm:text-[15px]">{p.text}</p>
                 </li>
               ))}
             </ol>
           </section>
 
           {s.facts && (
-            <section aria-labelledby="facts" className="mt-12">
+            <section aria-labelledby="facts" className="mt-12 max-sm:mt-10">
               <h2 id="facts" className="text-2xl font-bold md:text-3xl">
                 {s.factsTitle ?? "Government fees"}
               </h2>
-              <div className="mt-5 overflow-hidden rounded-2xl border border-navy-100">
-                <table className="w-full text-left text-[15px]">
+              <div className="mt-5 overflow-hidden rounded-2xl border border-border">
+                <table className="w-full text-left text-[15px] max-sm:text-sm">
                   <tbody>
                     {s.facts.map((f, i) => (
-                      <tr key={f.label} className={i % 2 ? "bg-white" : "bg-navy-50/60"}>
-                        <th scope="row" className="w-2/5 px-5 py-4 align-top font-semibold text-navy-800">
+                      <tr key={f.label} className={i % 2 ? "bg-card" : "bg-surface-muted"}>
+                        <th scope="row" className="w-2/5 px-5 py-4 align-top font-semibold text-heading max-sm:px-3.5 max-sm:py-3">
                           {f.label}
                         </th>
-                        <td className="px-5 py-4 text-muted">{f.value}</td>
+                        <td className="px-5 py-4 text-muted max-sm:px-3.5 max-sm:py-3">{f.value}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -161,20 +161,20 @@ export default async function ServicePage({ params }: Props) {
             </section>
           )}
 
-          <section aria-labelledby="pitfalls" className="mt-12 rounded-2xl border border-crimson-600/15 bg-crimson-50 p-6 md:p-8">
-            <h2 id="pitfalls" className="flex items-center gap-3 text-xl font-bold md:text-2xl">
-              <AlertTriangle className="h-6 w-6 text-crimson-600" aria-hidden="true" /> Common mistakes we help you avoid
+          <section aria-labelledby="pitfalls" className="mt-12 rounded-2xl border border-crimson-600/15 bg-crimson-50 p-6 max-sm:mt-10 max-sm:p-5 md:p-8">
+            <h2 id="pitfalls" className="flex items-start gap-3 text-xl font-bold max-sm:text-lg max-sm:leading-snug md:items-center md:text-2xl">
+              <AlertTriangle className="h-6 w-6 shrink-0 text-crimson-600" aria-hidden="true" /> Common mistakes we help you avoid
             </h2>
             <ul className="mt-4 space-y-2.5">
               {s.pitfalls.map((p) => (
-                <li key={p} className="flex gap-3 text-ink/85">
+                <li key={p} className="flex gap-3 text-ink/85 max-sm:text-[15px]">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-crimson-600" aria-hidden="true" /> {p}
                 </li>
               ))}
             </ul>
           </section>
 
-          <section aria-labelledby="faq" className="mt-12">
+          <section aria-labelledby="faq" className="mt-12 max-sm:mt-10">
             <h2 id="faq" className="mb-5 text-2xl font-bold md:text-3xl">
               Frequently asked questions
             </h2>
@@ -223,8 +223,8 @@ export default async function ServicePage({ params }: Props) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-navy-100 p-6">
-            <p className="font-display text-lg font-bold text-navy-800">What you get</p>
+          <div className="rounded-2xl border border-border p-6">
+            <p className="font-display text-lg font-bold text-heading">What you get</p>
             <ul className="mt-4 space-y-2.5">
               {s.deliverables.map((d) => (
                 <li key={d} className="flex gap-2.5 text-sm text-ink/85">
@@ -234,12 +234,12 @@ export default async function ServicePage({ params }: Props) {
             </ul>
           </div>
 
-          <nav aria-label="All services" className="rounded-2xl border border-navy-100 p-6">
-            <p className="font-display text-lg font-bold text-navy-800">All services</p>
+          <nav aria-label="All services" className="rounded-2xl border border-border p-6 max-md:hidden">
+            <p className="font-display text-lg font-bold text-heading">All services</p>
             <ul className="mt-3 space-y-1">
               {others.map((o) => (
                 <li key={o.slug}>
-                  <Link href={`/services/${o.slug}`} className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-ink/80 transition hover:bg-navy-50 hover:text-navy-800">
+                  <Link href={`/services/${o.slug}`} className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-ink/80 transition hover:bg-surface-subtle hover:text-heading">
                     <Icon name={o.icon} className="h-4 w-4 text-brand-500" /> {o.title}
                   </Link>
                 </li>
@@ -250,12 +250,12 @@ export default async function ServicePage({ params }: Props) {
       </div>
 
       {related.length > 0 && (
-        <section className="section bg-navy-50/60 pt-14" aria-labelledby="related">
+        <section className="section bg-surface-muted pt-14 max-md:pt-12" aria-labelledby="related">
           <div className="container-x">
-            <h2 id="related" className="mb-8 text-2xl font-bold md:text-3xl">
+            <h2 id="related" className="mb-8 text-2xl font-bold max-sm:mb-5 md:text-3xl">
               Related services
             </h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mobile-rail grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (
                 <ServiceCard key={r.slug} service={r} showNumber={false} />
               ))}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function ShieldMark({ className = "h-11 w-11" }: { className?: string }) {
@@ -23,7 +24,7 @@ export function Logo({ light = true, className = "" }: { light?: boolean; classN
     <Link href="/" className={`group flex items-center gap-2.5 ${className}`} aria-label="Aaradhya Management System Consultancy Services — Home">
       <ShieldMark className="h-11 w-10 shrink-0 transition-transform duration-300 group-hover:scale-105" />
       <span className="flex flex-col leading-none">
-        <span className={`font-display text-2xl font-bold tracking-tight ${light ? "text-white" : "text-navy-800"}`}>
+        <span className={`font-display text-2xl font-bold tracking-tight ${light ? "text-white" : "text-heading"}`}>
           Aaradhya
         </span>
         <span className={`mt-1 text-[8px] font-medium whitespace-nowrap sm:text-[9px] sm:tracking-wide ${light ? "text-white/75" : "text-muted"}`}>
@@ -37,10 +38,6 @@ export function Logo({ light = true, className = "" }: { light?: boolean; classN
 /** The red "A" + leaf mark used on the "Safe Food. Healthy Nation." brand banner */
 export function LeafAMark({ className = "h-24 w-24" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 110" className={className} aria-hidden="true">
-      <path d="M8 104 52 6h16l44 98H90L60 34 30 104H8Z" fill="#b3202a" />
-      <path d="M38 80c10-26 34-40 66-40-6 30-30 48-62 44l-4-4Z" fill="#b3202a" />
-      <path d="M44 80c14-14 30-24 52-32" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" />
-    </svg>
+    <Image src="/images/aaradhya-mark.png" alt="" width={172} height={151} aria-hidden className={`object-contain ${className}`} />
   );
 }

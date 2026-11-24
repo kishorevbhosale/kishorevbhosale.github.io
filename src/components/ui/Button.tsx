@@ -9,10 +9,11 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand-500 text-white shadow-lg shadow-brand-500/25 hover:bg-brand-600 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-500/30",
-  "outline-light": "border border-white/40 bg-white/10 text-white backdrop-blur hover:bg-white hover:text-navy-800",
-  outline: "border border-navy-800/20 text-navy-800 hover:border-navy-800 hover:bg-navy-800 hover:text-white",
-  ghost: "text-brand-500 hover:text-brand-700",
-  white: "bg-white text-navy-800 shadow-lg hover:-translate-y-0.5 hover:bg-navy-50",
+  "outline-light": "border border-white/40 bg-white/10 text-white backdrop-blur hover:bg-card hover:text-heading",
+  outline:
+    "border border-navy-800/20 text-heading hover:border-navy-800 hover:bg-navy-800 hover:text-white dark:border-border dark:hover:border-brand-500/40 dark:hover:bg-brand-500/15 dark:hover:text-heading",
+  ghost: "text-brand-500 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300",
+  white: "bg-card text-heading shadow-lg hover:-translate-y-0.5 hover:bg-surface-subtle",
 };
 
 const sizes: Record<Size, string> = {
