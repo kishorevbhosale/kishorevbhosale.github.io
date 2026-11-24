@@ -94,7 +94,7 @@ export function HeroCarousel() {
             </svg>
             <div className="container-x relative grid min-h-[560px] content-center items-center gap-6 pt-8 pb-24 md:min-h-[640px] md:gap-8 md:py-14 lg:grid-cols-[0.8fr_1.6fr_1fr] lg:gap-6">
               <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-                <LeafAMark className="h-14 w-14 sm:h-20 sm:w-20 md:h-28 md:w-28" />
+                <LeafAMark className="h-20 w-auto sm:h-28 md:h-36" />
                 <p className="mt-1.5 font-display text-2xl font-bold tracking-wide text-crimson-600 sm:mt-2 sm:text-3xl md:text-4xl">AARADHYA</p>
                 <p className="font-display text-xs font-semibold tracking-[0.12em] text-heading/80 sm:text-sm md:text-base">
                   MANAGEMENT SYSTEM

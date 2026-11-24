@@ -36,8 +36,15 @@ export function Logo({ light = true, className = "" }: { light?: boolean; classN
 }
 
 /** The red "A" + leaf mark used on the "Safe Food. Healthy Nation." brand banner */
-export function LeafAMark({ className = "h-24 w-24" }: { className?: string }) {
+export function LeafAMark({ className = "h-24 w-auto" }: { className?: string }) {
   return (
-    <Image src="/images/aaradhya-mark.png" alt="" width={172} height={151} aria-hidden className={`object-contain ${className}`} />
+    <Image
+      src="/images/aaradhya-mark.png"
+      alt=""
+      width={673}
+      height={589}
+      aria-hidden
+      className={`object-contain drop-shadow-[0_10px_16px_rgba(120,16,24,0.2)] dark:drop-shadow-[0_0_18px_rgba(255,90,96,0.28)] ${className}`}
+    />
   );
 }
